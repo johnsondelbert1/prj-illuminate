@@ -1,0 +1,922 @@
+@charset utf-8;
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,700,300);
+
+/* CSS Document */
+*
+{
+	margin:0;
+	padding:0;
+	font-family: 'Roboto', sans-serif;
+}
+
+body
+{
+	background-color:#E7EFF1;
+	color:#333;
+	min-height:100%;
+}
+div.wrap
+{
+	min-width:750px;
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+div.wrap a
+{
+	color:#404040;
+}
+
+.contentwrap
+{
+	width:90%;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.title
+{
+	margin-top:10px;
+}
+
+.form
+{
+	text-align:left;
+}
+
+div.content
+{
+	width:100%;
+	background-color:#f7f7f7;
+	box-shadow:0px 2px 2px rgba(0, 0, 0, 0.3);
+	-webkit-border-radius:2px;
+	border-radius:2px;
+	margin-top:20px;
+	margin-bottom:10px;
+	text-align:center;
+	padding:10px 10px 0px 10px;
+	overflow-x:auto;
+	overflow-y:hidden;
+}
+div.content a{
+	font-family: 'Roboto', Arial, Helvetica, sans-serif;
+	color: #404040;
+	text-decoration:none;
+	font-weight:800;
+	font-size:18px;
+}
+div.content a:hover{
+	color: #646464;
+}
+div.profile-content{
+	width:100%;
+	min-height:650px;
+}
+
+div.gallery
+{
+	width:50%;
+	float:left;
+}
+
+div.info-content
+{
+	width:48%;
+	margin-left:auto;
+	margin-top:-550px;
+}
+
+li
+{
+	margin-left:15px;
+}
+
+img
+{
+	border:0;
+}
+
+img.a
+{
+	border:0;
+}
+
+div.banner
+{
+	text-align:center;
+	width:1000px;
+	height:200px;
+}
+
+.footer
+{
+	width:960px;
+	height:35px;
+	right:0;
+	background-color:#666;
+	padding:20px;
+	margin-bottom:10px;
+}
+
+/*Menu*/
+div.nav{
+	width:100%;
+	font-size:1.5em;
+	min-height:33px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+@media all and (max-width: 930px){
+  div.nav{
+	min-height:52px;
+}
+}
+@media all and (max-width: 480px){
+  div.nav{
+	min-height:78px;
+}
+}
+/*ul.nav a{
+	list-style:none;
+	display:block;
+	text-decoration:none;
+	text-align:center;
+	font-size:18px;
+	float:left;
+	font-weight:bold;
+}
+li.selected{
+	background-color:#333333;
+	border:2px solid #f1c40f;
+
+}
+li.nav{
+	color:#f1c40f;
+	line-height:40px;
+	font-size:16px;
+	height:40px;
+	background-color:#000;
+	border:2px solid #f1c40f;
+	margin-left:4px;
+	margin-right:4px;
+}
+li.nav:hover{
+	color:#f39c12;
+	background-color:#000;
+	border:2px solid #f39c12;
+}*/
+/* SpryMenuBarHorizontal.css - version 0.6 - Spry Pre-Release 1.6.1 */
+
+/* Copyright (c) 2006. Adobe Systems Incorporated. All rights reserved. */
+
+/*******************************************************************************
+
+ LAYOUT INFORMATION: describes box model, positioning, z-order
+
+ *******************************************************************************/
+
+/* The outermost container of the Menu Bar, an auto width box with no margin or padding */
+ul.MenuBarHorizontal
+{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	/*font-size: 100%;*/
+	cursor: default;
+	width: auto;
+	float:right;
+}
+/* Set the active Menu Bar with this class, currently setting z-index to accomodate IE rendering bug: http://therealcrisp.xs4all.nl/meuk/IE-zindexbug.html */
+ul.MenuBarActive
+{
+	z-index: 1000;
+}
+/* Menu item containers, position children relative to this container and are a fixed width */
+ul.MenuBarHorizontal li
+{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	font-size: 14px;
+	position: relative;
+	text-align:center;
+	cursor: pointer;
+	width: auto;
+	float: left;
+}
+@media all and (max-width: 460px){
+ul.MenuBarHorizontal li
+{
+	width:100%;
+}
+}
+/* Submenus should appear below their parent (top: 0) with a higher z-index, but they are initially off the left side of the screen (-1000em) */
+ul.MenuBarHorizontal ul
+{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	font-size: 24px;
+	z-index: 1020;
+	cursor: default;
+	width: 150px;
+	position: absolute;
+	left: -1000em;
+}
+/* Submenu that is showing with class designation MenuBarSubmenuVisible, we set left to auto so it comes onto the screen below its parent menu item */
+ul.MenuBarHorizontal ul.MenuBarSubmenuVisible
+{
+	left: auto;
+}
+/* Menu item containers are same fixed width as parent */
+ul.MenuBarHorizontal ul li
+{
+	width: 8.2em;
+}
+/* Submenus should appear slightly overlapping to the right (95%) and up (-5%) */
+ul.MenuBarHorizontal ul ul
+{
+	position: absolute;
+	margin: -5% 0 0 95%;
+}
+/* Submenu that is showing with class designation MenuBarSubmenuVisible, we set left to 0 so it comes onto the screen */
+ul.MenuBarHorizontal ul.MenuBarSubmenuVisible ul.MenuBarSubmenuVisible
+{
+	left: auto;
+	top: 0;
+}
+
+/*******************************************************************************
+
+ DESIGN INFORMATION: describes color scheme, borders, fonts
+
+ *******************************************************************************/
+
+/* Submenu containers have borders on all sides */
+ul.MenuBarHorizontal ul
+{
+	/*border: 1px solid #CCC;*/
+}
+/* Menu items are a light gray block with padding and no text decoration */
+ul.MenuBarHorizontal a
+{
+	display: block;
+	cursor: pointer;
+	padding: 0.5em 0.75em;
+	text-decoration: none;
+	transition: all 150ms;
+	-webkit-transition: all 150ms; /* Safari */
+}
+/* Menu items that have mouse over or focus have a blue background and white text */
+ul.MenuBarHorizontal a:hover, ul.MenuBarHorizontal a:focus
+{
+	background-color: #c0392b;
+	color: #ccc;
+}
+/* Menu items that are open with submenus are set to MenuBarItemHover with a blue background and white text */
+ul.MenuBarHorizontal a.MenuBarItem:Hover, ul.MenuBarHorizontal a.MenuBarItemSubmenu:Hover, ul.MenuBarHorizontal a.MenuBarSubmenuVisible
+{
+	background-color:#fff;
+}
+
+/*******************************************************************************
+
+ SUBMENU INDICATION: styles if there is a submenu under a given menu item
+
+ *******************************************************************************/
+
+/* Menu items that have a submenu have the class designation MenuBarItemSubmenu and are set to use a background image positioned on the far left (95%) and centered vertically (50%) */
+ul.MenuBarHorizontal a.MenuBarItemSubmenu
+{
+	background-image: url(../images/SpryMenuBarDown.gif);
+	background-repeat: no-repeat;
+	background-position: 95% 50%;
+}
+/* Menu items that have a submenu have the class designation MenuBarItemSubmenu and are set to use a background image positioned on the far left (95%) and centered vertically (50%) */
+ul.MenuBarHorizontal ul a.MenuBarItemSubmenu
+{
+	background-image: url(../images/SpryMenuBarRight.gif);
+	background-repeat: no-repeat;
+	background-position: 95% 50%;
+}
+/* Menu items that are open with submenus have the class designation MenuBarItemSubmenuHover and are set to use a "hover" background image positioned on the far left (95%) and centered vertically (50%) */
+ul.MenuBarHorizontal a.MenuBarItemSubmenuHover
+{
+	background-image: url(../images/SpryMenuBarDownHover.gif);
+	background-repeat: no-repeat;
+	background-position: 95% 50%;
+}
+/* Menu items that are open with submenus have the class designation MenuBarItemSubmenuHover and are set to use a "hover" background image positioned on the far left (95%) and centered vertically (50%) */
+ul.MenuBarHorizontal ul a.MenuBarItemSubmenuHover
+{
+	background-image: url(../images/SpryMenuBarRightHover.gif);
+	background-repeat: no-repeat;
+	background-position: 95% 50%;
+}
+
+/*******************************************************************************
+
+ BROWSER HACKS: the hacks below should not be changed unless you are an expert
+
+ *******************************************************************************/
+
+/* HACK FOR IE: to make sure the sub menus show above form controls, we underlay each submenu with an iframe */
+ul.MenuBarHorizontal iframe
+{
+	position: absolute;
+	z-index: 1010;
+	filter:alpha(opacity:0.1);
+}
+/* HACK FOR IE: to stabilize appearance of menu items; the slash in float is to keep IE 5.0 from parsing */
+@media screen, projection
+{
+	ul.MenuBarHorizontal li.MenuBarItemIE
+	{
+		display: inline;
+		f\loat: left;
+		background: #FFF;
+	}
+}
+ul.MenuBarHorizontal a, .nav{
+			background-color:#ffffff !important;
+			color:#999999;
+			font-weight:bold;
+		}
+		ul.MenuBarHorizontal a.MenuBarItemHover, ul.MenuBarHorizontal a.MenuBarItemSubmenuHover, ul.MenuBarHorizontal a.MenuBarSubmenuVisible, ul.MenuBarHorizontal a:hover, ul.MenuBarHorizontal a:focus{
+			background-color:#f6f6f6 !important;
+			color:#F85050 !important;
+		}
+/* End SpryMenuBarHorizontal */
+
+#menu
+{
+	padding:0;
+	margin:0;
+	display:table-row;
+}
+/*
+.menuitem
+{
+	width:75px;
+	height:60px;
+	color:#e5e5e5;
+	background-color:#fff;
+	position:relative;
+	padding-top:10px;
+	display:block;
+	margin-left:0;
+	transition:all 500ms;
+	vertical-align:middle;
+	-webkit-transition:all 500ms;
+}
+
+.menuitem a
+{
+	text-decoration:none;
+	color:#f5f5f5;
+	display:block;
+	width:100%;
+	height:100%;
+	transition:all 500ms;
+	-webkit-transition:all 500ms;
+}
+
+.menuitem:hover
+{
+	width:75px;
+	background-color:#f5f5f5;
+/*-webkit-box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.75);
+	-moz-box-shadow:    0px 3px 3px 0px rgba(0, 0, 0, 0.75);
+	box-shadow:         0px 3px 3px 0px rgba(0, 0, 0, 0.75);*//*
+}
+.menuitem:hover a
+{
+	color:#525252;
+}
+*/
+.menuitembig:hover
+{
+	width:75px;
+	height:200px;
+}
+
+.menuitemnohover
+{
+	width:75px;
+	height:50px;
+	color:#f5f5f5;
+	background-color:#111;
+	overflow:hidden;
+	position:relative;
+	display:block;
+	margin-left:0;
+}
+
+.menuitemnohover a
+{
+	color:#f5f5f5;
+}
+.menuitem span
+{
+	font-size:1.5em;
+	-webkit-font-smoothing:antialiased;
+	-moz-osx-font-smoothing:grayscale;
+}
+
+.menuitem h3
+{
+	margin-top:0;
+	z-index:0;
+	font-size:10px;
+}
+.editpageform tr
+{
+	width:960px;
+}
+.list{
+	margin-left:auto;
+	margin-right:auto;
+}
+.list tr
+{
+	
+	
+}
+.list tr:hover
+{
+	background-color:#f5f5f5;
+}
+.header tr:hover
+{
+	background-color:#f00;
+}
+.list td
+{
+	border-top: #fff solid 1px;
+	padding-left:10px;
+	padding-right:10px;
+}
+.list th
+{
+	padding-top:10px;
+	padding-left:10px;
+	padding-right:10px;
+}
+
+.editselected
+{
+	background-color:maroon;
+}
+
+.text
+{
+	background-color:#666;
+	border:2px solid #222;
+	border-radius:4px;
+	color:#FFF;
+	padding:5px;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+	-moz-box-shadow:inset 0 10px 10px -10px #000;
+	-webkit-box-shadow:inset 0 10px 10px -10px #000;
+	box-shadow:inset 0 10px 10px -10px #000;
+}
+
+.text a:
+{
+	border:1px solid red;
+}
+
+tr.heading,td.heading,th.heading
+{
+	background:#000;
+}
+
+h1
+{
+	font-size:2.5em;
+	color:#404040;
+}
+
+div.profile
+{
+	background-color:#404040;
+	width:250px;
+	height:250px;
+	padding:20px;
+	-moz-box-shadow:inset 0 0 10px #000;
+	-webkit-box-shadow:inset 0 0 10px #000;
+	box-shadow:inset 0 0 10px #000;
+}
+/*
+#nav
+{
+	position:relative;
+	right:-5%;
+	padding:0;
+	margin:0 auto;
+	text-align:center;
+}
+
+#nav .clear
+{
+	clear:both;
+}
+
+#nav ul
+{
+	padding:0 0 0 5px;
+	margin:0;
+	list-style:none;
+	margin:0 auto;
+	text-align:left;
+	width:100%;
+}
+
+#nav li
+{
+	float:left;
+	margin:5px 10px 5px 0;
+	text-align:center;
+}
+*/
+ul
+{
+/*list-style-position:inside;*/
+}
+
+.clear
+{
+	clear:both;
+}
+
+.photo-link
+{
+	margin:10px;
+	display:block;
+	width:auto;
+	float:left;
+	background-color:#404040;
+	border-radius:5px;
+}
+
+.photo-link:hover
+{
+	background-color:#666;
+}
+
+b
+{
+	font-weight:bolder;
+}
+
+h3.error
+{
+	text-align:center;
+	color:#D8000C;
+	border:2px solid #D8000C;
+	background:#FFBABA;
+	min-height:20px;
+	line-height:20px;
+	width:80%;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:10px;
+	margin-bottom:10px;
+	border-radius:10px;
+	padding:20px;
+	-webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+	-webkit-animation-name: shake;
+  animation-name: shake;
+}
+
+h3.success
+{
+	text-align:center;
+	color:#4F8A10;
+	border:2px solid #4F8A10;
+	background:#DFF2BF;
+	line-height:20px;
+	width:80%;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:10px;
+	margin-bottom:10px;
+	border-radius:10px;
+	padding:20px;
+}
+h3.message
+{
+	text-align:center;
+	color:#000000;
+	border:2px solid #835900;
+	background:#E38D00;
+	line-height:20px;
+	width:80%;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:10px;
+	margin-bottom:10px;
+	border-radius:10px;
+	padding:20px;
+}
+
+input[type=text],
+input[type=url],
+input[type=tel],
+input[type=number],
+input[type=color],
+input[type=email],
+input[type=file],
+input[type=password]
+{
+	height:25px;
+	padding:5px;
+	margin:10px;
+	background:#E0E0E0;
+	border:0px solid #e4e4e4;
+	outline:none;
+	box-shadow:inset 0 2px 4px 0 rgba(0,0,0,.04);
+}
+input[type="text"]:disabled{
+	background-color:#D0D0D0;
+}
+form input[type=textarea]
+{
+	width:100%;
+	height:20px;
+	margin-bottom:10px;
+	background:#E0E0E0;
+	border:none;
+	outline:none;
+}
+textarea{
+	background-color:#E0E0E0;	
+}
+option
+{
+	height:25px;
+	padding:5px;
+	background:#E0E0E0;
+	border:0px solid #e4e4e4;
+	outline:none;
+}
+
+select 
+{
+	height:25px;
+	padding:0 5px 5px 5px;
+	background:#E0E0E0;
+	margin:10px;
+	border:0px solid #e4e4e4;
+	outline:none;
+}
+/* buttons */
+.red
+{
+	background-color:#c03a2b !important;
+	-webkit-border-top-left-radius:3px;
+	-moz-border-radius-topleft:3px;
+	border-top-left-radius:3px;
+	-webkit-border-top-right-radius:3px;
+	-moz-border-radius-topright:3px;
+	border-top-right-radius:3px;
+	-webkit-border-bottom-right-radius:3px;
+	-moz-border-radius-bottomright:3px;
+	border-bottom-right-radius:3px;
+	-webkit-border-bottom-left-radius:3px;
+	-moz-border-radius-bottomleft:3px;
+	border-bottom-left-radius:3px;
+	text-indent:0;
+	display:inline-block;
+	color:#fff!important;
+	font-family:Arial!important;
+	font-size:12px!important;
+	font-style:normal!important;
+	font-weight:bold!important;
+	height:40px;
+	line-height:40px;
+	min-width:100px;
+	text-decoration:none;
+	text-align:center;
+	border:0px solid #e4e4e4;
+	transition:all 200ms;
+	-webkit-transition:all 200ms;
+	margin:5px;
+/* Safari */
+}
+
+.red:hover
+{
+	-webkit-box-shadow:inset 0 3px 0 0 rgb(0, 0, 0); /* The Fallback */;
+	box-shadow:inset 0 3px 0 0 rgb(0, 0, 0); /* The Fallback */;
+	-webkit-box-shadow:inset 0 3px 0 0 rgba(0, 0, 0, 0.3);
+	box-shadow:inset 0 3px 0 0 rgba(0, 0, 0, 0.3);
+}
+
+.red:active
+{
+	position:relative;
+	top:1px;
+}
+.green
+{
+	background-color:#27ae60 !important;
+	-webkit-border-top-left-radius:3px;
+	-moz-border-radius-topleft:3px;
+	border-top-left-radius:3px;
+	-webkit-border-top-right-radius:3px;
+	-moz-border-radius-topright:3px;
+	border-top-right-radius:3px;
+	-webkit-border-bottom-right-radius:3px;
+	-moz-border-radius-bottomright:3px;
+	border-bottom-right-radius:3px;
+	-webkit-border-bottom-left-radius:3px;
+	-moz-border-radius-bottomleft:3px;
+	border-bottom-left-radius:3px;
+	text-indent:0;
+	display:inline-block;
+	color:#fff!important;
+	font-family:Arial!important;
+	font-size:12px!important;
+	font-style:normal!important;
+	font-weight:bold!important;
+	height:40px;
+	line-height:40px;
+	min-width:100px;
+	text-decoration:none;
+	text-align:center;
+	border:0px solid #e4e4e4;
+	transition:all 200ms;
+	-webkit-transition:all 200ms;
+	margin:5px;
+/* Safari */
+}
+
+.green:hover
+{
+	-webkit-box-shadow:inset 0 3px 0 0 rgb(0, 0, 0); /* The Fallback */;
+	box-shadow:inset 0 3px 0 0 rgb(0, 0, 0); /* The Fallback */;
+	-webkit-box-shadow:inset 0 3px 0 0 rgba(0, 0, 0, 0.3);
+	box-shadow:inset 0 3px 0 0 rgba(0, 0, 0, 0.3);
+}
+
+.green:active
+{
+	position:relative;
+	top:1px;
+}
+input[type=submit], .blue{
+	background-color:#3498db;
+	-webkit-border-top-left-radius:3px;
+	-moz-border-radius-topleft:3px;
+	border-top-left-radius:3px;
+	-webkit-border-top-right-radius:3px;
+	-moz-border-radius-topright:3px;
+	border-top-right-radius:3px;
+	-webkit-border-bottom-right-radius:3px;
+	-moz-border-radius-bottomright:3px;
+	border-bottom-right-radius:3px;
+	-webkit-border-bottom-left-radius:3px;
+	-moz-border-radius-bottomleft:3px;
+	border-bottom-left-radius:3px;
+	text-indent:0;
+	display:inline-block;
+	padding: 0 3px 0 3px;
+	color:#fff!important;
+	font-family:Arial!important;
+	font-size:12px!important;
+	font-style:normal!important;
+	font-weight:bold!important;
+	height:40px;
+	line-height:40px;
+	min-width:100px;
+	text-decoration:none;
+	text-align:center;
+	border:0px solid #e4e4e4;
+	transition:all 200ms;
+	-webkit-transition:all 200ms;
+	outline:none;
+	 margin:5px;
+	}
+input:hover[type=submit], .blue:hover{
+	-webkit-box-shadow:inset 0 3px 0 0 rgb(0, 0, 0); /* The Fallback */;
+	box-shadow:inset 0 3px 0 0 rgb(0, 0, 0); /* The Fallback */;
+	-webkit-box-shadow:inset 0 3px 0 0 rgba(0, 0, 0, 0.3);
+	box-shadow:inset 0 3px 0 0 rgba(0, 0, 0, 0.3);
+}
+input[type=submit]:active
+{
+	border-bottom:0;
+	position:relative;
+	top:1px;
+}
+/*  end */
+::-webkit-scrollbar {
+	width: 12px;
+	height:12px;
+}
+
+::-webkit-scrollbar-track {
+	background: none;
+}
+ ::-webkit-scrollbar-thumb{
+			background-color:#999;
+		}
+#sticker {
+	width:100%;
+	background-color:#f7f7f7;
+	-webkit-border-radius:2px;
+	border-radius:2px;
+	transition:all 200ms;
+	-webkit-transition:all 200ms;
+
+}
+#sticker tr td{
+	padding:5px;
+}
+.stick {
+	margin-right:auto;
+	z-index:2;
+    position:fixed;
+    top:0px;
+	left:0;
+	background-color:#f7f7f7;
+	box-shadow:0px 2px 2px rgba(0, 0, 0, 0.3);
+	-webkit-border-radius:2px;
+	border-radius:2px;
+
+}
+hr {
+  border-top: 1px dotted #f00;
+  color: #fff;
+  background-color: #fff;
+  height: 1px;
+}
+span.tooltips {
+  position: relative;
+  display:inline;
+}
+span.tooltips span {
+  position: absolute;
+  width:auto;
+  min-width:250px;
+  padding-right:5px;
+  padding-left:5px;
+  padding-top:2px;
+  padding-bottom:2px;
+  color: #FFFFFF;
+  background: #000000;/* The Fallback */;
+  background: rgba(0, 0, 0, 0.75);
+  height: auto;
+  line-height: 25px;
+  text-align: center;
+  visibility: hidden;
+  border-radius: 3px;
+}
+span.tooltips span:after {
+  content: '';
+  position: absolute;
+  top: 0%;
+  right: 100%;
+  margin-top: 8px;
+  width: 0; height: 0;
+  border-right: 8px solid rgba(0, 0, 0, 0.75);
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+}
+span:hover.tooltips span {
+  visibility: visible;
+  opacity: 1;
+  left: 100%;
+  top: 50%;
+  margin-top: -18px;
+  margin-left: 15px;
+  z-index: 999;
+}
+#ranks ul{
+	list-style:none;
+	}
+#ranks li{
+	list-style:none;
+	
+	}
+	#ranks table{
+	width:200px;
+	
+	}
+#ranks li p{
+	background-color:#f00;
+	height:100px;
+	width:200px;
+	font-size:36px;
+	font-weight:700;
+	text-align:center;
+	line-height: 100px;
+	
+}
