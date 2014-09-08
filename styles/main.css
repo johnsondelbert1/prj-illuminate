@@ -1184,3 +1184,26 @@ input[type=submit]:active
 ::-webkit-scrollbar-track {
 	background: none;
 }
+span.galleryImage {
+    display: inline-block;
+    position: relative;
+    border: 0px solid #f90;
+}
+
+span.galleryImage input[type=checkbox] {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    opacity: 0;
+    -webkit-transition: all 0.5s ease-in-out;
+}
+
+span.galleryImage:hover input[type=checkbox],
+span.galleryImage input[type=checkbox]:checked {
+    top: 5%;
+    left: 5%;
+    opacity: 1;
+    height:10%;
+    width:10%;
+    -webkit-transition: all 0.5s ease-in-out;
+}

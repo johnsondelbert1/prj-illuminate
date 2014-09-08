@@ -168,7 +168,7 @@ Name: <input name="galname" type="text" value="<?php echo $gallery['name']; ?>" 
             make_thumb($images_dir.$file,$thumbnail_image,$thumbs_width,$extension);
           }
         }?>
-        <div class="photo-link"><img src="<?php echo $thumbnail_image; ?>"  width="50" /><input type="checkbox" name="files[]" value="<?php echo $file; ?>" /></div><?php
+        <div class="photo-link"><span class="galleryImage"><img src="<?php echo $thumbnail_image; ?>"  width="50" /><input type="checkbox" name="files[]" value="<?php echo $file; ?>" /><input name="delete_CheckBox" type="hidden" value="false" /></span></div><?php
         if($index % $images_per_row == 0) { ?><div class="clear"></div><?php }
       }
       ?> <div class="clear"></div><?php
