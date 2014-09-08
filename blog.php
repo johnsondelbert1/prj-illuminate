@@ -53,6 +53,12 @@ require_once("includes/begin_html.php");
 	<?php }
 
 $query="SELECT * FROM `blog` ORDER BY `datecreated` DESC";
+if(isset($_GET['page'])){
+	$query.=" LIMIT ".($_GET['page'] * 10);
+	if($_GET['page']>1){
+		$query.=",".(($_GET['page'] * 10)+10);
+	}
+}
 $result=mysqli_query( $connection, $query);
 $gall_num = 0;
 if (mysqli_num_rows($result)!=0){
