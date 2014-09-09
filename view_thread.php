@@ -26,11 +26,23 @@ require_once("includes/functions.php");
 	
     $query="SELECT * 
 		FROM  `forum_posts` 
-		WHERE  `threadid`={$_GET['thread']}
-		ORDER BY  `date` ASC";
+		WHERE  `threadid`={$_GET['thread']}";
 			
 	$result=mysqli_query($connection, $query);
 	confirm_query($result);
+	$num_posts = mysqli_num_rows($result);
+	
+	$num_pages = ceil($num_posts/10);
+	
+	if(isset($_GET['page'])&&$_GET['page']>=1){
+		$current_page = $_GET['page'];
+	}else{
+		$current_page = 1;
+	}
+	
+	$query="SELECT * FROM `forum_posts` WHERE  `threadid`={$_GET['thread']} ORDER BY `date` asc LIMIT ";
+		$query.=(($current_page * 10)-10).",".($current_page * 10);
+	$result=mysqli_query( $connection, $query);
 	
 	$query="UPDATE `forum_threads` SET `views` = `views` + 1 WHERE `id` ={$_GET['thread']}";
 			
@@ -51,8 +63,16 @@ require_once("includes/begin_html.php");
 <a style="text-decoration:none;" href="forums.php"><?php echo $site_info['name']; ?> Forums</a> &gt; <a style="text-decoration:none;" href="view_forum.php?forum=<?php echo $forum['id']; ?>"><?php echo $forum['name']; ?></a> &gt; <a style="text-decoration:none;" href="view_thread.php?thread=<?php echo $thread['id']; ?>"><?php echo $thread['name']; ?></a><br><br>
 <?php if(check_permission("Forum","reply_to_thread")&&$thread['locked']==0){?>
 	<a class="green" href="new_topic.php?forum=<?php echo urlencode($forum['id'])."&&thread=".urlencode($thread['id']); ?>&amp;&amp;action=newmessage">Reply</a>
-<?php } ?>
-
+<?php } 
+    echo "<p>Page ".$current_page." of ".$num_pages."</p>";
+	
+	if($current_page>1){ ?>
+    	<a href="view_thread.php?thread=<?php echo $_GET['thread']; ?>&page=<?php echo $current_page - 1; ?>">&#60; Prev</a>
+    <?php } ?>
+     | 
+	<?php if($num_pages>1&&$current_page<$num_pages){ ?>
+    	<a href="view_thread.php?thread=<?php echo $_GET['thread']; ?>&page=<?php echo $current_page + 1; ?>">Next &#62;</a>
+    <?php } ?>
   <?php
   	$count=1;
 	while($forummessage=mysqli_fetch_array($result)){

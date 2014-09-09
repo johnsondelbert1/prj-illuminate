@@ -1,7 +1,7 @@
 <?php
 require_once("includes/session.php");
 require_once("includes/functions.php");
-if(!isset($_GET['action'])||!isset($_GET['msg'])||!isset($_GET['forum'])||!isset($_GET['thread'])){
+if(!isset($_GET['action'])||!isset($_GET['forum'])){
 	redirect_to("forums.php?error=".urlencode("Missing argument to new_topic.php"));
 }
 if(!check_permission("Forum","add_thread")&&(isset($_GET['action'])&&$_GET['action']=="newthread")){
