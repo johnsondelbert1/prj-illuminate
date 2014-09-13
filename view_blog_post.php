@@ -10,11 +10,15 @@ if(isset($_GET['post'])&&$_GET['post']!=''){
 	redirect_to("blog.php");
 }
 
+$query="SELECT * FROM `pages` WHERE`type` 'Blog' ";
+$result_page_prop=mysqli_query( $connection, $query);
+$page_properties = mysqli_fetch_array($result_page_prop);
+
 $pgsettings = array(
 	"title" => $post['title'],
 	"pageselection" => "blog",
-	"nav" => true,
-	"banner" => 1,
+	"nav" => $page_properties['horiz_menu_visible'],
+	"banner" => $page_properties['banner'],
 	"use_google_analytics" => 1,
 );
 require_once("includes/begin_html.php");

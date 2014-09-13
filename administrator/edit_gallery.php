@@ -91,12 +91,6 @@ confirm_query($subgalleryquery);
 ?>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
     <script type="text/javascript">
-	function confirmdelete(file){
-		var ans = confirm("Are you sure you want to delete \""+file+"\" ?");
-		if (ans==true){
-			window.location = "edit_gallery.php?gallid=<?php echo $_GET['gallid']; ?>&action=del&img=" + file;
-		}
-	}
 	<!-- jQuery for seven sets of "Select All" checkboxes -->
 	$(document).ready(function() {
 			 $('input[id="gallall"]').click(function() {
@@ -164,6 +158,7 @@ Name: <input name="galname" type="text" value="<?php echo $gallery['name']; ?>" 
         $thumbnail_image = $thumbs_dir.$file;
         if(!file_exists($thumbnail_image)) {
           $extension = get_file_extension($thumbnail_image);
+		  $extension = strtolower($extension);
           if($extension) {
             make_thumb($images_dir.$file,$thumbnail_image,$thumbs_width,$extension);
           }

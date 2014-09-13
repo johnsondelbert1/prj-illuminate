@@ -56,11 +56,15 @@ $query="SELECT * FROM `blog` ORDER BY `datecreated` DESC LIMIT ";
 	$query.=(($current_page * 10)-10).",".($current_page * 10);
 $result=mysqli_query( $connection, $query);
 
+$query="SELECT * FROM `pages` WHERE `type` = 'Blog'";
+$result_page_prop=mysqli_query( $connection, $query);
+$page_properties = mysqli_fetch_array($result_page_prop);
+
 $pgsettings = array(
-	"title" => "Blog",
+	"title" => $page_properties['name'],
 	"pageselection" => "blog",
-	"nav" => true,
-	"banner" => 1,
+	"nav" => $page_properties['horiz_menu_visible'],
+	"banner" => $page_properties['banner'],
 	"use_google_analytics" => 1,
 );
 require_once("includes/begin_html.php");
@@ -69,16 +73,7 @@ if (mysqli_num_rows($result)!=0){
   	if(check_permission("Blog","post_blog")){?>
 		<br><a class="green" href="new_blog_post.php">New</a><br /><br />
 	<?php }
-	
-    echo "<p>Page ".$current_page." of ".$num_pages."</p>";
-	
-	if($current_page>1){ ?>
-    	<a href="blog.php?page=<?php echo $current_page - 1; ?>">&#60; Prev</a>
-    <?php } ?>
-     | 
-	<?php if($num_pages>1&&$current_page<$num_pages){ ?>
-    	<a href="blog.php?page=<?php echo $current_page + 1; ?>">Next &#62;</a>
-    <?php } ?>
+	echo_page($num_pages, $current_page, "blog.php?");?>
     <br><br>
     <?php
     $gall_num = 0;
@@ -149,15 +144,7 @@ if (mysqli_num_rows($result)!=0){
 		</table>
 		<br />
 	<?php }
-    echo "<p>Page ".$current_page." of ".$num_pages."</p>";
-	
-	if($current_page>1){ ?>
-    	<a href="blog.php?page=<?php echo $current_page - 1; ?>">&#60; Prev</a>
-    <?php } ?>
-     | 
-	<?php if($num_pages>1&&$current_page<$num_pages){ ?>
-    	<a href="blog.php?page=<?php echo $current_page + 1; ?>">Next &#62;</a>
-    <?php }
+	echo_page($num_pages, $current_page, "blog.php?");
 }else{?>
 	<p>There are no blog posts!</p>
 <?php }
