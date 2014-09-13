@@ -33,12 +33,11 @@ if(isset($_GET['message'])){
     <link href="styles/animate.css" rel="stylesheet" type="text/css" />
     <link href="prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css" media="screen" charset="utf-8" />
     <script src="jscripts/SpryTabbedPanels.js" type="text/javascript"></script>
-	<script src="jscripts/SpryMenuBar.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="prettyphoto/js/jquery.prettyPhoto.js" charset="utf-8"></script>
     <script src="jscripts/jquery.fileuploadmulti.min.js"></script>
     <style type="text/css">
-		body, .TabbedPanelsTabSelected, .forumtitle, tr.heading,td.heading, th.heading, .blogtitle{
+		body, .forumtitle, tr.heading,td.heading, th.heading, .blogtitle{
 			background-color:<?php echo $site_layout['sitebg_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
@@ -48,15 +47,18 @@ if(isset($_GET['message'])){
 		#banner{
 			background-color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		ul.MenuBarHorizontal a, #footerwrap, h1, h2, .photo-link, .nav{
+		#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #footerwrap, h1, h2, .photo-link, .nav{
 			background-color:<?php echo $site_layout['menu_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		ul.MenuBarHorizontal a.MenuBarItemHover, ul.MenuBarHorizontal a.MenuBarItemSubmenuHover, ul.MenuBarHorizontal a.MenuBarSubmenuVisible, .blog, .TabbedPanelsTab, .accent, .forum tr:hover, .forumsuser, ul.MenuBarHorizontal a:hover, ul.MenuBarHorizontal a:focus, .forumfooter{
+		#horiz-menu li:hover > a, #horiz-menu li:hover > ul, #horiz-menu ul a:hover, .blog, .TabbedPanelsTab, .accent, .forum tr:hover, .forumsuser, ul.MenuBarHorizontal a:hover, ul.MenuBarHorizontal a:focus, .forumfooter{
 			background-color:<?php echo $site_layout['accent_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		.blogtitle a, .forum tr a:hover{
+		*html #horiz-menu li a:hover { /* IE6 only */
+			color: <?php echo $site_layout['text_color'] ?>;
+		}
+		#horiz-menu a, #horiz-menu ul a, .blogtitle a, .forum tr a:hover{
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
 		.photo-link:hover{
@@ -92,7 +94,7 @@ if(isset($_GET['message'])){
         <?php if($pgsettings['nav'] == true){ ?>
         	<div class="nav">
         <?php
-        	nav($pgsettings['pageselection']);
+        	nav("horiz", $pgsettings['pageselection']);
 		}
 		?>
 		<?php if($pgsettings['banner'] == 1){ ?>

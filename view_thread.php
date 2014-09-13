@@ -50,11 +50,15 @@ require_once("includes/functions.php");
 	confirm_query($threadquery);
 	?>
 <?php
+$query="SELECT * FROM `pages` WHERE `type` = 'Forum'";
+$result_page_prop=mysqli_query( $connection, $query);
+$page_properties = mysqli_fetch_array($result_page_prop);
+
 $pgsettings = array(
 	"title" => $thread['name'],
 	"pageselection" => "forum",
-	"nav" => true,
-	"banner" => 1,
+	"nav" => $page_properties['horiz_menu_visible'],
+	"banner" => $page_properties['banner'],
 	"use_google_analytics" => 1,
 );
 require_once("includes/begin_html.php");
@@ -64,17 +68,9 @@ require_once("includes/begin_html.php");
 <?php if(check_permission("Forum","reply_to_thread")&&$thread['locked']==0){?>
 	<a class="green" href="new_topic.php?forum=<?php echo urlencode($forum['id'])."&&thread=".urlencode($thread['id']); ?>&amp;&amp;action=newmessage">Reply</a>
 <?php } 
-    echo "<p>Page ".$current_page." of ".$num_pages."</p>";
-	
-	if($current_page>1){ ?>
-    	<a href="view_thread.php?thread=<?php echo $_GET['thread']; ?>&page=<?php echo $current_page - 1; ?>">&#60; Prev</a>
-    <?php } ?>
-     | 
-	<?php if($num_pages>1&&$current_page<$num_pages){ ?>
-    	<a href="view_thread.php?thread=<?php echo $_GET['thread']; ?>&page=<?php echo $current_page + 1; ?>">Next &#62;</a>
-    <?php } ?>
+	echo_page($num_pages, $current_page, "view_thread.php?thread=".$_GET['thread']);?>
   <?php
-  	$count=1;
+  	$count=($current_page * 10)-9;
 	while($forummessage=mysqli_fetch_array($result)){
 		$query="SELECT * 
 			FROM  `users` 
@@ -104,6 +100,7 @@ require_once("includes/begin_html.php");
 	<?php
 	$count++;
     }
+	echo_page($num_pages, $current_page, "view_thread.php?thread=".$_GET['thread']);
   ?>
 <?php if(check_permission("Forum","reply_to_thread")&&$thread['locked']==0){?>
 	<a class="green" href="new_topic.php?forum=<?php echo urlencode($forum['id'])."&&thread=".urlencode($thread['id']); ?>&amp;&amp;action=newmessage">Reply</a><br><br>

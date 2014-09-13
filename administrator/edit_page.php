@@ -41,6 +41,11 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 				if($issub==1){$subpg=$_POST['sub'];}else{$subpg=0;}
 				
 				if(isset($_POST['banner'])){$banner=1;}else{$banner=0;}
+				if(isset($_POST['horiz_menu'])){$horiz_menu=1;}else{$horiz_menu=0;}
+				if(isset($_POST['vert_menu'])){$vert_menu=1;}else{$vert_menu=0;}
+				if(isset($_POST['horiz_menu_visible'])){$horiz_menu_visible=1;}else{$horiz_menu_visible=0;}
+				if(isset($_POST['vert_menu_visible'])){$vert_menu_visible=1;}else{$vert_menu_visible=0;}
+				
 				if(isset($_POST['url'])){$url=$_POST['url'];}else{$url="";}
 				
 				if(isset($_POST['galleries'])&&$_POST['galleries']!=""){
@@ -52,13 +57,36 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 				date_default_timezone_set($site_info['timezone']);
 				$date=date("Y/m/d H:i:s", time());
 				
+				//Check for another Blog or Forum page type
+				if($_POST['pgtype']=="Blog" || $_POST['pgtype']=="Forum"){
+					$query="SELECT * FROM `pages` WHERE `type`='{$_POST['pgtype']}'";
+					$result_pgtype = mysqli_query( $connection, $query);
+					
+					if(mysqli_num_rows($result_pgtype)>=1){
+						$other_page_name = "";
+						while ($pagetype = mysqli_fetch_array($result_pgtype)){
+							if($pagetype['id']!=$id){
+								$query = "UPDATE `pages` SET `type`='Custom' WHERE id = {$pagetype['id']}";
+								mysqli_query( $connection, $query);
+								$other_page_name = $pagetype['name'];
+							}else{
+								$success = "The page was successfully updated.";
+							}
+						}
+						if(!isset($success)){$success = "The page was successfully updated, but there is only one ".$_POST['pgtype']." type page allowed. \"".$other_page_name."'s\" page type was changed to \"Custom\".";}
+					}else{
+						$success = "The page was successfully updated.";
+					}
+				}
+				
 				$query = "UPDATE `pages` SET `content` = '{$content}', `name`='{$name}', `position`={$position}, `visible`={$_POST['visible']}, 
 				`issubpage`={$issub}, `parent`={$subpg}, `galleries`='{$galleries}', `type`='{$_POST['pgtype']}', `target`='{$_POST['target']}', 
-				`banner`='{$banner}', `url`='{$url}', `lastedited`='{$date}', `editor`={$_SESSION['user_id']} WHERE id = {$id}";
+				`banner`='{$banner}', `url`='{$url}', `lastedited`='{$date}', `editor`={$_SESSION['user_id']}, `horiz_menu`={$horiz_menu}, `vert_menu`={$vert_menu}, 
+				`horiz_menu_visible`={$horiz_menu_visible}, `vert_menu_visible`={$vert_menu_visible} WHERE id = {$id}";
 				
 				$result = mysqli_query( $connection, $query);
 				if (mysqli_affected_rows($connection) == 1) {
-					$success = "The page was successfully updated.";
+					if(!isset($success)){$success = "The page was successfully updated.";}
 				} else {
 					$error = "The page could not be updated.";
 					$error .= "<br />" . mysqli_error($connection);
@@ -241,11 +269,15 @@ if($_GET['action']=="edit"){
 <form action="edit_page.php?<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "action=edit&&page=".$selpage['id'];}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "action=newpage";} ?>" method="post" name="editpage">
 <table cellpadding="5" id="sticker">
   <tr>
-    <td width="110px"><input class="green" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "submit";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newpage";} ?>" value="Save" /></td>
-    <td width="110px"><input class="green" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "sandb";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newandb";} ?>" value="Save & Close" /></td>
-    <td width="110px"><input class="green" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "sandnewp";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newandnewp";} ?>" value="Save & New" /></td>
-    <?php if(isset($_GET['page'])){?><td width="110px"><a  class="red" href="edit_page.php?action=delpage&&page=<?php echo $_GET['page']; ?>">Delete</a></td><?php } ?>
-    <td width="110px"><a class="red" href="page_list.php">Cancel</a></td>
+  	<?php if(check_permission("Pages","add_pages")){?>
+        <td width="110px"><input class="green" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "submit";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newpage";} ?>" value="Save" /></td>
+        <td width="110px"><input class="green" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "sandb";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newandb";} ?>" value="Save & Close" /></td>
+        <td width="110px"><input class="green" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "sandnewp";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newandnewp";} ?>" value="Save & New" /></td>
+    <?php } ?> 
+    <?php if(isset($_GET['page'])){?><td width="110px"><a class="red" href="edit_page.php?action=delpage&&page=<?php echo $_GET['page']; ?>">Delete</a></td><?php } ?>
+    <?php if(check_permission("Pages","delete_pages")&&$_GET['action']=="edit"){?>
+    	<td width="110px"><a class="red" href="page_list.php">Cancel</a></td>
+	<?php } ?>
   <td></td>
   </tr>
 </table>
@@ -253,10 +285,10 @@ if($_GET['action']=="edit"){
 
 <table width="100%" border="0" cellspacing="5" cellpadding="5" class="editpageform">
   <tr>
-    <td align="right">Name:</td>
+    <td align="right"><b>Name:</b></td>
     <td><input type="text" name="name" value="<?php if(isset($_GET['page'])){echo $selpage['name'];} ?>" /></td>
     
-	<td align="right">Visible to:</td>
+	<td align="right"><b>Visible to:</b></td>
     <td>
     	<select name="visible">
         	<option value="1"<?php if(isset($_GET['page'])&&$selpage['visible'] == 1){echo ' selected="selected"';} ?>>Everyone</option>
@@ -298,13 +330,13 @@ if($_GET['action']=="edit"){
     </td>
   </tr>
   <tr>
-  	<td align="right">Page Order:</td>
+  	<td align="right"><b>Page Order:</b></td>
     <td>
         <select name="pgorder"><?php $numpages=mysqli_num_rows($listpagesquery)+1; $count=1; while($numpages>=$count){ ?><option value="<?php echo $count; ?>"<?php if(isset($_GET['page'])&&intval($selpage['position'])==$count){echo " selected=\"selected\"";} ?>><?php echo $count;?></option><?php $count++; }  ?>
         <?php if(isset($_GET['action'])&&$_GET['action']=="newpage"){?><option value="<?php echo ($count); ?>" selected="selected"><?php echo ($count); ?></option><?php }?></select>
     </td>
     
-    <td align="right">Page Type:</td>
+    <td align="right"><b>Page Type:</b></td>
     <td>
 		<?php
             $types = array('Custom','Blog','Forum','Link');
@@ -328,7 +360,7 @@ if($_GET['action']=="edit"){
     </td>
   </tr>-->
   <tr>
-  	<td align="right">Parent Page:</td>
+  	<td align="right"><b>Parent Page:</b></td>
     <td>
     	<?php
         $query="SELECT * FROM `pages` ORDER BY `position` ASC";
@@ -345,13 +377,13 @@ if($_GET['action']=="edit"){
             }?>
         </select>
     </td>
-    <td align="right">External URL:</td>
+    <td align="right"><b>External URL:</b></td>
     <td>
     	<input type="text" name="url" id="url" value="<?php if(isset($_GET['page'])){echo $selpage['url'];}else{echo "http://";} ?>" maxlength="1024" <?php if((isset($selpage['type'])&&$selpage['type']!="Link")||$_GET['action']=="newpage"){echo "readonly disabled ";} ?>/>
     </td>
   </tr>
   <tr>
-  	<td align="right">Target:</td>
+  	<td align="right"><b>Target:</b></td>
     <td>
 		<?php
             $targets = array('_blank','_parent','_top');
@@ -366,13 +398,25 @@ if($_GET['action']=="edit"){
         } ?>
         </select>
     </td>
-    <td align="right">Banner:</td>
+    <td align="right"><b>Banner:</b></td>
     <td>
-    	<input type="checkbox" name="banner" <?php if(isset($_GET['page'])&&$selpage['banner']=="1"||$_GET['action']=="newpage"){echo "checked ";} ?>/>
+    	<input type="checkbox" name="banner" <?php if(isset($_GET['page'])&&$selpage['banner']==1||$_GET['action']=="newpage"){echo "checked ";} ?>/>
     </td>
   </tr>
   <tr>
-  	<td colspan="5" align="center">Page Content:</td>
+  	<td align="right"><b>Show page on:</b></td>
+    <td>
+    	Horizontal Menu <input type="checkbox" name="horiz_menu" <?php if(isset($_GET['page'])&&$selpage['horiz_menu']==1){echo "checked ";} ?>/><br>
+        Vertical Menu <input type="checkbox" name="vert_menu" <?php if(isset($_GET['page'])&&$selpage['vert_menu']==1){echo "checked ";} ?>/>
+    </td>
+    <td align="right"><b>Menus visible on page:</b></td>
+    <td>
+    	Horizontal Menu <input type="checkbox" name="horiz_menu_visible" <?php if(isset($_GET['page'])&&$selpage['horiz_menu_visible']==1){echo "checked ";} ?>/><br>
+        Vertical Menu <input type="checkbox" name="vert_menu_visible" <?php if(isset($_GET['page'])&&$selpage['vert_menu_visible']==1){echo "checked ";} ?>/>
+    </td>
+  </tr>
+  <tr>
+  	<td colspan="5" align="center"><b>Page Content:</b></td>
   </tr>
   <tr>
   	<td colspan="5">

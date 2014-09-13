@@ -411,88 +411,63 @@ function confirm_query($result){
 	}
 }
 
-function nav($pgselection){
+function nav($position, $pgselection){
 	global $connection;
 	global $site_layout;
 	?>
 	<div style="background-color:<?php echo $site_layout['menu_color'] ?>;">
-        <ul id="MenuBar1" class="MenuBarHorizontal">
+        <ul id="horiz-menu">
 			<?php
-			/*if(logged_in()&&$_SESSION['rank']==0){
-				$query="SELECT * FROM `pages` WHERE (`visible` = 1 OR `visible` = 2) AND `issubpage` = 0";
-			}elseif(logged_in()&&$_SESSION['rank']==1){
-				$query="SELECT * FROM `pages` WHERE (`visible` = 1  OR `visible` = 2 OR `visible` = 3) AND `issubpage` = 0";
-			}else{*/
-				$query="SELECT * FROM `pages` WHERE (`visible` = 1) AND `issubpage` = 0";
-			//}
-			
+			$query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 0 AND `published` = 1 ORDER BY `position` ASC";
 			$result=mysqli_query( $connection, $query);
 			$numpages=mysqli_num_rows($result);
+			
 			if($numpages!=0){
 				$buttonwidth = $numpages;
 				$buttonwidth = 900 - $buttonwidth;
 				$buttonwidth = $buttonwidth / $numpages + 1;
-			}
-			
-			/*if(logged_in()&&$_SESSION['rank']==0){
-				$query="SELECT * FROM `pages` WHERE `visible` = 1 OR `visible` = 2 ORDER BY `position` ASC";
-			}elseif(logged_in()&&$_SESSION['rank']==1){
-				$query="SELECT * FROM `pages` WHERE `visible` = 1 OR `visible` = 2 OR `visible` = 3 ORDER BY `position` ASC";
-			}else{*/
-				$query="SELECT * FROM `pages` WHERE `visible` = 1 ORDER BY `position` ASC";
-			//}
-			
-            $result=mysqli_query( $connection, $query);
-            confirm_query($result);
-            $pageorder = 0;
 				
-            while($page=mysqli_fetch_array($result)){
-				if($page['issubpage']==0){ $lastmainpage=$page['id'];?>
-                <li style="min-width:<?php echo $buttonwidth; ?>px;" class="menuitem <?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " \"selected\"";}} ?>"><a href="
-                    <?php
-                        if($page['type']=='Custom'){?>
-                            index.php?page=<?php echo urlencode($page['name']); ?>
-                        <?php }elseif($page['type']=='Blog'){?>
-                            blog.php
-                        <?php }elseif($page['type']=='Forum'){?>
-                            forums.php
-                        <?php }elseif($page['type']=='Link'){?>
-                            <?php echo $page['url']; ?>
-                        <?php }
-                    ?>
-                    " <?php if($page['target']!="_self"){echo "target=\"".$page['target']."\"";} ?>><?php echo $page['name'];?></a><?php 
-                    /*if(logged_in()&&$_SESSION['rank']==0){
-                        $query="SELECT * FROM `pages` WHERE (`visible` = 1 OR `visible` = 2) AND `parent`={$page['id']} ORDER BY `position` ASC";
-                    }elseif(logged_in()&&$_SESSION['rank']==1){
-                        $query="SELECT * FROM `pages` WHERE (`visible` = 1 OR `visible` = 2 OR `visible` = 3) AND `parent`={$page['id']} ORDER BY `position` ASC";
-                    }else{*/
-                        $query="SELECT * FROM `pages` WHERE (`visible` = 1) AND `parent`={$page['id']} ORDER BY `position` ASC";
-                    //}
-                    $subpgresult=mysqli_query( $connection, $query);
-                    confirm_query($subpgresult);
-                    if(mysqli_num_rows($subpgresult)!=0){?>
-                        <ul>
-                        <?php while($subpage=mysqli_fetch_array($subpgresult)){?>
-                            <li style="width:<?php echo $buttonwidth; ?>px;" <?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>>
-                            	<a href="
-									<?php
-									if($subpage['type']=='Custom'){?>
-										index.php?page=<?php echo urlencode($subpage['name']); ?>
-									<?php }elseif($subpage['type']=='Blog'){?>
-										blog.php
-									<?php }elseif($subpage['type']=='Forum'){?>
-										forums.php
-									<?php }elseif($subpage['type']=='Link'){?>
-										<?php echo $subpage['url']; ?>
-									<?php }
-                    ?>" <?php if($subpage['target']!="_self"){echo "target=\"".$subpage['target']."\"";} ?>><?php echo $subpage['name'];?></a>
-                            </li>
-                        <?php } ?>
-                        </ul>
-                    <?php } ?>
-                    </li>
-                <?php
-        		}
+				$pageorder = 0;
+					
+				while($page=mysqli_fetch_array($result)){
+					if($page['issubpage']==0){ $lastmainpage=$page['id'];?>
+					<li style="min-width:<?php echo $buttonwidth; ?>px;"<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><a style="min-width:<?php echo $buttonwidth; ?>px;" href="<?php
+							if($page['type']=='Custom'){
+								?>index.php?page=<?php echo urlencode($page['name']);
+							}elseif($page['type']=='Blog'){
+								?>blog.php<?php
+							}elseif($page['type']=='Forum'){
+								?>forums.php<?php
+							}elseif($page['type']=='Link'){
+								echo $page['url'];
+							}
+						?>" <?php if($page['target']!="_self"){echo "target=\"".$page['target']."\"";} ?>><?php echo $page['name'];?></a><?php 
+						$query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
+						$subpgresult=mysqli_query( $connection, $query);
+						confirm_query($subpgresult);
+						if(mysqli_num_rows($subpgresult)!=0){?>
+							<ul>
+							<?php while($subpage=mysqli_fetch_array($subpgresult)){?>
+								<li style="width:<?php echo $buttonwidth; ?>px;"<?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>>
+									<a href="<?php
+										if($subpage['type']=='Custom'){
+											?>index.php?page=<?php echo urlencode($subpage['name']);
+										}elseif($subpage['type']=='Blog'){
+											?>blog.php<?php
+										}elseif($subpage['type']=='Forum'){
+											?>forums.php<?php
+										}elseif($subpage['type']=='Link'){
+											echo $subpage['url'];
+										}
+						?>" <?php if($subpage['target']!="_self"){echo "target=\"".$subpage['target']."\"";} ?>><?php echo $subpage['name'];?></a>
+								</li>
+							<?php } ?>
+							</ul>
+						<?php } ?>
+						</li>
+					<?php
+					}
+				}
 			}
         ?>
 		</ul>
@@ -540,6 +515,20 @@ function nav($pgselection){
     <?php } ?>
 
 <?php
+}
+
+function echo_page($num_pages, $current_page, $url){
+    echo "<p>Page ".$current_page." of ".$num_pages."</p>";
+	
+	if($current_page>1){ ?>
+    	<a href="<?php echo $url; ?>&page=<?php echo $current_page - 1; ?>">&#60; Prev</a>
+    <?php } ?>
+     | 
+	<?php if($num_pages>1&&$current_page<$num_pages){ ?>
+    	<a href="<?php echo $url; ?>&page=<?php echo $current_page + 1; ?>">Next &#62;</a>
+    <?php } ?>
+    <br/>
+    <?php
 }
 
 /* function:  generates thumbnail */

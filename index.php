@@ -1,13 +1,16 @@
 <?php
 require_once("includes/functions.php");
-?>
-<?php
+
 $query="SELECT * FROM `pages` ORDER BY `position` ASC LIMIT 1";
-$result=mysqli_query( $connection, $query);
+$result=mysqli_query($connection, $query);
 $firstpage=mysqli_fetch_array($result);
 
+$query="SELECT * FROM `pages` WHERE `id` = {$site_info['homepage']}";
+$result_homepage=mysqli_query($connection, $query);
+confirm_query($result_homepage);
+
 $query="SELECT * FROM `pages` WHERE `visible` = 1";
-$result=mysqli_query( $connection, $query);
+$result=mysqli_query($connection, $query);
 $rows=mysqli_num_rows($result);
 
 if(($rows)!=0){
@@ -141,7 +144,13 @@ if(($rows)!=0){
 		}
 		}
 	}else{
-		redirect_to("index.php?page=".urlencode($firstpage['name']));
+		if(mysqli_num_rows($result_homepage)!=0){
+			$homepage=mysqli_fetch_array($result_homepage);
+			redirect_to("index.php?page=".urlencode($homepage['name']));
+		}else{
+			redirect_to("index.php?page=".urlencode($firstpage['name']));
+		}
+		
 	}
 }else{
 	$pgsettings = array(

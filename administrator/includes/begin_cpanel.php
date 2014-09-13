@@ -50,7 +50,8 @@ if(isset($_GET['message'])){
     <div class="wrap">
     	<div class="nav">
         	<div style="background-color:#F0F0F0;">
-                <ul id="MenuBar1" class="MenuBarHorizontal">
+            <span style="float:left;"><?php check_login(true); ?></span>
+                <ul id="horiz-menu">
                     <li class="menuitem">
                     	<a href="index.php">Control Panel</a>
                     </li>
@@ -97,7 +98,7 @@ if(isset($_GET['message'])){
             <!--<ul id="menu">
                 <li class="menuitemnohover" style="height:auto; font-size:12px; line-height:30px; text-align:center; background-color:#ccc;">
                 <img src="images/logo2GD.png" width="50" height="50" style="margin-top:10px;" /><br />
-                    <?php check_login(true); ?>
+                    <?php //check_login(true); ?>
                 <!--</li>
                 <li class="menuitem">
                     <a href="index.php"><span class="icon-dashboard"></span><br /><h3>Control Panel</h3></a>

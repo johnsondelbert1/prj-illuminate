@@ -52,11 +52,15 @@ require_once("includes/functions.php");
 	}
 ?>
 <?php
+$query="SELECT * FROM `pages` WHERE `type` = 'Forum'";
+$result_page_prop=mysqli_query( $connection, $query);
+$page_properties = mysqli_fetch_array($result_page_prop);
+
 $pgsettings = array(
 	"title" => $site_info['name']." Forums",
 	"pageselection" => "forum",
-	"nav" => true,
-	"banner" => 1,
+	"nav" => $page_properties['horiz_menu_visible'],
+	"banner" => $page_properties['banner'],
 	"use_google_analytics" => 1,
 );
 require_once("includes/begin_html.php");

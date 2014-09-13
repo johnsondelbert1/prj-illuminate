@@ -71,12 +71,16 @@ require_once("includes/functions.php");
 	}else{
 		$current_page = 1;
 	}
-
+	
+	$query="SELECT * FROM `pages` WHERE `type` = 'Forum'";
+	$result_page_prop=mysqli_query( $connection, $query);
+	$page_properties = mysqli_fetch_array($result_page_prop);
+	
 	$pgsettings = array(
 		"title" => $forum['name']." Forum",
 		"pageselection" => "forum",
-		"nav" => true,
-		"banner" => 1,
+		"nav" => $page_properties['horiz_menu_visible'],
+		"banner" => $page_properties['banner'],
 		"use_google_analytics" => 1,
 	);
 require_once("includes/begin_html.php");
@@ -86,15 +90,8 @@ require_once("includes/begin_html.php");
 <?php if(check_permission("Forum","add_thread")){?>
 	<br /><br /><a class="green" href="new_topic.php?forum=<?php echo urlencode($forum['id']); ?>&amp;&amp;action=newthread"> New Thread</a>
 <?php }
-    echo "<p>Page ".$current_page." of ".$num_pages."</p>";
-	
-	if($current_page>1){ ?>
-    	<a href="view_forum.php?forum=<?php echo $_GET['forum']; ?>&page=<?php echo $current_page - 1; ?>">&#60; Prev</a>
-    <?php } ?>
-     | 
-	<?php if($num_pages>1&&$current_page<$num_pages){ ?>
-    	<a href="view_forum.php?forum=<?php echo $_GET['forum']; ?>&page=<?php echo $current_page + 1; ?>">Next &#62;</a>
-    <?php } ?>
+	echo_page($num_pages, $current_page, "view_forum.php?forum=".$_GET['forum']);
+	?>
     
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="forum">
   <tr>
@@ -187,6 +184,7 @@ require_once("includes/begin_html.php");
       </tr>
 <?php } ?>
 </table>
+<?php echo_page($num_pages, $current_page, "view_forum.php?forum=".$_GET['forum']); ?>
 
 <?php
 	require_once("includes/end_html.php");
