@@ -90,13 +90,12 @@ if(isset($_GET['message'])){
 		}
 	}?>
 	<div id="wrapper"> 
-    	
-        <?php if($pgsettings['nav'] == true){ ?>
-        	<div class="nav">
-        <?php
+        <?php if($pgsettings['nav'] == true){
         	nav("horiz", $pgsettings['pageselection']);
 		}
 		?>
+        <div id="contentwrap">
+			<div id="content">
 		<?php if($pgsettings['banner'] == 1){ ?>
     		<div id="banner"><!--<img src="images/banner.png" />--></div>
         <?php } ?>

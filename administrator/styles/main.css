@@ -195,7 +195,7 @@ div.nav{
 
 #horiz-menu ul {
 	width:110px;
-    margin: 20px 0 0 0;
+    margin: -20px 0 0 0;
     _margin: 0; /*IE6 only*/
     opacity: 0;
     visibility: hidden;

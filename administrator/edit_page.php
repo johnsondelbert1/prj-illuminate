@@ -40,6 +40,7 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 				}
 				if($issub==1){$subpg=$_POST['sub'];}else{$subpg=0;}
 				
+				if(isset($_POST['published'])){$published=1;}else{$published=0;}
 				if(isset($_POST['banner'])){$banner=1;}else{$banner=0;}
 				if(isset($_POST['horiz_menu'])){$horiz_menu=1;}else{$horiz_menu=0;}
 				if(isset($_POST['vert_menu'])){$vert_menu=1;}else{$vert_menu=0;}
@@ -79,7 +80,7 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 					}
 				}
 				
-				$query = "UPDATE `pages` SET `content` = '{$content}', `name`='{$name}', `position`={$position}, `visible`={$_POST['visible']}, 
+				$query = "UPDATE `pages` SET `content` = '{$content}', `name`='{$name}', `position`={$position}, `published`='{$published}', `visible`={$_POST['visible']}, 
 				`issubpage`={$issub}, `parent`={$subpg}, `galleries`='{$galleries}', `type`='{$_POST['pgtype']}', `target`='{$_POST['target']}', 
 				`banner`='{$banner}', `url`='{$url}', `lastedited`='{$date}', `editor`={$_SESSION['user_id']}, `horiz_menu`={$horiz_menu}, `vert_menu`={$vert_menu}, 
 				`horiz_menu_visible`={$horiz_menu_visible}, `vert_menu_visible`={$vert_menu_visible} WHERE id = {$id}";
@@ -286,15 +287,45 @@ if($_GET['action']=="edit"){
 <table width="100%" border="0" cellspacing="5" cellpadding="5" class="editpageform">
   <tr>
     <td align="right"><b>Name:</b></td>
-    <td><input type="text" name="name" value="<?php if(isset($_GET['page'])){echo $selpage['name'];} ?>" /></td>
-    
-	<td align="right"><b>Visible to:</b></td>
+    <td>
+    	<input type="text" name="name" value="<?php if(isset($_GET['page'])){echo $selpage['name'];} ?>" />
+    </td>
+	<td>
+    	<b>Published:</b> <input type="checkbox" name="published" <?php if(isset($_GET['page'])&&$selpage['published']==1){echo "checked ";} ?>/>
+    </td>
+    <td align="right">
+		<b>Visible to:</b>
+    </td>
     <td>
     	<select name="visible">
         	<option value="1"<?php if(isset($_GET['page'])&&$selpage['visible'] == 1){echo ' selected="selected"';} ?>>Everyone</option>
             <option value="2"<?php if(isset($_GET['page'])&&$selpage['visible'] == 2){echo ' selected="selected"';} ?>>Logged in</option>
             <option value="3"<?php if(isset($_GET['page'])&&$selpage['visible'] == 3){echo ' selected="selected"';} ?>>Admins</option>
             <option value="0"<?php if(isset($_GET['page'])&&$selpage['visible'] == 0){echo ' selected="selected"';} ?>>(None)</option>
+        </select>
+    </td>
+  </tr>
+  <tr>
+  	<td align="right"><b>Page Order:</b></td>
+    <td>
+        <select name="pgorder"><?php $numpages=mysqli_num_rows($listpagesquery)+1; $count=1; while($numpages>=$count){ ?><option value="<?php echo $count; ?>"<?php if(isset($_GET['page'])&&intval($selpage['position'])==$count){echo " selected=\"selected\"";} ?>><?php echo $count;?></option><?php $count++; }  ?>
+        <?php if(isset($_GET['action'])&&$_GET['action']=="newpage"){?><option value="<?php echo ($count); ?>" selected="selected"><?php echo ($count); ?></option><?php }?></select>
+    </td>
+    
+    <td align="right"><b>Page Type:</b></td>
+    <td>
+		<?php
+            $types = array('Custom','Blog','Forum','Link');
+        ?>
+        <select name="pgtype" onchange="disable(this)">
+        <?php
+        $typecount=0;
+        foreach($types as $type){
+        ?>
+            <option value="<?php echo $type; ?>"<?php if ((isset($selpage['type'])&&$type == $selpage['type'])||$_GET['action']=='newpage'&&$typecount==0){echo ' selected="selected"';} ?>><?php echo $type; ?></option>
+        <?php 
+        $typecount++;
+        } ?>
         </select>
     </td>
     <td rowspan="4">
@@ -327,30 +358,6 @@ if($_GET['action']=="edit"){
         
         <?php } ?>
         </table>
-    </td>
-  </tr>
-  <tr>
-  	<td align="right"><b>Page Order:</b></td>
-    <td>
-        <select name="pgorder"><?php $numpages=mysqli_num_rows($listpagesquery)+1; $count=1; while($numpages>=$count){ ?><option value="<?php echo $count; ?>"<?php if(isset($_GET['page'])&&intval($selpage['position'])==$count){echo " selected=\"selected\"";} ?>><?php echo $count;?></option><?php $count++; }  ?>
-        <?php if(isset($_GET['action'])&&$_GET['action']=="newpage"){?><option value="<?php echo ($count); ?>" selected="selected"><?php echo ($count); ?></option><?php }?></select>
-    </td>
-    
-    <td align="right"><b>Page Type:</b></td>
-    <td>
-		<?php
-            $types = array('Custom','Blog','Forum','Link');
-        ?>
-        <select name="pgtype" onchange="disable(this)">
-        <?php
-        $typecount=0;
-        foreach($types as $type){
-        ?>
-            <option value="<?php echo $type; ?>"<?php if ((isset($selpage['type'])&&$type == $selpage['type'])||$_GET['action']=='newpage'&&$typecount==0){echo ' selected="selected"';} ?>><?php echo $type; ?></option>
-        <?php 
-        $typecount++;
-        } ?>
-        </select>
     </td>
   </tr>
   <!--<tr>
