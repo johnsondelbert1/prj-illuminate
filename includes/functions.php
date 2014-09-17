@@ -415,67 +415,66 @@ function nav($position, $pgselection){
 	global $connection;
 	global $site_layout;
 	?>
-	<div style="background-color:<?php echo $site_layout['menu_color'] ?>;">
-        <ul id="horiz-menu">
-			<?php
-			$query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 0 AND `published` = 1 ORDER BY `position` ASC";
-			$result=mysqli_query( $connection, $query);
-			$numpages=mysqli_num_rows($result);
-			
-			if($numpages!=0){
-				$buttonwidth = $numpages;
-				$buttonwidth = 900 - $buttonwidth;
-				$buttonwidth = $buttonwidth / $numpages + 1;
-				
-				$pageorder = 0;
-					
-				while($page=mysqli_fetch_array($result)){
-					if($page['issubpage']==0){ $lastmainpage=$page['id'];?>
-					<li style="min-width:<?php echo $buttonwidth; ?>px;"<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><a style="min-width:<?php echo $buttonwidth; ?>px;" href="<?php
-							if($page['type']=='Custom'){
-								?>index.php?page=<?php echo urlencode($page['name']);
-							}elseif($page['type']=='Blog'){
-								?>blog.php<?php
-							}elseif($page['type']=='Forum'){
-								?>forums.php<?php
-							}elseif($page['type']=='Link'){
-								echo $page['url'];
-							}
-						?>" <?php if($page['target']!="_self"){echo "target=\"".$page['target']."\"";} ?>><?php echo $page['name'];?></a><?php 
-						$query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
-						$subpgresult=mysqli_query( $connection, $query);
-						confirm_query($subpgresult);
-						if(mysqli_num_rows($subpgresult)!=0){?>
-							<ul>
-							<?php while($subpage=mysqli_fetch_array($subpgresult)){?>
-								<li style="width:<?php echo $buttonwidth; ?>px;"<?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>>
-									<a href="<?php
-										if($subpage['type']=='Custom'){
-											?>index.php?page=<?php echo urlencode($subpage['name']);
-										}elseif($subpage['type']=='Blog'){
-											?>blog.php<?php
-										}elseif($subpage['type']=='Forum'){
-											?>forums.php<?php
-										}elseif($subpage['type']=='Link'){
-											echo $subpage['url'];
-										}
-						?>" <?php if($subpage['target']!="_self"){echo "target=\"".$subpage['target']."\"";} ?>><?php echo $subpage['name'];?></a>
-								</li>
-							<?php } ?>
-							</ul>
-						<?php } ?>
-						</li>
-					<?php
-					}
-				}
-			}
-        ?>
-		</ul>
-
-		</div>
+    <div class="nav">
+        <div style="background-color:<?php echo $site_layout['menu_color'] ?>;">
+            <ul id="horiz-menu">
+                <?php
+                $query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 0 AND `published` = 1 ORDER BY `position` ASC";
+                $result=mysqli_query( $connection, $query);
+                $numpages=mysqli_num_rows($result);
+                
+                if($numpages!=0){
+                    $buttonwidth = $numpages;
+                    $buttonwidth = 900 - $buttonwidth;
+                    $buttonwidth = $buttonwidth / $numpages + 1;
+                    
+                    $pageorder = 0;
+                        
+                    while($page=mysqli_fetch_array($result)){
+                        if($page['issubpage']==0){ $lastmainpage=$page['id'];?>
+                        <li style="min-width:<?php echo $buttonwidth; ?>px;"<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><a style="min-width:<?php echo $buttonwidth; ?>px;" href="<?php
+                                if($page['type']=='Custom'){
+                                    ?>index.php?page=<?php echo urlencode($page['name']);
+                                }elseif($page['type']=='Blog'){
+                                    ?>blog.php<?php
+                                }elseif($page['type']=='Forum'){
+                                    ?>forums.php<?php
+                                }elseif($page['type']=='Link'){
+                                    echo $page['url'];
+                                }
+                            ?>" <?php if($page['target']!="_self"){echo "target=\"".$page['target']."\"";} ?>><?php echo $page['name'];?></a><?php 
+                            $query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
+                            $subpgresult=mysqli_query( $connection, $query);
+                            confirm_query($subpgresult);
+                            if(mysqli_num_rows($subpgresult)!=0){?>
+                                <ul>
+                                <?php while($subpage=mysqli_fetch_array($subpgresult)){?>
+                                    <li style="width:<?php echo $buttonwidth; ?>px;"<?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>>
+                                        <a href="<?php
+                                            if($subpage['type']=='Custom'){
+                                                ?>index.php?page=<?php echo urlencode($subpage['name']);
+                                            }elseif($subpage['type']=='Blog'){
+                                                ?>blog.php<?php
+                                            }elseif($subpage['type']=='Forum'){
+                                                ?>forums.php<?php
+                                            }elseif($subpage['type']=='Link'){
+                                                echo $subpage['url'];
+                                            }
+                            ?>" <?php if($subpage['target']!="_self"){echo "target=\"".$subpage['target']."\"";} ?>><?php echo $subpage['name'];?></a>
+                                    </li>
+                                <?php } ?>
+                                </ul>
+                            <?php } ?>
+                            </li>
+                        <?php
+                        }
+                    }
+                }
+            ?>
+            </ul>
+    
+            </div>
         </div>
-        <div id="contentwrap">
-		<div id="content"><br />
 	<?php
     $query="SELECT * FROM  `features` WHERE  `id` =  1";
     $result=mysqli_query($connection, $query);
