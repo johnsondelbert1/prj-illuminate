@@ -36,26 +36,47 @@ if(isset($_GET['delpost'])&&$_GET['delpost']!=''){
 		$error="You do not have permission to delete this post!";
 	}
 }
+if(isset($_GET['page'])&&$_GET['page']<=0){
+	redirect_to("blog.php?page=1");
+}
+
+$query="SELECT * FROM `blog`";
+$result=mysqli_query( $connection, $query);
+$num_posts = mysqli_num_rows($result);
+
+$num_pages = ceil($num_posts/10);
+
+if(isset($_GET['page'])&&$_GET['page']>=1){
+	$current_page = $_GET['page'];
+}else{
+	$current_page = 1;
+}
+
+$query="SELECT * FROM `blog` ORDER BY `datecreated` DESC LIMIT ";
+	$query.=(($current_page * 10)-10).",".($current_page * 10);
+$result=mysqli_query( $connection, $query);
+
+$query="SELECT * FROM `pages` WHERE `type` = 'Blog'";
+$result_page_prop=mysqli_query( $connection, $query);
+$page_properties = mysqli_fetch_array($result_page_prop);
 
 $pgsettings = array(
-	"title" => "Blog",
+	"title" => $page_properties['name'],
 	"pageselection" => "blog",
-	"nav" => true,
-	"banner" => 1,
+	"nav" => $page_properties['horiz_menu_visible'],
+	"banner" => $page_properties['banner'],
 	"use_google_analytics" => 1,
 );
 require_once("includes/begin_html.php");
-?>
 
-<?php
-  	if(check_permission("Blog","post_blog")){?>
-		<a class="green" href="new_blog_post.php">New</a><br /><br />
-	<?php }
-
-$query="SELECT * FROM `blog` ORDER BY `datecreated` DESC";
-$result=mysqli_query( $connection, $query);
-$gall_num = 0;
 if (mysqli_num_rows($result)!=0){
+  	if(check_permission("Blog","post_blog")){?>
+		<br><a class="green" href="new_blog_post.php">New</a><br /><br />
+	<?php }
+	echo_page($num_pages, $current_page, "blog.php?");?>
+    <br><br>
+    <?php
+    $gall_num = 0;
 	while($post=mysqli_fetch_array($result)){
 		$query="SELECT * FROM `users` WHERE `id` = ".$post['poster'];
 		$userresult=mysqli_query( $connection, $query);
@@ -123,6 +144,7 @@ if (mysqli_num_rows($result)!=0){
 		</table>
 		<br />
 	<?php }
+	echo_page($num_pages, $current_page, "blog.php?");
 }else{?>
 	<p>There are no blog posts!</p>
 <?php }

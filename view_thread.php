@@ -26,11 +26,23 @@ require_once("includes/functions.php");
 	
     $query="SELECT * 
 		FROM  `forum_posts` 
-		WHERE  `threadid`={$_GET['thread']}
-		ORDER BY  `date` ASC";
+		WHERE  `threadid`={$_GET['thread']}";
 			
 	$result=mysqli_query($connection, $query);
 	confirm_query($result);
+	$num_posts = mysqli_num_rows($result);
+	
+	$num_pages = ceil($num_posts/10);
+	
+	if(isset($_GET['page'])&&$_GET['page']>=1){
+		$current_page = $_GET['page'];
+	}else{
+		$current_page = 1;
+	}
+	
+	$query="SELECT * FROM `forum_posts` WHERE  `threadid`={$_GET['thread']} ORDER BY `date` asc LIMIT ";
+		$query.=(($current_page * 10)-10).",".($current_page * 10);
+	$result=mysqli_query( $connection, $query);
 	
 	$query="UPDATE `forum_threads` SET `views` = `views` + 1 WHERE `id` ={$_GET['thread']}";
 			
@@ -38,11 +50,15 @@ require_once("includes/functions.php");
 	confirm_query($threadquery);
 	?>
 <?php
+$query="SELECT * FROM `pages` WHERE `type` = 'Forum'";
+$result_page_prop=mysqli_query( $connection, $query);
+$page_properties = mysqli_fetch_array($result_page_prop);
+
 $pgsettings = array(
 	"title" => $thread['name'],
 	"pageselection" => "forum",
-	"nav" => true,
-	"banner" => 1,
+	"nav" => $page_properties['horiz_menu_visible'],
+	"banner" => $page_properties['banner'],
 	"use_google_analytics" => 1,
 );
 require_once("includes/begin_html.php");
@@ -51,10 +67,10 @@ require_once("includes/begin_html.php");
 <a style="text-decoration:none;" href="forums.php"><?php echo $site_info['name']; ?> Forums</a> &gt; <a style="text-decoration:none;" href="view_forum.php?forum=<?php echo $forum['id']; ?>"><?php echo $forum['name']; ?></a> &gt; <a style="text-decoration:none;" href="view_thread.php?thread=<?php echo $thread['id']; ?>"><?php echo $thread['name']; ?></a><br><br>
 <?php if(check_permission("Forum","reply_to_thread")&&$thread['locked']==0){?>
 	<a class="green" href="new_topic.php?forum=<?php echo urlencode($forum['id'])."&&thread=".urlencode($thread['id']); ?>&amp;&amp;action=newmessage">Reply</a>
-<?php } ?>
-
+<?php } 
+	echo_page($num_pages, $current_page, "view_thread.php?thread=".$_GET['thread']);?>
   <?php
-  	$count=1;
+  	$count=($current_page * 10)-9;
 	while($forummessage=mysqli_fetch_array($result)){
 		$query="SELECT * 
 			FROM  `users` 
@@ -84,6 +100,7 @@ require_once("includes/begin_html.php");
 	<?php
 	$count++;
     }
+	echo_page($num_pages, $current_page, "view_thread.php?thread=".$_GET['thread']);
   ?>
 <?php if(check_permission("Forum","reply_to_thread")&&$thread['locked']==0){?>
 	<a class="green" href="new_topic.php?forum=<?php echo urlencode($forum['id'])."&&thread=".urlencode($thread['id']); ?>&amp;&amp;action=newmessage">Reply</a><br><br>

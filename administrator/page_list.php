@@ -72,9 +72,11 @@ if(isset($_GET['page'])){
 <form method="post" action="page_list.php">
 <table border="0" cellpadding="5" id="sticker">
   <tr>
-    <td width="110px"><a href="edit_page.php?action=newpage" class="green">new</a></li></td>
+    <?php if(check_permission("Pages","add_pages")){?>
+    	<td width="110px"><a href="edit_page.php?action=newpage" class="green">New</a></li></td>
+    <?php } ?>    
     <?php if(check_permission("Pages","delete_pages")){?>
-    <td width="110px"><input name="delpages" type="submit" value="Delete" class="red" /></td>
+    	<td width="110px"><input name="delpages" type="submit" value="Delete Selected Pages" class="red" /></td>
     <?php } ?>
     <td></td>
   </tr>

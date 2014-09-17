@@ -12,7 +12,7 @@ if(isset($_POST['chng_info'])){
 	if($_POST['name']!=""){
 		if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 			$query="UPDATE `site_info` SET 
-				`name` = '{$_POST['name']}', `contact_email` = '{$_POST['email']}', `timezone` = '{$_POST['tz']}', `published` = '{$published}', `default_rank` = {$_POST['rank']}";
+				`name` = '{$_POST['name']}', `contact_email` = '{$_POST['email']}', `timezone` = '{$_POST['tz']}', `published` = '{$published}', `default_rank` = {$_POST['rank']}, `homepage` = {$_POST['homepage']}";
 			$result=mysqli_query($connection, $query);
 			confirm_query($result);
 			$success = "Site Info has been updated!";
@@ -58,6 +58,9 @@ $layout=mysqli_fetch_array($result);
 
 $query="SELECT * FROM `ranks`";
 $rankresult=mysqli_query($connection, $query);
+
+$query="SELECT * FROM `pages` ORDER BY `position` ASC";
+$result_pages=mysqli_query($connection, $query);
 ?>
 <?php
 	$pgsettings = array(
@@ -202,6 +205,14 @@ $rankresult=mysqli_query($connection, $query);
         <input name="published" type="checkbox"<?php if($site['published']==1){echo " checked";} ?> maxlength="128" />
     </td>
   	<td>
+    	<h2>Homepage</h2>
+        <select name="homepage">
+            <?php
+            while($homepages=mysqli_fetch_array($result_pages)){?>
+                    <option value="<?php echo $homepages['id'];?>"<?php if($site['homepage']==$homepages['id']){echo " selected";} ?>><?php echo $homepages['name']?></option>
+            <?php
+            }?>
+        </select>
     </td>
   </tr>
   <tr>
