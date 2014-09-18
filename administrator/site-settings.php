@@ -3,49 +3,102 @@ require_once("../includes/functions.php");
 ?>
 <?php
 
+$output_dir_banner = "../images/banner/";
+$output_dir_icon = "../images/favicon/";
+
 if(isset($_POST['chng_info'])){
-	if(isset($_POST['published'])){
-		$published = 1;
-	}else{
-		$published = 0;
-	}
-	if($_POST['name']!=""){
-		if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-			$query="UPDATE `site_info` SET 
-				`name` = '{$_POST['name']}', `contact_email` = '{$_POST['email']}', `timezone` = '{$_POST['tz']}', `published` = '{$published}', `default_rank` = {$_POST['rank']}, `homepage` = {$_POST['homepage']}";
-			$result=mysqli_query($connection, $query);
-			confirm_query($result);
-			$success = "Site Info has been updated!";
+	if(check_permission("Website","edit_site_settings")){
+		if(isset($_POST['published'])){
+			$published = 1;
 		}else{
-			$error = "Not a valid email address!";
+			$published = 0;
+		}
+		$metadata = strip_tags(mysqli_real_escape_string($connection, $_POST['metadata']), "<meta>");
+		$css_js = strip_tags(mysqli_real_escape_string($connection, $_POST['css_js']), "<link><style><script>");
+		
+		if($_POST['name']!=""){
+			if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+				$query="UPDATE `site_info` SET 
+					`name` = '{$_POST['name']}', `contact_email` = '{$_POST['email']}', `timezone` = '{$_POST['tz']}', `published` = {$published}, `default_rank` = {$_POST['rank']}, `homepage` = {$_POST['homepage']}, `meta_tags` = '{$metadata}', `style_js_link_tags` = '{$css_js}'";
+			$result=mysqli_query($connection, $query);
+				confirm_query($result);
+				$success = "Site Info has been updated!";
+			}else{
+				$error = "Not a valid email address!";
+			}
+		}else{
+			$error = "Site Name cannot be blank!";
 		}
 	}else{
-		$error = "Site Name cannot be blank!";
+		$error="You do not have permission to edit Site Information.";
 	}
 }
 
 if(isset($_POST['chngcolor'])){
-	
-	$query="UPDATE `site_layout` SET 
-		`menu_color` = '{$_POST['menu_color']}', `contentbg_color` = '{$_POST['contentbg_color']}', `sitebg_color` = '{$_POST['sitebg_color']}', `accent_color` = '{$_POST['accent_color']}', `text_color` = '{$_POST['text_color']}'";
-	$result=mysqli_query($connection, $query);
-	confirm_query($result);
-	$success = "Site colors have been updated!";
+	if(check_permission("Website","edit_site_colors")){
+		$query="UPDATE `site_layout` SET 
+			`menu_color` = '{$_POST['menu_color']}', `contentbg_color` = '{$_POST['contentbg_color']}', `sitebg_color` = '{$_POST['sitebg_color']}', `accent_color` = '{$_POST['accent_color']}', `text_color` = '{$_POST['text_color']}'";
+		$result=mysqli_query($connection, $query);
+		confirm_query($result);
+		$success = "Site colors have been updated!";
+	}else{
+		$error="You do not have permission to edit colors.";
+	}
 }
 
-if(isset($_POST['chngganalytics'])){
-	
-	$analytics_code = strip_tags(mysqli_real_escape_string($connection, $_POST['analyticscode']), "<script>");
-	if(isset($_POST['analyticsenabled'])){
-		$analytics_enabled = 1;
+if(isset($_POST['delbanners'])){
+	if(check_permission("Website","upload_favicon_banner")){
+		function del_file($file){
+			global $output_dir_banner;
+			if(file_exists($output_dir_banner.$file)){
+				unlink($output_dir_banner.$file);
+				return "File \"".$file."\" was deleted.";
+			}else{
+				return "File \"".$file."\" was not found. Perhaps it was already deleted?";
+			}
+		}
+		if(!empty($_POST['files'])){
+			$i = 0;
+			foreach($_POST['files'] as $file){
+				$success=del_file($file);
+				$i++;
+				if($i > 1){
+					$success=$i." files were deleted.";
+				}
+			}
+		}else{
+			$error="No files selected.";
+		}
 	}else{
-		$analytics_enabled = 0;
+		$error="You do not have permission to delete banners!";
 	}
-	$query="UPDATE `site_info` SET 
-		`g_analytics_enabled` = '{$analytics_enabled}', `g_analytics_code` = '{$analytics_code}'";
-	$result=mysqli_query($connection, $query);
-	confirm_query($result);
-	$success = "Google Analytics has been updated!";
+}
+if(isset($_POST['uploadbanner'])){
+	$message = upload($_FILES, $output_dir_banner, 2097152, array('.jpeg','.jpg','.gif','.png'));
+}
+if(isset($_POST['uploadfavicon'])){
+	foreach (scandir($output_dir_icon) as $item) {
+		if ($item == '.' || $item == '..') continue;
+		unlink($output_dir_icon.DIRECTORY_SEPARATOR.$item);
+	}
+	$message = upload($_FILES, $output_dir_icon, 128000, array('.jpeg','.jpg','.gif','.png','.ico'));
+}
+if(isset($_POST['chngganalytics'])){
+	if(check_permission("Website","edit_google_analytics")){
+		$analytics_code = strip_tags(mysqli_real_escape_string($connection, $_POST['analyticscode']), "<script>");
+		if(isset($_POST['analyticsenabled'])){
+			$analytics_enabled = 1;
+		}else{
+			$analytics_enabled = 0;
+		}
+		$query="UPDATE `site_info` SET 
+			`g_analytics_enabled` = '{$analytics_enabled}', `g_analytics_code` = '{$analytics_code}'";
+		$result=mysqli_query($connection, $query);
+		confirm_query($result);
+		$success = "Google Analytics has been updated!";
+	}else{
+		$error="You do not have permission to edit Google Analytics settings!";
+	}
 }
 
 $query="SELECT * FROM  `site_info`";
@@ -216,6 +269,18 @@ $result_pages=mysqli_query($connection, $query);
     </td>
   </tr>
   <tr>
+  	<td colspan="2">
+    	<h2>Metadata</h2>
+        <textarea name="metadata" id="metadata" rows="15" cols="80"><?php if($site['meta_tags']!=""){echo $site['meta_tags'];}else{echo "<meta name=\"description\" content=\"A description of the page\" />";} ?></textarea><br>
+    </td>
+  </tr>
+  <tr>
+  	<td colspan="2">
+    	<h2>Custom CSS and Javascript</h2>
+        <textarea name="css_js" id="css_js" rows="15" cols="80"><?php echo $site['style_js_link_tags']; ?></textarea><br>
+    </td>
+  </tr>
+  <tr>
   	<td colspan="2"><input name="chng_info" type="submit" value="Change Website Info" /></td>
   </tr>
 </table>
@@ -231,20 +296,75 @@ $result_pages=mysqli_query($connection, $query);
 	<option>Green (Dark)</option>
    	<option>Green (Light)</option>
 </select><br><br>
-<table width="75%" border="0" style="text-align:right;">
-  <tr>
-    <form method="post" action="site-settings.php"><td>Menu: <input id="menucolor" name="menu_color" type="text" value="<?php echo $layout['menu_color']; ?>" maxlength="7" class="color {hash:true}" /></td><td> Content BG: <input id="contentbg" name="contentbg_color" type="text" value="<?php echo $layout['contentbg_color']; ?>" maxlength="7" class="color {hash:true}" /></td></tr><tr>
-    <td>Site BG: <input id="sitebg" name="sitebg_color" type="text" value="<?php echo $layout['sitebg_color']; ?>" maxlength="7" class="color {hash:true}" /></td><td> Accent: <input id="accent" name="accent_color" type="text" value="<?php echo $layout['accent_color']; ?>" maxlength="7" class="color {hash:true}" /> </td></tr><tr>
-    <td>Text: <input id="text" name="text_color" type="text" value="<?php echo $layout['text_color']; ?>" maxlength="7" class="color {hash:true}" /> </td><td><input name="chngcolor" type="submit" value="Change Colors" /></td></form>
-  </tr>
-  </table>
-  <?php } ?>
+<form method="post" action="site-settings.php">
+    <table width="75%" border="0" style="margin-left:auto; margin-right:auto;">
+      <tr>
+        <td style="text-align:right;"><label for="menucolor">Menu:</label></td><td style="text-align:left;"><input id="menucolor" name="menu_color" type="text" value="<?php echo $layout['menu_color']; ?>" maxlength="7" class="color {hash:true}" /></td>
+        <td style="text-align:right;"><label for="contentbg">Content BG:</label></td><td style="text-align:left;"><input id="contentbg" name="contentbg_color" type="text" value="<?php echo $layout['contentbg_color']; ?>" maxlength="7" class="color {hash:true}" /></td>
+      </tr>
+      <tr>
+        <td style="text-align:right;"><label for="sitebg">Site BG:</label></td><td style="text-align:left;"><input id="sitebg" name="sitebg_color" type="text" value="<?php echo $layout['sitebg_color']; ?>" maxlength="7" class="color {hash:true}" /></td>
+        <td style="text-align:right;"><label for="accent">Accent:</label></td><td style="text-align:left;"><input id="accent" name="accent_color" type="text" value="<?php echo $layout['accent_color']; ?>" maxlength="7" class="color {hash:true}" /> </td>
+      </tr>
+      <tr>
+        <td style="text-align:right;"><label for="text">Text:</label></td><td style="text-align:left;"><input id="text" name="text_color" type="text" value="<?php echo $layout['text_color']; ?>" maxlength="7" class="color {hash:true}" /></td>
+      </tr>
+      <tr>
+        <td colspan="4"><input name="chngcolor" type="submit" value="Change Colors" /></td>
+      </tr>
+    </table>
+</form>
+<?php } ?>
+<?php if(check_permission("Website","upload_favicon_banner")){ ?>
+<form method="post">
+    <h2>Upload and Delete Banners</h2>
+    <table id="files">
+      <tr>
+        <th scope="col" width="45%">Banner filename</th>
+        <th scope="col" width="45%">File path</th>
+        <th scope="col" width="10%"><input type="checkbox" id="file"></th>
+      </tr>
+        <?php
+        $files = scandir("../images/banner/");
+        array_shift ($files);
+        array_shift ($files);
+        if(count($files)>0){
+            foreach($files as $file){
+                ?>
+                <tr>
+                    <td><?php echo $file; ?></td>
+                    <td><a href="../images/banner/<?php echo $file; ?>" target="_blank">Link</a></td>
+                    <td style="text-align:center;"><input type="checkbox" name="files[]" value="<?php echo $file; ?>" /></td>
+                </tr>
+            <?php
+            }
+        }else{?>
+                <tr>
+                    <td colspan="3">(No banners!)</td>
+                </tr>
+        <?php } ?>
+                <tr>
+                    <td colspan="2"></td>
+                    <td><input name="delbanners" type="submit" value="Delete Banners" class="red" /></td>
+                </tr>
+    </table>
+</form>
+<form method="post" enctype="multipart/form-data">
+	<input type="file" name="file" id="file" />
+	<input name="uploadbanner" type="submit" value="Upload a banner (2MB max)" />
+</form>
+<h2>Upload Favicon</h2>
+<form method="post" enctype="multipart/form-data">
+	<input type="file" name="file" id="file" />
+	<input name="uploadfavicon" type="submit" value="Upload a favicon (128KB max)" />
+</form>
+<?php } ?>
   <?php if(check_permission("Website","edit_google_analytics")){ ?>
   <form method="post" action="site-settings.php">
   	<h2>Google Analytics</h2>
     Enabled: <input name="analyticsenabled" type="checkbox"<?php if($site['g_analytics_enabled']){echo  "checked";} ?> /><br>
   	Google Analytics Code:<br>
-	<textarea name="analyticscode" id="analytics" rows="15" cols="100"><?php echo $site['g_analytics_code']; ?></textarea><br>
+	<textarea name="analyticscode" id="analytics" rows="15" cols="80"><?php echo $site['g_analytics_code']; ?></textarea><br>
     <input name="chngganalytics" type="submit" value="Change Google Analytics Settings" />
   </form>
   <?php } ?>

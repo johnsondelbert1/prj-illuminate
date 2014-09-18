@@ -12,6 +12,9 @@ if(isset($_GET['success'])){
 if(isset($_GET['message'])){
 	$message=urldecode($_GET['message']);
 }
+
+$banners = scandir("images/banner/");
+$favicon = $banners = scandir("images/favicon/");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -26,8 +29,14 @@ if(isset($_GET['message'])){
     <META NAME="author" CONTENT="2GD - Secondgenerationdesign.com">
     <META NAME="language" CONTENT="English">
     <META NAME="revisit-after" CONTENT="7">
+    <!-- Start custom meta tags -->
+    <?php if($site_info['meta_tags']!=""){
+		echo $site_info['meta_tags'];
+	}?>
+    
+    <!-- End custom meta tags -->
     <link href="administrator/styles/fonts.css" rel="stylesheet" type="text/css" />
-    <link rel="shortcut icon" href="images/favicon.png" />
+    <?php if(count($favicon)==3){ ?><link rel="shortcut icon" href="images/favicon/<?php echo $favicon[2]; ?>" /><?php } ?>
     <link href="styles/uploadfilemulti.css" rel="stylesheet" />
     <link href="styles/main.css" rel="stylesheet" type="text/css" />
     <link href="styles/animate.css" rel="stylesheet" type="text/css" />
@@ -79,6 +88,12 @@ if(isset($_GET['message'])){
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
 	</style>
+    <!-- Start custom CSS and JS -->
+    <?php if($site_info['style_js_link_tags']!=""){
+		echo $site_info['style_js_link_tags'];
+	}?>
+    
+    <!-- End custom CSS and JS -->
 </head>
 
 
@@ -96,9 +111,9 @@ if(isset($_GET['message'])){
 		?>
         <div id="contentwrap">
 			<div id="content">
-		<?php if($pgsettings['banner'] == 1){ ?>
+			<?php if($pgsettings['banner'] == 1){ ?>
     		<div id="banner"><!--<img src="images/banner.png" />--></div>
-        <?php } ?>
+        	<?php } ?>
 		<?php if(!empty($error)){echo "<h3 class=\"error\">".$error."</h3>";} ?>
         <?php if(!empty($success)){echo "<h3 class=\"success\">".$success."</h3>";} ?>
         <?php if(!empty($message)){echo "<h3 class=\"message\">".$message."</h3>";} ?>
