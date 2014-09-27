@@ -83,6 +83,15 @@ if (mysqli_num_rows($result)!=0){
 		$userdata=mysqli_fetch_array($userresult);
 		$createdtimestamp = strtotime($post['datecreated']);
 		$lasteditedtimestamp = strtotime($post['datecreated']);
+		if(!file_exists("blog_galleries/".$post['id'])){
+			mkdir("blog_galleries/".$post['id']);
+		}
+		if(!file_exists("blog_galleries/".$post['id']."/gallery/")){
+			mkdir("blog_galleries/".$post['id']."/gallery/");
+		}
+		if(!file_exists("blog_galleries/".$post['id']."/gallery-thumbs/")){
+			mkdir("blog_galleries/".$post['id']."/gallery-thumbs/");
+		}
 		?>
 		<table width="100%" height="100%" class="blog">
 			<tr>

@@ -3,11 +3,21 @@ require_once("includes/functions.php");
 ?>
 <?php
 
+if(!isset($_GET['post'])){
+	redirect_to("blog.php");	
+}
+
 $output_dir="blog_galleries/".urldecode($_GET['post'])."/gallery/";
 $output_thumbs="blog_galleries/".urldecode($_GET['post'])."/gallery-thumbs/";
 
-if(!isset($_GET['post'])){
-	redirect_to("blog.php");	
+if(!file_exists("blog_galleries/".urldecode($_GET['post']))){
+	mkdir("blog_galleries/".urldecode($_GET['post']));
+}
+if(!file_exists($output_dir)){
+	mkdir($output_dir);
+}
+if(!file_exists($output_thumbs)){
+	mkdir($output_thumbs);
 }
 
 if(isset($_POST['submit'])){
