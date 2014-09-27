@@ -14,7 +14,7 @@ if(isset($_GET['message'])){
 }
 
 $banners = scandir("images/banner/");
-$favicon = $banners = scandir("images/favicon/");
+$favicon = scandir("images/favicon/");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -46,28 +46,28 @@ $favicon = $banners = scandir("images/favicon/");
     <script type="text/javascript" src="prettyphoto/js/jquery.prettyPhoto.js" charset="utf-8"></script>
     <script src="jscripts/jquery.fileuploadmulti.min.js"></script>
     <style type="text/css">
-		body, .forumtitle, tr.heading,td.heading, th.heading, .blogtitle{
+		.forumtitle, tr.heading,td.heading, th.heading, .blogtitle{
 			background-color:<?php echo $site_layout['sitebg_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		#contentwrap{
+		body, #contentwrap{
 			background-color:<?php echo $site_layout['contentbg_color'] ?> !important;
 		}
 		#banner{
 			background-color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #footerwrap, h1, h2, .photo-link, .nav{
+		#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #vert-menu, #vert-menu ul, #vert-menu ul li, #footerwrap, h1, h2, .photo-link, .nav{
 			background-color:<?php echo $site_layout['menu_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		#horiz-menu li:hover > a, #horiz-menu li:hover > ul, #horiz-menu ul a:hover, .blog, .TabbedPanelsTab, .accent, .forum tr:hover, .forumsuser, ul.MenuBarHorizontal a:hover, ul.MenuBarHorizontal a:focus, .forumfooter{
+		#horiz-menu li:hover > a, #horiz-menu li:hover > ul, #horiz-menu ul a:hover, #vert-menu li:hover > a, #vert-menu li:hover > ul, #vert-menu ul a:hover, .blog, .TabbedPanelsTab, .accent, .forum tr:hover, .forumsuser, ul.MenuBarHorizontal a:hover, ul.MenuBarHorizontal a:focus, .forumfooter{
 			background-color:<?php echo $site_layout['accent_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		*html #horiz-menu li a:hover { /* IE6 only */
+		*html #horiz-menu li a:hover, #vert-menu li a:hover { /* IE6 only */
 			color: <?php echo $site_layout['text_color'] ?>;
 		}
-		#horiz-menu a, #horiz-menu ul a, .blogtitle a, .forum tr a:hover{
+		#horiz-menu a, #horiz-menu ul a, #vert-menu a, #vert-menu ul a, .blogtitle a, .forum tr a:hover{
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
 		.photo-link:hover{
@@ -84,8 +84,12 @@ $favicon = $banners = scandir("images/favicon/");
 			border-bottom:2px <?php echo $site_layout['text_color'] ?> dashed;
 		}
 		 ::-webkit-scrollbar-thumb{
-			background-color:<?php echo $site_layout['accent_color'] ?> !important;
-			color:<?php echo $site_layout['text_color'] ?> !important;
+			/*background-color:<?php echo $site_layout['accent_color'] ?> !important;
+			color:<?php echo $site_layout['text_color'] ?> !important;*/
+		}
+		#banner{
+			<?php if(count($banners)==3){?>background-image:url(images/banner/<?php echo $banners[2];?>);<?php } ?>
+			
 		}
 	</style>
     <!-- Start custom CSS and JS -->
@@ -104,16 +108,31 @@ $favicon = $banners = scandir("images/favicon/");
 			echo $site_info['g_analytics_code'];
 		}
 	}?>
-	<div id="wrapper"> 
-        <?php if($pgsettings['nav'] == true){
-        	nav("horiz", $pgsettings['pageselection']);
+	<div id="wrapper">
+        <?php
+        if(!isset($pgsettings['horiz_menu_visible'])||$pgsettings['horiz_menu_visible'] == true){
+			?><div class="nav" style="background-color:<?php echo $site_layout['menu_color'] ?>;"><?php
+        		$num_horiz_pages = nav("horiz", $pgsettings['pageselection']);
+			?></div><?php
 		}
 		?>
         <div id="contentwrap">
-			<div id="content">
 			<?php if($pgsettings['banner'] == 1){ ?>
     		<div id="banner"><!--<img src="images/banner.png" />--></div>
-        	<?php } ?>
-		<?php if(!empty($error)){echo "<h3 class=\"error\">".$error."</h3>";} ?>
-        <?php if(!empty($success)){echo "<h3 class=\"success\">".$success."</h3>";} ?>
-        <?php if(!empty($message)){echo "<h3 class=\"message\">".$message."</h3>";} ?>
+			<?php
+			}
+			?>
+            <table border="0" cellspacing="0" cellpadding="0" style="width:100%;">
+                <tr>
+                    <?php
+                    if(!isset($pgsettings['vert_menu_visible'])||$pgsettings['vert_menu_visible'] == true){
+                        ?><?php
+                            $num_vert_pages = nav("vert", $pgsettings['pageselection']);
+                        ?><?php
+                    }
+                    ?>
+                	<td style="width:90%; padding-right:5px; padding-left:5px;">
+						<div id="content" style="background-color:#525252;">
+						<?php if(!empty($error)){echo "<h3 class=\"error\">".$error."</h3>";} ?>
+                        <?php if(!empty($success)){echo "<h3 class=\"success\">".$success."</h3>";} ?>
+                        <?php if(!empty($message)){echo "<h3 class=\"message\">".$message."</h3>";} ?>

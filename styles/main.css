@@ -49,13 +49,14 @@ body{
 	right:0px;
 	min-height:376px;
 	color:#CCC;
-	padding-bottom:250px;
+	padding-bottom:50px;
+	padding-top:20px;
 }
 #content, #footer{
 	padding:20px;
 }
 #footerwrap{
-	width:inherit;
+	width:100%;
 	height:200px;
 	bottom:0;
 	left:0;
@@ -101,11 +102,12 @@ img.a{
 }
 #banner{
 	text-align:center;
-	width:100%;
+	width:90%;
 	height:300px;
-	left:auto;
-	right:auto;
-	margin-bottom:30px;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:50px;
+	margin-bottom:50px;
 	-webkit-border-top-left-radius:3px;
 	-moz-border-radius-topleft:3px;
 	border-top-left-radius:3px;
@@ -209,7 +211,8 @@ div.nav{
     color: #999;
 	font-size:20px;
     text-decoration: none;
-	transition: all .2s ease-in-out;	
+	transition: all .2s ease-in-out;
+	width:100%;
 }
 
 #horiz-menu li:hover > a {
@@ -301,6 +304,140 @@ div.nav{
 	
 }
 /* End Horizontal Nav Menu */
+
+/* Vert Nav Menu */
+#vert-menu, #vert-menu ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+#vert-menu {
+    width: 100%;
+	height:50px;
+    margin: 0;
+	font-family: 'Roboto', Arial, Helvetica, sans-serif;
+}
+
+#vert-menu:before,
+#vert-menu:after {
+    content: "";
+    display: table;
+}
+
+#vert-menu:after {
+    clear: both;
+}
+
+#vert-menu {
+    zoom:1;
+}
+
+#vert-menu li {
+    position: relative;
+	height:50px;
+}
+
+#vert-menu a {
+    float: left;
+	padding-top:10px;
+	height:40px;
+	text-align:center;
+    color: #999;
+	font-size:20px;
+    text-decoration: none;
+	transition: all .2s ease-in-out;
+	width:100%;
+}
+
+#vert-menu li:hover > a {
+	-webkit-box-shadow: inset 0px 4px 0px 0px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    inset 0px 4px 0px 0px rgba(50, 50, 50, 0.75);
+	box-shadow:         inset 0px 4px 0px 0px rgba(50, 50, 50, 0.75);
+}
+
+#vert-menu ul {
+    margin:0;
+    _margin: 0; /*IE6 only*/
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    transition: all .2s ease-in-out;
+}
+
+#vert-menu li:hover > ul {
+    opacity: 1;
+    visibility: visible;
+    margin: 0 0 0 186px;
+}
+
+#vert-menu ul ul {
+    top: 0;
+    left: 150px;
+    margin: 0 0 0 20px;
+    _margin: 0; /*IE6 only*/ 
+}
+
+#vert-menu ul li {
+    float: none;
+    display: block;
+    border: 0;
+	height:50px;
+    _line-height: 0; /*IE6 only*/
+}
+
+#vert-menu ul li:last-child {   
+    box-shadow: none;    
+}
+
+#vert-menu ul a {
+	padding-top:10px;
+	width:inherit;
+	height:40px;
+    _height: 10px; /*IE6 only*/
+    display: block;
+    white-space: nowrap;
+    float: none;
+    text-transform: none;
+}
+
+#vert-menu ul a:hover {
+    background-color:#A70002;
+}
+#vert-menu ul li:first-child > a {
+    
+}
+
+#vert-menu ul li:first-child > a:after {
+    content: '';
+    position: absolute;
+    left: 40px;
+    top: -6px;
+}
+
+#vert-menu ul ul li:first-child a:after {
+    left: -6px;
+    top: 50%;
+    margin-top: -6px;
+    border-left: 0; 
+}
+
+#vert-menu ul li:first-child a:hover:after {
+    border-bottom-color: #04acec;
+	background-color:#A70002;
+}
+
+#vert-menu ul ul li:first-child a:hover:after {
+    border-right-color: #0299d3; 
+    border-bottom-color: transparent;
+}
+
+#vert-menu ul li:last-child > a {
+	
+}
+/* End Vert Nav Menu */
 
 /* SpryTabbedPanels.css - version 0.6 - Spry Pre-Release 1.6.1 */
 

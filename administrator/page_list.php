@@ -76,7 +76,7 @@ if(isset($_GET['page'])){
     	<td width="110px"><a href="edit_page.php?action=newpage" class="green">New</a></li></td>
     <?php } ?>    
     <?php if(check_permission("Pages","delete_pages")){?>
-    	<td width="110px"><input name="delpages" type="submit" value="Delete Selected Pages" class="red" /></td>
+    	<td width="110px"><input name="delpages" type="submit" value="Delete Pages" class="red" /></td>
     <?php } ?>
     <td></td>
   </tr>
@@ -155,7 +155,7 @@ while($listpage=mysqli_fetch_array($listpagesquery)){?>
         </td>
         <!-- Author -->
         <td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
-        	<?php $user=get_user($listpage['creator']); echo $user['username']; ?>
+        	<?php $user=get_user($listpage['creator']); if($user['username']!=""){echo $user['username'];}else{echo "N/A";} ?>
         </td>
         <!-- Date -->
         <td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
@@ -171,19 +171,10 @@ while($listpage=mysqli_fetch_array($listpagesquery)){?>
         <!-- Published -->
         <td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
         	<?php
-				switch ($listpage['visible']){
-					case 0:
-						echo "No one";
-						break;
-					case 1:
-						echo "All";
-						break;
-					case 2:
-						echo "Logged In";
-						break;
-					case 3:
-						echo "Admins";
-						break;
+				if($listpage['published']==1){
+					echo "Yes";
+				}else{
+					echo "No";
 				}
 			?>
         </td>

@@ -11,6 +11,16 @@ $gall = mysqli_fetch_array($result);
 $output_dir="../galleries/".$gall['name']."/gallery/";
 $output_thumbs="../galleries/".$gall['name']."/gallery-thumbs/";
 
+if(!file_exists("../galleries/".$gall['name'])){
+	mkdir("../galleries/".$gall['name']);
+}
+if(!file_exists("../galleries/".$gall['name']."/gallery/")){
+	mkdir("../galleries/".$gall['name']."/gallery/");
+}
+if(!file_exists("../galleries/".$gall['name']."/gallery-thumbs/")){
+	mkdir("../galleries/".$gall['name']."/gallery-thumbs/");
+}
+
 if(isset($_POST['delfiles'])){
 	function del_file($file){
 		global $output_dir;
@@ -140,14 +150,14 @@ Name: <input name="galname" type="text" value="<?php echo $gallery['name']; ?>" 
 <tr>
 <td width="100%">
 <form method="post">
-    <div align="center" style="text-align:center; width:100%; padding:28px;">
+    <div align="center" style="text-align:center; width:100%;">
     
     <?php
     /** settings **/
     $images_dir = "../galleries/".$gallery['name']."/gallery/";
     $thumbs_dir = "../galleries/".$gallery['name']."/gallery-thumbs/";
     $thumbs_width = 100;
-    $images_per_row = 12;
+    $images_per_row = 15;
     
     /** generate photo gallery **/
     $image_files = get_files($images_dir);

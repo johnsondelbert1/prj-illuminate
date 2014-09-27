@@ -17,7 +17,7 @@ $galleryresult=mysqli_query($connection, $query);
 	);
 	require_once("includes/begin_cpanel.php");
 	?>
-<h2><a href="../index.php" target="_blank">Back to Website</a></h2>
+<h2><a href="../" target="_blank">Back to Website</a></h2>
 
 <br />
 <!--<h2>Social Networks</h2>
