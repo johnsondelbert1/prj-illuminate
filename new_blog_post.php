@@ -86,8 +86,8 @@ require_once("includes/begin_html.php");
   <td>
   <table width="200" border="0">
   <tr>
-    <td><input class="green" class="button" type="submit" name="submit" value="Submit" /></td>
-    <td><a class="blue" href="blog.php">Cancel</a></td>
+    <td><input class="button green" class="button" type="submit" name="submit" value="Submit" /></td>
+    <td><a class="blue button" href="blog.php">Cancel</a></td>
   </tr>
 </table>
   </td>

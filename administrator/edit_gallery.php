@@ -172,7 +172,7 @@ Name: <input name="galname" type="text" value="<?php echo $gallery['name']; ?>" 
       ?><p>(There are no images in this gallery)</p><?php
     }
     ?>
-    <input name="delfiles" type="submit" value="Delete Selected Photos" class="red" />
+    <input name="delfiles" type="submit" value="Delete Selected Photos" class="button red" />
     </div>
 </form>
 </td>

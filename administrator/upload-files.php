@@ -153,7 +153,7 @@ if(isset($_POST['deletefolder'])){
       <tr>
         <th colspan="2"></th>
         <?php if(check_permission("Uploading","delete_folders")){?>
-        	<th width="10%"><input class="red" type="submit" name="deletefolder" value="Delete Folders" /></th>
+        	<th width="10%"><input class="button red" type="submit" name="deletefolder" value="Delete Folders" /></th>
 		<?php } ?>
       </tr>
     </table>

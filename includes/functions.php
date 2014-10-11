@@ -333,8 +333,8 @@ function print_multi_upload($output_dir, $maxsize, $filetypes, $cpanel = false){
 <br />
 
 <div id="container">
-    <a class="blue" id="pickfiles" href="javascript:;">Select files</a> 
-    <a class="green" id="uploadfiles" href="javascript:;">Upload</a>
+    <a class="blue button" id="pickfiles" href="javascript:;">Select files</a> 
+    <a class="button green" id="uploadfiles" href="javascript:;">Upload</a>
 </div>
 
 <br />

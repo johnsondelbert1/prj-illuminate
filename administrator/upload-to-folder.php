@@ -144,7 +144,7 @@ confirm_query($subgalleryquery);
                         <tr>
                         	<td colspan="2"></td>
                             <?php if(check_permission("Uploading","delete_files")){?>
-                            	<td><input name="delfiles" type="submit" value="Delete Files" class="red" /></td>
+                            	<td><input name="delfiles" type="submit" value="Delete Files" class="button red" /></td>
                             <?php } ?>
                         </tr>
             </table>

@@ -149,7 +149,7 @@ if(isset($_POST['submit'])){
       <tr>
         <th colspan="5"></th> 
         <?php if(check_permission("Users","delete_users")){?>
-        	<th width="10%"><input class="red" type="submit" name="deluser" value="Delete Account" /></th>
+        	<th width="10%"><input class="button red" type="submit" name="deluser" value="Delete Account" /></th>
         <?php } ?>
       </tr>
     </table>

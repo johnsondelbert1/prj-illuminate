@@ -71,7 +71,7 @@ require_once("includes/begin_html.php");
 
 if (mysqli_num_rows($result)!=0){
   	if(check_permission("Blog","post_blog")){?>
-		<br><a class="green" href="new_blog_post.php">New</a><br /><br />
+		<br><a class="button green" href="new_blog_post.php">New</a><br /><br />
 	<?php }
 	echo_page($num_pages, $current_page, "blog.php?");?>
     <br><br>
@@ -136,8 +136,8 @@ if (mysqli_num_rows($result)!=0){
 				</tr>
                 <tr>
                     <td class="blogfooter" colspan="2">
-                        <?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="bluesmall" href="edit_blog_post.php?post=<?php echo $post['id'] ?>">Edit</a><?php } ?>
-                        <?php if(check_permission("Blog","delete_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="redsmall" href="blog.php?delpost=<?php echo $post['id'] ?>">Delete</a><?php } ?>
+                        <?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="blue buttonsmall" href="edit_blog_post.php?post=<?php echo $post['id'] ?>">Edit</a><?php } ?>
+                        <?php if(check_permission("Blog","delete_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="red buttonsmall" href="blog.php?delpost=<?php echo $post['id'] ?>">Delete</a><?php } ?>
                     </td>
                 </tr>
 			</tr>

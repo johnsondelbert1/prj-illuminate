@@ -149,8 +149,8 @@ require_once("includes/begin_html.php");
                     <b><?php echo $messagecount; ?></b> Replies</td>
                     <td><?php if($threadcount != 0){echo date("m/d/Y h:i A" ,strtotime($messagedate['date']));}else{echo "N/A";} ?></td>
                     
-						<?php if(check_permission("Forum","edit_forum")){?><td><a class="blue" href="forums.php?action=editforum&&forumid=<?php echo urlencode($forum['id']);?>">Edit</a></td><?php } ?>
-                    	<?php if(check_permission("Forum","add_delete_forum")){?><td><a class="red" href="forums.php?action=delforum&&forumid=<?php echo urlencode($forum['id']);?>">Delete</a></td><?php } ?>
+						<?php if(check_permission("Forum","edit_forum")){?><td><a class="blue button" href="forums.php?action=editforum&&forumid=<?php echo urlencode($forum['id']);?>">Edit</a></td><?php } ?>
+                    	<?php if(check_permission("Forum","add_delete_forum")){?><td><a class="button red" href="forums.php?action=delforum&&forumid=<?php echo urlencode($forum['id']);?>">Delete</a></td><?php } ?>
                 </tr>
 				<?php
 		}

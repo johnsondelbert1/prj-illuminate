@@ -34,8 +34,8 @@ require_once("includes/begin_html.php");
 	?>
     <table width="200" border="0">
   <tr>
-    <td><?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="red" href="blog.php?delpost=<?php echo $post['id'] ?>">Delete</a><?php } ?></td>
-    <td><a class="blue" href="blog.php">Back</a></td>
+    <td><?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="button red" href="blog.php?delpost=<?php echo $post['id'] ?>">Delete</a><?php } ?></td>
+    <td><a class="blue button" href="blog.php">Back</a></td>
   </tr>
 </table>
 <table width="100%" height="100%" class="blog">
@@ -80,7 +80,7 @@ require_once("includes/begin_html.php");
         </tr>
         <tr>
         	<td>
-				<?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="bluesmall" href="edit_blog_post.php?post=<?php echo $post['id'] ?>">Edit</a><?php } ?>
+				<?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="blue buttonsmall" href="edit_blog_post.php?post=<?php echo $post['id'] ?>">Edit</a><?php } ?>
             </td>
         </tr>
     </tr>
