@@ -12,6 +12,7 @@ $result=mysqli_query( $connection, $query);
 $site_layout=mysqli_fetch_array($result);
 
 date_default_timezone_set($site_info['timezone']);
+$date=date("Y/m/d H:i:s", time());
 
 function get_rank_info(){
 	//gets permissions for logged in user
@@ -65,6 +66,11 @@ $blank_permissions = array(
 		"edit_gallery" => array("value" => 0, "disp_name" => "Edit Galleries", "description" => "Enables members of this rank to edit existing galleries."),
 		"delete_gallery" => array("value" => 0, "disp_name" => "Delete Galleries", "description" => "Enables members of this rank to delete galleries from the website."),
 		"rename_gallery" => array("value" => 0, "disp_name" => "Rename Galleries", "description" => "Enables members of this rank to rename galleries."),
+	),
+	"Forms" => array(
+		"add_form" => array("value" => 0, "disp_name" => "Add Forms", "description" => "Enables members of this rank to add forms."),
+		"edit_form" => array("value" => 0, "disp_name" => "Edit Forms", "description" => "Enables members of this rank to edit existing forms."),
+		"delete_form" => array("value" => 0, "disp_name" => "Delete Forms", "description" => "Enables members of this rank to delete forms."),
 	),
 	"Website" => array(
 		"cpanel_access" => array("value" => 0, "disp_name" => "CPanel Access", "description" => "Enables members of this rank to access the admin CPanel."),

@@ -90,7 +90,7 @@ if(isset($_POST['submit'])){
         <th scope="col">Username</th>
         <th scope="col">Email</th>
         <th scope="col">Password</th>
-        <th scope="col">Confirm</th>
+        <th scope="col">Confirm Password</th>
         <th scope="col">Rank</th>
       </tr>
       <tr>
