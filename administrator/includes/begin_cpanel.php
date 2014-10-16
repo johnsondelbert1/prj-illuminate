@@ -85,6 +85,11 @@ if(isset($_GET['message'])){
                     	<a href="ranks.php">Ranks</a>
                     </li>
                     <?php } ?>
+                    <?php if(check_permission(array("Forms;create_form","Forms;edit_form","Forms;delete_form",))){?>
+                    <li class="menuitem">
+                    	<a href="form-list.php">Forms</a>
+                    </li>
+                    <?php } ?>
                     <?php if(check_permission(array("Website;edit_site_settings","Website;edit_site_colors","Website;upload_favicon_banner","Website;edit_google_analytics",))){?>
                     <li class="menuitem">
                     	<a href="site-settings.php">Site Settings</a>
