@@ -79,10 +79,17 @@ span:hover{
 	}
 	
 </script>
+<form method="post" action="edit-form.php?formid=<?php echo $_GET['formid']; ?>">
+<table cellpadding="5" id="sticker">
+  <tr>
+    <td width="110px"><input name="submit" type="submit" class="green" value="Save Form" /></td>
+    <td width="110px"><a class="red" href="form-list.php">Cancel</a></td>
+  <td></td>
+  </tr>
+</table>
 <table width="100%" border="0" style="margin-right:auto; margin-left:auto;">
 <tr>
 <td width="50%">
-<form method="post" action="edit-form.php?formid=<?php echo $_GET['formid']; ?>">
     Name: <input name="formname" type="text" value="<?php echo $form['name']; ?>" maxlength="128" />
     Email: <input name="email_to" type="text" value="<?php echo $form['email_to']; ?>" maxlength="128" />
     Email From: <input name="email_from" type="text" value="<?php echo $form['email_from']; ?>" maxlength="128" />
@@ -137,7 +144,7 @@ span:hover{
                 <select name="fieldvalidate[<?php echo $count; ?>]">
                     <option value="none"<?php if(isset($field_validators[$count])&&$field_validators[$count]=="none"){echo " selected";} ?>>None</option>
                     <option value="email"<?php if(isset($field_validators[$count])&&$field_validators[$count]=="email"){echo " selected";} ?>>Email</option>
-                    <option value="notempty"<?php if(isset($field_validators[$count])&&$field_validators[$count]=="notempty"){echo " selected";} ?>>Cannot Be Empty</option>
+                    <option value="notempty"<?php if(isset($field_validators[$count])&&$field_validators[$count]=="notempty"){echo " selected";} ?>>Cannot Be Blank</option>
                 </select>
             </td>
             <td>
@@ -148,9 +155,6 @@ span:hover{
 		}
     ?></table>
     <a href="javascript:void(0);" id='anc_add'>+ Add New Field</a>
-    <br>
-    <br>
-    <input name="submit" type="submit" class="green" value="Save Form" />
 </form>
 </td>
 </tr>

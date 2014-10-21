@@ -210,7 +210,6 @@ if($_GET['action']=="edit"){
 	require_once("includes/begin_cpanel.php");
 ?>
 <script type="text/javascript" src="../tinymce/js/tinymce/tinymce.min.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript">
 	tinymce.init({
 		selector: "textarea",
@@ -251,21 +250,6 @@ if($_GET['action']=="edit"){
 			 $("#gall :checkbox").attr('checked', $(this).attr('checked'));
 		});  
 	 });
-	 <!-- jQuery Sticky Menu -->
-	 $(document).ready(function() {
-    var s = $("#sticker");
-    var pos = s.position();                    
-    $(window).scroll(function() {
-        var windowpos = $(window).scrollTop();
-        if (windowpos >= pos.top+10) {
-            s.addClass("stick");
-			$('.content').css("padding-top","58px");
-        } else {
-            s.removeClass("stick");
-			$('.content').css("padding-top","5px");
-        }
-    });
-});
 </script>
 <form action="edit_page.php?<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "action=edit&&page=".$selpage['id'];}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "action=newpage";} ?>" method="post" name="editpage">
 <table cellpadding="5" id="sticker">

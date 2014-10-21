@@ -141,6 +141,24 @@ if(isset($_GET['message'])){
                 <h1><span class="<?php echo $pgsettings['icon']; ?>"></span>   <?php echo $pgsettings['title']; ?></h1>
             </div>
             <div class="content" id="contentarea">
+            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+            <script type="text/javascript">
+            	 <!-- jQuery Sticky Menu -->
+                $(document).ready(function() {
+                    var s = $("#sticker");
+                    var pos = s.position();                    
+                    $(window).scroll(function() {
+                        var windowpos = $(window).scrollTop();
+                        if (windowpos >= pos.top) {
+                            s.addClass("stick");
+                            $('.content').css("padding-top","58px");
+                        } else {
+                            s.removeClass("stick");
+                            $('.content').css("padding-top","5px");
+                        }
+                    });
+                });
+			</script>
             <?php if(!empty($error)){echo "<h3 class=\"error\">".$error."</h3>";} ?>
 			<?php if(!empty($success)){echo "<h3 class=\"success\">".$success."</h3>";} ?>
 			<?php if(!empty($message)){echo "<h3 class=\"message\">".$message."</h3>";} ?>
