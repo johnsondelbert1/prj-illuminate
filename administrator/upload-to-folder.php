@@ -82,7 +82,6 @@ confirm_query($subgalleryquery);
 	);
 	require_once("includes/begin_cpanel.php");
 ?>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
     <script type="text/javascript">
 	function confirmdelete(file){
 		var ans = confirm("Are you sure you want to delete \""+file+"\" ?");
@@ -97,6 +96,12 @@ confirm_query($subgalleryquery);
 		});  
 	 });
 	</script>
+<table cellpadding="5" id="sticker">
+  <tr>
+    <td width="110px"><a class="red" href="upload-files.php">Cancel</a></td>
+  <td></td>
+  </tr>
+</table>
 <table width="100%" border="0" style="margin-right:auto; margin-left:auto;">
     <tr>
         <td width="50%">

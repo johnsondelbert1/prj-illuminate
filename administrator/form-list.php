@@ -30,14 +30,14 @@ if(isset($_POST['newform'])){
 
 }elseif(isset($_POST['delforms'])){
 	if(check_permission("Forms","delete_form")){
-		function del_gall($id){
+		function del_form($id){
 			global $connection;
 			
 			$query="SELECT * FROM `forms` WHERE `id` = ".$id;
 			$result=mysqli_query( $connection, $query);
 			$gall = mysqli_fetch_array($result);
 			
-			$query="DELETE FROM `galleries` WHERE `id` = {$id}";
+			$query="DELETE FROM `forms` WHERE `id` = {$id}";
 			$result=mysqli_query( $connection, $query);
 			confirm_query($result);
 			
@@ -45,7 +45,7 @@ if(isset($_POST['newform'])){
 		}
 		if(isset($_POST['forms'])){
 			foreach($_POST['forms'] as $form){
-				del_gall($form);
+				del_form($form);
 			}
 		}else{
 			$error="No forms selected!";

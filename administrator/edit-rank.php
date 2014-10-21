@@ -79,7 +79,6 @@ if(!empty($editing_rank_perms)){
 	);
 	require_once("includes/begin_cpanel.php");
 ?>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript">
    <!-- jQuery for seven sets of "Select All" checkboxes -->
     $(document).ready(function() {
@@ -89,6 +88,14 @@ if(!empty($editing_rank_perms)){
      });
 </script>
 <form method="post" action="edit-rank.php?rank=<?php echo $_GET['rank']; ?>">
+<table cellpadding="5" id="sticker">
+  <tr>
+    <td width="110px"><input name="submit" type="submit" value="Update Rank" class="green"/></td>
+    <td width="110px"><a class="red" href="ranks.php">Cancel</a></td>
+  <td></td>
+  </tr>
+</table>
+
 <table width="100%" border="0" cellpadding="0" class="form">
   
   <tr>
@@ -137,9 +144,6 @@ if(!empty($editing_rank_perms)){
     </td>
   </tr>
   <?php }?>
-  <tr>
-    <td colspan="2" align="center"><input name="submit" type="submit" value="Update Rank" class="green"/></td>
-  </tr>
 </table>
 </form>
 <?php require_once("includes/end_cpanel.php"); ?>
