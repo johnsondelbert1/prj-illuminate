@@ -54,6 +54,11 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 				}else{
 					$galleries="";
 				}
+				if(isset($_POST['forms'])&&$_POST['forms']!=""){
+					$forms=serialize($_POST['forms']);
+				}else{
+					$forms="";
+				}
 				
 				date_default_timezone_set($site_info['timezone']);
 				$date=date("Y/m/d H:i:s", time());
@@ -81,7 +86,7 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 				}
 				
 				$query = "UPDATE `pages` SET `content` = '{$content}', `name`='{$name}', `position`={$position}, `published`='{$published}', `visible`={$_POST['visible']}, 
-				`issubpage`={$issub}, `parent`={$subpg}, `galleries`='{$galleries}', `type`='{$_POST['pgtype']}', `target`='{$_POST['target']}', 
+				`issubpage`={$issub}, `parent`={$subpg}, `galleries`='{$galleries}', `forms`='{$forms}', `type`='{$_POST['pgtype']}', `target`='{$_POST['target']}', 
 				`banner`='{$banner}', `url`='{$url}', `lastedited`='{$date}', `editor`={$_SESSION['user_id']}, `horiz_menu`={$horiz_menu}, `vert_menu`={$vert_menu}, 
 				`horiz_menu_visible`={$horiz_menu_visible}, `vert_menu_visible`={$vert_menu_visible} WHERE id = {$id}";
 				
@@ -248,7 +253,10 @@ if($_GET['action']=="edit"){
 	$(document).ready(function() {
 			 $('input[id="gallall"]').click(function() {
 			 $("#gall :checkbox").attr('checked', $(this).attr('checked'));
-		});  
+		});
+			 $('input[id="formall"]').click(function() {
+			 $("#form :checkbox").attr('checked', $(this).attr('checked'));
+		});
 	 });
 </script>
 <form action="edit_page.php?<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "action=edit&&page=".$selpage['id'];}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "action=newpage";} ?>" method="post" name="editpage">
@@ -258,12 +266,12 @@ if($_GET['action']=="edit"){
         <td width="110px"><input class="green" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "submit";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newpage";} ?>" value="Save" /></td>
         <td width="110px"><input class="green" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "sandb";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newandb";} ?>" value="Save & Close" /></td>
         <td width="110px"><input class="green" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "sandnewp";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newandnewp";} ?>" value="Save & New" /></td>
-    <?php } ?> 
-    <?php if(isset($_GET['page'])){?><td width="110px"><a class="red" href="edit_page.php?action=delpage&&page=<?php echo $_GET['page']; ?>">Delete</a></td><?php } ?>
-    <?php if(check_permission("Pages","delete_pages")&&$_GET['action']=="edit"){?>
-    	<td width="110px"><a class="red" href="page_list.php">Cancel</a></td>
 	<?php } ?>
-  <td></td>
+    <?php if(check_permission("Pages","delete_pages")&&$_GET['action']=="edit"){?>
+        <?php if(isset($_GET['page'])){?><td width="110px"><a class="red" href="edit_page.php?action=delpage&&page=<?php echo $_GET['page']; ?>">Delete</a></td><?php } ?>
+    <?php } ?>
+    <td width="110px"><a class="red" href="page_list.php">Cancel</a></td>
+    <td></td>
   </tr>
 </table>
 <br />
@@ -313,35 +321,75 @@ if($_GET['action']=="edit"){
         </select>
     </td>
     <td rowspan="4">
-    <?php
-        $query="SELECT * FROM `galleries` ORDER BY `id` ASC";
-        $galleryquery=mysqli_query( $connection, $query);
-        confirm_query($galleryquery);?>
-        <table width="30%" border="0" id="gall">
-          <tr>
-            <th scope="col" style="text-align:right">Galleries:</th>
-            <th scope="col"><input type="checkbox" id="gallall"></th>
-          </tr>
-        <?php
-        while($gallery=mysqli_fetch_array($galleryquery)){
-			$checked = false;
-			if(isset($selpage['galleries'])&&$selpage['galleries']!=""){
-				$pagegalleries=unserialize($selpage['galleries']);
-				foreach($pagegalleries as $pagegalleryid){
-					if($pagegalleryid == $gallery['id']){
-						$checked = true;
-					}
-				}
-			}
-			
-			?>
-			<tr>
-				<td width="80%" style="text-align:right"><a href="edit_gallery.php?gallid=<?php echo urlencode($gallery['id']); ?>"><?php echo $gallery['name']; ?></a></td>
-				<td width="20%" style="text-align:center;"><input type="checkbox" name="galleries[]" value="<?php echo $gallery['id']; ?>" <?php if($checked == true){echo "checked";} ?> /></td>
-			</tr>
-        
-        <?php } ?>
-        </table>
+        <div id="TabbedPanels1" class="TabbedPanels">
+            <ul class="TabbedPanelsTabGroup">
+                <li class="TabbedPanelsTab" tabindex="0">Galleries</li>
+                <li class="TabbedPanelsTab" tabindex="0">Forms</li>
+            </ul>
+            <div class="TabbedPanelsContentGroup">
+                <div class="TabbedPanelsContent">
+					<?php
+                        $query="SELECT * FROM `galleries` ORDER BY `id` ASC";
+                        $galleryquery=mysqli_query( $connection, $query);
+                        confirm_query($galleryquery);?>
+                        <table width="30%" border="0" id="gall">
+                          <tr>
+                            <th scope="col" style="text-align:right">Select all:</th>
+                            <th scope="col"><input type="checkbox" id="gallall"></th>
+                          </tr>
+                        <?php
+                        while($gallery=mysqli_fetch_array($galleryquery)){
+                            $checked = false;
+                            if(isset($selpage['galleries'])&&$selpage['galleries']!=""){
+                                $pagegalleries=unserialize($selpage['galleries']);
+                                foreach($pagegalleries as $pagegalleryid){
+                                    if($pagegalleryid == $gallery['id']){
+                                        $checked = true;
+                                    }
+                                }
+                            }
+                            
+                            ?>
+                            <tr>
+                                <td width="80%" style="text-align:right"><a href="edit_gallery.php?gallid=<?php echo urlencode($gallery['id']); ?>"><?php echo $gallery['name']; ?></a></td>
+                                <td width="20%" style="text-align:center;"><input type="checkbox" name="galleries[]" value="<?php echo $gallery['id']; ?>" <?php if($checked == true){echo "checked";} ?> /></td>
+                            </tr>
+                        
+                    <?php } ?>
+                    </table>
+                </div>
+                <div class="TabbedPanelsContent">
+					<?php
+                        $query="SELECT * FROM `forms` ORDER BY `id` ASC";
+                        $formquery=mysqli_query( $connection, $query);
+                        confirm_query($formquery);
+                        ?><table width="30%" border="0" id="form">
+                          <tr>
+                            <th scope="col" style="text-align:right">Select all:</th>
+                            <th scope="col"><input type="checkbox" id="formall"></th>
+                          </tr>
+                        <?php
+                        while($form=mysqli_fetch_array($formquery)){
+                            $checked = false;
+                            if(isset($selpage['forms'])&&$selpage['forms']!=""){
+                                $pagegalleries=unserialize($selpage['forms']);
+                                foreach($pagegalleries as $pageformid){
+                                    if($pageformid == $form['id']){
+                                        $checked = true;
+                                    }
+                                }
+                            }
+                            
+                            ?>
+                            <tr>
+                                <td width="80%" style="text-align:right"><a href="edit_form.php?gallid=<?php echo urlencode($form['id']); ?>"><?php echo $form['name']; ?></a></td>
+                                <td width="20%" style="text-align:center;"><input type="checkbox" name="forms[]" value="<?php echo $form['id']; ?>" <?php if($checked == true){echo "checked";} ?> /></td>
+                            </tr>
+                    <?php } 
+                    ?></table>
+                </div>
+            </div>
+        </div>
     </td>
   </tr>
   <!--<tr>

@@ -56,6 +56,71 @@ if(($rows)!=0){
 							"banner" => $page['banner'],
 							"use_google_analytics" => 1,
 						);
+						
+						$form_validation = array();
+						
+						if($page['forms']!=""){
+							$pageforms=unserialize($page['forms']);
+							foreach($pageforms as $pg_form){
+								$query="SELECT * FROM `forms` WHERE  `id` = {$pg_form}";
+								$result=mysqli_query($connection, $query);
+								$form=mysqli_fetch_array($result);
+								
+								if(isset($_POST[$form['u_name']])){
+									//print_r($_POST);
+									$count=0;
+									$form_send = true;
+									foreach($_POST as $post_key => $post_val){
+										if($post_key != $form['u_name']){
+											$field_validators=unserialize($form['field_validators']);
+											
+											switch($field_validators[$count]){
+												case "none":
+													$form_validation[$post_key] = true;
+													break;
+												case "email":
+													if(filter_var($_POST[$post_key],FILTER_VALIDATE_EMAIL)){
+														$form_validation[$post_key] = true;
+														break;
+													}else{
+														$form_send = false;
+														$form_validation[$post_key] = false;
+														$error = 'There were errors in the form, please fix them below.';
+													}
+													break;
+												case "notempty":
+													if($_POST[$post_key]!=""){
+														$form_validation[$post_key] = true;
+														break;
+													}else{
+														$form_send = false;
+														$form_validation[$post_key] = false;
+														$error = 'There were errors in the form, please fix them below.';
+													}
+													break;	
+											}
+											$count++;
+										}
+									}
+									if($form_send == true){
+										$email_message = 'Data from form "'.$form['name'].'", submitted at '.$date.'<br/>';
+										foreach($_POST as $post_key => $post_val){
+											if($post_key != $form['u_name']){
+												$email_message .= $post_key.': <b>'.$post_val.'</b><br/>';
+											}
+										}
+										
+										$to = $form['email_to'];
+										$email_subject = '"'.$form['name'].'" form submission';
+										$headers = "From: ".$form['email_from'].PHP_EOL."\r\n";
+										$headers .= "MIME-Version: 1.0\r\n";
+										$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+										mail ( $to , $email_subject , $email_message , $headers );
+									}
+								}
+							}
+						}
+						
 						require_once("includes/begin_html.php");
 						
 						echo $page['content'];
@@ -135,6 +200,52 @@ if(($rows)!=0){
 								 ?>
 							<?php
 						break;
+					}
+				}
+				if($page['forms']!=""){
+					$pageforms=unserialize($page['forms']);
+					foreach($pageforms as $pg_form){
+						$query="SELECT * FROM `forms` WHERE  `id` = {$pg_form}";
+						$result=mysqli_query($connection, $query);
+						$form=mysqli_fetch_array($result);
+						
+						$field_names=unserialize($form['field_names']);
+						$field_types=unserialize($form['field_types']);
+						$field_descs=unserialize($form['field_descs']);
+						$field_placeholders=unserialize($form['field_placeholders']);
+						$field_maxchars=unserialize($form['field_maxchars']);
+						$field_validators=unserialize($form['field_validators']);
+						
+						$num_fields = count($field_names);
+						$count = 0;
+					
+						?>
+						<form method="post" name="<?php echo $form['u_name']; ?>">
+						<table border="1" width="100%">
+							<?php while($num_fields>$count){
+								$maxchars = intval($field_maxchars[$count]);
+							?>
+							<tr>
+								<td style="vertical-align:top;">
+								<?php echo $field_names[$count]; ?>: 
+								<?php if($field_types[$count] == "text"){?>
+									<input name="<?php echo $field_names[$count]; ?>"<?php if(isset($form_validation[$field_names[$count]])&&$form_validation[$field_names[$count]]!=true){echo ' style="border:2px solid #9F0002;"';} ?> value="<?php if(isset($_POST[$field_names[$count]])){echo $_POST[$field_names[$count]];} ?>" type="text"<?php if($field_placeholders[$count] != ""){echo ' placeholder="'.$field_placeholders[$count].'"';} ?><?php if($maxchars != ""){echo ' maxlength="'.$maxchars.'"';} ?> /><?php if(isset($form_validation[$field_names[$count]])&&$form_validation[$field_names[$count]]!=true){?><span style="border-radius:5px; background-color:#9F0002; color:#FFFFFF; padding:5px;"><span><?php if($field_validators[$count]=="email"){echo 'Invalid email';}elseif($field_validators[$count]=="notempty"){echo 'Cannot be blank';}?></span></span><?php } ?>
+									<?php }elseif($field_types[$count] == "textarea"){ ?>
+									<textarea name="<?php echo $field_names[$count]; ?>"<?php if(isset($form_validation[$field_names[$count]])&&$form_validation[$field_names[$count]]!=true){echo ' style="border:2px solid #9F0002;"';} ?> rows="15" cols="75"<?php if($field_placeholders[$count] != ""||$maxchars != ""){$placeholder = $field_placeholders[$count]; if($maxchars != ""){$placeholder.=' (Max. '.$maxchars.' characters)';} echo ' placeholder="'.$placeholder.'"';} ?><?php if($maxchars != ""){echo ' maxlength="'.$maxchars.'"';} ?>><?php if(isset($_POST[$field_names[$count]])){echo $_POST[$field_names[$count]];} ?></textarea><?php if(isset($form_validation[$field_names[$count]])&&$form_validation[$field_names[$count]]!=true){?><span style="border-radius:5px; background-color:#9F0002; color:#FFFFFF; padding:5px;"><span><?php if($field_validators[$count]=="email"){echo 'Invalid email';}elseif($field_validators[$count]=="notempty"){echo 'Cannot be blank';}?></span></span><?php } ?>
+									<?php } ?>
+								</td>
+							</tr>
+							<?php
+							$count++;
+							} ?>
+							<tr>
+								<td>
+									<input type="submit" name="<?php echo $form['u_name']; ?>" value="<?php echo $form['submit_value']; ?>" />
+								</td>
+							</tr>
+						</table>
+						</form>
+						<?php
 					}
 				}
 			}else{
