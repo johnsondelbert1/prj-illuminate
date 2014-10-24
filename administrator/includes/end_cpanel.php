@@ -9,7 +9,7 @@
     	</div>
     </div>
     <script type="text/javascript">
-    	var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {imgDown:"SpryAssets/SpryMenuBarDownHover.gif", imgRight:"SpryAssets/SpryMenuBarRightHover.gif"});
+    	var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
     </script>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function(){

@@ -10,12 +10,13 @@ if(isset($_POST['newform'])){
 	if(check_permission("Forms","add_form")){
 		if($formname=mysql_prep($_POST['formname'])!=""){
 			$formname=mysql_prep($_POST['formname']);
+			$unique_name=randstring();
 			$date=date("Y/m/d H:i:s", time());
 			
 			$query="INSERT INTO `forms` (
-				`name`, `creator`, `date_created`
+				`name`, `u_name`, `creator`, `date_created`
 			) VALUES (
-				'{$formname}', {$_SESSION['user_id']}, '{$date}')";
+				'{$formname}', '{$unique_name}', {$_SESSION['user_id']}, '{$date}')";
 			$result=mysqli_query($connection, $query);
 			confirm_query($result);
 			$query="SELECT * FROM `galleries` WHERE `name` = '{$_POST['formname']}'";
