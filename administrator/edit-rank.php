@@ -138,7 +138,7 @@ if(!empty($editing_rank_perms)){
   </tr>
   <?php }?>
   <tr>
-    <td colspan="2" align="center"><input name="submit" type="submit" value="Update Rank" class="button green"/></td>
+    <td colspan="2" align="center"><input name="submit" type="submit" value="Update Rank" class="green"/></td>
   </tr>
 </table>
 </form>

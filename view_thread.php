@@ -66,7 +66,7 @@ require_once("includes/begin_html.php");
 <h1><?php echo $thread['name']; ?></h1><br>
 <a style="text-decoration:none;" href="forums.php"><?php echo $site_info['name']; ?> Forums</a> &gt; <a style="text-decoration:none;" href="view_forum.php?forum=<?php echo $forum['id']; ?>"><?php echo $forum['name']; ?></a> &gt; <a style="text-decoration:none;" href="view_thread.php?thread=<?php echo $thread['id']; ?>"><?php echo $thread['name']; ?></a><br><br>
 <?php if(check_permission("Forum","reply_to_thread")&&$thread['locked']==0){?>
-	<a class="button green" href="new_topic.php?forum=<?php echo urlencode($forum['id'])."&&thread=".urlencode($thread['id']); ?>&amp;&amp;action=newmessage">Reply</a>
+	<a class="green" href="new_topic.php?forum=<?php echo urlencode($forum['id'])."&&thread=".urlencode($thread['id']); ?>&amp;&amp;action=newmessage">Reply</a>
 <?php } 
 	echo_page($num_pages, $current_page, "view_thread.php?thread=".$_GET['thread']);?>
   <?php
@@ -90,7 +90,7 @@ require_once("includes/begin_html.php");
                     
                     <div class="forumfooter">Posted: <?php echo date("m/d/Y h:i A" ,strtotime($forummessage['date']));?><?php if($forummessage['lasteditdate']!="0000-00-00 00:00:00"){echo ", Last Edit: ".date("m/d/Y h:i A" ,strtotime($forummessage['lasteditdate']));} ?>
                     <?php
-                        if(check_permission("Forum","edit_thread")&&$user['username']==$_SESSION['username']&&($thread['locked']==0)){?><br><a class="blue buttonsmall" href="new_topic.php?msg=<?php echo $forummessage['id']; ?>&amp;&amp;forum=<?php echo $forum['id']; ?>&amp;&amp;thread=<?php echo $thread['id']; ?>&amp;&amp;action=editpost">Edit</a>
+                        if(check_permission("Forum","edit_thread")&&$user['username']==$_SESSION['username']&&($thread['locked']==0)){?><br><a class="bluesmall" href="new_topic.php?msg=<?php echo $forummessage['id']; ?>&amp;&amp;forum=<?php echo $forum['id']; ?>&amp;&amp;thread=<?php echo $thread['id']; ?>&amp;&amp;action=editpost">Edit</a>
                     <?php } ?>
              	</div>
              </td>
@@ -103,7 +103,7 @@ require_once("includes/begin_html.php");
 	echo_page($num_pages, $current_page, "view_thread.php?thread=".$_GET['thread']);
   ?>
 <?php if(check_permission("Forum","reply_to_thread")&&$thread['locked']==0){?>
-	<a class="button green" href="new_topic.php?forum=<?php echo urlencode($forum['id'])."&&thread=".urlencode($thread['id']); ?>&amp;&amp;action=newmessage">Reply</a><br><br>
+	<a class="green" href="new_topic.php?forum=<?php echo urlencode($forum['id'])."&&thread=".urlencode($thread['id']); ?>&amp;&amp;action=newmessage">Reply</a><br><br>
 <?php } ?>
 <a style="text-decoration:none;" href="forums.php"><?php echo $site_info['name']; ?> Forums</a> &gt; <a style="text-decoration:none;" href="view_forum.php?forum=<?php echo $forum['id']; ?>"><?php echo $forum['name']; ?></a> &gt; <a style="text-decoration:none;" href="view_thread.php?thread=<?php echo $thread['id']; ?>"><?php echo $thread['name']; ?></a><br /><br />
 <?php

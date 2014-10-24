@@ -187,7 +187,7 @@ $result=mysqli_query( $connection, $query);
     <?php } ?>
     	<tr>
         	<td colspan="3"></td>
-            <td><?php if(check_permission("Galleries","delete_gallery")){?><input name="delgalleries" type="submit" value="Delete" class="button red" /><?php } ?></td>
+            <td><?php if(check_permission("Galleries","delete_gallery")){?><input name="delgalleries" type="submit" value="Delete" class="red" /><?php } ?></td>
         </tr>
     </table>
 </form>

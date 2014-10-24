@@ -271,13 +271,13 @@ if($_GET['action']=="edit"){
 <table cellpadding="0" id="sticker">
   <tr>
   	<?php if(check_permission("Pages","add_pages")){?>
-        <td width="110px"><input class="button green" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "submit";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newpage";} ?>" value="Save" /></td>
-        <td width="110px"><input class="button green" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "sandb";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newandb";} ?>" value="Save & Close" /></td>
-        <td width="110px"><input class="button green" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "sandnewp";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newandnewp";} ?>" value="Save & New" /></td>
+        <td width="110px"><input class="green" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "submit";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newpage";} ?>" value="Save" /></td>
+        <td width="110px"><input class="green" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "sandb";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newandb";} ?>" value="Save & Close" /></td>
+        <td width="110px"><input class="green" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "sandnewp";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newandnewp";} ?>" value="Save & New" /></td>
     <?php } ?> 
-    <?php if(isset($_GET['page'])){?><td width="110px"><a class="button red" href="edit_page.php?action=delpage&&page=<?php echo $_GET['page']; ?>">Delete</a></td><?php } ?>
+    <?php if(isset($_GET['page'])){?><td width="110px"><a class="red" href="edit_page.php?action=delpage&&page=<?php echo $_GET['page']; ?>">Delete</a></td><?php } ?>
     <?php if(check_permission("Pages","delete_pages")&&$_GET['action']=="edit"){?>
-    	<td width="110px"><a class="button red" href="page_list.php">Cancel</a></td>
+    	<td width="110px"><a class="red" href="page_list.php">Cancel</a></td>
 	<?php } ?>
   <td></td>
   </tr>

@@ -202,7 +202,7 @@ confirm_query($result);
     <tr>
         <th colspan="2"></th>  
         <?php if(check_permission("Users","delete_rank")){?>
-        	<th><input class="button red" type="submit" name="delrank" value="Delete Ranks" /></th>
+        	<th><input class="red" type="submit" name="delrank" value="Delete Ranks" /></th>
         <?php }?>
     </tr>
 </table>

@@ -134,9 +134,9 @@ require_once("includes/begin_html.php");
   <td>
   <table width="200" border="0">
   <tr>
-    <td><input class="button green" type="submit" name="submit" value="Save" /></td>
-    <td><a class="button red" href="blog.php?delpost=<?php echo $_GET['post']; ?>">Delete</a></td>
-    <td><a class="blue button" href="blog.php">Cancel</a></td>
+    <td><input class="green" type="submit" name="submit" value="Save" /></td>
+    <td><a class="red" href="blog.php?delpost=<?php echo $_GET['post']; ?>">Delete</a></td>
+    <td><a class="blue" href="blog.php">Cancel</a></td>
   </tr>
 </table>
   </td>
@@ -173,7 +173,7 @@ else {
   ?><p>(There are no images in this gallery)</p><?php
 }
 ?>
-<input name="delfiles" type="submit" value="Delete Selected Photos" class="button red" />
+<input name="delfiles" type="submit" value="Delete Selected Photos" class="red" />
 </div>
 </form>
 <table border="0" width="100%" border="0" style="margin-right:auto; margin-left:auto;">

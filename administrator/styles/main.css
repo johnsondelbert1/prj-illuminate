@@ -127,7 +127,7 @@ div.nav{
 	margin-left:auto;
 	margin-right:0;
 	text-align:right;
-	background-color:#F0F0F0;
+	background-color:#5677fc;
 }
 
 @media all and (max-width: 930px){
@@ -187,7 +187,8 @@ div.nav{
 }
 
 #horiz-menu li:hover > a {
-	background-color:#C1C1C1;
+	background-color:#3f51b5;
+	color: #e8eaf6;
 
 }
 
@@ -240,11 +241,12 @@ div.nav{
     white-space: nowrap;
     float: none;
     text-transform: none;
-	background-color:#F0F0F0;
+	background-color:#5677fc;
 }
 
 #horiz-menu ul a:hover {
-    background-color:#C1C1C1;
+    background-color:#3f51b5;
+	color: #e8eaf6;
 
 }
 #horiz-menu ul li:first-child > a {
@@ -629,10 +631,10 @@ select
 		padding: 0 3px 0 3px;
 
 	}
-	.red {background-color:#f36c60 !important;}
-	.blue {background-color:#91a7ff !important;}
-	.green {background-color:#42bd41 !important;}
-	input[type=submit]{background-color:#91a7ff;}
+	.red {background-color:#e94043 !important;}
+	.blue {background-color:#426FC5 !important;}
+	.green {background-color:#00897b !important;}
+	input[type=submit]{background-color:#426FC5;}
 	.red:hover {
 	  background: #c41411 !important;
 	  /*box-shadow: 0 3px 1px #237bb2;*/
@@ -649,19 +651,21 @@ select
 	  background: #3b50ce;
 	  /*box-shadow: 0 3px 1px #237bb2;*/
 	}
-/* Safari */
-/*  end */
+
+
+/* 
 ::-webkit-scrollbar {
 	width: 12px;
 	height:12px;
 }
 
 ::-webkit-scrollbar-track {
-	background: none;
+	background: #5677fc;
 }
  ::-webkit-scrollbar-thumb{
 			background-color:#999;
 		}
+*/
 #sticker {
 	width:100%;
 	background-color:#f7f7f7;
