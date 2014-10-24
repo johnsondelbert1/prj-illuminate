@@ -260,7 +260,7 @@ if($_GET['action']=="edit"){
 	 });
 </script>
 <form action="edit_page.php?<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "action=edit&&page=".$selpage['id'];}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "action=newpage";} ?>" method="post" name="editpage">
-<table cellpadding="5" id="sticker">
+<table cellpadding="0" id="sticker">
   <tr>
   	<?php if(check_permission("Pages","add_pages")){?>
         <td width="110px"><input class="green" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "submit";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newpage";} ?>" value="Save" /></td>

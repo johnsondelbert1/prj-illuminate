@@ -43,8 +43,8 @@ if(isset($_GET['success'])){
 	@import url(http://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css);
 	
 	body {
-	  background: #fff;
-	  color: #404040;
+	  background-image: url(images/blue-polygon.jpg);
+	  color: fff;
 	  font-family: 'Roboto';
 	}
 	.content {
@@ -57,27 +57,13 @@ if(isset($_GET['success'])){
 	}
 	.flat-form {
 	background-color:#f7f7f7;
-	box-shadow:0px 2px 2px rgba(0, 0, 0, 0.3);
 	-webkit-border-radius:2px;
 	border-radius:2px;
 	  padding: 40px 40px;
-	  width: 274px;
-	  height: 300px;
+	  width: 400px;
+	  height: 400px;
 	  margin:0 auto 25px;
 	  font-size:13px;
-	  
-	}
-	.flat-form img{
-	-webkit-border-radius:50%;
-	border-radius:50%;
-	height:96px;
-	width:96px;
-	padding:10px;
-	left: auto;
-	right: auto;
-	display: block;
-	vertical-align:middle;
-	margin:0 auto 10px;
 	  
 	}
 	.form-action {
@@ -85,17 +71,17 @@ if(isset($_GET['success'])){
 	  position: relative;
 	}
 	
-	.content h1 {
+	.flat-form h1 {
 	  font-size: 40px;
 	  padding-bottom: 10px;
 	}
 	@media all and (max-width: 660px){
- .content h1 {
+ .flat-form h1 {
 	  font-size: 30px;
 	}
 }
 	@media all and (max-width: 470px){
- .content h1 {
+ .flat-form h1 {
 	  font-size: 20px;
 	}
 }
@@ -114,22 +100,38 @@ if(isset($_GET['success'])){
 	  padding-left: 15px;
 	  background: #fff;
 	border-top:1px solid #a0a0a0;
-	border:1px solid #b9b9b9;
-	  color: #333;
+	border:2px solid #426FC5;
+	  color: #426FC5;
 	  outline:none;
 	  font-size:15px;
+	  font-weight:bold;
 	}
+	::-webkit-input-placeholder {
+   color: #426FC5;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: #426FC5;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: #426FC5;  
+}
+
+:-ms-input-placeholder {  
+   color: #426FC5;  
+}
 	
 	.button {
 		font-size:15px;
 		border: none;
 		display: block;
-		background: #3498db;
+		background: #426FC5;
 		height: 40px;
-		width: 231px;;
+		width: 100%;
 		color: #ffffff;
 		text-align: center;
-		border-radius: 5px;
+		border-radius: 2px;
 		/*box-shadow: 0px 3px 1px #2075aa;*/
 		-webkit-transition: all 0.15s linear;
 		  -moz-transition: all 0.15s linear;
@@ -148,49 +150,31 @@ if(isset($_GET['success'])){
 	  /*box-shadow: 0 3px 1px #0f608c;*/
 	}
 	
-	::-webkit-input-placeholder {
-	  color: #333;
-	}
-	:-moz-placeholder {
-	  /* Firefox 18- */
-	  color: #333;
-	}
-	::-moz-placeholder {
-	  /* Firefox 19+ */
-	  color: #333;
-	}
-	:-ms-input-placeholder {
-	  color: #333;
-	}
 </style>
 </head>
 <body>
 <div class="content">
-<h1>Login to <?php echo $site_info['name']; ?> CPanel</h1>
-<p>
-
-</p>
 </div>
     <div class="container">
         <div class="flat-form">
             <div id="login" class="form-action show">
             	<?php if(!empty($message)){echo $message;} ?>
-                <img src="images/avatar_2x.png" alt=""/>
+                <h1><?php echo $site_info['name']; ?></h1>
 				<form method="post" action="../login/login.php">
                 <input type="hidden" name="redirect_to" value="administrator/index.php"/>
                 <input type="hidden" name="redirect_from" value="<?=($_SERVER['PHP_SELF'])?>"/>
             		<ul>
                         <li>
-                            <input type="text" name="username" placeholder="Username" />
+                            <input type="text" name="username" placeholder="Username" tabindex="1"/>
                         </li>
                         <li>
-                            <input type="password" name="password" placeholder="Password" />
+                            <input type="password" name="password" placeholder="Password" tabindex="2"/>
                         </li>
                         <li>
-                            <input type="submit" name="submit" value="Sign in" class="button" />
+                            <input type="submit" name="submit" value="Sign in" class="button" tabindex="4"/>
                         </li>
                         <p><li>
-                            <input name="remember" type="checkbox" value="" />Remember Me<br><br>
+                            <input name="remember" type="checkbox" value="" tabindex="3"/>Remember Me<br><br>
                         </li></p>
                         
                     </ul>
