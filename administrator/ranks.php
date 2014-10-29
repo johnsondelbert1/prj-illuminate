@@ -72,12 +72,12 @@ confirm_query($result);
      });
 </script>
 <?php if(check_permission("Users","create_rank")){?>
-    <h2>Ranks</h2>
+    <h2>Create New Rank</h2>
     <br />
     <form method="post" action="ranks.php">
     <table width="100%" border="0" cellpadding="0" class="form">
       <tr>
-        <td>Name:<br/><input name="name" placeholder="Name" type="text" value="<?php if(isset($name)){echo $name;} ?>" maxlength="50" /></td>
+        <td style="text-align:center;">Name:<br/><input name="name" placeholder="Name" type="text" value="<?php if(isset($name)){echo $name;} ?>" maxlength="50" /></td>
       </tr>
       <tr>
         <td colspan="2" align="center"><input name="submit" type="submit" value="Create New Rank" class="submit"/></td>

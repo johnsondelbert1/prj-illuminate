@@ -14,7 +14,7 @@ require_once("includes/functions.php");
 		$forumname="";
 		$forumdesc="";
 	}elseif(isset($_POST['edit'])){
-		$query="UPDATE `forums` SET `name` = '{$_POST['forumna me']}', `description`='{$_POST['forumdesc']}' WHERE `id` ={$_GET['forumid']}";
+		$query="UPDATE `forums` SET `name` = '{$_POST['forumname']}', `description`='{$_POST['forumdesc']}' WHERE `id` ={$_GET['forumid']}";
 		$result=mysqli_query($connection, $query);
 		$success="Forum successfully edited!";
 		$forumname="";
@@ -84,7 +84,7 @@ require_once("includes/begin_html.php");
 				<td align="center" style="padding:10px; font-size:18px;">
                     Forum Name: <input type="text" name="forumname" maxlength="50" value="<?php echo $editing_forum['name']; ?>"/>
                     Description: <input type="text" name="forumdesc" value="<?php echo $editing_forum['description']; ?>"/>
-                    <input type="submit" name="edit" value="Edit Forum" />
+                    <input type="submit" name="edit" value="Save Edit" />
                 </td>
 			</tr>
 		  </table>
@@ -119,8 +119,6 @@ require_once("includes/begin_html.php");
     <?php } ?>
   </tr>
   <?php
-
-
 	
     $query="SELECT * 
 		FROM  `forums` 
@@ -148,9 +146,12 @@ require_once("includes/begin_html.php");
                     <td><b><?php echo $threadcount; ?></b> Topics<br />
                     <b><?php echo $messagecount; ?></b> Replies</td>
                     <td><?php if($threadcount != 0){echo date("m/d/Y h:i A" ,strtotime($messagedate['date']));}else{echo "N/A";} ?></td>
-                    
-						<?php if(check_permission("Forum","edit_forum")){?><td><a class="blue" href="forums.php?action=editforum&&forumid=<?php echo urlencode($forum['id']);?>">Edit</a></td><?php } ?>
-                    	<?php if(check_permission("Forum","add_delete_forum")){?><td><a class="red" href="forums.php?action=delforum&&forumid=<?php echo urlencode($forum['id']);?>">Delete</a></td><?php } ?>
+                    <?php if(check_permission(array("Forum;add_delete_forum","Forum;edit_forum",))){?>
+                    <td style="text-align:center;">
+						<?php if(check_permission("Forum","edit_forum")){?><a class="blue" href="forums.php?action=editforum&&forumid=<?php echo urlencode($forum['id']);?>">Edit</a><?php } ?>
+                    	<?php if(check_permission("Forum","add_delete_forum")){?><a class="red" href="forums.php?action=delforum&&forumid=<?php echo urlencode($forum['id']);?>">Delete</a><?php } ?>
+                    </td>
+                    <?php } ?>
                 </tr>
 				<?php
 		}

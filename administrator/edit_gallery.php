@@ -11,6 +11,16 @@ $gall = mysqli_fetch_array($result);
 $output_dir="../galleries/".$gall['name']."/gallery/";
 $output_thumbs="../galleries/".$gall['name']."/gallery-thumbs/";
 
+if(!file_exists("../galleries/".$gall['name'])){
+	mkdir("../galleries/".$gall['name']);
+}
+if(!file_exists("../galleries/".$gall['name']."/gallery/")){
+	mkdir("../galleries/".$gall['name']."/gallery/");
+}
+if(!file_exists("../galleries/".$gall['name']."/gallery-thumbs/")){
+	mkdir("../galleries/".$gall['name']."/gallery-thumbs/");
+}
+
 if(isset($_POST['delfiles'])){
 	function del_file($file){
 		global $output_dir;
@@ -89,7 +99,6 @@ confirm_query($subgalleryquery);
 	);
 	require_once("includes/begin_cpanel.php");
 ?>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
     <script type="text/javascript">
 	<!-- jQuery for seven sets of "Select All" checkboxes -->
 	$(document).ready(function() {
@@ -98,13 +107,19 @@ confirm_query($subgalleryquery);
 		});  
 	 });
 	</script>
+<form method="post" action="edit_gallery.php?gallid=<?php echo $_GET['gallid']; ?>">
+<table cellpadding="5" id="sticker">
+  <tr>
+    <td width="110px"><input name="submit" type="submit" value="Update Gallery" class="green"/></td>
+    <td width="110px"><a class="red" href="gallery-list.php">Cancel</a></td>
+  <td></td>
+  </tr>
+</table>
 <table width="100%" border="0" style="margin-right:auto; margin-left:auto;">
 <tr>
 <td width="50%">
-<h2>Edit Gallery</h2>
-<form method="post" action="edit_gallery.php?gallid=<?php echo $_GET['gallid']; ?>">
-Name: <input name="galname" type="text" value="<?php echo $gallery['name']; ?>" maxlength="100" />
-        <br>
+<h1>Gallery Info</h1>
+Name: <input name="galname" type="text" value="<?php echo $gallery['name']; ?>" maxlength="100" /><br>
 <table id="gall">
           <tr>
           <th><h2>Include these galleries</h2></th>
@@ -133,21 +148,21 @@ Name: <input name="galname" type="text" value="<?php echo $gallery['name']; ?>" 
         <?php }
    } ?>
         </table>
-        <input name="submit" type="submit" value="Update Gallery" />
 </form>
 </td>
 </tr>
 <tr>
 <td width="100%">
+<h1>Gallery Images</h1>
 <form method="post">
-    <div align="center" style="text-align:center; width:100%; padding:28px;">
+    <div align="center" style="text-align:center; width:100%;">
     
     <?php
     /** settings **/
     $images_dir = "../galleries/".$gallery['name']."/gallery/";
     $thumbs_dir = "../galleries/".$gallery['name']."/gallery-thumbs/";
     $thumbs_width = 100;
-    $images_per_row = 12;
+    $images_per_row = 15;
     
     /** generate photo gallery **/
     $image_files = get_files($images_dir);
@@ -178,6 +193,7 @@ Name: <input name="galname" type="text" value="<?php echo $gallery['name']; ?>" 
 </td>
 </tr>
 </table>
+<h1>Upload Images</h1>
 <table border="0" width="100%" border="0" style="margin-right:auto; margin-left:auto;">
   <tr>
     <td></td>

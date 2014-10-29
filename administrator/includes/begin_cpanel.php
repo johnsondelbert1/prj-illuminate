@@ -32,10 +32,10 @@ if(isset($_GET['message'])){
     <!-- Loading Flat UI -->
     <!--<link href="../styles/drop/flat-ui.css" rel="stylesheet">-->
     
-    <link rel="shortcut icon" href="../images/favicon.png">
+    <link rel="shortcut icon" href="images/favicon.png" />
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>-->
     <script type="text/javascript" src="../jscolor/jscolor.js"></script>
-    <script src="jscripts/SpryMenuBar.js" type="text/javascript"></script>
+    <script src="jscripts/SpryTabbedPanels.js" type="text/javascript"></script>
     <link href="../styles/uploadfilemulti.css" rel="stylesheet">
     <link href="styles/main.css" rel="stylesheet" type="text/css" />
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
@@ -83,6 +83,11 @@ if(isset($_GET['message'])){
                     <?php if(check_permission(array("Users;create_rank","Users;edit_rank","Users;delete_rank",))){?>
                     <li class="menuitem">
                     	<a href="ranks.php">Ranks</a>
+                    </li>
+                    <?php } ?>
+                    <?php if(check_permission(array("Forms;create_form","Forms;edit_form","Forms;delete_form",))){?>
+                    <li class="menuitem">
+                    	<a href="form-list.php">Forms</a>
                     </li>
                     <?php } ?>
                     <?php if(check_permission(array("Website;edit_site_settings","Website;edit_site_colors","Website;upload_favicon_banner","Website;edit_google_analytics",))){?>
@@ -136,6 +141,24 @@ if(isset($_GET['message'])){
                 <h1><span class="<?php echo $pgsettings['icon']; ?>"></span>   <?php echo $pgsettings['title']; ?></h1>
             </div>
             <div class="content" id="contentarea">
+            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+            <script type="text/javascript">
+            	 <!-- jQuery Sticky Menu -->
+                $(document).ready(function() {
+                    var s = $("#sticker");
+                    var pos = s.position();                    
+                    $(window).scroll(function() {
+                        var windowpos = $(window).scrollTop();
+                        if (windowpos >= pos.top) {
+                            s.addClass("stick");
+                            $('.content').css("padding-top","58px");
+                        } else {
+                            s.removeClass("stick");
+                            $('.content').css("padding-top","5px");
+                        }
+                    });
+                });
+			</script>
             <?php if(!empty($error)){echo "<h3 class=\"error\">".$error."</h3>";} ?>
 			<?php if(!empty($success)){echo "<h3 class=\"success\">".$success."</h3>";} ?>
 			<?php if(!empty($message)){echo "<h3 class=\"message\">".$message."</h3>";} ?>

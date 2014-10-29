@@ -90,7 +90,7 @@ if(isset($_POST['submit'])){
         <th scope="col">Username</th>
         <th scope="col">Email</th>
         <th scope="col">Password</th>
-        <th scope="col">Confirm</th>
+        <th scope="col">Confirm Password</th>
         <th scope="col">Rank</th>
       </tr>
       <tr>
@@ -149,7 +149,7 @@ if(isset($_POST['submit'])){
       <tr>
         <th colspan="5"></th> 
         <?php if(check_permission("Users","delete_users")){?>
-        	<th width="10%"><input class="red" type="submit" name="deluser" value="Delete Account" /></th>
+        	<th width="10%"><input class="red" type="submit" name="deluser" value="Delete Accounts" /></th>
         <?php } ?>
       </tr>
     </table>
