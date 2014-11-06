@@ -1,4 +1,4 @@
-                    <div style="width:100%; height:50px; background-color:#D3D3D3; color:#5A5A5A; padding:10px; margin-left:-10px; margin-top:20px;">
+                    <div id="footer">
                         <div style="float:left; text-align:left;">
                             Project Illuminate by <a href="http://www.secondgenerationdesign.com" target="_blank">Second Gen Design</a>, Copyright © 2011-<?php echo date("Y"); ?>.<br/>
                             Version <?php echo $site_info['version']; ?>

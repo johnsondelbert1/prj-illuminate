@@ -204,7 +204,7 @@ function check_login($cpanel = false){
 	<?php }?></p>
 <?php }
 
-function gallery($images_dir, $thumbs_dir, $thumbs_width, $images_per_row, $gallname = "gall", $num_images = false){?>
+function gallery($images_dir, $thumbs_dir, $thumbs_width, $thumbs_height, $gallname = "gall", $num_images = false){?>
 <div align="center" style="text-align:center; width:100%; padding:4px; margin-bottom:10px;">
     <?php
     /** generate photo gallery **/
@@ -224,17 +224,15 @@ function gallery($images_dir, $thumbs_dir, $thumbs_width, $images_per_row, $gall
 					$extension = get_file_extension($thumbnail_image);
 					$extension = strtolower($extension);
 					if($extension) {
-						make_thumb($images_dir.$file,$thumbnail_image,$thumbs_width,$extension);
+						make_thumb($images_dir.$file,$thumbnail_image,$thumbs_width,$thumbs_height,$extension);
 					}
 				}?>
-				<a href="<?php echo $images_dir.$file; ?>" rel="prettyPhoto[<?php echo $gallname; ?>]" title="<?php echo $file; ?>" class="photo-link"><img src="<?php echo $thumbnail_image;?>" width="100" height="75" /></a>
-				<?php if($index % $images_per_row == 0) { ?>
-					<div class="clear"></div><?php
-				}
-			}?>
-				<div class="clear"></div><?php
-			}else{?>
-		
+				<a href="<?php echo $images_dir.$file; ?>" rel="prettyPhoto[<?php echo $gallname; ?>]" title="<?php echo $file; ?>" class="photo-link"><img src="<?php echo $thumbnail_image;?>" style="width:<?php echo $thumbs_width; ?>px; height:<?php echo $thumbs_height; ?>px;" /></a>
+			<?php
+            }
+			?><div class="clear"></div><?php
+		}else{?>
+			[No images in this gallery]
 		<?php
 		}
 	}else{?>
@@ -449,7 +447,7 @@ function nav($position, $pgselection){
             while($page=mysqli_fetch_array($result)){
                 if($page['issubpage']==0){ $lastmainpage=$page['id'];?>
                 <li style="min-width:<?php echo $buttonwidth; ?>%;"<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><a style="min-width:<?php echo $buttonwidth; ?>%;" href="<?php
-                        if($page['type']=='Custom'){
+                        if($page['type']=='Custom' || $page['type']=='Staff'){
                             ?>index.php?page=<?php echo urlencode($page['name']);
                         }elseif($page['type']=='Blog'){
                             ?>blog.php<?php
@@ -467,7 +465,7 @@ function nav($position, $pgselection){
                         <?php while($subpage=mysqli_fetch_array($subpgresult)){?>
                             <li style="width:100%;"<?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>>
                                 <a href="<?php
-                                    if($subpage['type']=='Custom'){
+                                    if($subpage['type']=='Custom' || $page['type']=='Staff'){
                                         ?>index.php?page=<?php echo urlencode($subpage['name']);
                                     }elseif($subpage['type']=='Blog'){
                                         ?>blog.php<?php
@@ -546,7 +544,7 @@ function echo_page($num_pages, $current_page, $url){
 }
 
 /* function:  generates thumbnail */
-function make_thumb($src,$dest,$desired_width,$extention) {
+function make_thumb($src,$dest,$desired_width,$desired_height,$extention) {
   /* read the source image */
   if($extention=="jpg" || $extention=="jpeg"){
   	$source_image = imagecreatefromjpeg($src);
@@ -558,7 +556,7 @@ function make_thumb($src,$dest,$desired_width,$extention) {
   $width = imagesx($source_image);
   $height = imagesy($source_image);
   /* find the "desired height" of this thumbnail, relative to the desired width  */
-  $desired_height = 100;
+  $desired_height = $desired_height;
   /* create a new, "virtual" image */
   $virtual_image = imagecreatetruecolor($desired_width,$desired_height);
   /* copy source image at a resized size */

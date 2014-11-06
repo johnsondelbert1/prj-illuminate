@@ -69,6 +69,16 @@ div.content a{
 div.content a:hover{
 	color: #646464;
 }
+div.content h1{
+	margin-top:10px;
+	margin-bottom:10px;
+	margin-left:-10px;
+	margin-right:-10px;
+	background-color:#B5D4FF;
+}
+div.content h1:nth-of-type(1){
+	margin-top:-10px;
+}
 div.profile-content{
 	width:100%;
 	min-height:650px;
@@ -109,14 +119,23 @@ div.banner
 	height:200px;
 }
 
-.footer
+#footer
 {
-	width:960px;
-	height:35px;
-	right:0;
-	background-color:#666;
-	padding:20px;
-	margin-bottom:10px;
+	width:100%;
+	height:50px;
+	background-color:#5677fc;
+	color:#FFFFFF;
+	padding:10px;
+	margin-left:-10px;
+	margin-right:-10px;
+	margin-top:20px;
+	-webkit-box-shadow: inset 0px 3px 5px 0px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    inset 0px 3px 5px 0px rgba(50, 50, 50, 0.75);
+	box-shadow:         inset 0px 3px 5px 0px rgba(50, 50, 50, 0.75);
+}
+
+#footer a{
+	color:#FFFFFF;	
 }
 
 /*Menu*/
@@ -214,7 +233,7 @@ div.nav{
 
 #horiz-menu ul ul {
     top: 0;
-    left: 150px;
+    left: 110px;
     margin: 0 0 0 20px;
     _margin: 0; /*IE6 only*/ 
 }
@@ -235,7 +254,6 @@ div.nav{
 #horiz-menu ul a {
 	padding-top:10px;
 	width:inherit;
-	height:40px;
     _height: 10px; /*IE6 only*/
     display: block;
     white-space: nowrap;
@@ -265,6 +283,7 @@ div.nav{
     top: 50%;
     margin-top: -6px;
     border-left: 0; 
+	margin-left:-40px; 
 }
 
 #horiz-menu ul li:first-child a:hover:after {
@@ -274,11 +293,10 @@ div.nav{
 
 #horiz-menu ul ul li:first-child a:hover:after {
     border-right-color: #0299d3; 
-    border-bottom-color: transparent;   
+    border-bottom-color: transparent;  
 }
 
 #horiz-menu ul li:last-child > a {
-	
 }
 /* End Horizontal Nav Menu */
 
@@ -673,7 +691,7 @@ select
 	border-radius:2px;
 	transition:all 200ms;
 	-webkit-transition:all 200ms;
-
+	margin-bottom:20px;
 }
 #sticker tr td{
 	padding:1px;
@@ -779,6 +797,28 @@ span.galleryImage input[type=checkbox]:checked {
     opacity: 1;
     height:50%;
     width:50%;
+    -webkit-transition: all 0.5s ease-in-out;
+}span.galleryImage {
+    display: inline-block;
+    position: relative;
+    border: 0px solid #f90;
+}
+
+span.galleryImage input[type=checkbox] {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    opacity: 0;
+    -webkit-transition: all 0.5s ease-in-out;
+}
+
+span.galleryImage:hover input[type=checkbox],
+span.galleryImage input[type=checkbox]:checked {
+    top: 5%;
+    left: 5%;
+    opacity: 1;
+    height:40%;
+    width:40%;
     -webkit-transition: all 0.5s ease-in-out;
 }
 /* SpryTabbedPanels.css - version 0.6 - Spry Pre-Release 1.6.1 */
