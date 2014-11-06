@@ -307,7 +307,7 @@ if($_GET['action']=="edit"){
     <td align="right"><b>Page Type:</b></td>
     <td>
 		<?php
-            $types = array('Custom','Blog','Forum','Link');
+            $types = array('Custom','Blog','Forum','Link', 'Staff');
         ?>
         <select name="pgtype" onchange="disable(this)">
         <?php
@@ -437,7 +437,7 @@ if($_GET['action']=="edit"){
         } ?>
         </select>
     </td>
-    <td align="right"><b>Banner:</b></td>
+    <td align="right"><b>Show Banner:</b></td>
     <td>
     	<input type="checkbox" name="banner" <?php if(isset($_GET['page'])&&$selpage['banner']==1||$_GET['action']=="newpage"){echo "checked ";} ?>/>
     </td>

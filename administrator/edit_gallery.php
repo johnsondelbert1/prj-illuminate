@@ -106,6 +106,17 @@ confirm_query($subgalleryquery);
 			 $("#gall :checkbox").attr('checked', $(this).attr('checked'));
 		});  
 	 });
+	 
+	var cbcfn = function(e) {
+		if (e.target.tagName.toUpperCase() != "INPUT") {
+			var $tc = $(this).parent().find('input:checkbox:first'),
+				tv = $tc.attr('checked');
+			$tc.attr('checked', !tv);
+		}
+	};
+	
+	$('.galleryImage').live('click', cbcfn);
+
 	</script>
 <form method="post" action="edit_gallery.php?gallid=<?php echo $_GET['gallid']; ?>">
 <table cellpadding="5" id="sticker">
@@ -152,16 +163,17 @@ Name: <input name="galname" type="text" value="<?php echo $gallery['name']; ?>" 
 </td>
 </tr>
 <tr>
-<td width="100%">
+<td width="100%" style="text-align:center;">
 <h1>Gallery Images</h1>
 <form method="post">
-    <div align="center" style="text-align:center; width:100%;">
+    <div align="center" style="text-align:center; width:100%; margin-left:auto; margin-right:auto;">
     
     <?php
     /** settings **/
     $images_dir = "../galleries/".$gallery['name']."/gallery/";
     $thumbs_dir = "../galleries/".$gallery['name']."/gallery-thumbs/";
-    $thumbs_width = 100;
+    $thumbs_width = 200;
+	$thumbs_height = $thumbs_width;
     $images_per_row = 15;
     
     /** generate photo gallery **/
@@ -175,13 +187,13 @@ Name: <input name="galname" type="text" value="<?php echo $gallery['name']; ?>" 
           $extension = get_file_extension($thumbnail_image);
 		  $extension = strtolower($extension);
           if($extension) {
-            make_thumb($images_dir.$file,$thumbnail_image,$thumbs_width,$extension);
+            make_thumb($images_dir.$file,$thumbnail_image,$thumbs_width,$thumbs_height,$extension);
           }
         }?>
-        <div class="photo-link"><span class="galleryImage"><img src="<?php echo $thumbnail_image; ?>"  width="50" /><input type="checkbox" name="files[]" value="<?php echo $file; ?>" /><input name="delete_CheckBox" type="hidden" value="false" /></span></div><?php
-        if($index % $images_per_row == 0) { ?><div class="clear"></div><?php }
+        <div class="photo-link"><span class="galleryImage"><img src="<?php echo $thumbnail_image; ?>" style="width:150px; height:150px;" /><input type="checkbox" name="files[]" value="<?php echo $file; ?>" /><input name="delete_CheckBox" type="hidden" value="false" /></span></div>
+        <?php
       }
-      ?> <div class="clear"></div><?php
+      ?><div class="clear"></div><?php
     }
     else {
       ?><p>(There are no images in this gallery)</p><?php

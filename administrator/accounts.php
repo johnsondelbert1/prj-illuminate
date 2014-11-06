@@ -81,9 +81,7 @@ if(isset($_POST['submit'])){
      });
 </script>
 <?php if(check_permission("Users","add_users")){?>
-    <h2>Add New Account</h2>
-    
-    <br />
+    <h1>Add New Account</h1>
     <form method="post" action="accounts.php">
     <table width="100%" border="0" cellpadding="0" class="form" style="text-align:center;">
         <tr>
@@ -112,8 +110,7 @@ if(isset($_POST['submit'])){
     </table>
     </form><br />
 <?php } ?>
-<h2>Account List</h2>
-<br />
+<h1>Account List</h1>
 <form method="post" action="accounts.php">
     <table width="100%" border="0" cellspacing="0" cellpadding="0" id="acc" style="text-align:center;">
       <tr>

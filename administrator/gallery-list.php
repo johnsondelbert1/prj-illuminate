@@ -132,13 +132,13 @@ $result=mysqli_query( $connection, $query);
      });
 </script>
 <?php if(check_permission("Galleries","add_gallery")){?>
-<h2>Add New Gallery</h2>
+<h1>Add New Gallery</h1>
 <form method="post" action="gallery-list.php">
     Name: <input name="galname" type="text" value="<?php if(isset($_POST['galname'])){echo $_POST['galname'];} ?>" maxlength="100" />
     <input name="newgal" type="submit" value="Add Gallery" />
 </form>
 <?php } ?>
-<h2>Gallery List</h2>
+<h1>Gallery List</h1>
 <form method="post" action="gallery-list.php">
     <table width="90%" style="text-align:left;" class="list" border="0" cellspacing="0" id="gall">
         <tr>

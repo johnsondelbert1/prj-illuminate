@@ -101,14 +101,14 @@ if(isset($_POST['deletefolder'])){
      });
 </script>
 <?php if(check_permission("Uploading","create_folders")){?>
-<h2>Create New Folder</h2>
+<h1>Create New Folder</h1>
 <br />
 <form action="upload-files.php" method="post">
     <input name="name" type="text" value="<?php if(isset($_POST['name']))echo $_POST['name']; ?>" maxlength="128" />
     <input name="newfolder" type="submit" value="Create new folder" />
 </form>
 <?php } ?>
-<h2>Folder List</h2>
+<h1>Folder List</h1>
 <?php $dirs = array_filter(glob('../uploads/*'), 'is_dir'); ?>
 
 <form method="post" action="upload-files.php">

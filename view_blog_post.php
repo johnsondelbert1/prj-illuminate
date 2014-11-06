@@ -10,7 +10,7 @@ if(isset($_GET['post'])&&$_GET['post']!=''){
 	redirect_to("blog.php");
 }
 
-$query="SELECT * FROM `pages` WHERE`type` 'Blog' ";
+$query="SELECT * FROM `pages` WHERE `type` = 'Blog' ";
 $result_page_prop=mysqli_query( $connection, $query);
 $page_properties = mysqli_fetch_array($result_page_prop);
 
@@ -72,7 +72,7 @@ require_once("includes/begin_html.php");
                 </tr>
                       <tr>
                         <td colspan="2">
-                        	<?php gallery("blog_galleries/".$post['id']."/gallery/", "blog_galleries/".$post['id']."/gallery-thumbs/", 100, 8);?>
+                        	<?php gallery("blog_galleries/".$post['id']."/gallery/", "blog_galleries/".$post['id']."/gallery-thumbs/", 100, 100);?>
                         </td>
                     </tr>
             </table>
