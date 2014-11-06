@@ -96,7 +96,8 @@ $pgsettings = array(
 	"use_google_analytics" => 1,
 );
 require_once("includes/begin_html.php");
-?>
+
+?><script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript" src="tinymce/js/tinymce/tinymce.min.js"></script>
 <script type="text/javascript">
 	tinymce.init({
@@ -122,12 +123,16 @@ require_once("includes/begin_html.php");
 			{title: 'Test template 2', content: 'Test 2'}
 		]
 	});
-	function confirmdelete(file){
-		var ans = confirm("Are you sure you want to delete \""+file+"\" ?");
-		if (ans==true){
-			window.location = "edit_blog_post.php?post=<?php echo $_GET['post']; ?>&action=del&img=" + file;
+
+	var cbcfn = function(e) {
+		if (e.target.tagName.toUpperCase() != "INPUT") {
+			var $tc = $(this).find('input:checkbox:first'),
+				tv = $tc.attr('checked');
+			$tc.attr('checked', !tv);
 		}
-	}
+	};
+	
+	$('.photo-link').live('click', cbcfn);
 </script>
 <h1 id="editheader">Editing: "<?php echo $blog['title']; ?>"</h1>
 <form action="edit_blog_post.php?post=<?php echo $_GET['post'];?>" method="post" name="editpage">
@@ -158,26 +163,28 @@ require_once("includes/begin_html.php");
 /** settings **/
 $images_dir = "blog_galleries/".$blog['id']."/gallery/";
 $thumbs_dir = "blog_galleries/".$blog['id']."/gallery-thumbs/";
-$thumbs_width = 100;
-$images_per_row = 6;
+$thumbs_width = 200;
+$thumbs_height = $thumbs_width;
+$images_per_row = 15;
 
 /** generate photo gallery **/
 $image_files = get_files($images_dir);
 if(count($image_files)) {
   $index = 0;
   foreach($image_files as $index=>$file) {
-    $index++;
-    $thumbnail_image = $thumbs_dir.$file;
-    if(!file_exists($thumbnail_image)) {
-      $extension = get_file_extension($thumbnail_image);
-      if($extension) {
-        make_thumb($images_dir.$file,$thumbnail_image,$thumbs_width,$extension);
-      }
-    }?>
-    <div class="photo-link"><img src="<?php echo $thumbnail_image; ?>"  width="50" /><input type="checkbox" name="files[]" value="<?php echo $file; ?>" /></div><?php
-    if($index % $images_per_row == 0) { ?><div class="clear"></div><?php }
+	$index++;
+	$thumbnail_image = $thumbs_dir.$file;
+	if(!file_exists($thumbnail_image)) {
+	  $extension = get_file_extension($thumbnail_image);
+	  $extension = strtolower($extension);
+	  if($extension) {
+		make_thumb($images_dir.$file,$thumbnail_image,$thumbs_width,$thumbs_height,$extension);
+	  }
+	}?>
+	<div class="photo-link"><span class="galleryImage"><img src="<?php echo $thumbnail_image; ?>" style="width:150px; height:150px;" /><input type="checkbox" name="files[]" value="<?php echo $file; ?>" /><input name="delete_CheckBox" type="hidden" value="false" /></span></div>
+	<?php
   }
-  ?> <div class="clear"></div><?php
+  ?><div class="clear"></div><?php
 }
 else {
   ?><p>(There are no images in this gallery)</p><?php

@@ -58,11 +58,18 @@ if(isset($_GET['message'])){
                     <?php if(check_permission(array("Pages;add_pages","Pages;edit_pages","Pages;delete_pages",))){?>
                     <li class="menuitem">
                     	<a href="page_list.php">Pages</a>
-                        <?php if(check_permission("Pages","add_pages")){?>
                         <ul>
-                        	<a href="edit_page.php?action=newpage">Add Pages</a>
+                        	<?php if(check_permission("Pages","add_pages")){?>
+                            <li>
+                            	<a href="edit_page.php?action=newpage">Add Pages</a>
+                                <ul>
+                                	<li><a href="#">lol</a></li>
+                                </ul>
+                            </li><?php } ?>
+                            <?php if(check_permission("Pages","edit_pages")){?><li><a href="staff-list.php">Staff</a></li><?php } ?>
+                            <li><a href="edit-slider.php">Slider</a></li>
                         </ul>
-                        <?php } ?>
+                        
                     </li>
                     <?php } ?>
                     <?php if(check_permission(array("Galleries;add_gallery","Galleries;edit_gallery","Galleries;delete_gallery","Galleries;rename_gallery"))){?>

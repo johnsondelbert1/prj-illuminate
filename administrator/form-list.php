@@ -79,13 +79,13 @@ $result=mysqli_query( $connection, $query);
      });
 </script>
 <?php if(check_permission("Forms","add_form")){?>
-<h2>Add New Form</h2>
+<h1>Add New Form</h1>
 <form method="post">
     Name: <input name="formname" type="text" value="<?php if(isset($_POST['galname'])){echo $_POST['galname'];} ?>" maxlength="100" />
     <input name="newform" type="submit" value="Add Form" />
 </form>
 <?php } ?>
-<h2>Form List</h2>
+<h1>Form List</h1>
 <form method="post">
     <table width="90%" style="text-align:left;" class="list" border="0" cellspacing="0" id="gall">
         <tr>

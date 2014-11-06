@@ -136,7 +136,13 @@ if (mysqli_num_rows($result)!=0){
 						  </tr>
 						  <tr>
 							<td colspan="2">
-								<?php gallery("blog_galleries/".$post['id']."/gallery/", "blog_galleries/".$post['id']."/gallery-thumbs/", 100, 6, $gall_num, 6);
+								<?php
+								$i = 0;
+								$files = glob("blog_galleries/".$post['id']."/gallery/" . "*");
+								if ($files){
+									$i = count($files);
+								}
+								if($i>0){gallery("blog_galleries/".$post['id']."/gallery/", "blog_galleries/".$post['id']."/gallery-thumbs/", 100, 100, $gall_num, 6);}
 								$gall_num++;?>
 							</td>
 						</tr>

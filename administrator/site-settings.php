@@ -220,6 +220,7 @@ $result_pages=mysqli_query($connection, $query);
 	});
 </script>
 <?php if(check_permission("Website","edit_site_settings")){ ?>
+<h1>Site Data</h1>
 <form method="post" action="site-settings.php">
 <table width="75%" border="0"  style="margin-left:auto; margin-right:auto;">
   <tr>
@@ -287,7 +288,7 @@ $result_pages=mysqli_query($connection, $query);
 </form>
 <?php } ?>
 <?php if(check_permission("Website","edit_site_colors")){ ?>
-<br><h2>Website Colors</h2>
+<h1>Website Colors</h1>
 <select onchange="chngcolor(this)">
 	<option>Red (Dark)</option>
    	<option>Red (Light)</option>
@@ -316,8 +317,8 @@ $result_pages=mysqli_query($connection, $query);
 </form>
 <?php } ?>
 <?php if(check_permission("Website","upload_favicon_banner")){ ?>
+<h1>Upload and Delete Banners</h1>
 <form method="post">
-    <h2>Upload and Delete Banners</h2>
     <table id="files">
       <tr>
         <th scope="col" width="45%">Banner filename</th>
@@ -353,15 +354,15 @@ $result_pages=mysqli_query($connection, $query);
 	<input type="file" name="file" id="file" />
 	<input name="uploadbanner" type="submit" value="Upload a banner (2MB max)" />
 </form>
-<h2>Upload Favicon</h2>
+<h1>Upload Favicon</h1>
 <form method="post" enctype="multipart/form-data">
 	<input type="file" name="file" id="file" />
 	<input name="uploadfavicon" type="submit" value="Upload a favicon (128KB max)" />
 </form>
 <?php } ?>
   <?php if(check_permission("Website","edit_google_analytics")){ ?>
+  <h1>Google Analytics</h1>
   <form method="post" action="site-settings.php">
-  	<h2>Google Analytics</h2>
     Enabled: <input name="analyticsenabled" type="checkbox"<?php if($site['g_analytics_enabled']){echo  "checked";} ?> /><br>
   	Google Analytics Code:<br>
 	<textarea name="analyticscode" id="analytics" rows="15" cols="80"><?php echo $site['g_analytics_code']; ?></textarea><br>

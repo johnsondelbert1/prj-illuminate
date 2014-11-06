@@ -744,7 +744,38 @@ div.profile{
 	-moz-box-shadow:    inset 0 0 10px #000000;
 	-webkit-box-shadow: inset 0 0 10px #000000;
 	box-shadow:         inset 0 0 10px #000000;
-	}
+}
+div.staffBlock{
+	margin:10px;
+	padding:10px;
+	display:block;
+	width:200px;
+	height:150px;
+	float:left;
+	background-color:#404040;
+	border-radius:5px;
+	text-decoration:none;
+	text-align:center;
+	cursor:pointer;
+	transition:all;
+	transition-duration:0.2s;
+}
+div.staffBlock:hover{
+	background-color:#666666;
+}
+div.staffBlock span:nth-child(1){
+	display:block;
+	margin-bottom:5px;
+	width:100%;
+	height:120px;
+	line-height:120px;
+	vertical-align:middle;
+}
+div.staffBlock span:nth-child(2){
+	display:block;
+	width:100%;
+	height:30px;
+}
 #nav{position: relative; right:-5%; padding:0; margin:0px auto; text-align:center;}
 #nav .clear{clear:both;}
 #nav ul{padding:0 0 0 5px; margin:0; list-style:none; margin:0px auto; text-align:left; width:100%;}
@@ -763,6 +794,49 @@ ul{
 }
 .photo-link:hover{
 }
+
+span.tooltips {
+  position: relative;
+  display:inline;
+}
+span.tooltips span {
+  position: absolute;
+  width:auto;
+  min-width:250px;
+  padding-right:5px;
+  padding-left:5px;
+  padding-top:2px;
+  padding-bottom:2px;
+  color: #FFFFFF;
+  background: #000000;/* The Fallback */;
+  background: rgba(0, 0, 0, 0.75);
+  height: auto;
+  line-height: 25px;
+  text-align: center;
+  visibility: hidden;
+  border-radius: 3px;
+}
+span.tooltips span:after {
+  content: '';
+  position: absolute;
+  top: 0%;
+  right: 100%;
+  margin-top: 8px;
+  width: 0; height: 0;
+  border-right: 8px solid rgba(0, 0, 0, 0.75);
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+}
+span:hover.tooltips span {
+  visibility: visible;
+  opacity: 1;
+  left: 100%;
+  top: 50%;
+  margin-top: -12px;
+  margin-left: 10px;
+  z-index: 999;
+}
+
 input.button{
 	background-color:#666666;
 	border:2px solid #222222;
@@ -1025,6 +1099,51 @@ form input[type=textarea]
 	border:none;
 	outline:none;
 }
+span.galleryImage {
+    display: inline-block;
+    position: relative;
+    border: 0px solid #f90;
+}
+
+span.galleryImage input[type=checkbox] {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    opacity: 0;
+    -webkit-transition: all 0.5s ease-in-out;
+}
+
+span.galleryImage:hover input[type=checkbox],
+span.galleryImage input[type=checkbox]:checked {
+    top: 5%;
+    left: 5%;
+    opacity: 1;
+    height:50%;
+    width:50%;
+    -webkit-transition: all 0.5s ease-in-out;
+}span.galleryImage {
+    display: inline-block;
+    position: relative;
+    border: 0px solid #f90;
+}
+
+span.galleryImage input[type=checkbox] {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    opacity: 0;
+    -webkit-transition: all 0.5s ease-in-out;
+}
+
+span.galleryImage:hover input[type=checkbox],
+span.galleryImage input[type=checkbox]:checked {
+    top: 5%;
+    left: 5%;
+    opacity: 1;
+    height:40%;
+    width:40%;
+    -webkit-transition: all 0.5s ease-in-out;
+}
 /* buttons */
 .red
 {
@@ -1249,49 +1368,4 @@ input[type=submit]:active
 
 ::-webkit-scrollbar-track {
 	background: none;
-}
-span.galleryImage {
-    display: inline-block;
-    position: relative;
-    border: 0px solid #f90;
-}
-
-span.galleryImage input[type=checkbox] {
-    position: absolute;
-    top: 5%;
-    left: 5%;
-    opacity: 0;
-    -webkit-transition: all 0.5s ease-in-out;
-}
-
-span.galleryImage:hover input[type=checkbox],
-span.galleryImage input[type=checkbox]:checked {
-    top: 5%;
-    left: 5%;
-    opacity: 1;
-    height:10%;
-    width:10%;
-    -webkit-transition: all 0.5s ease-in-out;
-}span.galleryImage {
-    display: inline-block;
-    position: relative;
-    border: 0px solid #f90;
-}
-
-span.galleryImage input[type=checkbox] {
-    position: absolute;
-    top: 5%;
-    left: 5%;
-    opacity: 0;
-    -webkit-transition: all 0.5s ease-in-out;
-}
-
-span.galleryImage:hover input[type=checkbox],
-span.galleryImage input[type=checkbox]:checked {
-    top: 5%;
-    left: 5%;
-    opacity: 1;
-    height:10%;
-    width:10%;
-    -webkit-transition: all 0.5s ease-in-out;
 }

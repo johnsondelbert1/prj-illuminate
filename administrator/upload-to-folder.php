@@ -102,85 +102,70 @@ confirm_query($subgalleryquery);
   <td></td>
   </tr>
 </table>
-<table width="100%" border="0" style="margin-right:auto; margin-left:auto;">
-    <tr>
-        <td width="50%">
-            <h2>Uploading to <?php echo urldecode($_GET['folder']); ?></h2>
-            <?php if(check_permission("Uploading","rename_folders")){?>
-            <form method="post" action="upload-to-folder.php?folder=<?php echo urlencode($_GET['folder']); ?>">
-                Name: <input name="newname" type="text" value="<?php echo substr($_GET['folder'], 0, -1); ?>" maxlength="100" />
-                <input name="submit" type="submit" value="Change Folder Name" />
-            </form>
-            <br />
-            <?php } ?>
-            <form method="post" action="upload-to-folder.php?folder=<?php echo urlencode($_GET['folder']); ?>">
-            <table id="files">
-              <tr>
-                <th><h2>Files in <?php echo urldecode($_GET['folder']); ?></h2></th>
-              </tr>
-              <tr>
-                <th scope="col" width="45%">Filename</th>
-                <th scope="col" width="45%">File path (Copy link address)</th>
-                <?php if(check_permission("Uploading","delete_files")){?>
-                	<th scope="col" width="10%"><input type="checkbox" id="file"></th>
-                <?php } ?>
-              </tr>
-                <?php
-                $files = scandir("../uploads/".urldecode($_GET['folder']));
-                array_shift ($files);
-                array_shift ($files);
-                if(count($files)>0){
-                    foreach($files as $file){
-                        ?>
-                        <tr>
-                            <td><?php echo $file; ?></td>
-                            <td><a href="../uploads/<?php echo urldecode($_GET['folder']).$file; ?>" target="_blank">Link</a></td>
-                            <?php if(check_permission("Uploading","delete_files")){?>
-                            	<td style="text-align:center;"><input type="checkbox" name="files[]" value="<?php echo $file; ?>" /></td>
-                            <?php } ?>
-                        </tr>
-                    <?php
-                    }
-                }else{?>
-                        <tr>
-                            <td colspan="3">(No files in this folder)</td>
-                        </tr>
-                <?php } ?>
-                        <tr>
-                        	<td colspan="2"></td>
-                            <?php if(check_permission("Uploading","delete_files")){?>
-                            	<td><input name="delfiles" type="submit" value="Delete Files" class="red" /></td>
-                            <?php } ?>
-                        </tr>
-            </table>
-        	</td>
-          </tr>
-        </table>
-        </form>
-        <?php if(check_permission("Uploading","upload_files")){?>
-            <table border="0" width="100%" border="0" style="margin-right:auto; margin-left:auto;">
-              <tr>
-                <td></td>
-                    </tr>
-                    <tr>
-                <td>
-                <table>
-              <tr>
-                <td width="50%"><h2>Upload Multiple files</h2>
-                    <?php print_multi_upload($output_dir, "128mb", false, true); ?>
-                </td>
-                <td width="50%"><h2>Upload Single file</h2><br />
+<h1>Folder Name</h1>
+<?php if(check_permission("Uploading","rename_folders")){?>
+<form method="post" action="upload-to-folder.php?folder=<?php echo urlencode($_GET['folder']); ?>">
+    Name: <input name="newname" type="text" value="<?php echo substr($_GET['folder'], 0, -1); ?>" maxlength="100" />
+    <input name="submit" type="submit" value="Change Folder Name" />
+</form>
+<br />
+<?php } ?>
+<h1>Files in <?php echo urldecode($_GET['folder']); ?></h1>
+<form method="post" action="upload-to-folder.php?folder=<?php echo urlencode($_GET['folder']); ?>">
+    <table id="files">
+      <tr>
+        <th scope="col" width="45%">Filename</th>
+        <th scope="col" width="45%">File path (Copy link address)</th>
+        <?php if(check_permission("Uploading","delete_files")){?>
+            <th scope="col" width="10%"><input type="checkbox" id="file"></th>
+        <?php } ?>
+      </tr>
+        <?php
+        $files = scandir("../uploads/".urldecode($_GET['folder']));
+        array_shift ($files);
+        array_shift ($files);
+        if(count($files)>0){
+            foreach($files as $file){
+                ?>
+                <tr>
+                    <td><?php echo $file; ?></td>
+                    <td><a href="../uploads/<?php echo urldecode($_GET['folder']).$file; ?>" target="_blank">Link</a></td>
+                    <?php if(check_permission("Uploading","delete_files")){?>
+                        <td style="text-align:center;"><input type="checkbox" name="files[]" value="<?php echo $file; ?>" /></td>
+                    <?php } ?>
+                </tr>
+            <?php
+            }
+        }else{?>
+                <tr>
+                    <td colspan="3">(No files in this folder)</td>
+                </tr>
+        <?php } ?>
+                <tr>
+                    <td colspan="2"></td>
+                    <?php if(check_permission("Uploading","delete_files")){?>
+                        <td><input name="delfiles" type="submit" value="Delete Files" class="red" /></td>
+                    <?php } ?>
+                </tr>
+    </table>
+</form>
+<?php if(check_permission("Uploading","upload_files")){?>
+	<h1>Upload Files</h1>
+	<table border="0" width="100%" border="0" style="margin-right:auto; margin-left:auto;">
+	  <tr>
+		<td width="50%"><h2>Upload Multiple files</h2>
+			<?php print_multi_upload($output_dir, "128mb", false, true); ?>
+		</td>
+		<td width="50%"><h2>Upload Single file</h2><br />
             <br />
             <form action="upload-to-folder.php?folder=<?php echo $_GET['folder']; ?>" method="post" enctype="multipart/form-data">
             <input type="file" name="file" id="file" />
             <input name="upload" type="submit" value="Upload File" />
-            </form></td>
-              </tr>
-            </table>
-        <?php } ?>
-    </td>
-  </tr>
-</table>
+            </form>
+    	</td>
+	  </tr>
+	</table>
+<?php } ?>
 <?php
 	require_once("includes/end_cpanel.php");
 ?>

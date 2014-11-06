@@ -42,7 +42,7 @@ $favicon = scandir("images/favicon/");
     <link href="styles/animate.css" rel="stylesheet" type="text/css" />
     <link href="prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css" media="screen" charset="utf-8" />
     <script src="jscripts/SpryTabbedPanels.js" type="text/javascript"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>-->
     <script type="text/javascript" src="prettyphoto/js/jquery.prettyPhoto.js" charset="utf-8"></script>
     <script src="jscripts/jquery.fileuploadmulti.min.js"></script>
     <style type="text/css">
