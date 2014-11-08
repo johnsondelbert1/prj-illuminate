@@ -61,11 +61,13 @@ if(($rows)!=0){
 						$staffresult=mysqli_query( $connection, $staffquery);
 
 						require_once("includes/begin_html.php");?>
-						<script type="text/javascript" charset="utf-8">
-                        $(document).ready(function(){
-                          $("div[rel^='prettyPhoto']").prettyPhoto();
-                        });
+
+                        <script type="text/javascript" charset="utf-8">
+							$(document).ready(function(){
+							  $("div[rel^='prettyPhoto']").prettyPhoto();
+							});
                         </script>
+                        
 						<h2><?php echo $page["name"]; ?></h2>
                         
 
@@ -174,8 +176,15 @@ if(($rows)!=0){
 							}
 						}
 						
-						require_once("includes/begin_html.php");
+						require_once("includes/begin_html.php");?>
 						
+                        <script type="text/javascript" charset="utf-8">
+							$(document).ready(function(){
+							  $("a[rel^='prettyPhoto']").prettyPhoto();
+							});
+                        </script>
+						
+                        <?php
 						echo $page['content'];
 						
 						if($page['forms']!=""){
