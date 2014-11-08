@@ -126,44 +126,39 @@ confirm_query($subgalleryquery);
   <td></td>
   </tr>
 </table>
-<table width="100%" border="0" style="margin-right:auto; margin-left:auto;">
-<tr>
-<td width="50%">
 <h1>Gallery Info</h1>
 Name: <input name="galname" type="text" value="<?php echo $gallery['name']; ?>" maxlength="100" /><br>
 <table id="gall">
-          <tr>
-          <th><h2>Include these galleries</h2></th>
-          </tr>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col"><input type="checkbox" id="gallall"></th>
-          </tr>
-        <?php
-        while($subgallery=mysqli_fetch_array($subgalleryquery)){
-			$checked = false;
-			if(isset($gallery['subgalleries'])&&$gallery['subgalleries']!=""){
-				$subgalleries=unserialize($gallery['subgalleries']);
-				foreach($subgalleries as $pagegalleryid){
-					if($pagegalleryid == $subgallery['id']){
-						$checked = true;
-					}
-				}
-			}
-			if($subgallery['id']!=$gallery['id']){
-			?>
-                <tr>
-                    <td width="90%"><a href="edit_gallery.php?gallid=<?php echo urlencode($subgallery['id']); ?>"><?php echo $subgallery['name']; ?></a></td>
-                    <td width="10%" style="text-align:center;"><input type="checkbox" name="subgalleries[]" value="<?php echo $subgallery['id']; ?>" <?php if($checked == true){echo "checked";} ?> /></td>
-                </tr>
-        <?php }
-   } ?>
-        </table>
+  <tr>
+  <th><h2>Include these galleries</h2></th>
+  </tr>
+  <tr>
+    <th scope="col">Name</th>
+    <th scope="col"><input type="checkbox" id="gallall"></th>
+  </tr>
+<?php
+while($subgallery=mysqli_fetch_array($subgalleryquery)){
+    $checked = false;
+    if(isset($gallery['subgalleries'])&&$gallery['subgalleries']!=""){
+        $subgalleries=unserialize($gallery['subgalleries']);
+        foreach($subgalleries as $pagegalleryid){
+            if($pagegalleryid == $subgallery['id']){
+                $checked = true;
+            }
+        }
+    }
+    if($subgallery['id']!=$gallery['id']){
+    ?>
+        <tr>
+            <td width="90%"><a href="edit_gallery.php?gallid=<?php echo urlencode($subgallery['id']); ?>"><?php echo $subgallery['name']; ?></a></td>
+            <td width="10%" style="text-align:center;"><input type="checkbox" name="subgalleries[]" value="<?php echo $subgallery['id']; ?>" <?php if($checked == true){echo "checked";} ?> /></td>
+        </tr>
+<?php }
+} ?>
+</table>
 </form>
-</td>
-</tr>
-<tr>
-<td width="100%" style="text-align:center;">
+<br>
+<br>
 <h1>Gallery Images</h1>
 <form method="post">
     <div align="center" style="text-align:center; width:100%; margin-left:auto; margin-right:auto;">
@@ -202,32 +197,16 @@ Name: <input name="galname" type="text" value="<?php echo $gallery['name']; ?>" 
     <input name="delfiles" type="submit" value="Delete Selected Photos" class="red" />
     </div>
 </form>
-</td>
-</tr>
-</table>
 <h1>Upload Images</h1>
-<table border="0" width="100%" border="0" style="margin-right:auto; margin-left:auto;">
-  <tr>
-    <td></td>
-        </tr>
-        <tr>
-    <td>
-    <table>
-  <tr>
-    <td width="50%"><h2>Upload Multiple photos</h2>
+
+    <h2>Upload Multiple photos</h2>
     	<?php print_multi_upload($output_dir,"4mb","jpg,jpeg,gif,png,JPG,JPEG,GIF,PNG", true); ?>
-    </td>
-    <td width="50%"><h2>Upload Single photo</h2><br />
+<h2>Upload Single photo</h2><br />
 <br />
 <form action="edit_gallery.php?gallid=<?php echo $_GET['gallid']; ?>" method="post" enctype="multipart/form-data">
 <input type="file" name="file" id="file" />
 <input name="upload" type="submit" value="Upload Image" />
-</form></td>
-  </tr>
-</table>
-</td>
-  </tr>
-</table>
+</form>
 <?php
 	require_once("includes/end_cpanel.php");
 ?>

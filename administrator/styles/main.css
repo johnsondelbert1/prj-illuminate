@@ -753,6 +753,21 @@ span:hover.tooltips span {
   margin-left: 15px;
   z-index: 999;
 }
+div.rank-block{
+	margin:5px;
+	padding:10px;
+	display:block;
+	width:200px;
+	height:200px;
+	float:left;
+	background-color:#D7D7D7;
+	border-radius:5px;
+	text-decoration:none;
+	text-align:center;
+	cursor:pointer;
+	transition:all;
+	transition-duration:0.2s;
+}
 #ranks ul{
 	list-style:none;
 	}

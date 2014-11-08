@@ -6,74 +6,94 @@ require_once("../includes/functions.php");
 if(!check_permission(array("Forms;add_form","Forms;edit_form","Forms;delete_form",))){
 	//redirect_to("index.php");
 }
-if(isset($_POST['new'])){
+if(isset($_POST['save'])){
 	if(check_permission("Forms","add_form")){
-		if($newname=mysql_prep($_POST['newname'])!=""){
-			$query="SELECT * FROM `staff`";
-			$result=mysqli_query( $connection, $query);
-			confirm_query($result);
-			$num_staff=mysqli_num_rows($result) + 1;
-			
-			$newname=mysql_prep($_POST['newname']);
-			$date=date("Y/m/d H:i:s", time());
-			
-			$query="INSERT INTO `staff` (
-				`name`, `creator`, `date_created`, `order`
-			) VALUES (
-				'{$newname}', {$_SESSION['user_id']}, '{$date}', {$num_staff})";
-			$result=mysqli_query($connection, $query);
-			confirm_query($result);
-			
-			$query="SELECT * FROM `staff` WHERE `name` = '{$newname}'";
-			$result=mysqli_query( $connection, $query);
-			confirm_query($result);
-			$id=mysqli_fetch_array($result);
-			
-			mkdir("../images/staff/".$id['id']."/");
-			$success="Staff Member \"{$newname}\" added!";
-		}else{
-			$error="Staff member name cannot be blank.";
+		if(isset($_POST['slide_id'])&&isset($_POST['slide_order'])&&isset($_POST['slide_cap'])){
+			foreach($_POST['slide_id'] as $slide_id){
+				$caption = strip_tags(mysqli_real_escape_string($connection, $_POST['slide_cap'][$slide_id]), "<a><i><b><u>");
+				$order = intval($_POST['slide_order'][$slide_id]);
+				$savequery="UPDATE `slider` SET `order` = ".$order.", `caption` = '".$caption."' WHERE `id` = ".$slide_id;
+				
+				$saveresult=mysqli_query($connection, $savequery);
+				confirm_query($saveresult);
+				$success="Slider updated!";
+			}
 		}
 	}
+	
+}
 
-}elseif(isset($_POST['delforms'])){
+if(isset($_POST['upload'])){
+	$message = upload($_FILES, "../images/slider/", 2097152, array('.jpeg','.jpg','.gif','.png'));
+}
+
+if(isset($_POST['del'])){
 	if(check_permission("Forms","delete_form")){
 		function del($id){
 			global $connection;
 			
-			$query="SELECT * FROM `staff` WHERE `id` = ".$id;
+			$query="SELECT * FROM `slider` WHERE `id` = ".$id;
 			$result=mysqli_query( $connection, $query);
-			$staff = mysqli_fetch_array($result);
+			$slide = mysqli_fetch_array($result);
 			
-			$query="DELETE FROM `staff` WHERE `id` = {$id}";
-			$result=mysqli_query( $connection, $query);
-			confirm_query($result);
-			
-			// Specify the target directory and add forward slash
-			$dir = "../images/staff/".$id; 
-			foreach (scandir($dir) as $item) {
-				if ($item == '.' || $item == '..') continue;
-				unlink($dir.DIRECTORY_SEPARATOR.$item);
+			if(mysqli_num_rows($result)!=0){
+				// Specify the target directory and add forward slash
+				$file = "../images/slider/".$slide['img_name'];
+				if(file_exists($file)){
+					unlink($file);
+					$success="Slide was deleted!";
+				}else{
+					$error='File has already been deleted';
+				}
+			}else{
+				$error='File has already been deleted';
 			}
-			rmdir($dir);
 			
-			$success="Staff member was deleted!";
 		}
-		if(isset($_POST['staff'])){
-			foreach($_POST['staff'] as $staff){
-				del($staff);
+		if(isset($_POST['slide'])){
+			foreach($_POST['slide'] as $slide){
+				del($slide);
 			}
 		}else{
-			$error="No staff members selected!";
+			$error="No slides selected!";
 		}
 	}else{
-		$error="You do not have permission to delete staff members!";
+		$error="You do not have permission to delete slides!";
 	}
 }
 ?>
 
 <?php
-$query="SELECT * FROM `staff` ORDER BY `order`";
+$dir = '../images/slider/';
+
+$query="SELECT * FROM `slider`";
+$result=mysqli_query( $connection, $query);
+$num_slides = mysqli_num_rows($result) + 1;
+
+if(mysqli_num_rows($result)!=0){
+	while($img = mysqli_fetch_array($result)){
+		if(!file_exists($dir.$img['img_name'])){
+			$imgquery="DELETE FROM `slider` WHERE `img_name` = '{$img['img_name']}'";
+			mysqli_query( $connection, $imgquery);
+		}
+	}
+}
+foreach (scandir($dir) as $item) {
+	if ($item == '.' || $item == '..' || $item == 'Thumbs.db') continue;
+	$file_ext = substr($item, strripos($item, '.'));
+	
+	$imagesquery="SELECT * FROM `slider` WHERE `img_name` = '{$item}'";
+	$imagesresult=mysqli_query( $connection, $imagesquery);
+	if(mysqli_num_rows($imagesresult)==0){
+		$imgquery="INSERT INTO `slider` (
+			`img_name`, `order`
+		) VALUES (
+			'{$item}', {$num_slides})";
+		mysqli_query($connection, $imgquery);
+	}
+}
+
+$query="SELECT * FROM `slider` ORDER BY `order`";
 $result=mysqli_query( $connection, $query);
 ?>
 
@@ -95,10 +115,10 @@ $result=mysqli_query( $connection, $query);
 </script>
 <?php if(check_permission("Forms","add_form")){?>
 <h1>Add New Slide</h1>
-<form method="post">
-    <label for="newname">Staff Member Name: </label><input name="newname" id="newname" type="text" value="<?php if(isset($_POST['galname'])){echo $_POST['galname'];} ?>" maxlength="100" />
-    <input name="new" type="submit" value="Add Member" />
-</form>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="file" id="file" />
+        <input name="upload" type="submit" value="Upload Image" />
+    </form>
 <?php } ?>
 <h1>List of Slides</h1>
 <form method="post">
@@ -107,14 +127,14 @@ $result=mysqli_query( $connection, $query);
             <th width="10%">
                 Order
             </th>
-            <th width="10%">
+            <th width="30%">
                 Picture
             </th>
             <th>
                 Name
             </th>
             <th>
-                Role
+                Caption
             </th>
             <?php if(check_permission("Forms","delete_form")){?>
             <th style="text-align:center;">
@@ -124,37 +144,32 @@ $result=mysqli_query( $connection, $query);
         </tr>
     <?php
 	if(mysqli_num_rows($result)!=0){
-		while($staff=mysqli_fetch_array($result)){
-			$profile_pic = false;
-			$dir = "../images/staff/".$staff['id']."/";
-			foreach (scandir($dir) as $item) {
-				if ($item == '.' || $item == '..' || $item == 'Thumbs.db') continue;
-				$profile_pic = $item;
-			}
+		while($slide=mysqli_fetch_array($result)){
 			?>
 			<tr style="height:125px;">
-            <td><?php echo $staff['order']; ?></td>
-				<td><?php if($profile_pic != false){ ?><img src="<?php echo $dir.$item; ?>" width="120" height="120" /><?php }else{echo "[No Picture]";} ?></td>
-                <td><a href="edit-staff.php?id=<?php echo urlencode($staff['id']); ?>"><?php echo $staff['name']; ?></a></td>
-                <td><?php if($staff['role']!=""){echo $staff['role'];}else{echo '[N/A]';} ?></td>
+            	<td><input type="hidden" name="slide_id[<?php echo $slide['id']; ?>]" value="<?php echo $slide['id']; ?>" /><input type="text" name="slide_order[<?php echo $slide['id']; ?>]" value="<?php echo $slide['order']; ?>" maxlength="3" /></td>
+				<td><img src="../images/slider/<?php echo $slide['img_name'] ?>" width="320" height="180" /></td>
+                <td><?php echo $slide['img_name'] ?></td>
+                <td><input type="text" name="slide_cap[<?php echo $slide['id']; ?>]" value="<?php echo htmlspecialchars($slide['caption']); ?>" /></td>
 				<?php if(check_permission("Galleries","delete_gallery")){?>
-				<td width="10%" style="text-align:center;"><input type="checkbox" name="staff[]" value="<?php echo $staff['id']; ?>" /></td>
+				<td width="10%" style="text-align:center;"><input type="checkbox" name="slide[]" value="<?php echo $slide['id']; ?>" /></td>
 				<?php } ?>
 			</tr>
 	<?php
         }
 	}else{?>
 			<tr>
-				<td colspan="4" style="text-align:center; font-size:24px;">[No Staff!]</td>
+				<td colspan="4" style="text-align:center; font-size:24px;">[No Slides!]</td>
 			</tr>
     <?php
 	}
 	?>
     	<tr>
-        	<td></td>
+        	<td style="text-align:center;"><input name="save" type="submit" value="Save Slides" class="green" /></td>
             <td></td>
             <td></td>
-            <td style="text-align:center;"><?php if(check_permission("Forms","delete_form")){?><input name="delforms" type="submit" value="Delete" class="red" /><?php } ?></td>
+            <td></td>
+            <td style="text-align:center;"><?php if(check_permission("Forms","delete_form")){?><input name="del" type="submit" value="Delete" class="red" /><?php } ?></td>
         </tr>
     </table>
 </form>
