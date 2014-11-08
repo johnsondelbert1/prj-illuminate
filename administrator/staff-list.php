@@ -127,6 +127,9 @@ $result=mysqli_query( $connection, $query);
 		while($staff=mysqli_fetch_array($result)){
 			$profile_pic = false;
 			$dir = "../images/staff/".$staff['id']."/";
+			if(!file_exists($dir)){
+				mkdir($dir);
+			}
 			foreach (scandir($dir) as $item) {
 				if ($item == '.' || $item == '..' || $item == 'Thumbs.db') continue;
 				$profile_pic = $item;

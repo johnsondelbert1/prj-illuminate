@@ -42,7 +42,7 @@ $favicon = scandir("images/favicon/");
     <link href="styles/animate.css" rel="stylesheet" type="text/css" />
     <link href="prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css" media="screen" charset="utf-8" />
     <script src="jscripts/SpryTabbedPanels.js" type="text/javascript"></script>
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="prettyphoto/js/jquery.prettyPhoto.js" charset="utf-8"></script>
     <script src="jscripts/jquery.fileuploadmulti.min.js"></script>
     <style type="text/css">
@@ -56,7 +56,7 @@ $favicon = scandir("images/favicon/");
 		#banner{
 			background-color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #vert-menu, #vert-menu ul, #vert-menu ul li, #footerwrap, h1, h2, .photo-link, .nav{
+		#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #vert-menu, #vert-menu li, #vert-menu ul li, #footerwrap, h1, h2, .photo-link, .nav{
 			background-color:<?php echo $site_layout['menu_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
@@ -108,6 +108,7 @@ $favicon = scandir("images/favicon/");
 			echo $site_info['g_analytics_code'];
 		}
 	}?>
+    
 	<div id="wrapper">
         <?php
         if(!isset($pgsettings['horiz_menu_visible'])||$pgsettings['horiz_menu_visible'] == true){
@@ -117,10 +118,14 @@ $favicon = scandir("images/favicon/");
 		}
 		?>
         <div id="contentwrap">
-			<?php if($pgsettings['banner'] == 1){ ?>
+			<?php if(isset($pgsettings['banner'])&&$pgsettings['banner'] == 1){ ?>
     		<div id="banner"><!--<img src="images/banner.png" />--></div>
 			<?php
 			}
+			?>
+			<?php //if(isset($pgsettings['slider'])&&$pgsettings['slider'] == 1){
+				slider();
+			//}
 			?>
             <table border="0" cellspacing="0" cellpadding="0" style="width:100%;">
                 <tr>
