@@ -129,9 +129,7 @@ div.banner
 	margin-left:-10px;
 	margin-right:-10px;
 	margin-top:20px;
-	-webkit-box-shadow: inset 0px 3px 5px 0px rgba(50, 50, 50, 0.75);
-	-moz-box-shadow:    inset 0px 3px 5px 0px rgba(50, 50, 50, 0.75);
-	box-shadow:         inset 0px 3px 5px 0px rgba(50, 50, 50, 0.75);
+		bottom:0;
 }
 
 #footer a{
@@ -627,7 +625,7 @@ select
 	outline:none;
 }
 /* buttons */
-.button,input[type=submit] {
+.button,input[type=submit], a.blue, a.red, a.green {
 		border: none;
 		display: block;
 		color: #ffffff !important;
