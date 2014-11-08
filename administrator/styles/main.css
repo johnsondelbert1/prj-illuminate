@@ -627,7 +627,7 @@ select
 	outline:none;
 }
 /* buttons */
-.button,input[type=submit] {
+.button,input[type=submit], .blue a, a.red, .green a {
 		border: none;
 		display: block;
 		color: #ffffff !important;

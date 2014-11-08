@@ -121,10 +121,10 @@ if(!empty($editing_rank_perms)){
                                 ?>
                                 <tr>
                                     <td>
+                                                                            <input type="checkbox" name="permissions[<?php echo $perm_group_key; ?>][<?php echo $permission_key; ?>][value]"<?php if($editing_permission[$perm_group_key][$permission_key]['value']==1){echo " checked";} ?> value="1" />
                                         <span class="tooltips"><?php echo $permission['disp_name']; ?><?php if($permission['description']!=""){echo "<span>".$permission['description']."</span>";}?></span>
                                     </td>
-                                    <td>
-                                        <input type="checkbox" name="permissions[<?php echo $perm_group_key; ?>][<?php echo $permission_key; ?>][value]"<?php if($editing_permission[$perm_group_key][$permission_key]['value']==1){echo " checked";} ?> value="1" /></li>
+                                    <td></li>
                                     </td>
                                 </tr>
                                 <?php
