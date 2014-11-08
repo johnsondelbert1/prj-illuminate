@@ -104,46 +104,43 @@ if(!empty($editing_rank_perms)){
   <tr>
     <td>Color:<br/><input name="color" type="text" value="<?php echo $editing_rank['color'];?>" style="background-color:<?php echo $editing_rank['color'];?>" maxlength="7" class="color {hash:true, required:false}" /></td>
   </tr>
-  <?php if($editing_rank['editable']!=0){?>
-  <tr>
-    <td>Permissions:
-    	<span style="font-size:14px;">
-            <ul id="ranks">
-                <?php
-                foreach($blank_permissions as $perm_group_key => $perm_group){?>
-                    <li>
-                        <?php
-                        if (is_array($perm_group)){?>
-                            <?php echo "<p>".$perm_group_key."</p>"; ?>
-                            <table>
-                                <?php
-								foreach($perm_group as $permission_key => $permission){
-                                ?>
-                                <tr>
-                                    <td>
-                                                                            <input type="checkbox" name="permissions[<?php echo $perm_group_key; ?>][<?php echo $permission_key; ?>][value]"<?php if($editing_permission[$perm_group_key][$permission_key]['value']==1){echo " checked";} ?> value="1" />
-                                        <span class="tooltips"><?php echo $permission['disp_name']; ?><?php if($permission['description']!=""){echo "<span>".$permission['description']."</span>";}?></span>
-                                    </td>
-                                    <td></li>
-                                    </td>
-                                </tr>
-                                <?php
-								}
-                                ?>
-                            </table>
-                            <?php
-                            
-                        }else{?>
-                            <li><?php echo $perm_group; ?></li>
-                            <?php
-                        }?>
-                    </li>
-                <?php }?>
-            </ul>
-        </span>
-    </td>
-  </tr>
-  <?php }?>
 </table>
+<?php if($editing_rank['editable']!=0){?>
+<div style="width:100%; overflow:hidden;">
+	<span style="font-size:14px;">
+		<?php
+		foreach($blank_permissions as $perm_group_key => $perm_group){?>
+			<div class="rank-block">
+				<?php
+				if (is_array($perm_group)){?>
+					<?php echo "<p><b>".$perm_group_key."</b></p>"; ?>
+					<table>
+						<?php
+						foreach($perm_group as $permission_key => $permission){
+						?>
+						<tr>
+							<td>
+								<input type="checkbox" name="permissions[<?php echo $perm_group_key; ?>][<?php echo $permission_key; ?>][value]"<?php if($editing_permission[$perm_group_key][$permission_key]['value']==1){echo " checked";} ?> value="1" />
+							</td>
+							<td style="text-align:left;">
+								<span class="tooltips"><?php echo $permission['disp_name']; ?><?php if($permission['description']!=""){echo "<span>".$permission['description']."</span>";}?></span>
+							</td>
+						</tr>
+						<?php
+						}
+						?>
+					</table>
+					<?php
+					
+				}else{?>
+					<?php echo $perm_group; ?>
+					<?php
+				}?>
+			</div>
+		<?php }?>
+        <div class="clear"></div>
+	</span>
+</div>
+<?php }?>
 </form>
 <?php require_once("includes/end_cpanel.php"); ?>
