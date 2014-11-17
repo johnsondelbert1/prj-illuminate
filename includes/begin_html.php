@@ -25,7 +25,7 @@ $favicon = scandir("images/favicon/");
     
     <META NAME="description" CONTENT="">
     <META NAME="robot" CONTENT="index,follow">
-    <META NAME="copyright" CONTENT="All Images, Video, and Source Code Property of Second Generation Design, Copyright © 2011-<?php echo date("Y"); ?>">
+    <META NAME="copyright" CONTENT="Source Code Property of Second Generation Design, Copyright © 2011-<?php echo date("Y"); ?>">
     <META NAME="author" CONTENT="2GD - Secondgenerationdesign.com">
     <META NAME="language" CONTENT="English">
     <META NAME="revisit-after" CONTENT="7">
@@ -73,7 +73,7 @@ $favicon = scandir("images/favicon/");
 		.photo-link:hover{
 			background-color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		.forum tr, .forumbody{
+		#content, .forum tr, .forumbody{
 			background-color:<?php echo $site_layout['menu_color'] ?> !important;
 			color:<?php echo $site_layout['contentbg_color'] ?> !important;
 		}
@@ -123,9 +123,9 @@ $favicon = scandir("images/favicon/");
 			<?php
 			}
 			?>
-			<?php //if(isset($pgsettings['slider'])&&$pgsettings['slider'] == 1){
+			<?php if(isset($pgsettings['slider'])&&$pgsettings['slider'] == 1){
 				slider();
-			//}
+			}
 			?>
             <table border="0" cellspacing="0" cellpadding="0" style="width:100%;">
                 <tr>
@@ -136,7 +136,7 @@ $favicon = scandir("images/favicon/");
                         ?><?php
                     }
                     ?>
-                	<td style="width:90%; padding-right:5px; padding-left:5px;">
+                	<td style="padding-right:5px; padding-left:5px;">
 						<div id="content" style="background-color:#525252;">
 						<?php if(!empty($error)){echo "<h3 class=\"error\">".$error."</h3>";} ?>
                         <?php if(!empty($success)){echo "<h3 class=\"success\">".$success."</h3>";} ?>

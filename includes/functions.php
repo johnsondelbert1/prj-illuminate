@@ -190,18 +190,16 @@ function mysql_prep( $value ) {
 	}
 	return $value;
 }
-function check_login($cpanel = false){
+function check_login(){
 	
-	?><?php
+	?><p><?php
 	if(logged_in()){?>
-    		<p><?php 
-			echo "<!-- Logged in as: --> <b>".$_SESSION['username']."</b>";
-            if($cpanel == false){?>
-             | <a href="logout.php">Logout</a> | <a href="account-settings.php">Account Settings</a>
-      <?php } 
-	}else{ ?>
+        <?php echo "<b>".$_SESSION['username']."</b>";?>
+         | <a href="account-settings.php">Account Settings</a> | <?php if(check_permission("Website","cpanel_access")){?><a href="administrator/" target="_blank">CPanel</a> | <?php } ?><a href="logout.php">Logout</a>
+    <?php }else{ ?>
 			<a href="index.php">Register</a> | <a href="login.php">Login</a>
-	<?php }?></p>
+	<?php }?>
+    	</p>
 <?php }
 
 function gallery($images_dir, $thumbs_dir, $thumbs_width, $thumbs_height, $gallname = "gall", $num_images = false){?>
@@ -429,7 +427,7 @@ function nav($position, $pgselection){
 		if($position=="horiz"){ ?>
     		<ul id="horiz-menu">
     	<?php }elseif($position=="vert"){ ?>
-        	<td style="vertical-align:top; min-width:150px; padding-right:5px;"><div style="width:100%;">
+        	<td style="vertical-align:top; width:200px; padding-right:5px;"><div style="width:100%;">
     		<ul id="vert-menu">
     	<?php }
 		

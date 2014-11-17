@@ -54,6 +54,7 @@ if(($rows)!=0){
 							"pageselection" => "true",
 							"nav" => true,
 							"banner" => $page['banner'],
+							"slider" => $page['slider'],
 							"use_google_analytics" => 1,
 						);
 
@@ -109,6 +110,7 @@ if(($rows)!=0){
 							"pageselection" => "true",
 							"nav" => true,
 							"banner" => $page['banner'],
+							"slider" => $page['slider'],
 							"use_google_analytics" => 1,
 						);
 						
@@ -205,20 +207,23 @@ if(($rows)!=0){
 								$count = 0;
 							
 								?>
+                                <br><br>
 								<form method="post" name="<?php echo $form['u_name']; ?>">
-								<table border="1" width="100%">
+								<table border="0" width="100%" cellpadding="0" cellspacing="0">
 									<?php while($num_fields>$count){
 										$maxchars = intval($field_maxchars[$count]);
 									?>
 									<tr>
-										<td style="vertical-align:top;">
-										<span class="tooltips"><label for="<?php echo $field_names[$count]; ?>"><?php echo $field_names[$count]; ?>: </label>
-										<?php if($field_types[$count] == "text"){?>
-											<input name="<?php echo $field_names[$count]; ?>" id="<?php echo $field_names[$count]; ?>"<?php if(isset($form_validation[$field_names[$count]])&&$form_validation[$field_names[$count]]!=true){echo ' style="border:2px solid #9F0002;"';} ?> value="<?php if(isset($_POST[$field_names[$count]])){echo $_POST[$field_names[$count]];} ?>" type="text"<?php if($field_placeholders[$count] != ""){echo ' placeholder="'.$field_placeholders[$count].'"';} ?><?php if($maxchars != ""){echo ' maxlength="'.$maxchars.'"';} ?> /><?php if(isset($form_validation[$field_names[$count]])&&$form_validation[$field_names[$count]]!=true){?><span style="border-radius:5px; background-color:#9F0002; color:#FFFFFF; padding:5px;"><span><?php if($field_validators[$count]=="email"){echo 'Invalid email';}elseif($field_validators[$count]=="notempty"){echo 'Cannot be blank';}?></span></span><?php } ?>
-											<?php }elseif($field_types[$count] == "textarea"){ ?>
-											<textarea name="<?php echo $field_names[$count]; ?>" id="<?php echo $field_names[$count]; ?>"<?php if(isset($form_validation[$field_names[$count]])&&$form_validation[$field_names[$count]]!=true){echo ' style="border:2px solid #9F0002;"';} ?> rows="15" cols="75"<?php if($field_placeholders[$count] != ""||$maxchars != ""){$placeholder = $field_placeholders[$count]; if($maxchars != ""){$placeholder.=' (Max. '.$maxchars.' characters)';} echo ' placeholder="'.$placeholder.'"';} ?><?php if($maxchars != ""){echo ' maxlength="'.$maxchars.'"';} ?>><?php if(isset($_POST[$field_names[$count]])){echo $_POST[$field_names[$count]];} ?></textarea><?php if(isset($form_validation[$field_names[$count]])&&$form_validation[$field_names[$count]]!=true){?><span style="border-radius:5px; background-color:#9F0002; color:#FFFFFF; padding:5px;"><span><?php if($field_validators[$count]=="email"){echo 'Invalid email';}elseif($field_validators[$count]=="notempty"){echo 'Cannot be blank';}?></span></span><?php } ?>
-											<?php } ?>
-                                        <?php if($field_descs[$count]!=""){echo "<span>".$field_descs[$count]."</span>";}?></span>
+										<td>
+                                        <label for="<?php echo $field_names[$count]; ?>" style="margin-left:10px;"><?php echo $field_names[$count]; ?>: </label><?php if(isset($form_validation[$field_names[$count]])&&$form_validation[$field_names[$count]]!=true){?><div style=" display:inline; border-radius:5px; background-color:#9F0002; color:#FFFFFF; padding:3px; font-size:16px;"><?php if($field_validators[$count]=="email"){echo 'Invalid email';}elseif($field_validators[$count]=="notempty"){echo 'Cannot be blank';}?></div><?php } ?><br>
+                                        <span class="tooltips" style="vertical-align:middle;">
+                                            <?php if($field_types[$count] == "text"){?>
+                                                <input name="<?php echo $field_names[$count]; ?>" id="<?php echo $field_names[$count]; ?>"<?php if(isset($form_validation[$field_names[$count]])&&$form_validation[$field_names[$count]]!=true){echo ' style="border:2px solid #9F0002;"';} ?> value="<?php if(isset($_POST[$field_names[$count]])){echo $_POST[$field_names[$count]];} ?>" type="text"<?php if($field_placeholders[$count] != ""){echo ' placeholder="'.$field_placeholders[$count].'"';} ?><?php if($maxchars != ""){echo ' maxlength="'.$maxchars.'"';} ?> />
+                                            <?php }elseif($field_types[$count] == "textarea"){ ?>
+                                                <textarea name="<?php echo $field_names[$count]; ?>" id="<?php echo $field_names[$count]; ?>"<?php if(isset($form_validation[$field_names[$count]])&&$form_validation[$field_names[$count]]!=true){echo ' style="border:2px solid #9F0002;"';} ?> rows="15" cols="75"<?php if($field_placeholders[$count] != ""||$maxchars != ""){$placeholder = $field_placeholders[$count]; if($maxchars != ""){$placeholder.=' (Max. '.$maxchars.' characters)';} echo ' placeholder="'.$placeholder.'"';} ?><?php if($maxchars != ""){echo ' maxlength="'.$maxchars.'"';} ?>><?php if(isset($_POST[$field_names[$count]])){echo $_POST[$field_names[$count]];} ?></textarea>
+                                            <?php } ?>
+                                            <?php if($field_descs[$count]!=""){echo "<span>".$field_descs[$count]."</span>";}?>
+                                        </span>
 										</td>
 									</tr>
 									<?php
