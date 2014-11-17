@@ -81,6 +81,7 @@ require_once("includes/functions.php");
 		"pageselection" => "forum",
 		"nav" => $page_properties['horiz_menu_visible'],
 		"banner" => $page_properties['banner'],
+		"slider" => $page_properties['slider'],
 		"use_google_analytics" => 1,
 	);
 require_once("includes/begin_html.php");

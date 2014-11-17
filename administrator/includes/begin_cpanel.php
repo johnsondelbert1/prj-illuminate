@@ -50,41 +50,36 @@ if(isset($_GET['message'])){
     <div class="wrap">
     	<div class="nav">
         	<div style="background-color:#F0F0F0;">
-            <span style="float:left;"><?php check_login(true); ?></span>
+            <span style="float:left;"><b><?php echo $_SESSION['username']; ?></b></span>
                 <ul id="horiz-menu">
                     <li class="menuitem">
                     	<a href="index.php">Control Panel</a>
                     </li>
-                    <li class="menuitem">
-                    	<a href="page_list.php">Content</a>
-                        <ul>
-                        	                    <?php if(check_permission(array("Pages;add_pages","Pages;edit_pages","Pages;delete_pages",))){?>
-                    <li>
-                    	<a href="page_list.php">Pages</a>
-                        <ul>
-                        	<?php if(check_permission("Pages","add_pages")){?>
-                            <li>
-                            	<a href="edit_page.php?action=newpage">Add Pages</a>
-                            </li><?php } ?>
-                            <?php if(check_permission("Pages","edit_pages")){?><li><a href="staff-list.php">Staff</a></li><?php } ?>
-                            <li><a href="edit-slider.php">Slider</a></li>
+                    <?php if(check_permission(array("Pages;add_pages","Pages;edit_pages","Pages;delete_pages","Galleries;add_gallery","Galleries;edit_gallery","Galleries;delete_gallery","Galleries;rename_gallery","Uploading;upload_files","Uploading;delete_files","Uploading;create_folders","Uploading;rename_folders","Uploading;delete_folders",))){?>
+                        <li class="menuitem">
+                            <a href="page_list.php">Content</a>
+                            <ul>
+                                <li>
+                                    <a href="page_list.php">Pages</a>
+                                    <ul>
+                                        <?php if(check_permission("Pages","add_pages")){?><li><a href="edit_page.php?action=newpage">Add Pages</a></li><?php } ?>
+                                        <?php if(check_permission("Pages","edit_pages")){?><li><a href="staff-list.php">Staff</a></li><?php } ?>
+                                        <?php if(check_permission("Pages","edit_pages")){?><li><a href="edit-slider.php">Slider</a></li><?php } ?>
+                                    </ul>
+                                </li>
+								<?php if(check_permission(array("Galleries;add_gallery","Galleries;edit_gallery","Galleries;delete_gallery","Galleries;rename_gallery"))){?>
+                                <li>
+                                    <a href="gallery-list.php">Galleries</a>
+                                </li>
+                                <?php } ?>
+                                <?php if(check_permission(array("Uploading;upload_files","Uploading;delete_files","Uploading;create_folders","Uploading;rename_folders","Uploading;delete_folders",))){?>
+                                <li>
+                                    <a href="upload-files.php">Upload</a>
+                                </li>
+                                <?php } ?>
+                        	</ul>
+                        </li>
                     <?php } ?>
-                        </ul>
-                        
-                    </li>
-                    <?php if(check_permission(array("Galleries;add_gallery","Galleries;edit_gallery","Galleries;delete_gallery","Galleries;rename_gallery"))){?>
-                    <li>
-                    	<a href="gallery-list.php">Galleries</a>
-                    </li>
-                    <?php } ?>
-                    <?php if(check_permission(array("Uploading;upload_files","Uploading;delete_files","Uploading;create_folders","Uploading;rename_folders","Uploading;delete_folders",))){?>
-                    <li>
-                    	<a href="upload-files.php">Upload</a>
-                    </li>
-                    <?php } ?>
-					                        </ul>
-                        
-                    </li>
                     <?php if(check_permission(array("Users;add_users","Users;delete_users",))){?>
                     <li class="menuitem">
                     	<a href="accounts.php">Accounts</a>

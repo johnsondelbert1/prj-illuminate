@@ -131,7 +131,7 @@ if(!check_permission("Forum","add_thread")&&(isset($_GET['action'])&&$_GET['acti
 		"title" => "Creating a new thread in \"".$forum['name']."\"",
 		"pageselection" => "forum",
 		"nav" => true,
-		"banner" => 1,
+		"banner" => 0,
 		"use_google_analytics" => 1,
 	);
 	require_once("includes/begin_html.php");

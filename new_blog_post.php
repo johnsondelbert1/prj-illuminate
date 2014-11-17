@@ -40,7 +40,7 @@ $pgsettings = array(
 	"title" => "Compose New Blog Post",
 	"pageselection" => false,
 	"nav" => true,
-	"banner" => 1,
+	"banner" => 0,
 	"use_google_analytics" => 1,
 );
 require_once("includes/begin_html.php");

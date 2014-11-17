@@ -92,7 +92,7 @@ $pgsettings = array(
 	"title" => "Editing: ".$blog['title'],
 	"pageselection" => "blog",
 	"nav" => true,
-	"banner" => 1,
+	"banner" => 0,
 	"use_google_analytics" => 1,
 );
 require_once("includes/begin_html.php");
@@ -123,7 +123,14 @@ require_once("includes/begin_html.php");
 			{title: 'Test template 2', content: 'Test 2'}
 		]
 	});
-
+	
+	$(document).ready(function() {
+			 $('input[id="imgall"]').click(function() {
+			 $("#img :checkbox").attr('checked', $(this).attr('checked'));
+			 });
+		  
+	 });
+	 
 	var cbcfn = function(e) {
 		if (e.target.tagName.toUpperCase() != "INPUT") {
 			var $tc = $(this).find('input:checkbox:first'),
@@ -157,8 +164,10 @@ require_once("includes/begin_html.php");
   </td>
 </table>
 </form>
+<br><br>
+<p style="text-align:left;">Select all: <input type="checkbox" id="imgall" /></p>
 <form action="edit_blog_post.php?post=<?php echo $_GET['post'];?>" method="post">
-<div align="center" style="text-align:center; width:100%; padding:28px;">
+<div align="center" id="img" style="text-align:center; width:100%; padding:28px;">
 <?php
 /** settings **/
 $images_dir = "blog_galleries/".$blog['id']."/gallery/";

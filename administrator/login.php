@@ -174,7 +174,7 @@ if(isset($_GET['success'])){
                             <input type="submit" name="submit" value="Sign in" class="button" tabindex="4"/>
                         </li>
                         <p><li>
-                            <input name="remember" type="checkbox" value="" tabindex="3"/>Remember Me<br><br>
+                            <input name="remember" id="remember" type="checkbox" value="" tabindex="3"/><label for="remember">Remember Me</label><br><br>
                         </li></p>
                         
                     </ul>
