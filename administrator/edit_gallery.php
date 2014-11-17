@@ -104,7 +104,12 @@ confirm_query($subgalleryquery);
 	$(document).ready(function() {
 			 $('input[id="gallall"]').click(function() {
 			 $("#gall :checkbox").attr('checked', $(this).attr('checked'));
-		});  
+			 });
+			 
+			 $('input[id="imgall"]').click(function() {
+			 $("#img :checkbox").attr('checked', $(this).attr('checked'));
+			 });
+		  
 	 });
 	 
 	var cbcfn = function(e) {
@@ -160,8 +165,9 @@ while($subgallery=mysqli_fetch_array($subgalleryquery)){
 <br>
 <br>
 <h1>Gallery Images</h1>
+<p style="text-align:left;">Select all: <input type="checkbox" id="imgall" /></p>
 <form method="post">
-    <div align="center" style="text-align:center; width:100%; margin-left:auto; margin-right:auto;">
+    <div align="center" id="img" style="text-align:center; width:100%; margin-left:auto; margin-right:auto;">
     
     <?php
     /** settings **/

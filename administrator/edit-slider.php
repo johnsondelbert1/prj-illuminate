@@ -134,7 +134,7 @@ $result=mysqli_query( $connection, $query);
                 Name
             </th>
             <th>
-                Caption
+                Caption (HTML links accepted)
             </th>
             <?php if(check_permission("Forms","delete_form")){?>
             <th style="text-align:center;">

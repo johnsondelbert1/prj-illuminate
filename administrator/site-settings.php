@@ -15,11 +15,12 @@ if(isset($_POST['chng_info'])){
 		}
 		$metadata = strip_tags(mysqli_real_escape_string($connection, $_POST['metadata']), "<meta>");
 		$css_js = strip_tags(mysqli_real_escape_string($connection, $_POST['css_js']), "<link><style><script>");
+		$footer_content = mysqli_real_escape_string($connection, $_POST['foot_content']);
 		
 		if($_POST['name']!=""){
 			if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 				$query="UPDATE `site_info` SET 
-					`name` = '{$_POST['name']}', `contact_email` = '{$_POST['email']}', `timezone` = '{$_POST['tz']}', `published` = {$published}, `default_rank` = {$_POST['rank']}, `homepage` = {$_POST['homepage']}, `meta_tags` = '{$metadata}', `style_js_link_tags` = '{$css_js}'";
+					`name` = '{$_POST['name']}', `contact_email` = '{$_POST['email']}', `base_url`='{$_POST['url']}', `timezone` = '{$_POST['tz']}', `published` = {$published}, `default_rank` = {$_POST['rank']}, `homepage` = {$_POST['homepage']}, `meta_tags` = '{$metadata}', `style_js_link_tags` = '{$css_js}', `footer_content` = '{$footer_content}'";
 			$result=mysqli_query($connection, $query);
 				confirm_query($result);
 				$success = "Site Info has been updated!";
@@ -122,6 +123,7 @@ $result_pages=mysqli_query($connection, $query);
 	);
 	require_once("includes/begin_cpanel.php");
 ?>
+<script type="text/javascript" src="../tinymce/js/tinymce/tinymce.min.js"></script>
 <script type="text/javascript">
 	function chngcolor(select){
 		 var selectedOption = select.options[select.selectedIndex];
@@ -204,6 +206,24 @@ $result_pages=mysqli_query($connection, $query);
 		 document.getElementById('text').style.backgroundColor = "#"+text;
 	}
 	
+	tinymce.init({
+		selector: "#foot_content",
+		theme: "modern",
+		skin: 'light',
+		width: '100%',
+		plugins: [
+			"advlist autolink lists link image charmap print preview anchor",
+			"searchreplace wordcount visualblocks visualchars code fullscreen",
+			"insertdatetime media save directionality",
+			"emoticons template paste textcolor"
+		],
+		toolbar1: "insertfile undo redo | bold italic | bullist numlist outdent indent | link image",
+		image_advtab: true,
+		templates: [
+			{title: 'Footer Template', content: '<b>Phone: </b>(208)-555-5555<br><b>Address: </b>1234 Secondgen Lane, Coeur d\' Alene, ID 83814'},
+		]
+	});
+	
   	var placeholder = 'This is a line \nthis should be a new line';
 	$('#analytics').attr('value', placeholder);
 	
@@ -270,6 +290,15 @@ $result_pages=mysqli_query($connection, $query);
     </td>
   </tr>
   <tr>
+  	<td>
+        <h2>Site URL (ex: http://www.example.com)</h2>
+        <input name="url" type="text" value="<?php echo $site['base_url']; ?>" maxlength="256" />
+    </td>
+  	<td>
+
+    </td>
+  </tr>
+  <tr>
   	<td colspan="2">
     	<h2>Metadata</h2>
         <textarea name="metadata" id="metadata" rows="15" cols="80"><?php if($site['meta_tags']!=""){echo $site['meta_tags'];}else{echo "<meta name=\"description\" content=\"A description of the page\" />";} ?></textarea><br>
@@ -279,6 +308,12 @@ $result_pages=mysqli_query($connection, $query);
   	<td colspan="2">
     	<h2>Custom CSS and Javascript</h2>
         <textarea name="css_js" id="css_js" rows="15" cols="80"><?php echo $site['style_js_link_tags']; ?></textarea><br>
+    </td>
+  </tr>
+  <tr>
+  	<td colspan="2">
+    	<h2>Website Footer Content</h2>
+        <textarea name="foot_content" id="foot_content" rows="15" cols="80"><?php echo $site['footer_content']; ?></textarea><br>
     </td>
   </tr>
   <tr>
