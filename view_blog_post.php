@@ -81,7 +81,7 @@ require_once("includes/begin_html.php");
         </tr>
         <tr>
         	<td>
-				<?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="bluesmall" href="edit_blog_post.php?post=<?php echo $post['id'] ?>">Edit</a><?php } ?>
+				<?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="blue small" href="edit_blog_post.php?post=<?php echo $post['id'] ?>">Edit</a><?php } ?>
             </td>
         </tr>
     </tr>
