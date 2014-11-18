@@ -3,11 +3,11 @@ require_once("../includes/functions.php");
 ?>
 
 <?php
-if(!check_permission(array("Forms;add_form","Forms;edit_form","Forms;delete_form",))){
+//if(!check_permission(array("Forms;add_form","Forms;edit_form","Forms;delete_form",))){
 	//redirect_to("index.php");
-}
+//}
 if(isset($_POST['save'])){
-	if(check_permission("Forms","add_form")){
+	//if(check_permission("Forms","add_form")){
 		if(isset($_POST['slide_id'])&&isset($_POST['slide_order'])&&isset($_POST['slide_cap'])){
 			foreach($_POST['slide_id'] as $slide_id){
 				$caption = strip_tags(mysqli_real_escape_string($connection, $_POST['slide_cap'][$slide_id]), "<a><i><b><u>");
@@ -19,7 +19,7 @@ if(isset($_POST['save'])){
 				$success="Slider updated!";
 			}
 		}
-	}
+	//}
 	
 }
 
@@ -28,7 +28,7 @@ if(isset($_POST['upload'])){
 }
 
 if(isset($_POST['del'])){
-	if(check_permission("Forms","delete_form")){
+	//if(check_permission("Forms","delete_form")){
 		function del($id){
 			global $connection;
 			
@@ -57,9 +57,9 @@ if(isset($_POST['del'])){
 		}else{
 			$error="No slides selected!";
 		}
-	}else{
+	/*}else{
 		$error="You do not have permission to delete slides!";
-	}
+	}*/
 }
 ?>
 
@@ -136,11 +136,11 @@ $result=mysqli_query( $connection, $query);
             <th>
                 Caption (HTML links accepted)
             </th>
-            <?php if(check_permission("Forms","delete_form")){?>
+            <?php //if(check_permission("Forms","delete_form")){?>
             <th style="text-align:center;">
                 <input type="checkbox" id="staffall">
             </th>
-            <?php } ?>
+            <?php //} ?>
         </tr>
     <?php
 	if(mysqli_num_rows($result)!=0){
@@ -151,9 +151,9 @@ $result=mysqli_query( $connection, $query);
 				<td><img src="../images/slider/<?php echo $slide['img_name'] ?>" width="320" height="180" /></td>
                 <td><?php echo $slide['img_name'] ?></td>
                 <td><input type="text" name="slide_cap[<?php echo $slide['id']; ?>]" value="<?php echo htmlspecialchars($slide['caption']); ?>" /></td>
-				<?php if(check_permission("Galleries","delete_gallery")){?>
+				<?php //if(check_permission("Galleries","delete_gallery")){?>
 				<td width="10%" style="text-align:center;"><input type="checkbox" name="slide[]" value="<?php echo $slide['id']; ?>" /></td>
-				<?php } ?>
+				<?php //} ?>
 			</tr>
 	<?php
         }
@@ -169,7 +169,7 @@ $result=mysqli_query( $connection, $query);
             <td></td>
             <td></td>
             <td></td>
-            <td style="text-align:center;"><?php if(check_permission("Forms","delete_form")){?><input name="del" type="submit" value="Delete" class="red" /><?php } ?></td>
+            <td style="text-align:center;"><?php //if(check_permission("Forms","delete_form")){?><input name="del" type="submit" value="Delete" class="red" /><?php //} ?></td>
         </tr>
     </table>
 </form>

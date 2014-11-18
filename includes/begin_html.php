@@ -13,7 +13,7 @@ if(isset($_GET['message'])){
 	$message=urldecode($_GET['message']);
 }
 
-$banners = scandir("images/banner/");
+$banner = scandir("images/banner/");
 $favicon = scandir("images/favicon/");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -88,7 +88,7 @@ $favicon = scandir("images/favicon/");
 			color:<?php echo $site_layout['text_color'] ?> !important;*/
 		}
 		#banner{
-			<?php if(count($banners)==3){?>background-image:url(images/banner/<?php echo $banners[2];?>);<?php } ?>
+			<?php if(count($banner)==3){?>background-image:url(images/banner/<?php echo $banner[2];?>);<?php } ?>
 			
 		}
 	</style>
@@ -119,7 +119,7 @@ $favicon = scandir("images/favicon/");
 		?>
         <div id="contentwrap">
 			<?php if(isset($pgsettings['banner'])&&$pgsettings['banner'] == 1){ ?>
-    		<div id="banner"><!--<img src="images/banner.png" />--></div>
+    		<?php if(isset($banner[2])){ ?><div style="width:100%; text-align:center; margin-bottom:20px;"><img src="images/banner/<?php echo $banner[2]; ?>" width="80%" style="background-color:#C9C9C9;" /></div><?php } ?>
 			<?php
 			}
 			?>

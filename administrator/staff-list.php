@@ -3,11 +3,11 @@ require_once("../includes/functions.php");
 ?>
 
 <?php
-if(!check_permission(array("Forms;add_form","Forms;edit_form","Forms;delete_form",))){
+//if(!check_permission(array("Forms;add_form","Forms;edit_form","Forms;delete_form",))){
 	//redirect_to("index.php");
-}
+//}
 if(isset($_POST['new'])){
-	if(check_permission("Forms","add_form")){
+	//if(check_permission("Forms","add_form")){
 		if($newname=mysql_prep($_POST['newname'])!=""){
 			$query="SELECT * FROM `staff`";
 			$result=mysqli_query( $connection, $query);
@@ -34,10 +34,10 @@ if(isset($_POST['new'])){
 		}else{
 			$error="Staff member name cannot be blank.";
 		}
-	}
+	//}
 
 }elseif(isset($_POST['delforms'])){
-	if(check_permission("Forms","delete_form")){
+	//if(check_permission("Forms","delete_form")){
 		function del($id){
 			global $connection;
 			
@@ -66,9 +66,9 @@ if(isset($_POST['new'])){
 		}else{
 			$error="No staff members selected!";
 		}
-	}else{
+	/*}else{
 		$error="You do not have permission to delete staff members!";
-	}
+	}*/
 }
 ?>
 
@@ -93,13 +93,13 @@ $result=mysqli_query( $connection, $query);
         });  
      });
 </script>
-<?php if(check_permission("Forms","add_form")){?>
+<?php //if(check_permission("Forms","add_form")){?>
 <h1>Add New Staff Member</h1>
 <form method="post">
     <label for="newname">Staff Member Name: </label><input name="newname" id="newname" type="text" value="<?php if(isset($_POST['galname'])){echo $_POST['galname'];} ?>" maxlength="100" />
     <input name="new" type="submit" value="Add Member" />
 </form>
-<?php } ?>
+<?php //} ?>
 <h1>Staff List</h1>
 <form method="post">
     <table width="90%" style="text-align:left;" class="list" border="0" cellspacing="0" id="staff">
@@ -116,11 +116,11 @@ $result=mysqli_query( $connection, $query);
             <th>
                 Role
             </th>
-            <?php if(check_permission("Forms","delete_form")){?>
+            <?php //if(check_permission("Forms","delete_form")){?>
             <th style="text-align:center;">
                 <input type="checkbox" id="staffall">
             </th>
-            <?php } ?>
+            <?php //} ?>
         </tr>
     <?php
 	if(mysqli_num_rows($result)!=0){
@@ -140,9 +140,9 @@ $result=mysqli_query( $connection, $query);
 				<td><?php if($profile_pic != false){ ?><img src="<?php echo $dir.$item; ?>" width="120" height="120" /><?php }else{echo "[No Picture]";} ?></td>
                 <td><a href="edit-staff.php?id=<?php echo urlencode($staff['id']); ?>"><?php echo $staff['name']; ?></a></td>
                 <td><?php if($staff['role']!=""){echo $staff['role'];}else{echo '[N/A]';} ?></td>
-				<?php if(check_permission("Galleries","delete_gallery")){?>
+				<?php //if(check_permission("Galleries","delete_gallery")){?>
 				<td width="10%" style="text-align:center;"><input type="checkbox" name="staff[]" value="<?php echo $staff['id']; ?>" /></td>
-				<?php } ?>
+				<?php //} ?>
 			</tr>
 	<?php
         }
@@ -157,7 +157,7 @@ $result=mysqli_query( $connection, $query);
         	<td></td>
             <td></td>
             <td></td>
-            <td style="text-align:center;"><?php if(check_permission("Forms","delete_form")){?><input name="delforms" type="submit" value="Delete" class="red" /><?php } ?></td>
+            <td style="text-align:center;"><?php //if(check_permission("Forms","delete_form")){?><input name="delforms" type="submit" value="Delete" class="red" /><?php //} ?></td>
         </tr>
     </table>
 </form>
