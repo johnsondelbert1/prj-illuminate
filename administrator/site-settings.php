@@ -46,7 +46,7 @@ if(isset($_POST['chngcolor'])){
 		$error="You do not have permission to edit colors.";
 	}
 }
-
+/*
 if(isset($_POST['delbanners'])){
 	if(check_permission("Website","upload_favicon_banner")){
 		function del_file($file){
@@ -73,9 +73,13 @@ if(isset($_POST['delbanners'])){
 	}else{
 		$error="You do not have permission to delete banners!";
 	}
-}
+}*/
 if(isset($_POST['uploadbanner'])){
-	$message = upload($_FILES, $output_dir_banner, 2097152, array('.jpeg','.jpg','.gif','.png'));
+	foreach (scandir($output_dir_banner) as $item) {
+		if ($item == '.' || $item == '..') continue;
+		unlink($output_dir_banner.DIRECTORY_SEPARATOR.$item);
+	}
+	$message = upload($_FILES, $output_dir_banner, 2097152, array('.jpeg','.jpg','.gif','.png','.ico'));
 }
 if(isset($_POST['uploadfavicon'])){
 	foreach (scandir($output_dir_icon) as $item) {
@@ -239,7 +243,25 @@ $result_pages=mysqli_query($connection, $query);
 		}    
 	});
 </script>
+<div id="TabbedPanels1" class="TabbedPanels">
+            <ul class="TabbedPanelsTabGroup">
+            	<?php if(check_permission("Website","edit_site_settings")){ ?>
+                	<li class="TabbedPanelsTab" tabindex="0">Settings</li>
+                <?php } ?>
+                <?php if(check_permission("Website","edit_site_colors")){ ?>
+                <li class="TabbedPanelsTab" tabindex="0">Colors</li>
+                <?php } ?>
+                <?php if(check_permission("Website","upload_favicon_banner")){ ?>
+                <li class="TabbedPanelsTab" tabindex="0">Banner / Favicon</li>
+                <?php } ?>
+                <?php if(check_permission("Website","edit_google_analytics")){ ?>
+                <li class="TabbedPanelsTab" tabindex="0">Google Analytics</li>
+                <?php } ?>
+            </ul>
+            <div class="TabbedPanelsContentGroup">
+                
 <?php if(check_permission("Website","edit_site_settings")){ ?>
+<div class="TabbedPanelsContent">
 <h1>Site Data</h1>
 <form method="post" action="site-settings.php">
 <table width="75%" border="0"  style="margin-left:auto; margin-right:auto;">
@@ -321,8 +343,10 @@ $result_pages=mysqli_query($connection, $query);
   </tr>
 </table>
 </form>
+</div>           
 <?php } ?>
 <?php if(check_permission("Website","edit_site_colors")){ ?>
+<div class="TabbedPanelsContent">
 <h1>Website Colors</h1>
 <select onchange="chngcolor(this)">
 	<option>Red (Dark)</option>
@@ -350,41 +374,11 @@ $result_pages=mysqli_query($connection, $query);
       </tr>
     </table>
 </form>
-<?php } ?>
+</div>
+<?php } ?>             
 <?php if(check_permission("Website","upload_favicon_banner")){ ?>
-<h1>Upload and Delete Banners</h1>
-<form method="post">
-    <table id="files">
-      <tr>
-        <th scope="col" width="45%">Banner filename</th>
-        <th scope="col" width="45%">File path</th>
-        <th scope="col" width="10%"><input type="checkbox" id="file"></th>
-      </tr>
-        <?php
-        $files = scandir("../images/banner/");
-        array_shift ($files);
-        array_shift ($files);
-        if(count($files)>0){
-            foreach($files as $file){
-                ?>
-                <tr>
-                    <td><?php echo $file; ?></td>
-                    <td><a href="../images/banner/<?php echo $file; ?>" target="_blank">Link</a></td>
-                    <td style="text-align:center;"><input type="checkbox" name="files[]" value="<?php echo $file; ?>" /></td>
-                </tr>
-            <?php
-            }
-        }else{?>
-                <tr>
-                    <td colspan="3">(No banners!)</td>
-                </tr>
-        <?php } ?>
-                <tr>
-                    <td colspan="2"></td>
-                    <td><input name="delbanners" type="submit" value="Delete Banners" class="red" /></td>
-                </tr>
-    </table>
-</form>
+<div class="TabbedPanelsContent">
+<h1>Upload Banner</h1>
 <form method="post" enctype="multipart/form-data">
 	<input type="file" name="file" id="file" />
 	<input name="uploadbanner" type="submit" value="Upload a banner (2MB max)" />
@@ -394,8 +388,10 @@ $result_pages=mysqli_query($connection, $query);
 	<input type="file" name="file" id="file" />
 	<input name="uploadfavicon" type="submit" value="Upload a favicon (128KB max)" />
 </form>
-<?php } ?>
+</div>
+<?php } ?>             
   <?php if(check_permission("Website","edit_google_analytics")){ ?>
+  <div class="TabbedPanelsContent">
   <h1>Google Analytics</h1>
   <form method="post" action="site-settings.php">
     Enabled: <input name="analyticsenabled" type="checkbox"<?php if($site['g_analytics_enabled']){echo  "checked";} ?> /><br>
@@ -403,5 +399,6 @@ $result_pages=mysqli_query($connection, $query);
 	<textarea name="analyticscode" id="analytics" rows="15" cols="80"><?php echo $site['g_analytics_code']; ?></textarea><br>
     <input name="chngganalytics" type="submit" value="Change Google Analytics Settings" />
   </form>
+  </div>
   <?php } ?>
 <?php require_once("includes/end_cpanel.php"); ?>
