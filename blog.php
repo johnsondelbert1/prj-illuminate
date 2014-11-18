@@ -152,8 +152,8 @@ if (mysqli_num_rows($result)!=0){
 				</tr>
                 <tr>
                     <td class="blogfooter" colspan="2">
-                        <?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="bluesmall" href="edit_blog_post.php?post=<?php echo $post['id'] ?>">Edit</a><?php } ?>
-                        <?php if(check_permission("Blog","delete_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="redsmall" href="blog.php?delpost=<?php echo $post['id'] ?>">Delete</a><?php } ?>
+                        <?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="blue small" href="edit_blog_post.php?post=<?php echo $post['id'] ?>">Edit</a><?php } ?>
+                        <?php if(check_permission("Blog","delete_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="red small" href="blog.php?delpost=<?php echo $post['id'] ?>">Delete</a><?php } ?>
                     </td>
                 </tr>
 			</tr>
