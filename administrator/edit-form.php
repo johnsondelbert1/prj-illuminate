@@ -75,7 +75,8 @@ span:hover{
 	});
 	
 	function delrow(rowid){
-		$(document.getElementById(rowid).remove());
+		var row = document.getElementById(rowid);
+		row.parentNode.removeChild(row);
 	}
 	
 </script>
