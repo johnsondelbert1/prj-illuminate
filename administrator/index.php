@@ -1,6 +1,7 @@
 <?php
 require_once("../includes/functions.php");
 confirm_logged_in();
+redirect_to('page_list.php');
 ?>
 <?php
 $query="SELECT * FROM  `features` WHERE  `id` =  1";
