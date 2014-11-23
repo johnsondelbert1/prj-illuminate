@@ -73,9 +73,9 @@ $favicon = scandir("images/favicon/");
 		.photo-link:hover{
 			background-color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		#content, .forum tr, .forumbody{
+		#content, #content a, #footer a, .forum tr, .forumbody{
 			background-color:<?php echo $site_layout['menu_color'] ?> !important;
-			color:<?php echo $site_layout['contentbg_color'] ?> !important;
+			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
 		.forum tr a{
 			color:<?php echo $site_layout['contentbg_color'] ?> !important;

@@ -69,7 +69,7 @@ span:hover{
 	$(document).ready(function(){
 		rows = $('#fieldtable tr').length;
 		$("#anc_add").click(function(){
-		$('#fieldtable tr').last().after('<tr id="'+cnt+'"><td><input name="fieldname['+cnt+']" type="text" value=""></td><td><select name="fieldtype['+cnt+']"><option value="text">Textbox</option><option value="textarea">Text Area</option></select></td><td><input name="fielddesc['+cnt+']" type="text" value=""></td><td><input name="fieldplaceholder['+cnt+']" type="text" value=""></td><td><input name="fieldmaxchar['+cnt+']" type="text" value=""></td><td><select name="fieldvalidate['+cnt+']"><option value="none">None</option><option value="email">Email</option><option value="notempty">Cannot Be Empty</option></select></td><td><span onClick="delrow('+cnt+')" class="red button">Delete</span></td></tr>');
+		$('#fieldtable tr').last().after('<tr id="'+cnt+'"><td><input name="fieldname['+cnt+']" type="text" value=""></td><td><select name="fieldtype['+cnt+']"><option value="text">Textbox</option><option value="textarea">Text Area</option></select></td><td><input name="fielddesc['+cnt+']" type="text" value=""></td><td><input name="fieldplaceholder['+cnt+']" type="text" value=""></td><td><input name="fieldmaxchar['+cnt+']" type="text" value=""></td><td><select name="fieldvalidate['+cnt+']"><option value="none">None</option><option value="email">Email</option><option value="notempty">Cannot Be Blank</option></select></td><td><span onClick="delrow('+cnt+')" class="red button">Delete</span></td></tr>');
 		cnt++;
 		});
 	});
@@ -91,10 +91,10 @@ span:hover{
 <table width="100%" border="0" style="margin-right:auto; margin-left:auto;">
 <tr>
 <td width="50%">
-    Name: <input name="formname" type="text" value="<?php echo $form['name']; ?>" maxlength="128" />
-    Email: <input name="email_to" type="text" value="<?php echo $form['email_to']; ?>" maxlength="128" />
-    Email From: <input name="email_from" type="text" value="<?php echo $form['email_from']; ?>" maxlength="128" />
-    Submit Button Text: <input name="submit_value" type="text" value="<?php echo $form['submit_value']; ?>" maxlength="128" />
+    Name: <input name="formname" type="text" value="<?php if(isset($_POST['formname'])){echo $_POST['formname'];}else{echo $form['name'];} ?>" maxlength="128" />
+    Data from form to be sent to: <input name="email_to" type="text" value="<?php if(isset($_POST['email_to'])){echo $_POST['email_to'];}else{echo $form['email_to'];} ?>" placeholder="Email" maxlength="128" />
+    Sent from: <input name="email_from" type="text" value="<?php if(isset($_POST['email_from'])){echo $_POST['email_from'];}else{echo $form['email_from'];} ?>" placeholder="Email" maxlength="128" />
+    Submit Button Text: <input name="submit_value" type="text" value="<?php if(isset($_POST['submit_value'])){echo $_POST['submit_value'];}else{echo $form['submit_value'];} ?>" maxlength="128" />
     <table width="100%" border="0" id="fieldtable">
         <tr>
         	<th>

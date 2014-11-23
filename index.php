@@ -114,7 +114,6 @@ if(($rows)!=0){
 							"use_google_analytics" => 1,
 						);
 						
-						$form_validation = array();
 						
 						if($page['forms']!=""){
 							$pageforms=unserialize($page['forms']);
@@ -124,34 +123,36 @@ if(($rows)!=0){
 								$form=mysqli_fetch_array($result);
 								
 								if(isset($_POST[$form['u_name']])){
-									//print_r($_POST);
+									$form_validation = array();
 									$count=0;
 									$form_send = true;
 									foreach($_POST as $post_key => $post_val){
 										if($post_key != $form['u_name']){
 											$field_validators=unserialize($form['field_validators']);
 											
+											$fixed_post_key = str_replace('_', ' ', $post_key);
+											
 											switch($field_validators[$count]){
 												case "none":
-													$form_validation[$post_key] = true;
+													$form_validation[$fixed_post_key] = true;
 													break;
 												case "email":
 													if(filter_var($_POST[$post_key],FILTER_VALIDATE_EMAIL)){
-														$form_validation[$post_key] = true;
+														$form_validation[$fixed_post_key] = true;
 														break;
 													}else{
 														$form_send = false;
-														$form_validation[$post_key] = false;
+														$form_validation[$fixed_post_key] = false;
 														$error = 'There were errors in the form, please fix them below.';
 													}
 													break;
 												case "notempty":
 													if($_POST[$post_key]!=""){
-														$form_validation[$post_key] = true;
+														$form_validation[$fixed_post_key] = true;
 														break;
 													}else{
 														$form_send = false;
-														$form_validation[$post_key] = false;
+														$form_validation[$fixed_post_key] = false;
 														$error = 'There were errors in the form, please fix them below.';
 													}
 													break;	
@@ -163,16 +164,18 @@ if(($rows)!=0){
 										$email_message = 'Data from form "'.$form['name'].'", submitted at '.$date.'<br/>';
 										foreach($_POST as $post_key => $post_val){
 											if($post_key != $form['u_name']){
-												$email_message .= $post_key.': <b>'.$post_val.'</b><br/>';
+												$email_message .= '<b>'.str_replace('_', ' ', $post_key).': </b>'.$post_val.'<br/>';
 											}
 										}
 										
 										$to = $form['email_to'];
 										$email_subject = '"'.$form['name'].'" form submission';
-										$headers = "From: ".$form['email_from'].PHP_EOL."\r\n";
-										$headers .= "MIME-Version: 1.0\r\n";
-										$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-										mail ( $to , $email_subject , $email_message , $headers );
+										$headers  = 'MIME-Version: 1.0' . "\r\n";
+										$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+										$headers .= "From: ".$form['email_from']."\r\n"."X-Mailer: php";
+										if(mail ( $to , $email_subject , $email_message , $headers )){
+											$success = 'Your response has been recorded! Thank you.';
+										}
 									}
 								}
 							}
@@ -205,20 +208,30 @@ if(($rows)!=0){
 								
 								$num_fields = count($field_names);
 								$count = 0;
-							
+								
 								?>
                                 <br><br>
 								<form method="post" name="<?php echo $form['u_name']; ?>">
 								<table border="0" width="100%" cellpadding="0" cellspacing="0">
 									<?php while($num_fields>$count){
 										$maxchars = intval($field_maxchars[$count]);
+										//echo 'valid ';print_r($form_validation);echo '<br>';
+										
+										//echo 'post ';print_r($_POST);echo '<br>';
+										if(isset($form_validation)){$validation_arr=$form_validation[$field_names[$count]];}
+										$temp = str_replace(' ', '_', $field_names[$count]);
+										if(isset($_POST[$temp])){
+											$post_name = str_replace('_', ' ', $_POST[$temp]);
+										}else{
+											$post_name="";
+										}
 									?>
 									<tr>
 										<td>
-                                        <label for="<?php echo $field_names[$count]; ?>" style="margin-left:10px;"><?php echo $field_names[$count]; ?>: </label><?php if(isset($form_validation[$field_names[$count]])&&$form_validation[$field_names[$count]]!=true){?><div style=" display:inline; border-radius:5px; background-color:#9F0002; color:#FFFFFF; padding:3px; font-size:16px;"><?php if($field_validators[$count]=="email"){echo 'Invalid email';}elseif($field_validators[$count]=="notempty"){echo 'Cannot be blank';}?></div><?php } ?><br>
+                                        <label for="<?php echo $field_names[$count]; ?>" style="margin-left:10px;"><?php echo $field_names[$count].':'; if($field_validators[$count]=="notempty"||$field_validators[$count]=="email"){echo '*';}?> </label><?php if(isset($validation_arr)&&$validation_arr!=true){?><div style=" display:inline; border-radius:5px; background-color:#9F0002; color:#FFFFFF; padding:3px; font-size:16px;"><?php if($field_validators[$count]=="email"){echo 'Invalid email';}elseif($field_validators[$count]=="notempty"){echo 'Cannot be blank';}?></div><?php } ?><br>
                                         <span class="tooltips" style="vertical-align:middle;">
                                             <?php if($field_types[$count] == "text"){?>
-                                                <input name="<?php echo $field_names[$count]; ?>" id="<?php echo $field_names[$count]; ?>"<?php if(isset($form_validation[$field_names[$count]])&&$form_validation[$field_names[$count]]!=true){echo ' style="border:2px solid #9F0002;"';} ?> value="<?php if(isset($_POST[$field_names[$count]])){echo $_POST[$field_names[$count]];} ?>" type="text"<?php if($field_placeholders[$count] != ""){echo ' placeholder="'.$field_placeholders[$count].'"';} ?><?php if($maxchars != ""){echo ' maxlength="'.$maxchars.'"';} ?> />
+                                                <input name="<?php echo $field_names[$count]; ?>" id="<?php echo $field_names[$count]; ?>" style=" width:250px; <?php if(isset($validation_arr)&&$validation_arr!=true){echo 'border:2px solid #9F0002;"';} ?>" value="<?php echo $post_name; ?>" type="text"<?php if($field_placeholders[$count] != ""){echo ' placeholder="'.$field_placeholders[$count].'"';} ?><?php if($maxchars != ""){echo ' maxlength="'.$maxchars.'"';} ?> />
                                             <?php }elseif($field_types[$count] == "textarea"){ ?>
                                                 <textarea name="<?php echo $field_names[$count]; ?>" id="<?php echo $field_names[$count]; ?>"<?php if(isset($form_validation[$field_names[$count]])&&$form_validation[$field_names[$count]]!=true){echo ' style="border:2px solid #9F0002;"';} ?> rows="15" cols="75"<?php if($field_placeholders[$count] != ""||$maxchars != ""){$placeholder = $field_placeholders[$count]; if($maxchars != ""){$placeholder.=' (Max. '.$maxchars.' characters)';} echo ' placeholder="'.$placeholder.'"';} ?><?php if($maxchars != ""){echo ' maxlength="'.$maxchars.'"';} ?>><?php if(isset($_POST[$field_names[$count]])){echo $_POST[$field_names[$count]];} ?></textarea>
                                             <?php } ?>

@@ -88,7 +88,7 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 				
 				$query = "UPDATE `pages` SET `content` = '{$content}', `name`='{$name}', `position`={$position}, `published`='{$published}', 
 				`issubpage`={$issub}, `parent`={$subpg}, `galleries`='{$galleries}', `forms`='{$forms}', `type`='{$_POST['pgtype']}', `target`='{$_POST['target']}', 
-				`banner`='{$banner}', `slider`='{$slider}', `url`='{$url}', `lastedited`='{$date}', `editor`={$_SESSION['user_id']}, `horiz_menu`={$horiz_menu}, `vert_menu`={$vert_menu}, 
+				`banner`={$banner}, `slider`={$slider}, `url`='{$url}', `lastedited`='{$date}', `editor`={$_SESSION['user_id']}, `horiz_menu`={$horiz_menu}, `vert_menu`={$vert_menu}, 
 				`horiz_menu_visible`={$horiz_menu_visible}, `vert_menu_visible`={$vert_menu_visible} WHERE id = {$id}";
 				
 				$result = mysqli_query( $connection, $query);
@@ -124,7 +124,14 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 				}
 				if($issub==1){$subpg=$_POST['sub'];}else{$subpg=0;}
 				
+				if(isset($_POST['published'])){$published=1;}else{$published=0;}
 				if(isset($_POST['banner'])){$banner=1;}else{$banner=0;}
+				if(isset($_POST['slider'])){$slider=1;}else{$slider=0;}
+				if(isset($_POST['horiz_menu'])){$horiz_menu=1;}else{$horiz_menu=0;}
+				if(isset($_POST['vert_menu'])){$vert_menu=1;}else{$vert_menu=0;}
+				if(isset($_POST['horiz_menu_visible'])){$horiz_menu_visible=1;}else{$horiz_menu_visible=0;}
+				if(isset($_POST['vert_menu_visible'])){$vert_menu_visible=1;}else{$vert_menu_visible=0;}
+				
 				if(isset($_POST['url'])){$url=$_POST['url'];}else{$url="";}
 				
 				if(isset($_POST['galleries'])&&$_POST['galleries']!=""){
@@ -132,15 +139,20 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 				}else{
 					$galleries="";
 				}
+				if(isset($_POST['forms'])&&$_POST['forms']!=""){
+					$forms=serialize($_POST['forms']);
+				}else{
+					$forms="";
+				}
 				
 				date_default_timezone_set($site_info['timezone']);
 				$date=date("Y/m/d H:i:s", time());
 				
 				if($_POST['name']!=""){
 					$query="INSERT INTO `pages` 
-					(`name`, `content`, `position`, `issubpage`, `parent`, `visible`, `galleries`, `type`, `target`, `banner`, `url`, `created`, `creator`) 
+					(`name`, `content`, `position`, `issubpage`, `parent`, `published`, `galleries`, `forms`, `type`, `target`, `banner`, `slider`, `url`, `created`, `creator`, `horiz_menu`, `vert_menu`, `horiz_menu_visible`, `vert_menu_visible`) 
 					VALUES 
-					('{$name}', '{$content}', '{$position}', '{$issub}', '{$subpg}', {$_POST['visible']}, '{$galleries}', '{$_POST['pgtype']}', '{$_POST['target']}', '{$banner}', '{$url}', '{$date}', {$_SESSION['user_id']})";
+					('{$name}', '{$content}', '{$position}', '{$issub}', '{$subpg}', {$published}, '{$galleries}', '{$forms}', '{$_POST['pgtype']}', '{$_POST['target']}', {$banner}, {$slider}, '{$url}', '{$date}', {$_SESSION['user_id']}, {$horiz_menu}, {$vert_menu}, {$horiz_menu_visible}, {$vert_menu_visible})";
 					$result = mysqli_query( $connection, $query);
 					confirm_query($result);
 					if(isset($_POST['newpage'])){
