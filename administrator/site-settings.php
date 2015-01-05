@@ -14,7 +14,7 @@ if(isset($_POST['chng_info'])){
 			$published = 0;
 		}
 		$metadata = strip_tags(mysqli_real_escape_string($connection, $_POST['metadata']), "<meta>");
-		$css_js = strip_tags(mysqli_real_escape_string($connection, $_POST['css_js']), "<link><style><script>");
+		$css_js = strip_tags(mysqli_real_escape_string($connection, $_POST['css_js']), "<script>");
 		$footer_content = mysqli_real_escape_string($connection, $_POST['foot_content']);
 		
 		if($_POST['name']!=""){
@@ -35,13 +35,16 @@ if(isset($_POST['chng_info'])){
 	}
 }
 
-if(isset($_POST['chngcolor'])){
+if(isset($_POST['chngstyle'])){
 	if(check_permission("Website","edit_site_colors")){
+		
+		$css = strip_tags(mysqli_real_escape_string($connection, $_POST['custom_css']),"<link>");
+		
 		$query="UPDATE `site_layout` SET 
-			`menu_color` = '{$_POST['menu_color']}', `contentbg_color` = '{$_POST['contentbg_color']}', `sitebg_color` = '{$_POST['sitebg_color']}', `accent_color` = '{$_POST['accent_color']}', `text_color` = '{$_POST['text_color']}'";
+			`menu_color` = '{$_POST['menu_color']}', `contentbg_color` = '{$_POST['contentbg_color']}', `sitebg_color` = '{$_POST['sitebg_color']}', `accent_color` = '{$_POST['accent_color']}', `text_color` = '{$_POST['text_color']}', `custom_css` = '{$css}'";
 		$result=mysqli_query($connection, $query);
 		confirm_query($result);
-		$success = "Site colors have been updated!";
+		$success = "Site styling have been updated!";
 	}else{
 		$error="You do not have permission to edit colors.";
 	}
@@ -249,7 +252,7 @@ $result_pages=mysqli_query($connection, $query);
                 	<li class="TabbedPanelsTab" tabindex="0">Settings</li>
                 <?php } ?>
                 <?php if(check_permission("Website","edit_site_colors")){ ?>
-                <li class="TabbedPanelsTab" tabindex="0">Colors</li>
+                <li class="TabbedPanelsTab" tabindex="0">Style</li>
                 <?php } ?>
                 <?php if(check_permission("Website","upload_favicon_banner")){ ?>
                 <li class="TabbedPanelsTab" tabindex="0">Banner / Favicon</li>
@@ -328,7 +331,7 @@ $result_pages=mysqli_query($connection, $query);
   </tr>
   <tr>
   	<td colspan="2">
-    	<h2>Custom CSS and Javascript</h2>
+    	<h2>Javascript</h2>
         <textarea name="css_js" id="css_js" rows="15" cols="80"><?php echo $site['style_js_link_tags']; ?></textarea><br>
     </td>
   </tr>
@@ -347,7 +350,7 @@ $result_pages=mysqli_query($connection, $query);
 <?php } ?>
 <?php if(check_permission("Website","edit_site_colors")){ ?>
 <div class="TabbedPanelsContent">
-<h1>Website Colors</h1>
+<h1>Website Style</h1>
 <select onchange="chngcolor(this)">
 	<option>Red (Dark)</option>
    	<option>Red (Light)</option>
@@ -370,7 +373,13 @@ $result_pages=mysqli_query($connection, $query);
         <td style="text-align:right;"><label for="text">Text:</label></td><td style="text-align:left;"><input id="text" name="text_color" type="text" value="<?php echo $layout['text_color']; ?>" maxlength="7" class="color {hash:true}" /></td>
       </tr>
       <tr>
-        <td colspan="4"><input name="chngcolor" type="submit" value="Change Colors" /></td>
+      	<td colspan="2"><strong>Custom CSS</strong></td>
+      </tr>
+      <tr>
+      	<td colspan="2"><textarea name="custom_css" id="custom_css" rows="15" cols="80"><?php echo $layout['custom_css']; ?></textarea></td>
+      </tr>
+      <tr>
+        <td colspan="4"><input name="chngstyle" type="submit" value="Change Styling" /></td>
       </tr>
     </table>
 </form>
@@ -380,7 +389,8 @@ $result_pages=mysqli_query($connection, $query);
 <div class="TabbedPanelsContent">
 <h1>Upload Banner</h1>
 <form method="post" enctype="multipart/form-data">
-	<input type="file" name="file" id="file" />
+	<input type="file" name="file" id="file" /><br>
+    *Recommended image size is 1510 pixels high by 800 pixels wide. Max filesize 2MB.
 	<input name="uploadbanner" type="submit" value="Upload a banner (2MB max)" />
 </form>
 <h1>Upload Favicon</h1>

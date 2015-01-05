@@ -240,12 +240,27 @@ if($_GET['action']=="edit"){
 			"insertdatetime media nonbreaking save table contextmenu directionality",
 			"emoticons template paste textcolor responsivefilemanager"
 		],
-		toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | responsivefilemanager",
-		toolbar2: "print preview media | forecolor backcolor emoticons",
+		toolbar1: "insertfile undo redo | fontsizeselect fontselect styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | responsivefilemanager",
+		toolbar2: "print preview media | forecolor backcolor",
 		image_advtab: true,
 		templates: [
 			{title: '2 Column Table', content: '<table style="width: 100%;" border="2" width="1798"><tbody><tr><td style="text-align: center;">Column 1</td><td style="text-align: center;">Column 2</td></tr></tbody></table>'},
 		],
+        theme_advanced_fonts : "Andale Mono=andale mono,times;"+
+                "Arial=arial,helvetica,sans-serif;"+
+                "Arial Black=arial black,avant garde;"+
+                "Book Antiqua=book antiqua,palatino;"+
+                "Comic Sans MS=comic sans ms,sans-serif;"+
+                "Courier New=courier new,courier;"+
+                "Georgia=georgia,palatino;"+
+                "Helvetica=helvetica;"+
+                "Impact=impact,chicago;"+
+                "Symbol=symbol;"+
+                "Tahoma=tahoma,arial,helvetica,sans-serif;"+
+                "Terminal=terminal,monaco;"+
+                "Times New Roman=times new roman,times;"+
+                "Trebuchet MS=trebuchet ms,geneva;"+
+                "Verdana=verdana,geneva;",
 		external_filemanager_path:"filemanager/",
 		filemanager_title:"Link to File" ,
 		external_plugins: { "filemanager" : "plugins/responsivefilemanager/plugin.min.js"}
@@ -301,6 +316,13 @@ if($_GET['action']=="edit"){
                 <div class="TabbedPanelsContent">
 
 <table width="100%" border="0" cellspacing="5" cellpadding="5" class="editpageform">
+<?php if(isset($_GET['action'])&&$_GET['action']!="newpage"){ ?>
+  <tr>
+    <td style="text-align:right;"><strong>Page URL:</strong></td>
+    <td style="text-align:left;"><a href="<?php echo $site_info['base_url'].'/index.php?page='.urlencode($selpage['name']); ?>" onclick="window.open('../index.php?page=<?php echo urlencode($selpage['name']);?>', 'newwindow', 'width=1017, height=500'); return false;"><?php echo $site_info['base_url'].'/index.php?page='.urlencode($selpage['name']); ?></a></td>
+    <td colspan="2"><a href="page_list_simple.php" onclick="window.open('page_list_simple.php', 'newwindow', 'width=700, height=500'); return false;">(View Pages)</a></td>
+  </tr>
+<?php } ?>
   <tr>
     <td align="right"><b>Name:</b></td>
     <td align="left">
@@ -310,7 +332,7 @@ if($_GET['action']=="edit"){
     	<b>Published:</b>
     </td>
 	<td align="left">
-    	<input type="checkbox" name="published" <?php if(isset($_GET['page'])&&$selpage['published']==1){echo "checked ";} ?>/>
+    	<input type="checkbox" name="published" <?php if((isset($_GET['page'])&&$selpage['published']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/>
     </td>
     <!--
     <td align="right">
@@ -335,7 +357,7 @@ if($_GET['action']=="edit"){
     <td align="right"><b>Page Type:</b></td>
     <td align="left">
 		<?php
-            $types = array('Custom','Blog','Forum','Link', 'Staff');
+            $types = array('Custom', 'Documents', 'Link', 'Staff');
         ?>
         <select name="pgtype" onchange="disable(this)">
         <?php
@@ -361,7 +383,7 @@ if($_GET['action']=="edit"){
   	<td align="right"><b>Parent Page:</b></td>
     <td align="left">
     	<?php
-        $query="SELECT * FROM `pages` ORDER BY `position` ASC";
+        $query="SELECT * FROM `pages` WHERE `issubpage` = 0 ORDER BY `position` ASC";
         $listpagesquery=mysqli_query( $connection, $query);
         confirm_query($listpagesquery);
         ?>
@@ -369,7 +391,7 @@ if($_GET['action']=="edit"){
         	<option value="none"<?php if(isset($selpage['issubpage'])&&$selpage['issubpage']==0){echo " selected=\"selected\"";} ?>>(None)</option>
 			<?php
             while($listpage=mysqli_fetch_array($listpagesquery)){
-				if($listpage['issubpage']==0||isset($_GET['page'])&&intval($listpage['id'])!=intval($_GET['page'])){?>
+				if(isset($_GET['page'])&&$listpage['id']!=intval($_GET['page'])){?>
                 	<option value="<?php echo $listpage['id'];?>"<?php if(isset($selpage['parent'])&&$selpage['parent']==$listpage['id']){echo " selected=\"selected\"";} ?>><?php echo $listpage['name']?></option>
 			<?php }
             }?>
@@ -394,13 +416,13 @@ if($_GET['action']=="edit"){
   <tr>
   	<td align="right"><b>Show page on:</b></td>
     <td align="left">
-    	Horizontal Menu <input type="checkbox" name="horiz_menu" <?php if(isset($_GET['page'])&&$selpage['horiz_menu']==1){echo "checked ";} ?>/><br>
+    	Horizontal Menu <input type="checkbox" name="horiz_menu" <?php if((isset($_GET['page'])&&$selpage['horiz_menu']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/><br>
         Vertical Menu <input type="checkbox" name="vert_menu" <?php if(isset($_GET['page'])&&$selpage['vert_menu']==1){echo "checked ";} ?>/>
     </td>
     <td align="right"><b>Menus visible on page:</b></td>
     <td align="left">
-    	Horizontal Menu <input type="checkbox" name="horiz_menu_visible" <?php if(isset($_GET['page'])&&$selpage['horiz_menu_visible']==1){echo "checked ";} ?>/><br>
-        Vertical Menu <input type="checkbox" name="vert_menu_visible" <?php if(isset($_GET['page'])&&$selpage['vert_menu_visible']==1){echo "checked ";} ?>/>
+    	Horizontal Menu <input type="checkbox" name="horiz_menu_visible" <?php if((isset($_GET['page'])&&$selpage['horiz_menu_visible']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/><br>
+        Vertical Menu <input type="checkbox" name="vert_menu_visible" <?php if((isset($_GET['page'])&&$selpage['vert_menu_visible']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/>
     </td>
   </tr>
   <tr>

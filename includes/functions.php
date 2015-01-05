@@ -22,14 +22,22 @@ function get_rank_info(){
 	$user_rank=mysqli_fetch_array($result);
 	$query="SELECT * FROM `ranks` WHERE `id` = {$user_rank['rank']}";
 	$result=mysqli_query( $connection, $query);
-	$rank_permissions=mysqli_fetch_array($result);
-	$user_permissions = unserialize($rank_permissions['permissions']);
+	if(mysqli_num_rows($result)!=0){
+		$rank_permissions=mysqli_fetch_array($result);
+		if($rank_permissions['permissions']!=""){
+			$user_permissions = unserialize($rank_permissions['permissions']);
+		}else{
+			$user_permissions=array();
+		}
+	}else{
+		$user_permissions = $blank_permissions;
+	}
 	return $user_permissions;
 }
 $blank_permissions = array(
 	"Pages" => array(
 		"add_pages" => array("value" => 0, "disp_name" => "Add", "description" => "Enables members of this rank to add a new page to the website"),
-		"edit_pages" => array("value" => 0, "disp_name" => "Edit", "description" => "Enables members of this rank to edit existing pages on the website"),
+		"edit_pages" => array("value" => 0, "disp_name" => "Edit", "description" => "Enables members of this rank to edit existing pages on the website, edit the staff, and edit the slider banner."),
 		"delete_pages" => array("value" => 0, "disp_name" => "Delete", "description" => "Enables members of this rank to delete pages on the website"),
 	),
 	"Blog" => array(
@@ -48,7 +56,7 @@ $blank_permissions = array(
 		"delete_thread" => array("value" => 0, "disp_name" => "Delete Thread", "description" => "Enables members of this rank to delete threads from the forums."),
 	),
 	"Users" => array(
-		"add_users" => array("value" => 0, "disp_name" => "Add Users", "description" => "Enables members of this rank to add users to the website."),
+		"add_users" => array("value" => 0, "disp_name" => "Add Users", "description" => "Enables members of this rank to add users to the website and change those users' ranks."),
 		"delete_users" => array("value" => 0, "disp_name" => "Ban Users", "description" => "Enables members of this rank to ban users from the website."),
 		"create_rank" => array("value" => 0, "disp_name" => "Create Ranks", "description" => "Enables members of this rank to create ranks on the website."),
 		"edit_rank" => array("value" => 0, "disp_name" => "Edit Ranks", "description" => "Enables members of this rank to edit existing ranks on the website."),
@@ -80,7 +88,6 @@ $blank_permissions = array(
 		"edit_google_analytics" => array("value" => 0, "disp_name" => "Edit Google Analytics", "description" => "Enables members of this rank to edit the Google Analytics information."),
 	)
 );
-
 if(logged_in()){
 	$permissions = array_replace_recursive($blank_permissions, get_rank_info());
 }else{
@@ -698,7 +705,7 @@ function slider(){
 										while($slide=mysqli_fetch_array($result)){?>
                                             <div>
                                                 <img u=image src="images/slider/<?php echo $slide['img_name']; ?>" />
-                                                <div u="thumb"><?php echo $slide['caption']; ?></div>
+                                                <div u="thumb"><?php if($slide['url']!=''){echo '<a href="'.$slide['url'].'">'.$slide['caption'].'</a>';}else{echo $slide['caption'];} ?></div>
                                             </div>
 										<?php
                                         }

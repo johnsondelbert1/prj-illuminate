@@ -359,7 +359,7 @@ if(($rows)!=0){
 	);
 	require_once("includes/begin_html.php");
 ?>
-	<p>(This website has no pages to display! Admin user must go add pages in the <a href="administrator/control_panel.php">Control Panel</a> to add content.)</p>
+	<p>(This website has no pages to display! Admin user must go add pages in the <a href="administrator/">Control Panel</a> to add content.)</p>
 <?php
 }
 ?>
