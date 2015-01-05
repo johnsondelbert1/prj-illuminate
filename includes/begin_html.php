@@ -56,7 +56,7 @@ $favicon = scandir("images/favicon/");
 		#banner{
 			background-color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #vert-menu, #vert-menu li, #vert-menu ul li, #footerwrap, h1, h2, .photo-link, .nav{
+		#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #vert-menu, #vert-menu li, #vert-menu ul li, #footerwrap, .photo-link, .nav{
 			background-color:<?php echo $site_layout['menu_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
@@ -73,9 +73,9 @@ $favicon = scandir("images/favicon/");
 		.photo-link:hover{
 			background-color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		#content, .forum tr, .forumbody{
+		#content, #content a, #footer a, .forum tr, .forumbody{
 			background-color:<?php echo $site_layout['menu_color'] ?> !important;
-			color:<?php echo $site_layout['contentbg_color'] ?> !important;
+			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
 		.forum tr a{
 			color:<?php echo $site_layout['contentbg_color'] ?> !important;
@@ -91,13 +91,18 @@ $favicon = scandir("images/favicon/");
 			<?php if(count($banner)==3){?>background-image:url(images/banner/<?php echo $banner[2];?>);<?php } ?>
 			
 		}
+		/* Start custom CSS */
+		<?php if($site_layout['custom_css']!=""){
+			echo $site_layout['custom_css'];
+		}?>
+		/* End custom CSS */
 	</style>
-    <!-- Start custom CSS and JS -->
+    <!-- Start custom JS -->
     <?php if($site_info['style_js_link_tags']!=""){
 		echo $site_info['style_js_link_tags'];
 	}?>
     
-    <!-- End custom CSS and JS -->
+    <!-- End custom JS -->
 </head>
 
 

@@ -24,10 +24,10 @@ if(isset($_POST['submit'])){
 					if (mysqli_num_rows($result)==0){
 						$date=date("Y/m/d H:i:s", time());
 						
-						$query="INSERT INTO users (
+						$query="INSERT INTO `users` (
 											username, created, email, hashed_pass, rank
 										) VALUES (
-											'{$user}', ,'{$date}', '{$email}', '{$hashed_pass}', {$_POST['rank']})";
+											'{$user}', '{$date}', '{$email}', '{$hashed_pass}', {$_POST['rank']})";
 								$result=mysqli_query( $connection, $query);
 								$success="Account created!";
 					}else{
@@ -45,7 +45,9 @@ if(isset($_POST['submit'])){
 	}else{
 		$error="You do not have permission to add users!";
 	}
-}elseif(isset($_POST['deluser'])){
+}
+
+if(isset($_POST['deluser'])){
 	if(check_permission("Users","delete_users")){
 		$message="";
 		if(!empty($_POST['accounts'])){
@@ -54,6 +56,34 @@ if(isset($_POST['submit'])){
 					$success="Accounts were deleted!";
 				}else{
 					$error="Cannot delete only webmaster account left.";
+				}
+			}
+		}else{
+			$error="No accounts selected.";
+		}
+	}else{
+		$error="You do not have permission to delete users!";
+	}
+}
+
+if(isset($_POST['upd_ranks'])){
+	if(check_permission("Users","add_users")){
+		$message="";
+		if(!empty($_POST['acc_ranks'])){
+			foreach($_POST['acc_ranks'] as $account => $rank){
+				$query="SELECT * FROM `users` WHERE `id` = {$account}";
+				$result=mysqli_query( $connection, $query);
+				$deletable_user = mysqli_fetch_array($result);
+				if($deletable_user['deletable']==true){
+					$query="UPDATE `users` SET
+								`rank` = {$rank} WHERE `id` = {$account}";
+					$result=mysqli_query( $connection, $query);
+					confirm_query($result);
+					$success="Account ranks updated!";
+				}else{
+					if($deletable_user['rank']!=$rank){
+						$error = 'Account "'.$deletable_user['username'].'" in the list cannot be changed!';
+					}
 				}
 			}
 		}else{
@@ -120,23 +150,38 @@ if(isset($_POST['submit'])){
         <th width="10%">Rank:</th>
         <th width="20%">Last Logged In:</th>
         <?php if(check_permission("Users","delete_users")){?>
-        	<th width="10%">Delete <input type="checkbox" id="accountall"></th>
+        	<th width="10%"><input type="checkbox" id="accountall"></th>
         <?php } ?>
       </tr>
         <?php
             $query="SELECT * FROM `users` ORDER BY `id` ASC";
             $result=mysqli_query( $connection, $query);
             confirm_query($result);
+			
+			$ranks = array();
+			$query="SELECT * FROM `ranks`";
+			$rankresult=mysqli_query($connection, $query);
+			while($rank=mysqli_fetch_array($rankresult)){
+				 array_push($ranks, $rank);
+			}
+			
             while($user=mysqli_fetch_array($result)){
-				$query="SELECT * FROM `ranks` WHERE id={$user['rank']}";
-				$rankresult=mysqli_query($connection, $query);
-				$rank=mysqli_fetch_array($rankresult);
+
 				?>
               <tr>
                 <td><?php echo $user['username'];?></td>
                 <td><?php echo $user['email'];?></td>
                 <td><?php if($user['created']!="0000-00-00 00:00:00"){echo date("m/d/Y h:i A" ,strtotime($user['created']));}else{echo "N/A";} ?></td>
-                <td><?php echo $rank['name'];?></td>
+                <td>
+                	<select name="acc_ranks[<?php echo $user['id'];?>]">
+                    	<?php
+						foreach($ranks as $rank){?>
+							<option value="<?php echo $rank['id']; ?>"<?php if($user['rank'] == $rank['id']){echo " selected";} ?>><?php echo $rank['name']; ?></option>
+                        <?php
+						}
+						?>
+                    </select>
+                </td>
                 <td><?php if($user['last_logged_in']!="0000-00-00 00:00:00"){echo date("D, m/d/Y h:i A" ,strtotime($user['last_logged_in']));}else{echo "N/A";} ?></td>
                 <?php if(check_permission("Users","delete_users")){?>
                 	<td><?php if($user['deletable']==1){ ?><input type="checkbox" name="accounts[]" value="<?php echo $user['id']; ?>" /><?php } ?></td>
@@ -144,7 +189,9 @@ if(isset($_POST['submit'])){
               </tr>
             <?php } ?>
       <tr>
-        <th colspan="5"></th> 
+        <th colspan="3"></th>
+        <th><input class="blue" type="submit" name="upd_ranks" value="Change Ranks" /></th>
+        <th></th>
         <?php if(check_permission("Users","delete_users")){?>
         	<th width="10%"><input class="red" type="submit" name="deluser" value="Delete Accounts" /></th>
         <?php } ?>

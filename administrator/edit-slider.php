@@ -11,8 +11,9 @@ if(isset($_POST['save'])){
 		if(isset($_POST['slide_id'])&&isset($_POST['slide_order'])&&isset($_POST['slide_cap'])){
 			foreach($_POST['slide_id'] as $slide_id){
 				$caption = strip_tags(mysqli_real_escape_string($connection, $_POST['slide_cap'][$slide_id]), "<a><i><b><u>");
+				$url = strip_tags(mysqli_real_escape_string($connection, $_POST['slide_url'][$slide_id]));
 				$order = intval($_POST['slide_order'][$slide_id]);
-				$savequery="UPDATE `slider` SET `order` = ".$order.", `caption` = '".$caption."' WHERE `id` = ".$slide_id;
+				$savequery="UPDATE `slider` SET `order` = ".$order.", `caption` = '".$caption."', `url` = '".$url."' WHERE `id` = ".$slide_id;
 				
 				$saveresult=mysqli_query($connection, $savequery);
 				confirm_query($saveresult);
@@ -116,7 +117,8 @@ $result=mysqli_query( $connection, $query);
 <?php if(check_permission("Forms","add_form")){?>
 <h1>Add New Slide</h1>
     <form method="post" enctype="multipart/form-data">
-        <input type="file" name="file" id="file" />
+        <input type="file" name="file" id="file" /><br>
+        *Recommended image size is 1510 pixels high by 800 pixels wide. Max filesize 2MB.
         <input name="upload" type="submit" value="Upload Image" />
     </form>
 <?php } ?>
@@ -134,7 +136,10 @@ $result=mysqli_query( $connection, $query);
                 Name
             </th>
             <th>
-                Caption (HTML links accepted)
+                Caption
+            </th>
+            <th>
+                URL <a href="page_list_simple.php" onclick="window.open('page_list_simple.php', 'newwindow', 'width=700, height=500'); return false;">(View Pages)</a>
             </th>
             <?php //if(check_permission("Forms","delete_form")){?>
             <th style="text-align:center;">
@@ -150,7 +155,8 @@ $result=mysqli_query( $connection, $query);
             	<td><input type="hidden" name="slide_id[<?php echo $slide['id']; ?>]" value="<?php echo $slide['id']; ?>" /><input type="text" name="slide_order[<?php echo $slide['id']; ?>]" value="<?php echo $slide['order']; ?>" maxlength="3" /></td>
 				<td><img src="../images/slider/<?php echo $slide['img_name'] ?>" width="320" height="180" /></td>
                 <td><?php echo $slide['img_name'] ?></td>
-                <td><input type="text" name="slide_cap[<?php echo $slide['id']; ?>]" value="<?php echo htmlspecialchars($slide['caption']); ?>" /></td>
+                <td><input type="text" name="slide_cap[<?php echo $slide['id']; ?>]" maxlength="512" value="<?php echo htmlspecialchars($slide['caption']); ?>" /></td>
+                <td><input type="text" name="slide_url[<?php echo $slide['id']; ?>]" maxlength="512" style="width:300px;" value="<?php echo htmlspecialchars($slide['url']); ?>" /></td>
 				<?php //if(check_permission("Galleries","delete_gallery")){?>
 				<td width="10%" style="text-align:center;"><input type="checkbox" name="slide[]" value="<?php echo $slide['id']; ?>" /></td>
 				<?php //} ?>
@@ -159,16 +165,14 @@ $result=mysqli_query( $connection, $query);
         }
 	}else{?>
 			<tr>
-				<td colspan="4" style="text-align:center; font-size:24px;">[No Slides!]</td>
+				<td colspan="5" style="text-align:center; font-size:24px;">[No Slides!]</td>
 			</tr>
     <?php
 	}
 	?>
     	<tr>
         	<td style="text-align:center;"><input name="save" type="submit" value="Save Slides" class="green" /></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td colspan="4"></td>
             <td style="text-align:center;"><?php //if(check_permission("Forms","delete_form")){?><input name="del" type="submit" value="Delete" class="red" /><?php //} ?></td>
         </tr>
     </table>
