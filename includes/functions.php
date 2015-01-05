@@ -698,7 +698,7 @@ function slider(){
                             <div u="slides" style="cursor: move; position: absolute; left: 0px; top: 0px; width: 600px; height: 300px;
                                 overflow: hidden;">
                                 <?php
-									$query="SELECT * FROM `slider` ORDER BY `order`";
+									$query="SELECT * FROM `slider` WHERE `published` = 1 ORDER BY `order`";
 									$result=mysqli_query( $connection, $query);
 									
 									if(mysqli_num_rows($result)!=0){
