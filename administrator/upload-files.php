@@ -136,8 +136,8 @@ if(isset($_POST['deletefolder'])){
 						}
 					}
 					?>
-				  <tr align="center">
-					<td><a href="upload-to-folder.php?folder=<?php echo urlencode(substr($dir."/", 11));?>"><?php echo substr($dir, 11)."/";?></a></td>
+				  <tr>
+					<td style="text-align:left;"><a href="upload-to-folder.php?folder=<?php echo urlencode(substr($dir."/", 11));?>"><?php echo substr($dir, 11)."/";?></a></td>
 					<td><?php echo $i;?></td>
                     <?php if(check_permission("Uploading","delete_folders")){?>
 						<td><input type="checkbox" name="folders[]" value="<?php echo substr($dir, 11); ?>" /></td>

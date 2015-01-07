@@ -51,12 +51,12 @@ if(isset($_GET['message'])){
     	<div class="nav">
         	<div style="background-color:#F0F0F0;">
             <span style="float:left;"><b><?php echo $_SESSION['username']; ?></b></span>
-                <ul id="horiz-menu">
-                    <li class="menuitem">
-                    	<a href="index.php">Control Panel</a>
+                <ul id="horiz-menu" style="display:block;">
+                    <li>
+                    	<a href="../" target="_blank">Back to Site</a>
                     </li>
                     <?php if(check_permission(array("Pages;add_pages","Pages;edit_pages","Pages;delete_pages","Galleries;add_gallery","Galleries;edit_gallery","Galleries;delete_gallery","Galleries;rename_gallery","Uploading;upload_files","Uploading;delete_files","Uploading;create_folders","Uploading;rename_folders","Uploading;delete_folders",))){?>
-                        <li class="menuitem">
+                        <li>
                             <a href="page_list.php">Content</a>
                             <ul>
                                 <li>
@@ -81,30 +81,31 @@ if(isset($_GET['message'])){
                         </li>
                     <?php } ?>
                     <?php if(check_permission(array("Users;add_users","Users;delete_users",))){?>
-                    <li class="menuitem">
+                    <li>
                     	<a href="accounts.php">Accounts</a>
                     </li>
                     <?php } ?>
                     <?php if(check_permission(array("Users;create_rank","Users;edit_rank","Users;delete_rank",))){?>
-                    <li class="menuitem">
+                    <li>
                     	<a href="ranks.php">Ranks</a>
                     </li>
                     <?php } ?>
                     <?php if(check_permission(array("Forms;create_form","Forms;edit_form","Forms;delete_form",))){?>
-                    <li class="menuitem">
+                    <li>
                     	<a href="form-list.php">Forms</a>
                     </li>
                     <?php } ?>
                     <?php if(check_permission(array("Website;edit_site_settings","Website;edit_site_colors","Website;upload_favicon_banner","Website;edit_google_analytics",))){?>
-                    <li class="menuitem">
+                    <li>
                     	<a href="site-settings.php">Site Settings</a>
                     </li>
                     <?php } ?>
-                    <li class="menuitem">
+                    <li>
                     	<a href="logout.php" style="color: #F85050;">Logout</a>
                     </li>
                 </ul>
             </div>
+            <div style="clear:both;"></div>
             <!--<ul id="menu">
                 <li class="menuitemnohover" style="height:auto; font-size:12px; line-height:30px; text-align:center; background-color:#ccc;">
                 <img src="images/logo2GD.png" width="50" height="50" style="margin-top:10px;" /><br />

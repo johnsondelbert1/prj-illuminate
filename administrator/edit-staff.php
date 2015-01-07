@@ -64,7 +64,7 @@ $staff=mysqli_fetch_array($result);
 Name: <input name="name" type="text" value="<?php echo $staff['name']; ?>" maxlength="128" /><br>
 Order: <input name="order" type="text" value="<?php echo $staff['order']; ?>" maxlength="2" /><br>
 Role: <input name="role" type="text" value="<?php echo $staff['role']; ?>" maxlength="128" /><br>
-Bio: <textarea name="bio" rows="15" cols="100"><?php echo $staff['bio']; ?></textarea><br>
+Bio: <textarea name="bio" rows="15" cols="100"><?php echo $staff['bio']; ?></textarea><br><br>
 </form>
 </td>
 </tr>
@@ -80,7 +80,8 @@ Bio: <textarea name="bio" rows="15" cols="100"><?php echo $staff['bio']; ?></tex
   <tr>
     <td width="50%">
         <form method="post" enctype="multipart/form-data">
-        <input type="file" name="file" id="file" />
+        <input type="file" name="file" id="file" /><br>
+        *Recommended image size is 300 pixels high by 300 pixels wide. Max filesize 2MB.
         <input name="upload" type="submit" value="Upload Image" />
         </form>
 	</td>
