@@ -8,7 +8,10 @@
 	padding:0;
 	font-family: 'Roboto', sans-serif;
 }
-
+html, body {
+	height:100%;
+	
+}
 body
 {
 	background-color:#3f4649;
@@ -34,7 +37,7 @@ div.wrap a
 	width:90%;
 	margin-left:auto;
 	margin-right:auto;
-	padding-bottom:50px;
+	padding-bottom:80px;
 }
 
 .title
@@ -60,6 +63,7 @@ div.content
 	padding:10px 10px 20px 10px;
 	overflow-x:auto;
 	overflow-y:hidden;
+
 }
 div.content a{
 	font-family: 'Roboto', Arial, Helvetica, sans-serif;
@@ -131,8 +135,10 @@ div.banner
 	padding-bottom:10px;
 	margin-top:20px;
 	position:absolute;
-	bottom:0;
-	left:0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
 }
 
 #footer a{
