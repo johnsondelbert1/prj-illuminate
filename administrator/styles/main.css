@@ -11,13 +11,14 @@
 
 body
 {
-	background-color:#E7EFF1;
+	background-color:#3f4649;
 	color:#333;
 	min-height:100%;
 }
 div.wrap
 {
 	min-width:775px;
+	min-height:100%;
 	position:relative;
 	margin-left:auto;
 	margin-right:auto;
@@ -33,6 +34,7 @@ div.wrap a
 	width:90%;
 	margin-left:auto;
 	margin-right:auto;
+	padding-bottom:50px;
 }
 
 .title
@@ -55,7 +57,7 @@ div.content
 	margin-top:20px;
 	margin-bottom:10px;
 	text-align:center;
-	padding:10px 10px 0px 10px;
+	padding:10px 10px 20px 10px;
 	overflow-x:auto;
 	overflow-y:hidden;
 }
@@ -74,7 +76,7 @@ div.content h1{
 	margin-bottom:10px;
 	margin-left:-10px;
 	margin-right:-10px;
-	background-color:#B5D4FF;
+	background-color:#22AE6E;
 }
 div.content h1:nth-of-type(1){
 	margin-top:-10px;
@@ -123,12 +125,14 @@ div.banner
 {
 	width:100%;
 	height:50px;
-	background-color:#5677fc;
+	background-color:#22AE6E;
 	color:#FFFFFF;
 	padding-top:10px;
 	padding-bottom:10px;
 	margin-top:20px;
+	position:absolute;
 	bottom:0;
+	left:0;
 }
 
 #footer a{
@@ -143,7 +147,7 @@ div.nav{
 	margin-left:auto;
 	margin-right:0;
 	text-align:right;
-	background-color:#5677fc;
+	background-color:#22AE6E;
 }
 
 @media all and (max-width: 930px){
@@ -203,7 +207,7 @@ div.nav{
 }
 
 #horiz-menu li:hover > a {
-	background-color:#3f51b5;
+	background-color:#007842;
 	color: #e8eaf6;
 
 }
@@ -256,11 +260,11 @@ div.nav{
     white-space: nowrap;
     float: none;
     text-transform: none;
-	background-color:#5677fc;
+	background-color:#22AE6E;
 }
 
 #horiz-menu ul a:hover {
-    background-color:#3f51b5;
+    background-color:#007842;
 	color: #e8eaf6;
 
 }
@@ -444,7 +448,7 @@ tr.heading,td.heading,th.heading
 h1
 {
 	font-size:2.5em;
-	color:#404040;
+	color:#f0f0f0;
 }
 
 div.profile
@@ -675,7 +679,7 @@ select
 }
 
 ::-webkit-scrollbar-track {
-	background: #5677fc;
+	background: #22AE6E;
 }
  ::-webkit-scrollbar-thumb{
 			background-color:#999;
@@ -902,8 +906,8 @@ span.galleryImage input[type=checkbox]:checked {
 	float: left;
 	padding: 6px 10px 6px 10px;
 	margin: 0px 5px 0px 0px;
-	font: 0.75em 'Roboto';
-	background-color: #333;
+	font: 1.25em 'Roboto';
+	background-color: #22AE6E;
 	color:#ccc;
 	list-style: none;
 	-moz-user-select: none;
