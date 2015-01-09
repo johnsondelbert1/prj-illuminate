@@ -634,9 +634,11 @@ select
 	outline:none;
 }
 /* buttons */
+.button,  a.blue, a.red, a.green{
+display: block;
+}
 .button,input[type=submit], a.blue, a.red, a.green {
 		border: none;
-		display: block;
 		color: #ffffff !important;
 		font-size:12px !important;
 		font-style:normal!important;
@@ -656,12 +658,12 @@ select
 		padding: 0 3px 0 3px;
 
 	}
-	.red {background-color:#e94043 !important;}
+	.red {background-color:#C42F27 !important;}
 	.blue {background-color:#426FC5 !important;}
-	.green {background-color:#00897b !important;}
+	.green {background-color:#22AE6E !important;}
 	input[type=submit]{background-color:#426FC5;}
 	.red:hover {
-	  background: #c41411 !important;
+	  background: #760600 !important;
 	  /*box-shadow: 0 3px 1px #237bb2;*/
 	}
 	.blue:hover {
@@ -669,7 +671,7 @@ select
 	  /*box-shadow: 0 3px 1px #237bb2;*/
 	}
 	.green:hover {
-	  background: #056f00 !important;
+	  background: #007842 !important;
 	  /*box-shadow: 0 3px 1px #237bb2;*/
 	}
 	input[type=submit]:hover {
@@ -914,7 +916,7 @@ span.galleryImage input[type=checkbox]:checked {
 	margin: 0px 5px 0px 0px;
 	font: 1.25em 'Roboto';
 	background-color: #22AE6E;
-	color:#ccc;
+	color:#f0f0f0;
 	list-style: none;
 	-moz-user-select: none;
 	-khtml-user-select: none;
@@ -928,7 +930,7 @@ span.galleryImage input[type=checkbox]:checked {
  * and exits the container.
  */
 .TabbedPanelsTabHover {
-	background-color: #CCC;
+	background-color: #007842;
 }
 
 /* This selector is an example of how to change the appearance of a tab button
