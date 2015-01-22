@@ -41,12 +41,12 @@ if(($rows)!=0){
 						break;
 					case "Blog":
 						if(isset($_GET['error'])){
-							redirect_to("blog.php?error=".$_GET['error']);
+							redirect_to($site_info['base_url']."blog?error=".$_GET['error']);
 						}
-						redirect_to("blog.php");
+						redirect_to($site_info['base_url']."/blog");
 						break;
 					case "Forum":
-						redirect_to("forums.php");
+						redirect_to($site_info['base_url']."/forums");
 						break;
 					case "Staff":
 						$pgsettings = array(
@@ -155,7 +155,27 @@ if(($rows)!=0){
 														$form_validation[$fixed_post_key] = false;
 														$error = 'There were errors in the form, please fix them below.';
 													}
-													break;	
+													break;
+												case "numbers":
+													if(is_numeric($_POST[$post_key])){
+														$form_validation[$fixed_post_key] = true;
+														break;
+													}else{
+														$form_send = false;
+														$form_validation[$fixed_post_key] = false;
+														$error = 'There were errors in the form, please fix them below.';
+													}
+													break;
+												case "phone":
+													if(preg_match("/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/" ,$_POST[$post_key])){
+														$form_validation[$fixed_post_key] = true;
+														break;
+													}else{
+														$form_send = false;
+														$form_validation[$fixed_post_key] = false;
+														$error = 'There were errors in the form, please fix them below.';
+													}
+													break;
 											}
 											$count++;
 										}
@@ -228,7 +248,7 @@ if(($rows)!=0){
 									?>
 									<tr>
 										<td>
-                                        <label for="<?php echo $field_names[$count]; ?>" style="margin-left:10px;"><?php echo $field_names[$count].':'; if($field_validators[$count]=="notempty"||$field_validators[$count]=="email"){echo '*';}?> </label><?php if(isset($validation_arr)&&$validation_arr!=true){?><div style=" display:inline; border-radius:5px; background-color:#9F0002; color:#FFFFFF; padding:3px; font-size:16px;"><?php if($field_validators[$count]=="email"){echo 'Invalid email';}elseif($field_validators[$count]=="notempty"){echo 'Cannot be blank';}?></div><?php } ?><br>
+                                        <label for="<?php echo $field_names[$count]; ?>" style="margin-left:10px;"><?php echo $field_names[$count].':'; if($field_validators[$count]=="notempty"||$field_validators[$count]=="email"){echo '*';}?> </label><?php if(isset($validation_arr)&&$validation_arr!=true){?><div style=" display:inline; border-radius:5px; background-color:#9F0002; color:#FFFFFF; padding:3px; font-size:16px;"><?php if($field_validators[$count]=="email"){echo 'Invalid email';}elseif($field_validators[$count]=="notempty"){echo 'Cannot be blank';}elseif($field_validators[$count]=="numbers"){echo 'Field can only contain numbers';}elseif($field_validators[$count]=="phone"){echo 'Invalid Phone, valid format: "555-555-5555"';}?></div><?php } ?><br>
                                         <span class="tooltips" style="vertical-align:middle;">
                                             <?php if($field_types[$count] == "text"){?>
                                                 <input name="<?php echo $field_names[$count]; ?>" id="<?php echo $field_names[$count]; ?>" style=" width:250px; <?php if(isset($validation_arr)&&$validation_arr!=true){echo 'border:2px solid #9F0002;"';} ?>" value="<?php echo $post_name; ?>" type="text"<?php if($field_placeholders[$count] != ""){echo ' placeholder="'.$field_placeholders[$count].'"';} ?><?php if($maxchars != ""){echo ' maxlength="'.$maxchars.'"';} ?> />
@@ -344,9 +364,9 @@ if(($rows)!=0){
 	}else{
 		if(mysqli_num_rows($result_homepage)!=0){
 			$homepage=mysqli_fetch_array($result_homepage);
-			redirect_to("index.php?page=".urlencode($homepage['name']));
+			redirect_to($site_info['base_url']."/page/".urlencode($homepage['name']));
 		}else{
-			redirect_to("index.php?page=".urlencode($firstpage['name']));
+			redirect_to($site_info['base_url']."/page/".urlencode($firstpage['name']));
 		}
 	}
 }else{

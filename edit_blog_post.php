@@ -4,7 +4,7 @@ require_once("includes/functions.php");
 <?php
 
 if(!isset($_GET['post'])){
-	redirect_to("blog.php");	
+	redirect_to($site_info['base_url']."/blog");	
 }
 
 $output_dir="blog_galleries/".urldecode($_GET['post'])."/gallery/";
@@ -83,7 +83,7 @@ if(isset($_FILES["myfile"])){
 	$blog=mysqli_fetch_array($result);
 
 if(!check_permission("Blog","edit_blog")&&$blog['poster']!=$_SESSION['user_id']){
-	redirect_to("blog.php?error=".urlencode("You do not have permission to edit a blog!"));
+	redirect_to($site_info['base_url']."/blog?error=".urlencode("You do not have permission to edit a blog!"));
 }
 ?>
 

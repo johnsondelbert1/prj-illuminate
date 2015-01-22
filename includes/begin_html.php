@@ -35,16 +35,16 @@ $favicon = scandir("images/favicon/");
 	}?>
     
     <!-- End custom meta tags -->
-    <link href="administrator/styles/fonts.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo $site_info['base_url']; ?>/administrator/styles/fonts.css" rel="stylesheet" type="text/css" />
     <?php if(count($favicon)==3){ ?><link rel="shortcut icon" href="images/favicon/<?php echo $favicon[2]; ?>" /><?php } ?>
-    <link href="styles/uploadfilemulti.css" rel="stylesheet" />
-    <link href="styles/main.css" rel="stylesheet" type="text/css" />
-    <link href="styles/animate.css" rel="stylesheet" type="text/css" />
-    <link href="prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css" media="screen" charset="utf-8" />
-    <script src="jscripts/SpryTabbedPanels.js" type="text/javascript"></script>
+    <link href="<?php echo $site_info['base_url']; ?>/styles/uploadfilemulti.css" rel="stylesheet" />
+    <link href="<?php echo $site_info['base_url']; ?>/styles/main.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo $site_info['base_url']; ?>/styles/animate.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo $site_info['base_url']; ?>/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css" media="screen" charset="utf-8" />
+    <script src="<?php echo $site_info['base_url']; ?>/jscripts/SpryTabbedPanels.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="prettyphoto/js/jquery.prettyPhoto.js" charset="utf-8"></script>
-    <script src="jscripts/jquery.fileuploadmulti.min.js"></script>
+    <script type="text/javascript" src="<?php echo $site_info['base_url']; ?>/prettyphoto/js/jquery.prettyPhoto.js" charset="utf-8"></script>
+    <script src="<?php echo $site_info['base_url']; ?>/jscripts/jquery.fileuploadmulti.min.js"></script>
     <style type="text/css">
 		.forumtitle, tr.heading,td.heading, th.heading, .blogtitle{
 			background-color:<?php echo $site_layout['sitebg_color'] ?> !important;
@@ -67,16 +67,17 @@ $favicon = scandir("images/favicon/");
 		*html #horiz-menu li a:hover, #vert-menu li a:hover { /* IE6 only */
 			color: <?php echo $site_layout['text_color'] ?>;
 		}
-		#horiz-menu a, #horiz-menu ul a, #vert-menu a, #vert-menu ul a, .blogtitle a, .forum tr a:hover{
+		#content a, #horiz-menu a, #horiz-menu ul a, #vert-menu a, #vert-menu ul a, .blogtitle a, .forum tr a:hover{
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
 		.photo-link:hover{
 			background-color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		#content, #content a, #footer a, .forum tr, .forumbody{
+		#content, #footer a, .forum tr, .forumbody{
 			background-color:<?php echo $site_layout['menu_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
+		
 		.forum tr a{
 			color:<?php echo $site_layout['contentbg_color'] ?> !important;
 		}
@@ -88,7 +89,7 @@ $favicon = scandir("images/favicon/");
 			color:<?php echo $site_layout['text_color'] ?> !important;*/
 		}
 		#banner{
-			<?php if(count($banner)==3){?>background-image:url(images/banner/<?php echo $banner[2];?>);<?php } ?>
+			<?php if(count($banner)==3){?>background-image:url(<?php echo $site_info['base_url']; ?>/images/banner/<?php echo $banner[2];?>);<?php } ?>
 			
 		}
 		/* Start custom CSS */
@@ -141,7 +142,7 @@ $favicon = scandir("images/favicon/");
                         ?><?php
                     }
                     ?>
-                	<td style="padding-right:5px; padding-left:5px;">
+                	<td style="padding-right:5px; padding-left:5px; vertical-align:top;">
 						<div id="content" style="background-color:#525252;">
 						<?php if(!empty($error)){echo "<h3 class=\"error\">".$error."</h3>";} ?>
                         <?php if(!empty($success)){echo "<h3 class=\"success\">".$success."</h3>";} ?>

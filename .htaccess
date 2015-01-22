@@ -1,3 +1,7 @@
-php_value upload_max_filesize 256M
-php_value post_max_size 256M
-ErrorDocument 404 /alpha/err404.php
+#php_value upload_max_filesize 256M
+#php_value post_max_size 256M
+ErrorDocument 404 prj-illuminate/err404.php
+RewriteEngine on
+RewriteRule ^page/([^/.]+)/?$ index.php?page=$1 [L]
+RewriteRule   ^blog/?$   blog.php
+RewriteRule   ^forums/?$   forums.php

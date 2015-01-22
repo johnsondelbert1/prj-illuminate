@@ -357,7 +357,7 @@ if($_GET['action']=="edit"){
     <td align="right"><b>Page Type:</b></td>
     <td align="left">
 		<?php
-            $types = array('Custom', 'Documents', 'Link', 'Staff');
+            $types = array('Custom', 'Blog', 'Link', 'Staff', 'Forum');
         ?>
         <select name="pgtype" onchange="disable(this)">
         <?php
