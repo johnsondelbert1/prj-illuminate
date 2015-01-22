@@ -2,12 +2,12 @@
 require_once("includes/session.php");
 require_once("includes/functions.php");
 if(!isset($_GET['action'])||!isset($_GET['forum'])){
-	redirect_to("forums.php?error=".urlencode("Missing argument to new_topic.php"));
+	redirect_to($site_info['base_url']."/forums?error=".urlencode("Missing argument to new_topic.php"));
 }
 if(!check_permission("Forum","add_thread")&&(isset($_GET['action'])&&$_GET['action']=="newthread")){
-	redirect_to("forums.php?error=".urlencode("You don't have permission to post a thread!"));
+	redirect_to($site_info['base_url']."/forums?error=".urlencode("You don't have permission to post a thread!"));
 }elseif(!check_permission("Forum","edit_thread")&&(isset($_GET['action'])&&$_GET['action']=="editpost")){
-	redirect_to("forums.php?error=".urlencode("You don't have permission to edit your post!"));
+	redirect_to($site_info['base_url']."/forums?error=".urlencode("You don't have permission to edit your post!"));
 }
 ?>
 <?php
@@ -67,7 +67,7 @@ if(!check_permission("Forum","add_thread")&&(isset($_GET['action'])&&$_GET['acti
 				confirm_query($insmessage);
 				//add post count
 				//addpostcount();
-				redirect_to("view_forum.php?forum=".urlencode($_GET['forum']));
+				redirect_to($site_info['base_url']."/view_forum.php?forum=".urlencode($_GET['forum']));
 			}else{
 				$error="Required field not filled!";
 			}
@@ -79,7 +79,7 @@ if(!check_permission("Forum","add_thread")&&(isset($_GET['action'])&&$_GET['acti
 					$query="UPDATE `forum_posts` SET `lasteditdate` = '{$date}', `message` = '{$messagebody}' WHERE `id` ={$_GET['msg']}";
 					$updatepost=mysqli_query( $connection, $query); 
 					confirm_query($updatepost);
-					redirect_to("view_thread.php?thread=".urlencode($_GET['thread'])."&&forum=".urlencode($_GET['forum']));
+					redirect_to($site_info['base_url']."/view_thread.php?thread=".urlencode($_GET['thread'])."&&forum=".urlencode($_GET['forum']));
 				}else{
 					$error="This is not your post to edit!";
 				}
@@ -99,7 +99,7 @@ if(!check_permission("Forum","add_thread")&&(isset($_GET['action'])&&$_GET['acti
 				//add post count
 				//addpostcount();
 				//redirect to posted thread
-				redirect_to("view_thread.php?thread=".urlencode($_GET['thread'])."&&forum=".urlencode($_GET['forum']));
+				redirect_to($site_info['base_url']."/view_thread.php?thread=".urlencode($_GET['thread'])."&&forum=".urlencode($_GET['forum']));
 			}else{
 				$error="No message entered!";
 			}
@@ -121,7 +121,7 @@ if(!check_permission("Forum","add_thread")&&(isset($_GET['action'])&&$_GET['acti
 		if(mysqli_num_rows($messagequery)!=0){
 			$messagebody=mysqli_fetch_array($messagequery);
 		}else{
-			redirect_to("view_thread.php?thread=".urlencode($_GET['thread'])."&&forum=".urlencode($_GET['forum']));
+			redirect_to($site_info['base_url']."/view_thread.php?thread=".urlencode($_GET['thread'])."&&forum=".urlencode($_GET['forum']));
 		}
 	}
 ?>

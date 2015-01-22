@@ -14,7 +14,8 @@ if(isset($_POST['save'])){
 				$url = strip_tags(mysqli_real_escape_string($connection, $_POST['slide_url'][$slide_id]));
 				$order = intval($_POST['slide_order'][$slide_id]);
 				if(isset($_POST['slide_published'][$slide_id])){$published = 1;}else{$published = 0;}
-				$savequery="UPDATE `slider` SET `order` = ".$order.", `caption` = '".$caption."', `url` = '".$url."', `published` = ".$published." WHERE `id` = ".$slide_id;
+				if(isset($_POST['new_tab'][$slide_id])){$new_tab = 1;}else{$new_tab = 0;}
+				$savequery="UPDATE `slider` SET `order` = ".$order.", `caption` = '".$caption."', `url` = '".$url."', `new_tab` = ".$new_tab.", `published` = ".$published." WHERE `id` = ".$slide_id;
 				$saveresult=mysqli_query($connection, $savequery);
 				confirm_query($saveresult);
 				$success="Slider updated!";
@@ -142,6 +143,9 @@ $result=mysqli_query( $connection, $query);
                 URL <a href="page_list_simple.php" onclick="window.open('page_list_simple.php', 'newwindow', 'width=700, height=500'); return false;">(View Pages)</a>
             </th>
             <th style="text-align:center;">
+                New Tab
+            </th>
+            <th style="text-align:center;">
                 Published?
             </th>
             <?php //if(check_permission("Forms","delete_form")){?>
@@ -160,6 +164,7 @@ $result=mysqli_query( $connection, $query);
                 <!--<td><?php echo $slide['img_name'] ?></td>-->
                 <td><input type="text" name="slide_cap[<?php echo $slide['id']; ?>]" maxlength="512" value="<?php echo htmlspecialchars($slide['caption']); ?>" /></td>
                 <td><input type="text" name="slide_url[<?php echo $slide['id']; ?>]" maxlength="512" style="width:300px;" value="<?php echo htmlspecialchars($slide['url']); ?>" /></td>
+                <td width="10%" style="text-align:center;"><input type="checkbox" name="new_tab[<?php echo $slide['id']; ?>]" value="<?php echo $slide['id']; ?>" <?php if($slide['new_tab']==1){echo 'checked';} ?> /></td>
                 <td width="10%" style="text-align:center;"><input type="checkbox" name="slide_published[<?php echo $slide['id']; ?>]" value="<?php echo $slide['id']; ?>" <?php if($slide['published']==1){echo 'checked';} ?> /></td>
 				<?php //if(check_permission("Galleries","delete_gallery")){?>
 				<td width="10%" style="text-align:center;"><input type="checkbox" name="slide[]" value="<?php echo $slide['id']; ?>" /></td>

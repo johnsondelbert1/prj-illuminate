@@ -37,7 +37,7 @@ if(isset($_GET['delpost'])&&$_GET['delpost']!=''){
 	}
 }
 if(isset($_GET['page'])&&$_GET['page']<=0){
-	redirect_to("blog.php?page=1");
+	redirect_to($site_info['base_url']."/blog?page=1");
 }
 
 $query="SELECT * FROM `blog`";
@@ -162,6 +162,7 @@ if (mysqli_num_rows($result)!=0){
 	<?php }
 	echo_page($num_pages, $current_page, "blog.php?");
 }else{?>
+	<a class="green" href="new_blog_post.php">New</a><br /><br />
 	<p>There are no blog posts!</p>
 <?php }
 ?>

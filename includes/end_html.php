@@ -8,7 +8,7 @@
         
             <div style="float:left; max-width:50%;">
                 <?php if($site_info['footer_content']!=""){echo $site_info['footer_content']."<br>";} ?>
-                <?php echo $site_info['name']; ?>, Copyright © 2014. Website designed by <a href="http://www.secondgenerationdesign.com" target="_blank">Second Gen Design</a>
+                <?php echo $site_info['name']; ?>, Copyright © <?php echo date("Y"); ?>. Website designed by <a href="http://www.secondgenerationdesign.com" target="_blank">Second Gen Design</a>
             </div>
             <div style="text-align:right; font-size:10px; float:right;">
                 <?php check_login(); ?>

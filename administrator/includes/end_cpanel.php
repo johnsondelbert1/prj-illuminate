@@ -17,6 +17,11 @@
         $(document).ready(function(){
             $("a[rel^='prettyPhoto']").prettyPhoto();
         });
+		function changeTab(id){
+			TabbedPanels1.showPanel(id);
+			return false;
+		}
+	<?php if(isset($_GET['tab'])){?>changeTab(<?php echo $_GET['tab'];?>);<?php } ?>
     </script>
     <script src="../jscripts/jquery.fileuploadmulti.min.js"></script>
         <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>-->

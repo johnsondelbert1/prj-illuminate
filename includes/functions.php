@@ -198,18 +198,20 @@ function mysql_prep( $value ) {
 	return $value;
 }
 function check_login(){
-	
+	global $site_info;
 	?><p><?php
 	if(logged_in()){?>
         <?php echo "<b>".$_SESSION['username']."</b>";?>
-         | <a href="account-settings.php">Account Settings</a> | <?php if(check_permission("Website","cpanel_access")){?><a href="administrator/" target="_blank">CPanel</a> | <?php } ?><a href="logout.php">Logout</a>
+         | <a href="<?php echo $site_info['base_url']; ?>/account-settings.php">Account Settings</a> | <?php if(check_permission("Website","cpanel_access")){?><a href="<?php echo $site_info['base_url']; ?>/administrator/" target="_blank">CPanel</a> | <?php } ?><a href="<?php echo $site_info['base_url']; ?>/logout.php">Logout</a>
     <?php }else{ ?>
-			<a href="index.php">Register</a> | <a href="login.php">Login</a>
+			<a href="<?php echo $site_info['base_url']; ?>/index.php">Register</a> | <a href="<?php echo $site_info['base_url']; ?>/login.php">Login</a>
 	<?php }?>
     	</p>
 <?php }
 
-function gallery($images_dir, $thumbs_dir, $thumbs_width, $thumbs_height, $gallname = "gall", $num_images = false){?>
+function gallery($images_dir, $thumbs_dir, $thumbs_width, $thumbs_height, $gallname = "gall", $num_images = false){
+	global $site_info;
+	?>
 <div align="center" style="text-align:center; width:100%; padding:4px; margin-bottom:10px;">
     <?php
     /** generate photo gallery **/
@@ -232,7 +234,7 @@ function gallery($images_dir, $thumbs_dir, $thumbs_width, $thumbs_height, $galln
 						make_thumb($images_dir.$file,$thumbnail_image,$thumbs_width,$thumbs_height,$extension);
 					}
 				}?>
-				<a href="<?php echo $images_dir.$file; ?>" rel="prettyPhoto[<?php echo $gallname; ?>]" title="<?php echo $file; ?>" class="photo-link"><img src="<?php echo $thumbnail_image;?>" style="width:<?php echo $thumbs_width; ?>px; height:<?php echo $thumbs_height; ?>px;" /></a>
+				<a href="<?php echo $site_info['base_url']; ?>/<?php echo $images_dir.$file; ?>" rel="prettyPhoto[<?php echo $gallname; ?>]" title="<?php echo $file; ?>" class="photo-link"><img src="<?php echo $site_info['base_url']; ?>/<?php echo $thumbnail_image;?>" style="width:<?php echo $thumbs_width; ?>px; height:<?php echo $thumbs_height; ?>px;" /></a>
 			<?php
             }
 			?><div class="clear"></div><?php
@@ -423,6 +425,7 @@ function confirm_query($result){
 function nav($position, $pgselection){
 	global $connection;
 	global $site_layout;
+	global $site_info;
 	if($position=="horiz"){
 		$query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 0 AND `published` = 1 ORDER BY `position` ASC";
 	}elseif($position=="vert"){
@@ -451,13 +454,13 @@ function nav($position, $pgselection){
                 
             while($page=mysqli_fetch_array($result)){
                 if($page['issubpage']==0){ $lastmainpage=$page['id'];?>
-                <li style="min-width:<?php echo $buttonwidth; ?>%;"<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><a style="min-width:<?php echo $buttonwidth; ?>%;" href="<?php
+                <li style="min-width:<?php echo $buttonwidth; ?>%;"<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><a style="min-width:<?php echo $buttonwidth; ?>%;" href="<?php echo $site_info['base_url'];
                         if($page['type']=='Custom' || $page['type']=='Staff'){
-                            ?>index.php?page=<?php echo urlencode($page['name']);
+                            ?>/page/<?php echo urlencode($page['name']);
                         }elseif($page['type']=='Blog'){
-                            ?>blog.php<?php
+                            ?>/blog<?php
                         }elseif($page['type']=='Forum'){
-                            ?>forums.php<?php
+                            ?>/forums<?php
                         }elseif($page['type']=='Link'){
                             echo $page['url'];
                         }
@@ -469,13 +472,13 @@ function nav($position, $pgselection){
                         <ul style="min-width:100%;">
                         <?php while($subpage=mysqli_fetch_array($subpgresult)){?>
                             <li style="width:100%;"<?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>>
-                                <a href="<?php
+                                <a href="<?php echo $site_info['base_url'];
                                     if($subpage['type']=='Custom' || $page['type']=='Staff'){
-                                        ?>index.php?page=<?php echo urlencode($subpage['name']);
+                                        ?>/page/<?php echo urlencode($subpage['name']);
                                     }elseif($subpage['type']=='Blog'){
-                                        ?>blog.php<?php
+                                        ?>/blog<?php
                                     }elseif($subpage['type']=='Forum'){
-                                        ?>forums.php<?php
+                                        ?>/forums<?php
                                     }elseif($subpage['type']=='Link'){
                                         echo $subpage['url'];
                                     }
@@ -549,6 +552,7 @@ function echo_page($num_pages, $current_page, $url){
 }
 
 function slider(){
+	global $site_info;
 	global $connection;?>
                         <!-- Caption Style -->
                         <style> 
@@ -592,8 +596,8 @@ function slider(){
                         <!--<script type="text/javascript" src="jssor/jquery-1.9.1.min.js"></script>-->
                         <!-- use jssor.slider.mini.js (40KB) or jssor.sliderc.mini.js (32KB, with caption, no slideshow) or jssor.sliders.mini.js (28KB, no caption, no slideshow) instead for release -->
                         <!-- jssor.slider.mini.js = jssor.sliderc.mini.js = jssor.sliders.mini.js = (jssor.js + jssor.slider.js) -->
-                        <script type="text/javascript" src="jssor/jssor.js"></script>
-                        <script type="text/javascript" src="jssor/jssor.slider.js"></script>
+                        <script type="text/javascript" src="<?php echo $site_info['base_url']; ?>/jssor/jssor.js"></script>
+                        <script type="text/javascript" src="<?php echo $site_info['base_url']; ?>/jssor/jssor.slider.js"></script>
                         <script>
                             jQuery(document).ready(function ($) {
 								
@@ -704,8 +708,8 @@ function slider(){
 									if(mysqli_num_rows($result)!=0){
 										while($slide=mysqli_fetch_array($result)){?>
                                             <div>
-                                                <img u=image src="images/slider/<?php echo $slide['img_name']; ?>" />
-                                                <div u="thumb"><?php if($slide['url']!=''){echo '<a href="'.$slide['url'].'">'.$slide['caption'].'</a>';}else{echo $slide['caption'];} ?></div>
+                                                <img u=image src="<?php echo $site_info['base_url']; ?>/images/slider/<?php echo $slide['img_name']; ?>" />
+                                                <div u="thumb" style="background-color:rgba(0, 0, 0, 0.4); line-height:35px; padding-left:10px; margin-top:60px;"><?php if($slide['url']!=''){?><a href="<?php echo $slide['url'];?>"<?php if($slide['new_tab']==1){ echo 'target="_blank"'; } ?>><?php echo $slide['caption'];?></a><?php }else{echo $slide['caption'];} ?></div>
                                             </div>
 										<?php
                                         }

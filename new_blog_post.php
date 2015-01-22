@@ -4,7 +4,7 @@ require_once("includes/functions.php");
 ?>
 <?php
 if(!check_permission("Blog","post_blog")){
-	redirect_to("blog.php?error=".urlencode("You do not have permission to post a blog!"));
+	redirect_to($site_info['base_url']."/blog?error=".urlencode("You do not have permission to post a blog!"));
 }
 if(isset($_POST['submit'])){
 	if($_POST['title']!=""){
@@ -28,7 +28,7 @@ if(isset($_POST['submit'])){
 		mkdir("blog_galleries/".$lastid['id']."/gallery");
 		mkdir("blog_galleries/".$lastid['id']."/gallery-thumbs");
 		
-		redirect_to("blog.php?success=".urlencode("Blog posted!"));
+		redirect_to($site_info['base_url']."/blog?success=".urlencode("Blog posted!"));
 	}else{
 		$error="Title cannot be blank.";
 	}

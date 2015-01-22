@@ -44,7 +44,7 @@ if(isset($_POST['chngstyle'])){
 			`menu_color` = '{$_POST['menu_color']}', `contentbg_color` = '{$_POST['contentbg_color']}', `sitebg_color` = '{$_POST['sitebg_color']}', `accent_color` = '{$_POST['accent_color']}', `text_color` = '{$_POST['text_color']}', `custom_css` = '{$css}'";
 		$result=mysqli_query($connection, $query);
 		confirm_query($result);
-		$success = "Site styling have been updated!";
+		$success = "Site styling has been updated!";
 	}else{
 		$error="You do not have permission to edit colors.";
 	}
@@ -245,6 +245,7 @@ $result_pages=mysqli_query($connection, $query);
 			$(this).attr('value', placeholder);
 		}    
 	});
+
 </script>
 <div id="TabbedPanels1" class="TabbedPanels">
             <ul class="TabbedPanelsTabGroup">
@@ -266,7 +267,7 @@ $result_pages=mysqli_query($connection, $query);
 <?php if(check_permission("Website","edit_site_settings")){ ?>
 <div class="TabbedPanelsContent">
 <h1>Site Data</h1>
-<form method="post" action="site-settings.php">
+<form method="post" action="site-settings.php?tab=0">
 <table width="75%" border="0"  style="margin-left:auto; margin-right:auto;">
   <tr>
     <td>
@@ -359,7 +360,7 @@ $result_pages=mysqli_query($connection, $query);
 	<option>Green (Dark)</option>
    	<option>Green (Light)</option>
 </select><br><br>
-<form method="post" action="site-settings.php">
+<form method="post" action="site-settings.php?tab=1">
     <table width="75%" border="0" style="margin-left:auto; margin-right:auto;">
       <tr>
         <td style="text-align:right;"><label for="menucolor">Menu:</label></td><td style="text-align:left;"><input id="menucolor" name="menu_color" type="text" value="<?php echo $layout['menu_color']; ?>" maxlength="7" class="color {hash:true}" /></td>
@@ -388,13 +389,13 @@ $result_pages=mysqli_query($connection, $query);
 <?php if(check_permission("Website","upload_favicon_banner")){ ?>
 <div class="TabbedPanelsContent">
 <h1>Upload Banner</h1>
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
 	<input type="file" name="file" id="file" /><br>
     *Recommended image size is 1510 pixels high by 800 pixels wide. Max filesize 2MB.
 	<input name="uploadbanner" type="submit" value="Upload a banner (2MB max)" />
 </form>
 <h1>Upload Favicon</h1>
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
 	<input type="file" name="file" id="file" />
 	<input name="uploadfavicon" type="submit" value="Upload a favicon (128KB max)" />
 </form>
@@ -403,7 +404,7 @@ $result_pages=mysqli_query($connection, $query);
   <?php if(check_permission("Website","edit_google_analytics")){ ?>
   <div class="TabbedPanelsContent">
   <h1>Google Analytics</h1>
-  <form method="post" action="site-settings.php">
+  <form method="post" action="site-settings.php?tab=3">
     Enabled: <input name="analyticsenabled" type="checkbox"<?php if($site['g_analytics_enabled']){echo  "checked";} ?> /><br>
   	Google Analytics Code:<br>
 	<textarea name="analyticscode" id="analytics" rows="15" cols="80"><?php echo $site['g_analytics_code']; ?></textarea><br>
