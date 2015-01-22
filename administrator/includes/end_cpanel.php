@@ -1,15 +1,14 @@
 
                 </div>
     		</div>
-    	</div>
         
-    </div>
                 <div id="footer">
                         <div style="float:left; text-align:left; margin-left:10px;">
                             Project Illuminate by <a href="http://www.secondgenerationdesign.com" target="_blank">Second Gen Design</a>, Copyright © 2011-<?php echo date("Y"); ?>.<br/>
                             Version <?php echo $site_info['version']; ?>
                         </div>
                     </div>
+            </div>
     <script type="text/javascript">
     	var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
     </script>

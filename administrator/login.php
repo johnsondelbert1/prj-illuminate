@@ -43,27 +43,25 @@ if(isset($_GET['success'])){
 	@import url(http://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css);
 	
 	body {
-	  background-image: url(images/blue-polygon.jpg);
+	  /*background-image: url(images/blue-polygon.jpg);*/
+	  background-color:#3f4749;
 	  color: fff;
 	  font-family: 'Roboto';
 	}
 	.content {
-	  height: 50px;
-	  width: 100%;
-	  margin:0 auto 25px;
-	  text-align:center;
-	  padding-top:10%;
+	  padding:25px;
+	  width:300px;
 	  
 	}
 	.flat-form {
-	background-color:#f7f7f7;
-	-webkit-border-radius:2px;
-	border-radius:2px;
-	  padding: 40px 40px;
-	  width: 400px;
-	  height: 400px;
-	  margin:0 auto 25px;
+		text-align: center;
+	   width: 300px;
+	   height: 627px;
+	   margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
 	  font-size:13px;
+	  color:#FFF;
 	  
 	}
 	.form-action {
@@ -72,91 +70,85 @@ if(isset($_GET['success'])){
 	}
 	
 	.flat-form h1 {
-	  font-size: 40px;
+	  font-size: 16px;
 	  padding-bottom: 10px;
 	}
-	@media all and (max-width: 660px){
- .flat-form h1 {
-	  font-size: 30px;
-	}
-}
-	@media all and (max-width: 470px){
- .flat-form h1 {
-	  font-size: 20px;
-	}
-}
 	.flat-form p {
 	  padding: 5px;
-	}
-	form {
-	  padding-right: 20px !important;
 	}
 
 	form input[type=text],
 	form input[type=password] {
-	  width: 100%;
-	  height: 40px;
 	  margin-bottom: 10px;
 	  padding-left: 15px;
-	  background: #fff;
-	border-top:1px solid #a0a0a0;
-	border:2px solid #426FC5;
-	  color: #426FC5;
+	  color: #e7e7e7;
 	  outline:none;
-	  font-size:15px;
+	  font-size:21px;
+	  border: 2px solid #e7e7e7;
 	  font-weight:bold;
+	  -webkit-appearance: none; 
+    -moz-appearance: none; 
+	  
+	  
+	  border-radius: 3px;
+  width: 281px;
+  height: 64px;
 	}
 	::-webkit-input-placeholder {
-   color: #426FC5;
+   color: #e7e7e7;
 }
 
 :-moz-placeholder { /* Firefox 18- */
-   color: #426FC5;  
+   color: #e7e7e7;  
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
-   color: #426FC5;  
+   color: #e7e7e7;  
 }
 
 :-ms-input-placeholder {  
-   color: #426FC5;  
+   color: #e7e7e7;  
 }
 	
 	.button {
-		font-size:15px;
-		border: none;
-		display: block;
-		background: #426FC5;
-		height: 40px;
-		width: 100%;
-		color: #ffffff;
-		text-align: center;
-		border-radius: 2px;
-		/*box-shadow: 0px 3px 1px #2075aa;*/
+		font-size:21px;
+		  border-style: solid;
+  border-width: 3px;
+  border-color: rgb(34, 174, 112);
+  border-radius: 3px;
+  background-image: -moz-linear-gradient( 90deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 100%);
+  background-image: -webkit-linear-gradient( 90deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 100%);
+  background-image: -ms-linear-gradient( 90deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 100%);
+  width: 300px;
+  height: 68px;
+  background: #22ae70;
 		-webkit-transition: all 0.15s linear;
 		  -moz-transition: all 0.15s linear;
 		  transition: all 0.15s linear;
 		  right:auto;
 		  left:auto;
+		  color:#FFF;
 	}
 	
 	.button:hover {
-	  background: #2980b9;
+	  background: #007842;
+	  border-color: #007842;
 	  /*box-shadow: 0 3px 1px #237bb2;*/
 	}
 	
 	.button:active {
-	  background: #136899;
+	  background: #069B57;
+	  border-color: #069B57;
 	  /*box-shadow: 0 3px 1px #0f608c;*/
 	}
 	
 </style>
 </head>
 <body>
-<div class="content">
-</div>
     <div class="container">
         <div class="flat-form">
+        <div class="content">
+ <img src="images/logo.png" width="180" height="180"  alt=""/></div>
             <div id="login" class="form-action show">
             	<?php if(!empty($message)){echo $message;} ?>
                 <h1><?php echo $site_info['name']; ?></h1>
@@ -173,8 +165,8 @@ if(isset($_GET['success'])){
                         <li>
                             <input type="submit" name="submit" value="Sign in" class="button" tabindex="4"/>
                         </li>
-                        <p><li>
-                            <input name="remember" id="remember" type="checkbox" value="" tabindex="3"/><label for="remember">Remember Me</label><br><br>
+                        <p><li style="text-align:left;">
+                            <input name="remember" id="remember" type="radio" value="" tabindex="3"/><label for="remember">keep me logged in</label><br><br>
                         </li></p>
                         
                     </ul>
