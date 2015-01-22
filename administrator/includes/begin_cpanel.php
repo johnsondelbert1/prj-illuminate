@@ -101,7 +101,7 @@ if(isset($_GET['message'])){
                     </li>
                     <?php } ?>
                     <li>
-                    	<a href="logout.php" style="color: #F85050;">Logout</a>
+                    	<a href="logout.php" style="font-size:20px;"><span class="icon-exit"></span></a>
                     </li>
                 </ul>
             </div>
