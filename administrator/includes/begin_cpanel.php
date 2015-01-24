@@ -11,6 +11,24 @@ if(isset($_GET['success'])){
 if(isset($_GET['message'])){
 	$message=urldecode($_GET['message']);
 }
+$banner = scandir("../images/banner/");
+if(isset($banner[2])){
+	$banner = $banner[2];
+}else{
+	$banner = false;
+}
+$favicon = scandir("../images/favicon/");
+if(isset($favicon[2])){
+	$favicon = $favicon[2];
+}else{
+	$favicon = false;
+}
+$logo = scandir("../images/logo/");
+if(isset($logo[2])){
+	$logo = $logo[2];
+}else{
+	$logo = false;
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -50,7 +68,7 @@ if(isset($_GET['message'])){
     <div class="wrap">
     	<div class="nav">
         	<div style="background-color:#F0F0F0;">
-            <span style="float:left;"><b><?php echo $_SESSION['username']; ?></b></span>
+            <span style="float:left; line-height:40px; padding-left:10px;"><b>Logged in as: <?php echo $_SESSION['username']; ?></b></span>
                 <ul id="horiz-menu" style="display:block;">
                     <li>
                     	<a href="../" target="_blank">Back to Site</a>

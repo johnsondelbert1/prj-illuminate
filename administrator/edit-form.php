@@ -49,7 +49,7 @@ $num_fields = count($field_names);
 <?php
 	$pgsettings = array(
 		"title" => "Editing form: ".$form['name'],
-		"icon" => "icon-images"
+		"icon" => "icon-pen"
 	);
 	require_once("includes/begin_cpanel.php");
 ?>

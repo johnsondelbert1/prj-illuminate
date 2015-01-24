@@ -28,7 +28,7 @@ table tr:nth-child(odd){
 while($listpage=mysqli_fetch_array($listpagesquery)){?>
 	<tr>
     	<td style="text-align:right;"><?php echo $listpage['name']?></td>
-		<td style="text-align:left;"><a href="<?php echo $site_info['base_url'].'/index.php?page='.urlencode($listpage['name']); ?>" onclick="window.open('../index.php?page=<?php echo urlencode($listpage['name']);?>', 'newwindow', 'width=1017, height=500'); return false;"><?php echo $site_info['base_url'].'/index.php?page='.urlencode($listpage['name']); ?></a></td>
+		<td style="text-align:left;"><a href="<?php echo $site_info['base_url'].'/page/'.urlencode($listpage['name']); ?>" onclick="window.open('../index.php?page=<?php echo urlencode($listpage['name']);?>', 'newwindow', 'width=1017, height=500'); return false;"><?php echo $site_info['base_url'].'/page/'.urlencode($listpage['name']); ?></a></td>
     </tr>
 <?php }?>
 </table>

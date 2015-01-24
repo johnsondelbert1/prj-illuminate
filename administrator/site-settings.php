@@ -4,8 +4,25 @@ require_once("../includes/functions.php");
 <?php
 
 $output_dir_banner = "../images/banner/";
+$output_dir_logo = "../images/logo/";
 $output_dir_icon = "../images/favicon/";
 
+if(isset($_GET['delete'])){
+	if($_GET['delete']=='banner'){
+		foreach (scandir($output_dir_banner) as $item) {
+			if ($item == '.' || $item == '..') continue;
+			unlink($output_dir_banner.DIRECTORY_SEPARATOR.$item);
+		}
+		$message = 'Banner image deleted';
+	}
+	if($_GET['delete']=='logo'){
+		foreach (scandir($output_dir_logo) as $item) {
+			if ($item == '.' || $item == '..') continue;
+			unlink($output_dir_logo.DIRECTORY_SEPARATOR.$item);
+		}
+		$message = 'Logo image deleted';
+	}
+}
 if(isset($_POST['chng_info'])){
 	if(check_permission("Website","edit_site_settings")){
 		if(isset($_POST['published'])){
@@ -49,6 +66,47 @@ if(isset($_POST['chngstyle'])){
 		$error="You do not have permission to edit colors.";
 	}
 }
+if(isset($_POST['socialnet'])){
+	if(check_permission("Website","edit_socnet")){
+		
+		$urls = array();
+		$enabled = array();
+		foreach($soc_networks as $network){
+			if(isset($_POST[$network.'_enabled'])){$enabled[$network.'_enabled'] = 1;}else{$enabled[$network.'_enabled'] = 0;}
+			
+			$preurl = mysqli_real_escape_string($connection, $_POST[$network.'_url']);
+			if($preurl!=''){
+				if(!preg_match("~^(?:f|ht)tps?://~i", $preurl)){
+					$url = substr_replace($preurl, 'http://', 0, 0);
+				}else{
+					$url = $preurl;
+				}
+			}else{
+				$url = '';
+			}
+			$urls[$network.'_url'] = $url;
+		}
+		
+		$query="UPDATE `site_info` SET ";
+		$i = 0;
+		foreach($soc_networks as $network){
+			$query.="`".$soc_networks[$i]."_url` = '".$urls[$network.'_url']."', `".$soc_networks[$i]."_enabled` = ".$enabled[$network.'_enabled'];
+			if(($i+1)  != count($soc_networks)){
+				$query.=", ";
+			}
+			$i++;
+		}
+		$result=mysqli_query($connection, $query);
+		confirm_query($result);
+		$success = "Social Networks has been updated!";
+		
+		$query="SELECT * FROM `site_info` WHERE `id` = 1";
+		$result=mysqli_query( $connection, $query);
+		$site_info=mysqli_fetch_array($result);
+	}else{
+		$error="You do not have permission to edit Social Networks.";
+	}
+}
 /*
 if(isset($_POST['delbanners'])){
 	if(check_permission("Website","upload_favicon_banner")){
@@ -83,6 +141,13 @@ if(isset($_POST['uploadbanner'])){
 		unlink($output_dir_banner.DIRECTORY_SEPARATOR.$item);
 	}
 	$message = upload($_FILES, $output_dir_banner, 2097152, array('.jpeg','.jpg','.gif','.png','.ico'));
+}
+if(isset($_POST['uploadlogo'])){
+	foreach (scandir($output_dir_logo) as $item) {
+		if ($item == '.' || $item == '..') continue;
+		unlink($output_dir_logo.DIRECTORY_SEPARATOR.$item);
+	}
+	$message = upload($_FILES, $output_dir_logo, 2097152, array('.jpeg','.jpg','.gif','.png','.ico'));
 }
 if(isset($_POST['uploadfavicon'])){
 	foreach (scandir($output_dir_icon) as $item) {
@@ -126,7 +191,7 @@ $result_pages=mysqli_query($connection, $query);
 <?php
 	$pgsettings = array(
 		"title" => "Website Settings",
-		"icon" => "icon-code"
+		"icon" => "icon-cog"
 	);
 	require_once("includes/begin_cpanel.php");
 ?>
@@ -256,7 +321,10 @@ $result_pages=mysqli_query($connection, $query);
                 <li class="TabbedPanelsTab" tabindex="0">Style</li>
                 <?php } ?>
                 <?php if(check_permission("Website","upload_favicon_banner")){ ?>
-                <li class="TabbedPanelsTab" tabindex="0">Banner / Favicon</li>
+                <li class="TabbedPanelsTab" tabindex="0">Imagery</li>
+                <?php } ?>
+                <?php if(check_permission("Website","edit_socnet")){ ?>
+                <li class="TabbedPanelsTab" tabindex="0">Social Networks</li>
                 <?php } ?>
                 <?php if(check_permission("Website","edit_google_analytics")){ ?>
                 <li class="TabbedPanelsTab" tabindex="0">Google Analytics</li>
@@ -266,13 +334,13 @@ $result_pages=mysqli_query($connection, $query);
                 
 <?php if(check_permission("Website","edit_site_settings")){ ?>
 <div class="TabbedPanelsContent">
-<h1>Site Data</h1>
+<h1 style="margin:-4px -4px 5px -4px; padding:5px;">Site Data</h1>
 <form method="post" action="site-settings.php?tab=0">
 <table width="75%" border="0"  style="margin-left:auto; margin-right:auto;">
   <tr>
     <td>
         <h2>Site Name</h2>
-        <input name="name" type="text" value="<?php echo $site['name']; ?>" maxlength="1024" />
+        <input name="name" type="text" value="<?php echo $site['name']; ?>" maxlength="1024" style="width:250px;" />
     </td>
     <td>
     	<h2>Website Timezone</h2>
@@ -286,7 +354,7 @@ $result_pages=mysqli_query($connection, $query);
   <tr>
   	<td>
         <h2>Website Contact Email</h2>
-        <input name="email" type="text" value="<?php echo $site['contact_email']; ?>" maxlength="128" />
+        <input name="email" type="text" value="<?php echo $site['contact_email']; ?>" maxlength="128" style="width:250px;" />
     </td>
   	<td>
         <h2>New User Default Rank</h2>
@@ -318,7 +386,7 @@ $result_pages=mysqli_query($connection, $query);
   <tr>
   	<td>
         <h2>Site URL (ex: http://www.example.com)</h2>
-        <input name="url" type="text" value="<?php echo $site['base_url']; ?>" maxlength="256" />
+        <input name="url" type="text" value="<?php echo $site['base_url']; ?>" maxlength="256" style="width:300px;" />
     </td>
   	<td>
 
@@ -351,7 +419,7 @@ $result_pages=mysqli_query($connection, $query);
 <?php } ?>
 <?php if(check_permission("Website","edit_site_colors")){ ?>
 <div class="TabbedPanelsContent">
-<h1>Website Style</h1>
+<h1 style="margin:-4px -4px 5px -4px; padding:5px;">Website Style</h1>
 <select onchange="chngcolor(this)">
 	<option>Red (Dark)</option>
    	<option>Red (Light)</option>
@@ -388,23 +456,65 @@ $result_pages=mysqli_query($connection, $query);
 <?php } ?>             
 <?php if(check_permission("Website","upload_favicon_banner")){ ?>
 <div class="TabbedPanelsContent">
-<h1>Upload Banner</h1>
+<h1 style="margin:-4px -4px 5px -4px; padding:5px;">Website Imagery</h1><br>
+<h2>Upload Banner</h2>
 <form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
 	<input type="file" name="file" id="file" /><br>
     *Recommended image size is 1510 pixels high by 800 pixels wide. Max filesize 2MB.
-	<input name="uploadbanner" type="submit" value="Upload a banner (2MB max)" />
-</form>
-<h1>Upload Favicon</h1>
+	<input name="uploadbanner" type="submit" value="Upload selected banner (2MB max)" />
+</form><br>
+<?php
+	if($banner != false){
+		?><img src="../images/banner/<?php echo $banner; ?>" width="500" /><?php
+	}else{?>
+		<div style="font-size:20px; width:500px; height:200px; border:5px dashed #B1B1B1; text-align:center; line-height:200px; vertical-align:middle; margin-left:auto; margin-right:auto;">There is currently no banner image.</div>
+    <?php
+	}
+?>
+<br><br>
+<a href="site-settings.php?tab=2&delete=banner">[Delete Banner]</a>
+<br><br><br><h2>Upload Logo</h2>
+<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
+	<input type="file" name="file" id="file" /><br>
+    *Recommended image size is 100 pixels high and maximum 600 pixels wide. Max filesize 2MB.
+	<input name="uploadlogo" type="submit" value="Upload selected logo (2MB max)" />
+</form><br>
+<?php
+	if($logo != false){
+		?><img src="../images/logo/<?php echo $logo; ?>" height="150" /><?php
+	}else{?>
+		<div style="font-size:20px; width:350px; height:100px; border:5px dashed #B1B1B1; text-align:center; line-height:100px; vertical-align:middle; margin-left:auto; margin-right:auto;">There is currently no logo image.</div>
+    <?php
+	}
+?>
+<br><br>
+<a href="site-settings.php?tab=2&delete=logo">[Delete Logo]</a>
+<br><br><br><h2>Upload Favicon</h2>
 <form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
 	<input type="file" name="file" id="file" />
-	<input name="uploadfavicon" type="submit" value="Upload a favicon (128KB max)" />
+	<input name="uploadfavicon" type="submit" value="Upload selected favicon (128KB max)" />
+</form>
+</div>
+<?php } ?>    
+<?php if(check_permission("Website","edit_socnet")){ ?>
+<div class="TabbedPanelsContent">
+<h1 style="margin:-4px -4px 5px -4px; padding:5px;">Social Networks</h1>
+<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=3">
+	<?php 
+	$i = 0;
+	foreach($soc_networks as $network){ ?>
+    	<?php echo $soc_networks_names[$i]; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" maxlength="256" style="width:400px;" placeholder="http://" value="<?php echo $site_info[$network.'_url']; ?>" name="<?php echo $network; ?>_url" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label for="<?php echo $network; ?>_enabled">Enabled</label>&nbsp;&nbsp;<input name="<?php echo $network; ?>_enabled" id="<?php echo $network; ?>_enabled" type="checkbox"<?php if($site_info[$network.'_enabled']){echo  "checked";} ?> /><br><br>
+    <?php 
+		$i++;
+	} ?>
+    <input name="socialnet" type="submit" value="Save Social Network Settings" /><br><br>
 </form>
 </div>
 <?php } ?>             
   <?php if(check_permission("Website","edit_google_analytics")){ ?>
   <div class="TabbedPanelsContent">
-  <h1>Google Analytics</h1>
-  <form method="post" action="site-settings.php?tab=3">
+  <h1 style="margin:-4px -4px 5px -4px; padding:5px;">Google Analytics</h1>
+  <form method="post" action="site-settings.php?tab=4">
     Enabled: <input name="analyticsenabled" type="checkbox"<?php if($site['g_analytics_enabled']){echo  "checked";} ?> /><br>
   	Google Analytics Code:<br>
 	<textarea name="analyticscode" id="analytics" rows="15" cols="80"><?php echo $site['g_analytics_code']; ?></textarea><br>

@@ -1,6 +1,9 @@
 ﻿/*
 * Jssor 18.0
 * http://www.jssor.com/
+*
+* Licensed under the MIT license:
+* http://www.opensource.org/licenses/MIT
 * 
 * TERMS OF USE - Jssor
 * 
@@ -692,7 +695,7 @@ var $Jssor$ = window.$Jssor$ = new function () {
         return event || window.event;
     }
 
-    GetEvent = GetEvent;
+    _This.$GetEvent = GetEvent;
 
     _This.$EventSrc = function (event) {
         event = GetEvent(event);
@@ -1001,7 +1004,9 @@ var $Jssor$ = window.$Jssor$ = new function () {
             var transformProperty = GetTransformProperty(elmt);
             if (transformProperty) {
                 var transformValue = "rotate(" + rotate % 360 + "deg) scale(" + scale + ")";
-                if (IsBrowserChrome() && webkitVersion > 535)
+
+                //needed for touch device, no need for desktop device
+                if (IsBrowserChrome() && webkitVersion > 535 && "ontouchstart" in window)
                     transformValue += " perspective(2000px)";
 
                 elmt.style[transformProperty] = transformValue;
@@ -1627,6 +1632,15 @@ var $Jssor$ = window.$Jssor$ = new function () {
         _This.$CssDisplay(elmt, "none");
     };
 
+    _This.$EnableElement = function (elmt, notEnable) {
+        if (notEnable) {
+            _This.$Attribute(elmt, "disabled", true);
+        }
+        else {
+            _This.$RemoveAttribute(elmt, "disabled");
+        }
+    };
+
     _This.$HideElements = function (elmts) {
         for (var i = 0; i < elmts.length; i++) {
             _This.$HideElement(elmts[i]);
@@ -1891,7 +1905,10 @@ var $Jssor$ = window.$Jssor$ = new function () {
         if (createCopy)
             template = CloneNode(template);
 
-        var templateHolders = $Jssor$.$GetElementsByTag(template, tagName);
+        var templateHolders = FindChildren(template, tagName);
+        if (!templateHolders.length)
+            templateHolders = $Jssor$.$GetElementsByTag(template, tagName);
+
         for (var j = templateHolders.length -1; j > -1; j--) {
             var templateHolder = templateHolders[j];
             var replaceItem = CloneNode(replacer);
