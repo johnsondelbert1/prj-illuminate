@@ -11,6 +11,16 @@ $query="SELECT * FROM `site_layout` WHERE `id` = 1";
 $result=mysqli_query( $connection, $query);
 $site_layout=mysqli_fetch_array($result);
 
+$soc_networks = array('facebook','googleplus','twitter','instagram','linkedin');
+$soc_networks_names = array('Facebook','Google +','Twitter','Instagram','LinkedIn');
+$soc_networks_icons = array('facebook2','googleplus3','twitter2','instagram','linkedin');
+$enabled_soc_networks = array();
+foreach($soc_networks as $network){
+	if($site_info[$network.'_enabled'] == 1){
+		array_push($enabled_soc_networks, $network);
+	}
+}
+
 date_default_timezone_set($site_info['timezone']);
 $date=date("Y/m/d H:i:s", time());
 
@@ -85,6 +95,7 @@ $blank_permissions = array(
 		"edit_site_settings" => array("value" => 0, "disp_name" => "Edit Website Information", "description" => "Enables members of this rank to edit the website information."),
 		"edit_site_colors" => array("value" => 0, "disp_name" => "Edit Website Colors", "description" => "Enables members of this rank to modify the website theme colors."),
 		"upload_favicon_banner" => array("value" => 0, "disp_name" => "Upload Favicon and Banner", "description" => "Enables members of this rank to upload a favicon and banner to the website."),
+		"edit_socnet" => array("value" => 0, "disp_name" => "Edit Social Networks", "description" => "Enables members of this rank to edit the social networks the website is connected to."),
 		"edit_google_analytics" => array("value" => 0, "disp_name" => "Edit Google Analytics", "description" => "Enables members of this rank to edit the Google Analytics information."),
 	)
 );
@@ -435,7 +446,8 @@ function nav($position, $pgselection){
 	$numpages=mysqli_num_rows($result);
 	if($numpages!=0){
 		if($position=="horiz"){ ?>
-    		<ul id="horiz-menu">
+            <div class="nav" style="background-color:<?php echo $site_layout['menu_color'] ?>;">
+                <ul id="horiz-menu">
     	<?php }elseif($position=="vert"){ ?>
         	<td style="vertical-align:top; width:200px; padding-right:5px;"><div style="width:100%;">
     		<ul id="vert-menu">
@@ -495,7 +507,9 @@ function nav($position, $pgselection){
 		</ul>
         <?php if($position=="vert"){?>
         </div></td>
-        <?php }?>
+        <?php }elseif($position=="horiz"){?>
+			</div>
+		<?php } ?>
 	<?php
 	}
     $query="SELECT * FROM  `features` WHERE  `id` =  1";

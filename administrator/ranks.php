@@ -85,9 +85,9 @@ confirm_query($result);
     </form><br />
 <?php } ?>
 <h1>Rank List</h1>
-<div style="width:100%; overflow:scroll;">
+<div style="overflow-x:auto;">
     <form method="post" action="ranks.php">
-    <table width="90%" border="1" cellspacing="0" cellpadding="0" id="rank" style="min-height:100px; background-color:#DDDDDD;">
+    <table border="1" cellspacing="0" cellpadding="0" id="rank" style="min-height:100px; background-color:#DDDDDD; width:100%;">
         <tr>
             <td style="min-width:150px;">
                 <table width="100%" border="1" cellspacing="0" cellpadding="0">
@@ -96,7 +96,7 @@ confirm_query($result);
                             Permission Group
                         </th>
                     </tr>
-                    <tr height="86">
+                    <tr height="88">
                         <th>
                             Permission
                         </th>
@@ -117,55 +117,57 @@ confirm_query($result);
                     ?>
                 </table>
             </td>
-            <td>
-                <table border="1" cellspacing="0" cellpadding="2" width="100%" height="100%">
-                  <tr height="20">
-                  <?php
-                    foreach($blank_permissions as $permisson_group => $single_permissions){?>
-                        <th colspan="<?php echo count($single_permissions); ?>"><?php echo $permisson_group; ?></th>
-                    <?php
-                    }
-                    ?>
-                  </tr>
-                  <tr>
-                  
-                  <?php
-                    foreach($blank_permissions as $permisson_group => $single_permissions){
-                        foreach(array_keys($single_permissions) as $single_permisson){?>
-                        <td><?php echo $blank_permissions[$permisson_group][$single_permisson]['disp_name']; ?></td>
-                    <?php
+            <td width="100%">
+            	<div style="width:inherit; height:100%; overflow-x:auto; position:relative;">
+                    <table border="1" cellspacing="0" cellpadding="2">
+                      <tr height="20">
+                      <?php
+                        foreach($blank_permissions as $permisson_group => $single_permissions){?>
+                            <th colspan="<?php echo count($single_permissions); ?>"><?php echo $permisson_group; ?></th>
+                        <?php
                         }
-                    }
-                    ?>
-                  </tr>
-                    <?php
-                
-                        $query="SELECT * FROM `ranks` ORDER BY `id` ASC";
-                        $result=mysqli_query( $connection, $query);
-                        confirm_query($result);
-                        
-                        //Image filename
-                        $yes = "check-green.png";
-                        $no = "x-red.png";
-                        
-                        while($rank=mysqli_fetch_array($result)){
-                            $ranks_permissions=unserialize($rank['permissions']);
-                            if(empty($ranks_permissions)){
-                                $ranks_permissions = $blank_permissions;
+                        ?>
+                      </tr>
+                      <tr height="88">
+                      
+                      <?php
+                        foreach($blank_permissions as $permisson_group => $single_permissions){
+                            foreach(array_keys($single_permissions) as $single_permisson){?>
+                            <td><?php echo $blank_permissions[$permisson_group][$single_permisson]['disp_name']; ?></td>
+                        <?php
                             }
-                            $ranks_permissions = array_replace_recursive($blank_permissions, $ranks_permissions);
-                            ?>
-                          <tr align="center" height="35">
-                            <?php
-                            foreach(array_keys($blank_permissions) as $perm_group){
-                                foreach($blank_permissions[$perm_group] as $perm_key => $permission){?>
-                                    <td><img src="images/<?php if($ranks_permissions[$perm_group][$perm_key]['value']==1){echo $yes;}else{echo $no;} ?>" /></td>
-                                <?php
+                        }
+                        ?>
+                      </tr>
+                        <?php
+                    
+                            $query="SELECT * FROM `ranks` ORDER BY `id` ASC";
+                            $result=mysqli_query( $connection, $query);
+                            confirm_query($result);
+                            
+                            //Image filename
+                            $yes = "check-green.png";
+                            $no = "x-red.png";
+                            
+                            while($rank=mysqli_fetch_array($result)){
+                                $ranks_permissions=unserialize($rank['permissions']);
+                                if(empty($ranks_permissions)){
+                                    $ranks_permissions = $blank_permissions;
                                 }
-                            }?>
-                          </tr>
-                        <?php } ?>
-                </table>
+                                $ranks_permissions = array_replace_recursive($blank_permissions, $ranks_permissions);
+                                ?>
+                              <tr align="center" height="35">
+                                <?php
+                                foreach(array_keys($blank_permissions) as $perm_group){
+                                    foreach($blank_permissions[$perm_group] as $perm_key => $permission){?>
+                                        <td><img src="images/<?php if($ranks_permissions[$perm_group][$perm_key]['value']==1){echo $yes;}else{echo $no;} ?>" /></td>
+                                    <?php
+                                    }
+                                }?>
+                              </tr>
+                            <?php } ?>
+                    </table>
+                </div>
             </td>
             <td>
                 <table width="100%" border="1" cellspacing="0" cellpadding="0">

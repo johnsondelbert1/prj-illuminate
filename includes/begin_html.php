@@ -14,7 +14,23 @@ if(isset($_GET['message'])){
 }
 
 $banner = scandir("images/banner/");
+if(isset($banner[2])){
+	$banner = $banner[2];
+}else{
+	$banner = false;
+}
 $favicon = scandir("images/favicon/");
+if(isset($favicon[2])){
+	$favicon = $favicon[2];
+}else{
+	$favicon = false;
+}
+$logo = scandir("images/logo/");
+if(isset($logo[2])){
+	$logo = $logo[2];
+}else{
+	$logo = false;
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -36,7 +52,7 @@ $favicon = scandir("images/favicon/");
     
     <!-- End custom meta tags -->
     <link href="<?php echo $site_info['base_url']; ?>/administrator/styles/fonts.css" rel="stylesheet" type="text/css" />
-    <?php if(count($favicon)==3){ ?><link rel="shortcut icon" href="images/favicon/<?php echo $favicon[2]; ?>" /><?php } ?>
+    <?php if($favicon!=false){ ?><link rel="shortcut icon" href="<?php echo $site_info['base_url']; ?>/images/favicon/<?php echo $favicon; ?>" /><?php } ?>
     <link href="<?php echo $site_info['base_url']; ?>/styles/uploadfilemulti.css" rel="stylesheet" />
     <link href="<?php echo $site_info['base_url']; ?>/styles/main.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo $site_info['base_url']; ?>/styles/animate.css" rel="stylesheet" type="text/css" />
@@ -77,7 +93,9 @@ $favicon = scandir("images/favicon/");
 			background-color:<?php echo $site_layout['menu_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		
+		.icon{
+			color:<?php echo $site_layout['menu_color'] ?>
+		}
 		.forum tr a{
 			color:<?php echo $site_layout['contentbg_color'] ?> !important;
 		}
@@ -89,7 +107,7 @@ $favicon = scandir("images/favicon/");
 			color:<?php echo $site_layout['text_color'] ?> !important;*/
 		}
 		#banner{
-			<?php if(count($banner)==3){?>background-image:url(<?php echo $site_info['base_url']; ?>/images/banner/<?php echo $banner[2];?>);<?php } ?>
+			<?php if($banner!=false){?>background-image:url(<?php echo $site_info['base_url']; ?>/images/banner/<?php echo $banner;?>);<?php } ?>
 			
 		}
 		/* Start custom CSS */
@@ -116,16 +134,27 @@ $favicon = scandir("images/favicon/");
 	}?>
     
 	<div id="wrapper">
+    	<?php if($logo!=false||!empty($enabled_soc_networks)){ ?>
+    	<div style="width:1880px; height:100px; margin-left:auto; margin-right:auto;">
+        	<?php if($logo!=false){ ?><div style="float:left; position:absolute;"><img src="<?php echo $site_info['base_url']; ?>/images/logo/<?php echo $logo; ?>" height="100" /></div><?php } ?>
+            <div style="float:right; font-size:32px; padding:10px;">
+            	<?php
+					foreach($enabled_soc_networks as $network){?>
+                    	<a href="<?php echo $site_info[$network.'_url']; ?>" style="text-decoration:none;" target="_blank"><span class="icon icon-<?php echo $soc_networks_icons[array_search($network, $soc_networks)]; ?>"></span></a>
+					<?php 
+					}
+				?>
+            </div>
+        </div>
+        <?php } ?>
         <?php
         if(!isset($pgsettings['horiz_menu_visible'])||$pgsettings['horiz_menu_visible'] == true){
-			?><div class="nav" style="background-color:<?php echo $site_layout['menu_color'] ?>;"><?php
-        		$num_horiz_pages = nav("horiz", $pgsettings['pageselection']);
-			?></div><?php
+        	$num_horiz_pages = nav("horiz", $pgsettings['pageselection']);
 		}
 		?>
         <div id="contentwrap">
 			<?php if(isset($pgsettings['banner'])&&$pgsettings['banner'] == 1){ ?>
-    		<?php if(isset($banner[2])){ ?><div style="width:100%; text-align:center; margin-bottom:20px;"><img src="images/banner/<?php echo $banner[2]; ?>" width="80%" style="background-color:#C9C9C9;" /></div><?php } ?>
+    		<?php if($banner!=false){ ?><div style="width:100%; text-align:center; margin-bottom:20px;"><img src="<?php echo $site_info['base_url']; ?>/images/banner/<?php echo $banner; ?>" width="80%" style="background-color:#C9C9C9;" /></div><?php } ?>
 			<?php
 			}
 			?>

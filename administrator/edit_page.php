@@ -319,7 +319,7 @@ if($_GET['action']=="edit"){
 <?php if(isset($_GET['action'])&&$_GET['action']!="newpage"){ ?>
   <tr>
     <td style="text-align:right;"><strong>Page URL:</strong></td>
-    <td style="text-align:left;"><a href="<?php echo $site_info['base_url'].'/index.php?page='.urlencode($selpage['name']); ?>" onclick="window.open('../index.php?page=<?php echo urlencode($selpage['name']);?>', 'newwindow', 'width=1017, height=500'); return false;"><?php echo $site_info['base_url'].'/index.php?page='.urlencode($selpage['name']); ?></a></td>
+    <td style="text-align:left;"><a href="<?php echo $site_info['base_url'].'/page/'.urlencode($selpage['name']); ?>" onclick="window.open('<?php echo $site_info['base_url'];?>/page/<?php echo urlencode($selpage['name']);?>', 'newwindow', 'width=1017, height=500'); return false;"><?php echo $site_info['base_url'].'/page/'.urlencode($selpage['name']); ?></a></td>
     <td colspan="2"><a href="page_list_simple.php" onclick="window.open('page_list_simple.php', 'newwindow', 'width=700, height=500'); return false;">(View Pages)</a></td>
   </tr>
 <?php } ?>

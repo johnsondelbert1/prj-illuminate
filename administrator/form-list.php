@@ -65,7 +65,7 @@ $result=mysqli_query( $connection, $query);
 <?php
 	$pgsettings = array(
 		"title" => "Form List",
-		"icon" => "icon-images"
+		"icon" => "icon-pen"
 	);
 	require_once("includes/begin_cpanel.php");
 ?>

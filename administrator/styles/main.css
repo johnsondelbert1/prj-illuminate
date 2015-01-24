@@ -42,7 +42,7 @@ div.wrap a
 
 .title
 {
-	margin-top:10px;
+	margin-top:20px;
 }
 
 .form
@@ -984,6 +984,7 @@ span.galleryImage input[type=checkbox]:checked {
 .TabbedPanelsContent {
 	overflow: hidden;
 	padding: 4px;
+	overflow-x:auto;
 }
 
 /* This selector is an example of how to change the appearnce of the currently

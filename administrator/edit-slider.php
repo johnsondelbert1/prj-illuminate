@@ -102,7 +102,7 @@ $result=mysqli_query( $connection, $query);
 <?php
 	$pgsettings = array(
 		"title" => "Slider",
-		"icon" => "icon-user3"
+		"icon" => "icon-images"
 	);
 	require_once("includes/begin_cpanel.php");
 ?>
