@@ -466,13 +466,13 @@ function nav($position, $pgselection){
                 
             while($page=mysqli_fetch_array($result)){
                 if($page['issubpage']==0){ $lastmainpage=$page['id'];?>
-                <li style="min-width:<?php echo $buttonwidth; ?>%;"<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><a style="min-width:<?php echo $buttonwidth; ?>%;" href="<?php echo $site_info['base_url'];
+                <li style="min-width:<?php echo $buttonwidth; ?>%;"<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><a style="min-width:<?php echo $buttonwidth; ?>%;" href="<?php
                         if($page['type']=='Custom' || $page['type']=='Staff'){
-                            ?>/page/<?php echo urlencode($page['name']);
+                            echo $site_info['base_url'];?>/page/<?php echo urlencode($page['name']);
                         }elseif($page['type']=='Blog'){
-                            ?>/blog<?php
+                            echo $site_info['base_url'];?>/blog<?php
                         }elseif($page['type']=='Forum'){
-                            ?>/forums<?php
+                            echo $site_info['base_url'];?>/forums<?php
                         }elseif($page['type']=='Link'){
                             echo $page['url'];
                         }
@@ -484,13 +484,13 @@ function nav($position, $pgselection){
                         <ul style="min-width:100%;">
                         <?php while($subpage=mysqli_fetch_array($subpgresult)){?>
                             <li style="width:100%;"<?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>>
-                                <a href="<?php echo $site_info['base_url'];
+                                <a href="<?php
                                     if($subpage['type']=='Custom' || $page['type']=='Staff'){
-                                        ?>/page/<?php echo urlencode($subpage['name']);
+                                        echo $site_info['base_url'];?>/page/<?php echo urlencode($subpage['name']);
                                     }elseif($subpage['type']=='Blog'){
-                                        ?>/blog<?php
+                                        echo $site_info['base_url'];?>/blog<?php
                                     }elseif($subpage['type']=='Forum'){
-                                        ?>/forums<?php
+                                        echo $site_info['base_url'];?>/forums<?php
                                     }elseif($subpage['type']=='Link'){
                                         echo $subpage['url'];
                                     }
