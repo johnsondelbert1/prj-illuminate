@@ -136,7 +136,15 @@ if(isset($logo[2])){
 	<div id="wrapper">
     	<?php if($logo!=false||!empty($enabled_soc_networks)){ ?>
     	<div style="width:1880px; height:100px; margin-left:auto; margin-right:auto;">
-        	<?php if($logo!=false){ ?><div style="float:left; position:absolute;"><img src="<?php echo $site_info['base_url']; ?>/images/logo/<?php echo $logo; ?>" height="100" /></div><?php } ?>
+        	<?php if($logo!=false){ ?>
+            	<div style="float:left; position:absolute;">
+                	<?php if($site_info['logo_url']!=''){?>
+            		<a href="<?php echo $site_info['logo_url']; ?>"><img src="<?php echo $site_info['base_url']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $site_info['name']; ?> Logo" height="100" /></a>
+                    <?php }else{ ?>
+                    <img src="<?php echo $site_info['base_url']; ?>/images/logo/<?php echo $logo; ?>" height="100" />
+                    <?php } ?>
+                </div>
+			<?php } ?>
             <div style="float:right; font-size:32px; padding:10px;">
             	<?php
 					foreach($enabled_soc_networks as $network){?>
@@ -158,8 +166,8 @@ if(isset($logo[2])){
 			<?php
 			}
 			?>
-			<?php if(isset($pgsettings['slider'])&&$pgsettings['slider'] == 1){
-				slider();
+			<?php if(isset($pgsettings['slider'])&&$pgsettings['slider'] >= 1){
+				slider($pgsettings['slider']);
 			}
 			?>
             <table border="0" cellspacing="0" cellpadding="0" style="width:100%;">

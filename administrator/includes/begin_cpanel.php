@@ -73,7 +73,10 @@ if(isset($logo[2])){
                     <li>
                     	<a href="../" target="_blank">Back to Site</a>
                     </li>
-                    <?php if(check_permission(array("Pages;add_pages","Pages;edit_pages","Pages;delete_pages","Galleries;add_gallery","Galleries;edit_gallery","Galleries;delete_gallery","Galleries;rename_gallery","Uploading;upload_files","Uploading;delete_files","Uploading;create_folders","Uploading;rename_folders","Uploading;delete_folders",))){?>
+                    <li>
+                    	<a href="index.php">Home</a>
+                    </li>
+                    <?php if(check_permission(array("Pages;add_pages","Pages;edit_pages","Pages;delete_pages","Galleries;add_gallery","Galleries;edit_gallery","Galleries;delete_gallery","Galleries;rename_gallery","Uploading;upload_files","Uploading;delete_files","Uploading;create_folders","Uploading;rename_folders","Uploading;delete_folders","Sliders;add_slider","Sliders;edit_slider","Sliders;delete_slider","Sliders;rename_slider",))){?>
                         <li>
                             <a href="page_list.php">Content</a>
                             <ul>
@@ -82,7 +85,7 @@ if(isset($logo[2])){
                                     <ul>
                                         <?php if(check_permission("Pages","add_pages")){?><li><a href="edit_page.php?action=newpage">Add Pages</a></li><?php } ?>
                                         <?php if(check_permission("Pages","edit_pages")){?><li><a href="staff-list.php">Staff</a></li><?php } ?>
-                                        <?php if(check_permission("Pages","edit_pages")){?><li><a href="edit-slider.php">Slider</a></li><?php } ?>
+                                        <?php if(check_permission(array("Sliders;add_slider","Sliders;edit_slider","Sliders;delete_slider","Sliders;rename_slider",))){?><li><a href="slider-list.php">Slider</a></li><?php } ?>
                                     </ul>
                                 </li>
 								<?php if(check_permission(array("Galleries;add_gallery","Galleries;edit_gallery","Galleries;delete_gallery","Galleries;rename_gallery"))){?>

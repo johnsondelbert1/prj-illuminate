@@ -38,7 +38,7 @@ if(isset($_POST['chng_info'])){
 			if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 				$query="UPDATE `site_info` SET 
 					`name` = '{$_POST['name']}', `contact_email` = '{$_POST['email']}', `base_url`='{$_POST['url']}', `timezone` = '{$_POST['tz']}', `published` = {$published}, `default_rank` = {$_POST['rank']}, `homepage` = {$_POST['homepage']}, `meta_tags` = '{$metadata}', `style_js_link_tags` = '{$css_js}', `footer_content` = '{$footer_content}'";
-			$result=mysqli_query($connection, $query);
+				$result=mysqli_query($connection, $query);
 				confirm_query($result);
 				$success = "Site Info has been updated!";
 			}else{
@@ -148,6 +148,14 @@ if(isset($_POST['uploadlogo'])){
 		unlink($output_dir_logo.DIRECTORY_SEPARATOR.$item);
 	}
 	$message = upload($_FILES, $output_dir_logo, 2097152, array('.jpeg','.jpg','.gif','.png','.ico'));
+}
+if(isset($_POST['chng_logo_url'])){
+	$logo_url = strip_tags(mysqli_real_escape_string($connection, $_POST['logo_url']));
+	$query="UPDATE `site_info` SET 
+		`logo_url` = '{$logo_url}'";
+	$result=mysqli_query($connection, $query);
+	confirm_query($result);
+	$success = "Logo URL has been updated!";
 }
 if(isset($_POST['uploadfavicon'])){
 	foreach (scandir($output_dir_icon) as $item) {
@@ -459,9 +467,9 @@ $result_pages=mysqli_query($connection, $query);
 <h1 style="margin:-4px -4px 5px -4px; padding:5px;">Website Imagery</h1><br>
 <h2>Upload Banner</h2>
 <form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
-	<input type="file" name="file" id="file" /><br>
+	<input type="file" name="file" id="file" accept="image/*" /><br>
     *Recommended image size is 1510 pixels high by 800 pixels wide. Max filesize 2MB.
-	<input name="uploadbanner" type="submit" value="Upload selected banner (2MB max)" />
+	<input name="uploadbanner" type="submit" value="Upload selected banner" />
 </form><br>
 <?php
 	if($banner != false){
@@ -475,9 +483,9 @@ $result_pages=mysqli_query($connection, $query);
 <a href="site-settings.php?tab=2&delete=banner">[Delete Banner]</a>
 <br><br><br><h2>Upload Logo</h2>
 <form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
-	<input type="file" name="file" id="file" /><br>
+	<input type="file" name="file" id="file" accept="image/*" /><br>
     *Recommended image size is 100 pixels high and maximum 600 pixels wide. Max filesize 2MB.
-	<input name="uploadlogo" type="submit" value="Upload selected logo (2MB max)" />
+	<input name="uploadlogo" type="submit" value="Upload selected logo" />
 </form><br>
 <?php
 	if($logo != false){
@@ -489,9 +497,13 @@ $result_pages=mysqli_query($connection, $query);
 ?>
 <br><br>
 <a href="site-settings.php?tab=2&delete=logo">[Delete Logo]</a>
+<form method="post" action="site-settings.php?tab=2">
+    <h2>Logo URL</h2>
+    <input name="logo_url" type="text" value="<?php echo $site['logo_url']; ?>" maxlength="256" placeholder="http://" style="width:300px;" /><input name="chng_logo_url" type="submit" value="Change Logo URL" />
+</form>
 <br><br><br><h2>Upload Favicon</h2>
 <form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
-	<input type="file" name="file" id="file" />
+	<input type="file" name="file" id="file" accept="image/*" />
 	<input name="uploadfavicon" type="submit" value="Upload selected favicon (128KB max)" />
 </form>
 </div>
