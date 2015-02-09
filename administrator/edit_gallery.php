@@ -58,14 +58,14 @@ if(isset($_POST['submit'])){
 		}else{
 			$subgalleries="";
 		}
-		
-		$query="UPDATE `galleries` SET 
-			`name` = '{$galname}', `subgalleries` = '{$subgalleries}' 
-			WHERE `id` = {$_GET['gallid']}";
-		$result=mysqli_query($connection, $query);
-		confirm_query($result);
+	
 	
 		if(rename("../galleries/".$gall['name'], "../galleries/".$_POST['galname'])){
+			$query="UPDATE `galleries` SET 
+				`name` = '{$galname}', `subgalleries` = '{$subgalleries}' 
+				WHERE `id` = {$_GET['gallid']}";
+			$result=mysqli_query($connection, $query);
+			confirm_query($result);
 			$success = "Gallery has been updated!";
 		}else{
 			$error="There was a problem with renaming the gallery.";
@@ -210,7 +210,7 @@ while($subgallery=mysqli_fetch_array($subgalleryquery)){
 <h2>Upload Single photo</h2><br />
 <br />
 <form action="edit_gallery.php?gallid=<?php echo $_GET['gallid']; ?>" method="post" enctype="multipart/form-data">
-<input type="file" name="file" id="file" />
+<input type="file" name="file" id="file" accept="image/*" />
 <input name="upload" type="submit" value="Upload Image" />
 </form>
 <?php

@@ -44,6 +44,17 @@ function get_rank_info(){
 	}
 	return $user_permissions;
 }
+
+function enable_all_perms($blank_permissions){
+	$filled_perms = $blank_permissions;
+	foreach($blank_permissions as $perm_group_key => $perm_group_perms){
+		foreach($perm_group_perms as $perm_key => $perm_properties){
+			$filled_perms[$perm_group_key][$perm_key]['value'] = 1;
+		}
+	}
+	return($filled_perms);
+}
+
 $blank_permissions = array(
 	"Pages" => array(
 		"add_pages" => array("value" => 0, "disp_name" => "Add", "description" => "Enables members of this rank to add a new page to the website"),
@@ -85,6 +96,12 @@ $blank_permissions = array(
 		"delete_gallery" => array("value" => 0, "disp_name" => "Delete Galleries", "description" => "Enables members of this rank to delete galleries from the website."),
 		"rename_gallery" => array("value" => 0, "disp_name" => "Rename Galleries", "description" => "Enables members of this rank to rename galleries."),
 	),
+	"Sliders" => array(
+		"add_slider" => array("value" => 0, "disp_name" => "Add Slider", "description" => "Enables members of this rank to add sliders to the website."),
+		"edit_slider" => array("value" => 0, "disp_name" => "Edit Slider", "description" => "Enables members of this rank to edit existing sliders."),
+		"delete_slider" => array("value" => 0, "disp_name" => "Delete Slider", "description" => "Enables members of this rank to delete sliders from the website."),
+		"rename_slider" => array("value" => 0, "disp_name" => "Rename Slider", "description" => "Enables members of this rank to rename sliders."),
+	),
 	"Forms" => array(
 		"add_form" => array("value" => 0, "disp_name" => "Add Forms", "description" => "Enables members of this rank to add forms."),
 		"edit_form" => array("value" => 0, "disp_name" => "Edit Forms", "description" => "Enables members of this rank to edit existing forms."),
@@ -99,6 +116,22 @@ $blank_permissions = array(
 		"edit_google_analytics" => array("value" => 0, "disp_name" => "Edit Google Analytics", "description" => "Enables members of this rank to edit the Google Analytics information."),
 	)
 );
+
+//Adds all new permissions to admin ranks
+$query="SELECT * FROM `ranks` WHERE `admin_rank` = 1";
+$result=mysqli_query( $connection, $query);
+while($admin_rank=mysqli_fetch_array($result)){
+	$admin_permissions = unserialize($admin_rank['permissions']);
+	$enabled_perms = enable_all_perms($blank_permissions);
+	if($admin_permissions != $enabled_perms){
+		$admin_permissions = mysqli_real_escape_string($connection, serialize($enabled_perms));
+		$query="UPDATE `ranks` SET
+			`permissions` = '{$admin_permissions}' WHERE `id` = {$admin_rank['id']}";
+		mysqli_query( $connection, $query);
+	}
+}
+
+
 if(logged_in()){
 	$permissions = array_replace_recursive($blank_permissions, get_rank_info());
 }else{
@@ -565,9 +598,14 @@ function echo_page($num_pages, $current_page, $url){
     <?php
 }
 
-function slider(){
+function slider($slider_id){
 	global $site_info;
-	global $connection;?>
+	global $connection;
+	$query="SELECT * FROM `slider_names` WHERE `id` = ".$slider_id;
+	$result=mysqli_query( $connection, $query);
+	if(mysqli_num_rows($result)==1){
+		$slider=mysqli_fetch_array($result);
+	?>
                         <!-- Caption Style -->
                         <style> 
                             .captionOrange, .captionBlack
@@ -624,7 +662,13 @@ function slider(){
                                 //Fade out L
                                 , { $Duration: 1200, x: 0.3, $SlideOut: true, $Easing: { $Left: $JssorEasing$.$EaseInCubic, $Opacity: $JssorEasing$.$EaseLinear }, $Opacity: 2 }
                                 ];
-                    
+								
+								var _CaptionTransitions = [
+								//CLIP|LR
+								{$Duration: 900, $Clip: 3, $Easing: $JssorEasing$.$EaseInOutCubic },
+					
+								];
+								
                                 var options = {
                                     $AutoPlay: true,                                    //[Optional] Whether to auto play, to enable slideshow, this option must be set to true, default value is false
                                     $AutoPlaySteps: 1,                                  //[Optional] Steps to go for each navigation request (this options applys only when slideshow disabled), the default value is 1
@@ -649,7 +693,14 @@ function slider(){
                                         $TransitionsOrder: 1,                           //[Optional] The way to choose transition to play slide, 1 Sequence, 0 Random
                                         $ShowLink: true                                    //[Optional] Whether to bring slide link on top of the slider when slideshow is running, default value is false
                                     },
-                    
+									
+									$CaptionSliderOptions: {                            //[Optional] Options which specifies how to animate caption
+										$Class: $JssorCaptionSlider$,                   //[Required] Class to create instance to animate caption
+										$CaptionTransitions: _CaptionTransitions,       //[Required] An array of caption transitions to play caption, see caption transition section at jssor slideshow transition builder
+										$PlayInMode: 1,                                 //[Optional] 0 None (no play), 1 Chain (goes after main slide), 3 Chain Flatten (goes after main slide and flatten all caption animations), default value is 1
+										$PlayOutMode: 3                                 //[Optional] 0 None (no play), 1 Chain (goes before main slide), 3 Chain Flatten (goes before main slide and flatten all caption animations), default value is 1
+									},
+									
                                     $BulletNavigatorOptions: {                                //[Optional] Options to specify and enable navigator or not
                                         $Class: $JssorBulletNavigator$,                       //[Required] Class to create navigator instance
                                         $ChanceToShow: 2,                               //[Required] 0 Never, 1 Mouse Over, 2 Always
@@ -716,14 +767,25 @@ function slider(){
                             <div u="slides" style="cursor: move; position: absolute; left: 0px; top: 0px; width: 600px; height: 300px;
                                 overflow: hidden;">
                                 <?php
-									$query="SELECT * FROM `slider` WHERE `published` = 1 ORDER BY `order`";
+									
+									$query="SELECT * FROM `slider_images` WHERE `published` = 1 AND `slider_id` = ".$slider_id." ORDER BY `order`";
 									$result=mysqli_query( $connection, $query);
 									
 									if(mysqli_num_rows($result)!=0){
 										while($slide=mysqli_fetch_array($result)){?>
                                             <div>
-                                                <img u=image src="<?php echo $site_info['base_url']; ?>/images/slider/<?php echo $slide['img_name']; ?>" />
-                                                <div u="thumb" style="background-color:rgba(0, 0, 0, 0.4); line-height:35px; padding-left:10px; margin-top:60px;"><?php if($slide['url']!=''){?><a href="<?php echo $slide['url'];?>"<?php if($slide['new_tab']==1){ echo 'target="_blank"'; } ?>><?php echo $slide['caption'];?></a><?php }else{echo $slide['caption'];} ?></div>
+                                                <img u=image src="<?php echo $site_info['base_url']; ?>/images/slider/<?php echo $slider['name'].'/'.$slide['img_name']; ?>" />
+                                                <!--<div u="thumb" style="background-color:rgba(0, 0, 0, 0.4); line-height:35px; padding-left:10px; margin-top:60px;"><?php if($slide['url']!=''){?><a href="<?php echo $slide['url'];?>"<?php if($slide['new_tab']==1){ echo 'target="_blank"'; } ?>><?php echo $slide['caption'];?></a><?php }else{echo $slide['caption'];} ?></div>-->
+                                                <?php if($slide['caption']!=''){ ?>
+                                                <div u=caption t="*" class="captionBlack"  style="position:absolute; left:20px; top: 30px; width:300px; height:30px; font-weight:bold;">
+													<?php if($slide['url']!=''){?>
+                                                        <a href="<?php echo $slide['url'];?>"<?php if($slide['new_tab']==1){ echo ' target="_blank"'; } ?>><?php echo $slide['caption']; ?></a>
+                                                    <?php 
+													}else{
+														echo $slide['caption'];
+													} ?>
+                                                </div>
+                                                <?php } ?>
                                             </div>
 										<?php
                                         }
@@ -731,20 +793,20 @@ function slider(){
 								?>
                             </div>
                     
-                            <!-- ThumbnailNavigator Skin Begin -->
+                            <!-- ThumbnailNavigator Skin Begin 
                             <div u="thumbnavigator" class="sliderb-T" style="position: absolute; top: 0px; left: 0px; height:45px; width:600px;">
                                 <div style="filter: alpha(opacity=40); opacity:0.4; position: absolute; display: block;
                                     background-color: #000000; top: 0px; left: 0px; width: 100%; height: 100%;">
                                 </div>
-                                <!-- Thumbnail Item Skin Begin -->
+                                <!-- Thumbnail Item Skin Begin
                                 <div u="slides">
                                     <div u="prototype" style="POSITION: absolute; WIDTH: 600px; HEIGHT: 45px; TOP: 0; LEFT: 0;">
                                         <thumbnailtemplate style="font-family: verdana; font-weight: normal; POSITION: absolute; WIDTH: 100%; HEIGHT: 100%; TOP: 0; LEFT: 0; color:#fff; line-height: 45px; font-size:20px; padding-left:10px;"></thumbnailtemplate>
                                     </div>
                                 </div>
-                                <!-- Thumbnail Item Skin End -->
+                                <!-- Thumbnail Item Skin End
                             </div>
-                            <!-- ThumbnailNavigator Skin End -->
+                            ThumbnailNavigator Skin End -->
                             
                             <!-- Bullet Navigator Skin Begin -->
                             <!-- jssor slider bullet navigator skin 01 -->
@@ -814,7 +876,8 @@ function slider(){
                         </div>
                         </div>
                         <!-- Jssor Slider End -->
-<?php	
+<?php
+	}
 }
 
 /* function:  generates thumbnail */

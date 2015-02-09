@@ -20,7 +20,10 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 	if((isset($_GET['action'])&&isset($_GET['page']))||isset($_GET['action'])&&$_GET['action']=='newpage'){
 		if(isset($_POST['submit'])||isset($_POST['sandb'])||isset($_POST['sandnewp'])){
 			
-			$query="SELECT * FROM `pages` WHERE `name`='{$_POST['name']}'";
+			$content= mysqli_real_escape_string($connection, $_POST['content']);
+			$name=mysqli_real_escape_string($connection, $_POST['name']);
+				
+			$query="SELECT * FROM `pages` WHERE `name`='{$name}'";
 			$result = mysqli_query( $connection, $query);
 			$samenames = mysqli_num_rows($result);
 			
@@ -30,8 +33,6 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 			
 			if($samenames==0||$current_page['name']==$_POST['name']){
 				$id=$_GET['page'];
-				$content= mysqli_real_escape_string($connection, $_POST['content']);
-				$name=mysqli_real_escape_string($connection, $_POST['name']);
 				$position=$_POST['pgorder'];
 				
 				$issub=0;
@@ -42,7 +43,6 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 				
 				if(isset($_POST['published'])){$published=1;}else{$published=0;}
 				if(isset($_POST['banner'])){$banner=1;}else{$banner=0;}
-				if(isset($_POST['slider'])){$slider=1;}else{$slider=0;}
 				if(isset($_POST['horiz_menu'])){$horiz_menu=1;}else{$horiz_menu=0;}
 				if(isset($_POST['vert_menu'])){$vert_menu=1;}else{$vert_menu=0;}
 				if(isset($_POST['horiz_menu_visible'])){$horiz_menu_visible=1;}else{$horiz_menu_visible=0;}
@@ -88,7 +88,7 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 				
 				$query = "UPDATE `pages` SET `content` = '{$content}', `name`='{$name}', `position`={$position}, `published`='{$published}', 
 				`issubpage`={$issub}, `parent`={$subpg}, `galleries`='{$galleries}', `forms`='{$forms}', `type`='{$_POST['pgtype']}', `target`='{$_POST['target']}', 
-				`banner`={$banner}, `slider`={$slider}, `url`='{$url}', `lastedited`='{$date}', `editor`={$_SESSION['user_id']}, `horiz_menu`={$horiz_menu}, `vert_menu`={$vert_menu}, 
+				`banner`={$banner}, `slider`={$_POST['slider']}, `url`='{$url}', `lastedited`='{$date}', `editor`={$_SESSION['user_id']}, `horiz_menu`={$horiz_menu}, `vert_menu`={$vert_menu}, 
 				`horiz_menu_visible`={$horiz_menu_visible}, `vert_menu_visible`={$vert_menu_visible} WHERE id = {$id}";
 				
 				$result = mysqli_query( $connection, $query);
@@ -126,7 +126,6 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 				
 				if(isset($_POST['published'])){$published=1;}else{$published=0;}
 				if(isset($_POST['banner'])){$banner=1;}else{$banner=0;}
-				if(isset($_POST['slider'])){$slider=1;}else{$slider=0;}
 				if(isset($_POST['horiz_menu'])){$horiz_menu=1;}else{$horiz_menu=0;}
 				if(isset($_POST['vert_menu'])){$vert_menu=1;}else{$vert_menu=0;}
 				if(isset($_POST['horiz_menu_visible'])){$horiz_menu_visible=1;}else{$horiz_menu_visible=0;}
@@ -152,7 +151,7 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 					$query="INSERT INTO `pages` 
 					(`name`, `content`, `position`, `issubpage`, `parent`, `published`, `galleries`, `forms`, `type`, `target`, `banner`, `slider`, `url`, `created`, `creator`, `horiz_menu`, `vert_menu`, `horiz_menu_visible`, `vert_menu_visible`) 
 					VALUES 
-					('{$name}', '{$content}', '{$position}', '{$issub}', '{$subpg}', {$published}, '{$galleries}', '{$forms}', '{$_POST['pgtype']}', '{$_POST['target']}', {$banner}, {$slider}, '{$url}', '{$date}', {$_SESSION['user_id']}, {$horiz_menu}, {$vert_menu}, {$horiz_menu_visible}, {$vert_menu_visible})";
+					('{$name}', '{$content}', '{$position}', '{$issub}', '{$subpg}', {$published}, '{$galleries}', '{$forms}', '{$_POST['pgtype']}', '{$_POST['target']}', {$banner}, {$_POST['slider']}, '{$url}', '{$date}', {$_SESSION['user_id']}, {$horiz_menu}, {$vert_menu}, {$horiz_menu_visible}, {$vert_menu_visible})";
 					$result = mysqli_query( $connection, $query);
 					confirm_query($result);
 					if(isset($_POST['newpage'])){
@@ -411,7 +410,22 @@ if($_GET['action']=="edit"){
         </select>
     </td>
     <td align="right"><b>Show Banner:</b><input type="checkbox" name="banner" <?php if(isset($_GET['page'])&&$selpage['banner']==1){echo "checked ";} ?>/></td>
-	<td align="left"><b>Show Slider:</b><input type="checkbox" name="slider" <?php if(isset($_GET['page'])&&$selpage['slider']==1){echo "checked ";} ?>/></td>
+	<td align="left">
+    	<b>Slider:</b>
+        <?php
+			$query="SELECT * FROM `slider_names`";
+			$listsliderssquery=mysqli_query( $connection, $query);
+			confirm_query($listsliderssquery);
+		?>
+        <select name="slider">
+        	<option value="none"<?php if(isset($selpage['slider'])&&$selpage['slider']==0){echo " selected=\"selected\"";} ?>>(None)</option>
+			<?php
+            while($listslider=mysqli_fetch_array($listsliderssquery)){?>
+                <option value="<?php echo $listslider['id'];?>"<?php if(isset($selpage['slider'])&&$selpage['slider']==$listslider['id']){echo " selected=\"selected\"";} ?>><?php echo $listslider['name']?></option>
+			<?php
+            }?>
+        </select>
+     </td>
   </tr>
   <tr>
   	<td align="right"><b>Show page on:</b></td>

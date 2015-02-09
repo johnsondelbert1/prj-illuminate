@@ -2,9 +2,7 @@
 require_once("../includes/functions.php");
 confirm_logged_in();
 if(!check_permission("Website","cpanel_access")){
-	redirect_to("login.php");
-}else{
-	redirect_to('page_list.php');
+	redirect_to("login.php?error=".urlencode('You do not have Cpanel Access'));
 }
 ?>
 <?php
