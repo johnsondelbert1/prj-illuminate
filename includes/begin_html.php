@@ -135,7 +135,7 @@ if(isset($logo[2])){
     
 	<div id="wrapper">
     	<?php if($logo!=false||!empty($enabled_soc_networks)){ ?>
-    	<div style="width:1880px; height:100px; margin-left:auto; margin-right:auto;">
+    	<div style="max-width:1880px; width:100%; height:100px; margin-left:auto; margin-right:auto;">
         	<?php if($logo!=false){ ?>
             	<div style="float:left; position:absolute;">
                 	<?php if($site_info['logo_url']!=''){?>
