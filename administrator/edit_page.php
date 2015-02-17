@@ -418,7 +418,7 @@ if($_GET['action']=="edit"){
 			confirm_query($listsliderssquery);
 		?>
         <select name="slider">
-        	<option value="none"<?php if(isset($selpage['slider'])&&$selpage['slider']==0){echo " selected=\"selected\"";} ?>>(None)</option>
+        	<option value="0"<?php if(isset($selpage['slider'])&&$selpage['slider']==0){echo " selected=\"selected\"";} ?>>(None)</option>
 			<?php
             while($listslider=mysqli_fetch_array($listsliderssquery)){?>
                 <option value="<?php echo $listslider['id'];?>"<?php if(isset($selpage['slider'])&&$selpage['slider']==$listslider['id']){echo " selected=\"selected\"";} ?>><?php echo $listslider['name']?></option>
