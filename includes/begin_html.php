@@ -69,7 +69,7 @@ if(isset($logo[2])){
     <script type="text/javascript" src="<?php echo $site_info['base_url']; ?>/prettyphoto/js/jquery.prettyPhoto.js" charset="utf-8"></script>
     <script src="<?php echo $site_info['base_url']; ?>/jscripts/jquery.fileuploadmulti.min.js"></script>
     <style type="text/css">
-		.forumtitle, tr.heading,td.heading, th.heading, .blogtitle{
+.forumtitle, tr.heading,td.heading, th.heading, .blogtitle{
 			background-color:<?php echo $site_layout['sitebg_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
@@ -79,7 +79,7 @@ if(isset($logo[2])){
 		#banner{
 			background-color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #vert-menu, #vert-menu li, #vert-menu ul li, #footerwrap, .photo-link, .nav{
+		#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #vert-menu, #vert-menu li, #vert-menu ul li, .photo-link, .nav{
 			background-color:<?php echo $site_layout['menu_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
@@ -90,18 +90,15 @@ if(isset($logo[2])){
 		*html #horiz-menu li a:hover, #vert-menu li a:hover { /* IE6 only */
 			color: <?php echo $site_layout['text_color'] ?>;
 		}
-		#content a, #horiz-menu a, #horiz-menu ul a, #vert-menu a, #vert-menu ul a, .blogtitle a, .forum tr a:hover{
+		#horiz-menu a, #horiz-menu ul a, #vert-menu a, #vert-menu ul a, .blogtitle a, .forum tr a:hover{
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
 		.photo-link:hover{
 			background-color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		#content, #footer a, .forum tr, .forumbody{
-			background-color:<?php echo $site_layout['menu_color'] ?> !important;
+		#content, #content a, #footer a, .forum tr, .forumbody, #footerwrap{
+			background-color:<?php echo $site_layout['sitebg_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
-		}
-		.icon{
-			color:<?php echo $site_layout['menu_color'] ?>
 		}
 		.forum tr a{
 			color:<?php echo $site_layout['contentbg_color'] ?> !important;
@@ -114,7 +111,7 @@ if(isset($logo[2])){
 			color:<?php echo $site_layout['text_color'] ?> !important;*/
 		}
 		#banner{
-			<?php if($banner!=false){?>background-image:url(<?php echo $site_info['base_url']; ?>/images/banner/<?php echo $banner;?>);<?php } ?>
+			<?php if(count($banner)==3){?>background-image:url(images/banner/<?php echo $banner[2];?>);<?php } ?>
 			
 		}
 		/* Start custom CSS */
