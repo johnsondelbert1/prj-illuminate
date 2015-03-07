@@ -1,6 +1,6 @@
 <?php
 require("constants.php");
-	$connection = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
+	$connection = @mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
 	if(DB_SERVER==""||DB_USER==""||DB_NAME==""){
 		header("Location: setuplogin.php");
 	}

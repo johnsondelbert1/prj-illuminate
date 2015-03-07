@@ -161,8 +161,10 @@ if (mysqli_num_rows($result)!=0){
 		<br />
 	<?php }
 	echo_page($num_pages, $current_page, "blog.php?");
-}else{?>
-	<a class="green" href="new_blog_post.php">New</a><br /><br />
+}else{
+  	if(check_permission("Blog","post_blog")){?>
+		<br><a class="green" href="new_blog_post.php">New</a><br /><br />
+	<?php } ?>
 	<p>There are no blog posts!</p>
 <?php }
 ?>
