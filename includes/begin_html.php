@@ -13,6 +13,13 @@ if(isset($_GET['message'])){
 	$message=urldecode($_GET['message']);
 }
 
+//Re-create folders
+foreach ($folders as $folder){
+	if(!file_exists($folder)){
+		mkdir($folder);
+	}
+}
+
 $banner = scandir("images/banner/");
 if(isset($banner[2])){
 	$banner = $banner[2];

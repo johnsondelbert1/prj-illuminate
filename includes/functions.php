@@ -24,6 +24,9 @@ foreach($soc_networks as $network){
 date_default_timezone_set($site_info['timezone']);
 $date=date("Y/m/d H:i:s", time());
 
+//Folders to be re-created if missing
+$folders = array('images/banner/', 'images/favicon/', 'images/logo/', 'blog_galleries/', 'galleries/');
+
 function get_rank_info(){
 	//gets permissions for logged in user
 	global $connection;
