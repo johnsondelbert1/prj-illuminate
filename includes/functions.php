@@ -473,6 +473,7 @@ function nav($position, $pgselection){
 	global $connection;
 	global $site_layout;
 	global $site_info;
+	global $logo;
 	if($position=="horiz"){
 		$query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 0 AND `published` = 1 ORDER BY `position` ASC";
 	}elseif($position=="vert"){
@@ -482,7 +483,31 @@ function nav($position, $pgselection){
 	$numpages=mysqli_num_rows($result);
 	if($numpages!=0){
 		if($position=="horiz"){ ?>
+        
             <div class="nav" style="background-color:<?php echo $site_layout['menu_color'] ?>;">
+            
+			<ul id="slide-out" class="side-nav">
+            <div style="height:150px; width:100%; background-color:#0C9"><img src="<?php echo $site_info['base_url']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $site_info['name']; ?> Logo" height="100" /></div>
+    <li><a href="#!">First Sidebar Link</a></li>
+    <li><a href="#!">Second Sidebar Link</a></li>
+    <li class="no-padding">
+      <ul class="collapsible collapsible-accordion">
+        <li>
+          <a class="collapsible-header">Dropdown<i class="mdi-navigation-arrow-drop-down"></i></a>
+          <div class="collapsible-body">
+            <ul>
+              <li><a href="#!">First</a></li>
+              <li><a href="#!">Second</a></li>
+              <li><a href="#!">Third</a></li>
+              <li><a href="#!">Fourth</a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </li>
+  </ul>
+  <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+			    
                 <ul id="horiz-menu">
     	<?php }elseif($position=="vert"){ ?>
         	<td style="vertical-align:top; width:200px; padding-right:5px;"><div style="width:100%;">
@@ -544,7 +569,7 @@ function nav($position, $pgselection){
         <?php if($position=="vert"){?>
         </div></td>
         <?php }elseif($position=="horiz"){?>
-			</div>
+			</div></nav>
 		<?php } ?>
 	<?php
 	}
