@@ -67,7 +67,8 @@ if(isset($logo[2])){
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link href="styles/fonts.css" rel="stylesheet" type="text/css" />
     <link href="../styles/animate.css" rel="stylesheet" type="text/css" />
-
+    <link type="text/css" rel="stylesheet" href="./styles/materialize.css"  media="screen,projection"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 </head>
 
 
