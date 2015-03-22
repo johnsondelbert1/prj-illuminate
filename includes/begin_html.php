@@ -52,9 +52,7 @@ if(isset($logo[2])){
     <META NAME="author" CONTENT="2GD - Secondgenerationdesign.com">
     <META NAME="language" CONTENT="English">
     <META NAME="revisit-after" CONTENT="7">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  
-<!--Import materialize.css-->
-      <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css"  media="screen,projection"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
@@ -70,6 +68,7 @@ if(isset($logo[2])){
     <link href="<?php echo $site_info['base_url']; ?>/styles/uploadfilemulti.css" rel="stylesheet" />
     <link href="<?php echo $site_info['base_url']; ?>/styles/main.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo $site_info['base_url']; ?>/styles/animate.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo $site_info['base_url']; ?>/styles/materialize.css" rel="stylesheet" type="text/css" media="screen,projection"/>
     <link href="<?php echo $site_info['base_url']; ?>/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css" media="screen" charset="utf-8" />
     <script src="<?php echo $site_info['base_url']; ?>/jscripts/SpryTabbedPanels.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>
@@ -80,7 +79,7 @@ if(isset($logo[2])){
 			background-color:<?php echo $site_layout['sitebg_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		body{
+		body, .mobile-logo{
 			background-color:<?php echo $site_layout['sitebg_color'] ?> !important;
 		}
 		/*#contentwrap{
@@ -89,7 +88,7 @@ if(isset($logo[2])){
 		#banner{
 			background-color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #vert-menu, #vert-menu li, #vert-menu ul li, .photo-link, .nav{
+		#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #vert-menu, #vert-menu li, #vert-menu ul li, .photo-link, .nav, ul.side-nav{
 			background-color:<?php echo $site_layout['menu_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
@@ -100,13 +99,13 @@ if(isset($logo[2])){
 		*html #horiz-menu li a:hover, #vert-menu li a:hover { /* IE6 only */
 			color: <?php echo $site_layout['text_color'] ?>;
 		}
-		#horiz-menu a, #horiz-menu ul a, #vert-menu a, #vert-menu ul a, .blogtitle a, .forum tr a:hover{
+		#content a, #footer a, #horiz-menu a, #horiz-menu ul a, #vert-menu a, #vert-menu ul a, .blogtitle a, .forum tr a:hover{
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
 		.photo-link:hover{
 			background-color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		#content, #content a, #footer a, .forum tr, .forumbody, #footerwrap{
+		#content, .forum tr, .forumbody, #footerwrap{
 			background-color:<?php echo $site_layout['contentbg_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
@@ -148,10 +147,22 @@ if(isset($logo[2])){
 	}?>
     
 	<div id="wrapper">
+    	<?php nav("mobile", $pgsettings['pageselection']); ?>
+        <div class="mobile">
+            <a href="#" data-activates="slide-out" class="button-collapse" style="color:#6C6C6C;"><i class="mdi-navigation-menu"></i></a>
+            <div style="float:right; font-size:32px; padding:10px;">
+				<?php
+                    foreach($enabled_soc_networks as $network){?>
+                        <a href="<?php echo $site_info[$network.'_url']; ?>" style="text-decoration:none;" target="_blank"><span class="icon icon-<?php echo $soc_networks_icons[array_search($network, $soc_networks)]; ?>"></span></a>
+                    <?php 
+                    }
+                ?>
+            </div>
+        </div>
     	<?php if($logo!=false||!empty($enabled_soc_networks)){ ?>
     	<div style="max-width:1880px; width:100%; height:100px; margin-left:auto; margin-right:auto;">
         	<?php if($logo!=false){ ?>
-            	<div style="float:left; position:absolute;">
+            	<div style="float:left; position:absolute;" id="logo">
                 	<?php if($site_info['logo_url']!=''){?>
             		<a href="<?php echo $site_info['logo_url']; ?>"><img src="<?php echo $site_info['base_url']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $site_info['name']; ?> Logo" height="100" /></a>
                     <?php }else{ ?>
@@ -159,7 +170,7 @@ if(isset($logo[2])){
                     <?php } ?>
                 </div>
 			<?php } ?>
-            <div style="float:right; font-size:32px; padding:10px;">
+            <div style="float:right; font-size:32px; padding:10px;" id="socnet">
             	<?php
 					foreach($enabled_soc_networks as $network){?>
                     	<a href="<?php echo $site_info[$network.'_url']; ?>" style="text-decoration:none;" target="_blank"><span class="icon icon-<?php echo $soc_networks_icons[array_search($network, $soc_networks)]; ?>"></span></a>
