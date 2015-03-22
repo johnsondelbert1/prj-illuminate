@@ -975,7 +975,7 @@ function slider($slider_id){
                                     position: absolute;
                                     cursor: pointer;
                                     display: block;
-                                    background: url(jssor/img/a17.png) no-repeat;
+                                    background: url(<?php echo $site_info['base_url']; ?>/jssor/img/a17.png) no-repeat;
                                     overflow:hidden;
                                 }
                                 .jssora05l { background-position: -10px -40px; }
