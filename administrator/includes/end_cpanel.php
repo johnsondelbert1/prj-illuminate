@@ -34,5 +34,12 @@
     <script src="jscripts/drop/bootstrap.min.js"></script>
     <script src="jscripts/drop/bootstrap-select.js"></script>
     <script src="jscripts/drop/application.js"></script>-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <script type="text/javascript" src="jscripts/materialize.min.js"></script>
+      <script type="text/javascript">
+	  $(document).ready(function() {
+    $('select').material_select();
+  });
+	  </script>
     </body>
 </html>
