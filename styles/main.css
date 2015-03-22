@@ -17,9 +17,15 @@ height:100%;
 @media only screen 
 and (min-device-width : 320px) 
 and (max-device-width : 480px) {
-	#horiz-menu, #vert-menu{
+	.nav, #vert-td{
 	min-height:159px;
 	display:none!important;
+	}
+	#logo, #socnet, #login-status{
+		display:none;
+	}
+	#footer-content{
+		width:100%!important;
 	}
 	/*html, body{
 font-size: 1em;
@@ -54,7 +60,7 @@ and (orientation : portrait) {
 @media only screen 
 and (min-width : 1224px) {
 /* Styles */
-.button-collapse{
+.mobile{
 		display:none!important;
 		
 	}
@@ -103,6 +109,10 @@ body{
 	right:0;
 	position:absolute;
 }
+#footer-content{
+	width:50%;
+	float:left;
+}
 /*h1{
 	padding:10px;
 	text-align:center;
@@ -149,6 +159,17 @@ div.nav{
 	min-height:50px;
 	margin-left:auto;
 	margin-right:auto;
+}
+.button-collapse{
+	font-size:42px;
+	margin-left:15px;
+}
+.mobile{
+	width:100%;
+	height:auto;
+	position:fixed;
+	background-color:#FFFFFF;
+	z-index:100;
 }
 .icon{
 	color:#5F5F5F;
