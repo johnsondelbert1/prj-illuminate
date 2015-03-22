@@ -1953,8 +1953,10 @@ td, th {
 html {
   box-sizing: border-box; }
 
+/*(
 *, *:before, *:after {
   box-sizing: inherit; }
+  */
 
 ul {
   list-style-type: none; }
@@ -5220,6 +5222,7 @@ html {
     html {
       font-size: 15px; } }
 
+/*
 h1, h2, h3, h4, h5, h6 {
   font-weight: 400; }
 
@@ -5255,7 +5258,7 @@ h6 {
   font-size: 1rem;
   line-height: 1.1rem;
   margin: 0.5rem 0 0.4rem 0; }
-
+*/
 em {
   font-style: italic; }
 
