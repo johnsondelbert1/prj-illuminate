@@ -125,20 +125,20 @@ $ellipsis_title_after_first_row = TRUE;
 //*************************
 //Permissions configuration
 //******************
-$delete_files		= TRUE;
-$create_folders		= FALSE;
-$delete_folders		= FALSE;
-$upload_files		= TRUE;
-$rename_files		= TRUE;
-$rename_folders		= TRUE;
+$delete_files		= check_permission("Uploading","delete_files");
+$create_folders		= check_permission("Uploading","create_folders");
+$delete_folders		= check_permission("Uploading","delete_folders");
+$upload_files		= check_permission("Uploading","upload_files");
+$rename_files		= check_permission("Uploading","rename_files");
+$rename_folders		= check_permission("Uploading","rename_folders");
 $duplicate_files	= TRUE;
 $copy_cut_files		= TRUE; // for copy/cut files
 $copy_cut_dirs		= TRUE; // for copy/cut directories
 $chmod_files		= FALSE; // change file permissions
 $chmod_dirs			= FALSE; // change folder permissions
 $preview_text_files	= TRUE; // eg.: txt, log etc.
-$edit_text_files 	= TRUE; // eg.: txt, log etc.
-$create_text_files 	= TRUE; // only create files with exts. defined in $editable_text_file_exts
+$edit_text_files 	= check_permission("Uploading","edit_files"); // eg.: txt, log etc.
+$create_text_files 	= check_permission("Uploading","create_files"); // only create files with exts. defined in $editable_text_file_exts
 
 // you can preview these type of files if $preview_text_files is true
 $previewable_text_file_exts = array('txt', 'log', 'xml','html','css','htm','js');

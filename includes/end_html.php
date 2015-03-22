@@ -5,12 +5,11 @@
     </div>
     <div id="footerwrap">
         <div id="footer">
-        
-            <div style="float:left; max-width:50%;">
+            <div id="footer-content">
                 <?php if($site_info['footer_content']!=""){echo $site_info['footer_content']."<br>";} ?>
                 <?php echo $site_info['name']; ?>, Copyright © <?php echo date("Y"); ?>.<!-- Website designed by <a href="http://www.secondgenerationdesign.com" target="_blank">Second Gen Design</a>-->
             </div>
-            <div style="text-align:right; font-size:10px; float:right;">
+            <div style="text-align:right; font-size:10px; float:right;" id="login-status">
                 <?php check_login(); ?>
             </div>
         </div>
