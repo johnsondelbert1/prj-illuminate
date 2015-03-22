@@ -314,7 +314,7 @@ if($_GET['action']=="edit"){
             <div class="TabbedPanelsContentGroup">
                 <div class="TabbedPanelsContent">
 
-<table width="100%" border="0" cellspacing="5" cellpadding="5" class="editpageform">
+<table width="100%" border="5" cellspacing="5" cellpadding="5" class="editpageform">
 <?php if(isset($_GET['action'])&&$_GET['action']!="newpage"){ ?>
   <tr>
     <td style="text-align:right;"><strong>Page URL:</strong></td>
@@ -323,15 +323,16 @@ if($_GET['action']=="edit"){
   </tr>
 <?php } ?>
   <tr>
-    <td align="right"><b>Name:</b></td>
     <td align="left">
-    	<input type="text" name="name" value="<?php if(isset($_GET['page'])){echo $selpage['name'];} ?>" />
-    </td>
-	<td align="right">
-    	<b>Published:</b>
+    <div class="input-field col s6">
+        	<input id="title" type="text" value="<?php if(isset($_GET['page'])){echo $selpage['name'];} ?>" class="validate" />
+            <label for="title">Title</label>
+            </div>
+
     </td>
 	<td align="left">
-    	<input type="checkbox" name="published" <?php if((isset($_GET['page'])&&$selpage['published']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/>
+    	<input id="pub" type="checkbox" name="published" <?php if((isset($_GET['page'])&&$selpage['published']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/>
+        <label for="pub">Published</label>
     </td>
     <!--
     <td align="right">
@@ -347,17 +348,17 @@ if($_GET['action']=="edit"){
     </td>
   </tr>-->
   <tr>
-  	<td align="right"><b>Page Order:</b></td>
     <td align="left">
+    <label>Page Order:</label>
         <select name="pgorder"><?php $numpages=mysqli_num_rows($listpagesquery)+1; $count=1; while($numpages>=$count){ ?><option value="<?php echo $count; ?>"<?php if(isset($_GET['page'])&&intval($selpage['position'])==$count){echo " selected=\"selected\"";} ?>><?php echo $count;?></option><?php $count++; }  ?>
         <?php if(isset($_GET['action'])&&$_GET['action']=="newpage"){?><option value="<?php echo ($count); ?>" selected="selected"><?php echo ($count); ?></option><?php }?></select>
     </td>
     
-    <td align="right"><b>Page Type:</b></td>
     <td align="left">
 		<?php
             $types = array('Custom', 'Blog', 'Link', 'Staff', 'Forum');
         ?>
+        <label>Page Type:</label>
         <select name="pgtype" onchange="disable(this)">
         <?php
         $typecount=0;
@@ -379,13 +380,14 @@ if($_GET['action']=="edit"){
     </td>
   </tr>-->
   <tr>
-  	<td align="right"><b>Parent Page:</b></td>
+  	
     <td align="left">
     	<?php
         $query="SELECT * FROM `pages` WHERE `issubpage` = 0 ORDER BY `position` ASC";
         $listpagesquery=mysqli_query( $connection, $query);
         confirm_query($listpagesquery);
         ?>
+        <label>Parent Page</label>
         <select name="sub">
         	<option value="none"<?php if(isset($selpage['issubpage'])&&$selpage['issubpage']==0){echo " selected=\"selected\"";} ?>>(None)</option>
 			<?php
@@ -396,27 +398,29 @@ if($_GET['action']=="edit"){
             }?>
         </select>
     </td>
-    <td align="right"><b>External URL:</b></td>
     <td align="left">
-    	<input type="text" name="url" id="url" value="<?php if(isset($_GET['page'])){echo $selpage['url'];}else{echo "http://";} ?>" maxlength="1024" <?php if((isset($selpage['type'])&&$selpage['type']!="Link")||$_GET['action']=="newpage"){echo "readonly disabled ";} ?>/>
+    <div class="input-field col s6">
+    <label>External URL - Make sure to add "http://"</label>
+    	<input type="text" name="url" id="url" value="<?php if(isset($_GET['page'])){echo $selpage['url'];}else{echo "";} ?>" maxlength="1024" <?php if((isset($selpage['type'])&&$selpage['type']!="Link")||$_GET['action']=="newpage"){echo "readonly disabled ";} ?>/>
+    </div>
     </td>
   </tr>
   <tr>
-  	<td align="right"><b>Open page in:</b></td>
     <td align="left">
+    <label>Open page in</label>
         <select name="target">
-        	<option value="_self"<?php if ((isset($selpage['target'])&&$selpage['target']=="_self")){echo ' selected="selected"';}?>>Same Tab</option>
+        	<option value="_self"<?php if ((isset($selpage['target'])&&$selpage['target']=="_self")){echo ' selected="selected"';}?>>Parent</option>
             <option value="_blank"<?php if ((isset($selpage['target'])&&$selpage['target'] == "_blank")){echo ' selected="selected"';} ?>>New Tab</option>
         </select>
     </td>
-    <td align="right"><b>Show Banner:</b><input type="checkbox" name="banner" <?php if(isset($_GET['page'])&&$selpage['banner']==1){echo "checked ";} ?>/></td>
+    <td align="right"><input id="banner" type="checkbox" name="banner" <?php if(isset($_GET['page'])&&$selpage['banner']==1){echo "checked ";} ?>/><label for="banner">Banner</label></td>
 	<td align="left">
-    	<b>Slider:</b>
         <?php
 			$query="SELECT * FROM `slider_names`";
 			$listsliderssquery=mysqli_query( $connection, $query);
 			confirm_query($listsliderssquery);
 		?>
+        <label>Slider</label>
         <select name="slider">
         	<option value="0"<?php if(isset($selpage['slider'])&&$selpage['slider']==0){echo " selected=\"selected\"";} ?>>(None)</option>
 			<?php
@@ -430,8 +434,8 @@ if($_GET['action']=="edit"){
   <tr>
   	<td align="right"><b>Show page on:</b></td>
     <td align="left">
-    	Horizontal Menu <input type="checkbox" name="horiz_menu" <?php if((isset($_GET['page'])&&$selpage['horiz_menu']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/><br>
-        Vertical Menu <input type="checkbox" name="vert_menu" <?php if(isset($_GET['page'])&&$selpage['vert_menu']==1){echo "checked ";} ?>/>
+    	<input id="horiz" type="checkbox" name="horiz_menu" <?php if((isset($_GET['page'])&&$selpage['horiz_menu']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/><label for="horiz">Horiz</label><br>
+        <input id="vert" type="checkbox" name="vert_menu" <?php if(isset($_GET['page'])&&$selpage['vert_menu']==1){echo "checked ";} ?>/><label for="vert">Vert</label>
     </td>
     <td align="right"><b>Menus visible on page:</b></td>
     <td align="left">
