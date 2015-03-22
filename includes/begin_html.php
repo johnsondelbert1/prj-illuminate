@@ -71,7 +71,7 @@ if(isset($logo[2])){
     <link href="<?php echo $site_info['base_url']; ?>/styles/materialize.css" rel="stylesheet" type="text/css" media="screen,projection"/>
     <link href="<?php echo $site_info['base_url']; ?>/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css" media="screen" charset="utf-8" />
     <script src="<?php echo $site_info['base_url']; ?>/jscripts/SpryTabbedPanels.js" type="text/javascript"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
     <script src="<?php echo $site_info['base_url']; ?>/jscripts/materialize.min.js"></script>
     <script type="text/javascript" src="<?php echo $site_info['base_url']; ?>/prettyphoto/js/jquery.prettyPhoto.js" charset="utf-8"></script>
     <script src="<?php echo $site_info['base_url']; ?>/jscripts/jquery.fileuploadmulti.min.js"></script>
