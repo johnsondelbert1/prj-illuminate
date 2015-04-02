@@ -90,7 +90,8 @@ function list_pages($queryresult, $is_subpg = false){
             </th>
             <th style="text-align:center;">
             <?php if(check_permission("Pages","delete_pages")){?>
-                <input type="checkbox" id="pageall">
+                <input type="checkbox" id="pageall" name="pageall">
+                <label for="pageall"></label>
             <?php } ?>
             </th>
             <!--<th>
@@ -156,7 +157,7 @@ function list_pages($queryresult, $is_subpg = false){
 					<a href="../index.php?page=<?php echo urlencode($listpage['id']);?>" onclick="window.open('<?php echo $site_info['base_url'];?>/page/<?php echo urlencode($listpage['name']);?>', 'newwindow', 'width=1017, height=500'); return false;">View<!--index.php?page=<?php echo urlencode($listpage['id']);?>--></a>
 				</td>
 				<?php if(check_permission("Pages","delete_pages")){?>
-				<td width="5%" style="text-align:center;"><input type="checkbox" name="pages[]" value="<?php echo $listpage['id']; ?>" /></td>
+				<td width="5%" style="text-align:center;"><input type="checkbox" name="pages[]" id="<?php echo $listpage['id']; ?>" value="<?php echo $listpage['id']; ?>" /><label for="<?php echo $listpage['id']; ?>"></label></td>
 				<?php } ?>
 				<!-- Edited --><!--
 				<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
@@ -233,14 +234,14 @@ function list_pages($queryresult, $is_subpg = false){
 						<a href="../index.php?page=<?php echo urlencode($listpage['id']);?>" onclick="window.open('../index.php?page=<?php echo urlencode($listpage['name']);?>', 'newwindow', 'width=1017, height=500'); return false;">View<!--index.php?page=<?php echo urlencode($listpage['id']);?>--></a>
 					</td>
 					<?php if(check_permission("Pages","delete_pages")){?>
-					<td width="5%" style="text-align:center;"><input type="checkbox" name="pages[]" value="<?php echo $listpage['id']; ?>" /></td>
+					<td width="5%" style="text-align:center;"><input type="checkbox" name="pages[]" id="<?php echo $listpage['id']; ?>" value="<?php echo $listpage['id']; ?>" /><label for="<?php echo $listpage['id']; ?>"></label></td>
 				<?php } ?>
 			<?php } ?>
 		<?php } ?>
     <?php }else{ ?>
     	<tr>
         	<td colspan="9" style="text-align:center; font-size:18px;">
-            	[No Pages]
+            	There are currently no pages. Add a page!
             </td>
         </tr>
     <?php } ?>
@@ -270,19 +271,18 @@ function list_pages($queryresult, $is_subpg = false){
 <table border="0" cellpadding="5" id="sticker">
   <tr>
     <?php if(check_permission("Pages","add_pages")){ ?>
-    	<td width="110px"><a href="edit_page.php?action=newpage" class="green">New</a></li></td>
-    <?php } ?>    
-    <?php if(check_permission("Pages","delete_pages")){ ?>
-    	<td width="110px"><input name="delpages" type="submit" value="Delete Pages" class="red" /></td>
+    	<td><a href="edit_page.php?action=newpage" class="green btn">New</a></li>
     <?php } ?>
-    <td></td>
+    <?php if(check_permission("Pages","delete_pages")){ ?>
+    	<input name="delpages" type="submit" value="Delete" class="red btn" /></td>
+    <?php } ?>
   </tr>
 </table>
-<h1>Horizontal Menu Pages</h1>
+<h1>Horizontal Menu</h1>
 <?php list_pages($listhorizpagesquery); ?>
-<h1>Vertical Menu Pages</h1>
+<h1>Vertical Menu</h1>
 <?php list_pages($listvertpagesquery); ?>
-<h1>Non-Menu Pages</h1>
+<h1>Non-Menu</h1>
 <?php list_pages($listnomenupagesquery); ?>
 </form>
 <br />
