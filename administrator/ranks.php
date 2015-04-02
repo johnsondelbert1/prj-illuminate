@@ -76,10 +76,8 @@ confirm_query($result);
     <form method="post" action="ranks.php">
     <table width="100%" border="0" cellpadding="0" class="form">
       <tr>
-        <td style="text-align:center;">Name:<br/><input name="name" placeholder="Name" type="text" value="<?php if(isset($name)){echo $name;} ?>" maxlength="50" /></td>
-      </tr>
-      <tr>
-        <td colspan="2" align="center"><input name="submit" type="submit" value="Create New Rank" class="submit"/></td>
+        <td style="text-align:center;"><input name="name" placeholder="Name" type="text" value="<?php if(isset($name)){echo $name;} ?>" maxlength="50" /></td>
+        <td colspan="2" align="center"><input name="submit" type="submit" value="Create New Rank" class="green btn"/></td>
       </tr>
     </table>
     </form><br />
@@ -201,7 +199,7 @@ confirm_query($result);
         <tr>
             <th colspan="2"></th>  
             <?php if(check_permission("Users","delete_rank")){?>
-                <th><input class="red" type="submit" name="delrank" value="Delete Ranks" /></th>
+                <th><input class="red btn" type="submit" name="delrank" value="Delete Ranks" /></th>
             <?php }?>
         </tr>
     </table>

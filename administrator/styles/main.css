@@ -6,15 +6,19 @@
 {
 	margin:0;
 	padding:0;
-	font-family: 'Roboto', sans-serif;
+}
+html{
+	overflow-y: scroll;
+	
 }
 html, body {
 	height:100%;
 	
+	
 }
 body
 {
-	background-color:#3f4649;
+	background-color:#2c3e50;
 	color:#333;
 	min-height:100%;
 }
@@ -26,12 +30,12 @@ div.wrap
 	margin-left:auto;
 	margin-right:auto;
 }
-
+/*
 div.wrap a
 {
 	color:#404040;
 }
-
+*/
 .contentwrap
 {
 	width:90%;
@@ -65,8 +69,8 @@ div.content
 	overflow-y:hidden;
 
 }
+/*
 div.content a{
-	font-family: 'Roboto', Arial, Helvetica, sans-serif;
 	color: #404040;
 	text-decoration:none;
 	font-weight:800;
@@ -74,17 +78,18 @@ div.content a{
 }
 div.content a:hover{
 	color: #646464;
-}
+}*/
 div.content h1{
 	margin-top:10px;
 	margin-bottom:10px;
 	margin-left:-10px;
 	margin-right:-10px;
-	background-color:#22AE6E;
+	background-color:#e74c3c;
 }
 div.content h1:nth-of-type(1){
 	margin-top:-10px;
 }
+*/
 div.profile-content{
 	width:100%;
 	min-height:650px;
@@ -107,17 +112,6 @@ li
 {
 	/*margin-left:15px;*/
 }
-
-img
-{
-	border:0;
-}
-
-img.a
-{
-	border:0;
-}
-
 div.banner
 {
 	text-align:center;
@@ -129,7 +123,7 @@ div.banner
 {
 	width:100%;
 	height:50px;
-	background-color:#22AE6E;
+	background-color:#e74c3c;
 	color:#FFFFFF;
 	padding-top:10px;
 	padding-bottom:10px;
@@ -153,7 +147,7 @@ div.nav{
 	margin-left:auto;
 	margin-right:0;
 	text-align:right;
-	background-color:#22AE6E;
+	background-color:#e74c3c;
 }
 
 @media all and (max-width: 930px){
@@ -213,7 +207,7 @@ div.nav{
 }
 
 #horiz-menu li:hover > a {
-	background-color:#007842;
+	background-color:#c0392b;
 	color: #e8eaf6;
 
 }
@@ -266,11 +260,11 @@ div.nav{
     white-space: nowrap;
     float: none;
     text-transform: none;
-	background-color:#22AE6E;
+	background-color:#e74c3c;
 }
 
 #horiz-menu ul a:hover {
-    background-color:#007842;
+    background-color:#c0392b;
 	color: #e8eaf6;
 
 }
@@ -454,7 +448,7 @@ tr.heading,td.heading,th.heading
 h1
 {
 	font-size:2.5em;
-	color:#f0f0f0;
+	color:#fff;
 }
 
 div.profile
@@ -634,6 +628,7 @@ select
 	outline:none;
 }
 /* buttons */
+/*
 .button,  a.blue, a.red, a.green{
 display: block;
 }
@@ -645,8 +640,6 @@ display: block;
 	font-weight:bold!important;
 		font-family: 'Roboto', sans-serif !important;
 		text-align: center;
-		/*border-radius: 5px;*/
-		/*box-shadow: 0px 3px 1px #2075aa;*/
 		-webkit-transition: all 0.15s linear;
 		-moz-transition: all 0.15s linear;
 		transition: all 0.15s linear;
@@ -658,36 +651,31 @@ display: block;
 		padding: 0 3px 0 3px;
 
 	}
+	
 	.red {background-color:#C42F27 !important;}
 	.blue {background-color:#426FC5 !important;}
-	.green {background-color:#22AE6E !important;}
+	.green {background-color:#e74c3c !important;}
 	input[type=submit]{background-color:#426FC5;}
 	.red:hover {
 	  background: #760600 !important;
-	  /*box-shadow: 0 3px 1px #237bb2;*/
 	}
 	.blue:hover {
 	  background: #3b50ce !important;
-	  /*box-shadow: 0 3px 1px #237bb2;*/
 	}
 	.green:hover {
-	  background: #007842 !important;
-	  /*box-shadow: 0 3px 1px #237bb2;*/
+	  background: #c0392b !important;
 	}
 	input[type=submit]:hover {
 	  background: #3b50ce;
-	  /*box-shadow: 0 3px 1px #237bb2;*/
 	}
 
-
-/* 
 ::-webkit-scrollbar {
 	width: 12px;
 	height:12px;
 }
 
 ::-webkit-scrollbar-track {
-	background: #22AE6E;
+	background: #e74c3c;
 }
  ::-webkit-scrollbar-thumb{
 			background-color:#999;
@@ -915,7 +903,7 @@ span.galleryImage input[type=checkbox]:checked {
 	padding: 6px 10px 6px 10px;
 	margin: 0px 5px 0px 0px;
 	font: 1.25em 'Roboto';
-	background-color: #22AE6E;
+	background-color: #e74c3c;
 	color:#f0f0f0;
 	list-style: none;
 	-moz-user-select: none;
@@ -930,7 +918,7 @@ span.galleryImage input[type=checkbox]:checked {
  * and exits the container.
  */
 .TabbedPanelsTabHover {
-	background-color: #007842;
+	background-color: #c0392b;
 }
 
 /* This selector is an example of how to change the appearance of a tab button
@@ -968,7 +956,7 @@ span.galleryImage input[type=checkbox]:checked {
  */
 .TabbedPanelsContentGroup {
 	clear: both;
-	background-color: #EEE;
+	/*background-color: #EEE;*/
 	min-height:200px;
 }
 

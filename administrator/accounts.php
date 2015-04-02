@@ -112,32 +112,24 @@ if(isset($_POST['upd_ranks'])){
 </script>
 <?php if(check_permission("Users","add_users")){?>
     <h1>Add New Account</h1>
-    <form method="post" action="accounts.php">
-    <table width="100%" border="0" cellpadding="0" class="form" style="text-align:center;">
-        <tr>
-        <th scope="col">Username</th>
-        <th scope="col">Email</th>
-        <th scope="col">Password</th>
-        <th scope="col">Confirm Password</th>
-        <th scope="col">Rank</th>
-      </tr>
-      <tr>
-        <td><input name="newuser" placeholder="Username" type="text" value="<?php if(isset($user)){echo $user;} ?>" maxlength="50" /></td>
-        <td><input name="newemail" placeholder="email@example.com" type="email" value="<?php if(isset($email)){echo $email;} ?>"maxlength="200" /></td>
-        <td><input name="newpass" placeholder="Password" type="password" maxlength="50" /></td>
-        <td><input name="newconfpass" placeholder="Confirm" type="password" maxlength="50" /></td>
-        <td>
-            <select name="rank">
+    <form method="post" action="accounts.php" class="col s12">
+      <div class="row">
+        <div class="input-field col s6"><input name="newuser" placeholder="Username" type="text" value="<?php if(isset($user)){echo $user;} ?>" maxlength="50" /></div>
+        <div class="input-field col s6"><input name="newemail" placeholder="email@example.com" type="email" value="<?php if(isset($email)){echo $email;} ?>"maxlength="200" /></div>
+        </div>
+        <div class="row">
+        <div class="input-field col s6"><input name="newpass" placeholder="Password" type="password" maxlength="50" /></div>
+        <div class="input-field col s6"><input name="newconfpass" placeholder="Confirm" type="password" maxlength="50" /></div>
+        </div>
+           <div class="row">
+        <div class="input-field col s6"> <select name="rank">
                 <?php
                 while($rank=mysqli_fetch_array($rankresult)){?>
                         <option value="<?php echo $rank['id'];?>"><?php echo $rank['name']?></option>
                 <?php
                 }?>
-            </select>
-        </td>
-        <td align="center"><input name="submit" type="submit" value="Create Account" class="submit"/></td>
-      </tr>
-    </table>
+            </select></div>
+<div class="input-field col s6"><input name="submit" type="submit" value="Create Account" class="green btn"/></div></div>
     </form><br />
 <?php } ?>
 <h1>Account List</h1>
@@ -190,10 +182,9 @@ if(isset($_POST['upd_ranks'])){
             <?php } ?>
       <tr>
         <th colspan="3"></th>
-        <th><input class="blue" type="submit" name="upd_ranks" value="Change Ranks" /></th>
-        <th></th>
+        <th><input class="blue btn" type="submit" name="upd_ranks" value="Change Ranks" /></th>
         <?php if(check_permission("Users","delete_users")){?>
-        	<th width="10%"><input class="red" type="submit" name="deluser" value="Delete Accounts" /></th>
+        	<th width="10%"><input class="red btn" type="submit" name="deluser" value="Delete Accounts" /></th>
         <?php } ?>
       </tr>
     </table>
