@@ -135,7 +135,7 @@ $result=mysqli_query( $connection, $query);
 <h1>Add New Gallery</h1>
 <form method="post" action="gallery-list.php">
     Name: <input name="galname" type="text" value="<?php if(isset($_POST['galname'])){echo $_POST['galname'];} ?>" maxlength="100" />
-    <input name="newgal" type="submit" value="Add Gallery" />
+    <input name="newgal" type="submit" value="Add Gallery" class="btn green" />
 </form>
 <?php } ?>
 <h1>Gallery List</h1>
@@ -154,6 +154,7 @@ $result=mysqli_query( $connection, $query);
             <?php if(check_permission("Galleries","delete_gallery")){?>
             <th style="text-align:center;">
                 <input type="checkbox" id="gallall">
+                <label for="gallall">
             </th>
             <?php } ?>
         </tr>
@@ -180,14 +181,14 @@ $result=mysqli_query( $connection, $query);
 			?>
             </td>
             <?php if(check_permission("Galleries","delete_gallery")){?>
-            <td width="10%" style="text-align:center;"><input type="checkbox" name="galleries[]" value="<?php echo $gallery['id']; ?>" /></td>
+            <td width="10%" style="text-align:center;"><input type="checkbox" name="galleries[]" id="<?php echo $gallery['id']; ?>" /><label for="<?php echo $gallery['id']; ?>"></td>
             <?php } ?>
         </tr>
     
     <?php } ?>
     	<tr>
         	<td colspan="3"></td>
-            <td><?php if(check_permission("Galleries","delete_gallery")){?><input name="delgalleries" type="submit" value="Delete" class="red" /><?php } ?></td>
+            <td><?php if(check_permission("Galleries","delete_gallery")){?><input name="delgalleries" type="submit" value="Delete" class="btn red" /><?php } ?></td>
         </tr>
     </table>
 </form>

@@ -82,7 +82,7 @@ $result=mysqli_query( $connection, $query);
 <h1>Add New Form</h1>
 <form method="post">
     Name: <input name="formname" type="text" value="<?php if(isset($_POST['galname'])){echo $_POST['galname'];} ?>" maxlength="100" />
-    <input name="newform" type="submit" value="Add Form" />
+    <input name="newform" type="submit" value="Add" class="btn green" />
 </form>
 <?php } ?>
 <h1>Form List</h1>
@@ -94,7 +94,7 @@ $result=mysqli_query( $connection, $query);
             </th>
             <?php if(check_permission("Forms","delete_form")){?>
             <th style="text-align:center;">
-                <input type="checkbox" id="gallall">
+                <input type="checkbox" id="gallall"><label for="gallall">
             </th>
             <?php } ?>
         </tr>
@@ -104,7 +104,7 @@ $result=mysqli_query( $connection, $query);
 			<tr>
 				<td><a href="edit-form.php?formid=<?php echo urlencode($form['id']); ?>"><?php echo $form['name']; ?></a></td>
 				<?php if(check_permission("Galleries","delete_gallery")){?>
-				<td width="10%" style="text-align:center;"><input type="checkbox" name="forms[]" value="<?php echo $form['id']; ?>" /></td>
+				<td width="10%" style="text-align:center;"><input type="checkbox" name="forms[]" id="<?php echo $form['id']; ?>" /><label for="<?php echo $form['id']; ?>"></td>
 				<?php } ?>
 			</tr>
 	<?php
@@ -118,7 +118,7 @@ $result=mysqli_query( $connection, $query);
 	?>
     	<tr>
         	<td></td>
-            <td style="text-align:center;"><?php if(check_permission("Forms","delete_form")){?><input name="delforms" type="submit" value="Delete" class="red" /><?php } ?></td>
+            <td style="text-align:center;"><?php if(check_permission("Forms","delete_form")){?><input name="delforms" type="submit" value="Delete" class="btn red" /><?php } ?></td>
         </tr>
     </table>
 </form>

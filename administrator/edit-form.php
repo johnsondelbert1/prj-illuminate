@@ -69,7 +69,7 @@ span:hover{
 	$(document).ready(function(){
 		rows = $('#fieldtable tr').length;
 		$("#anc_add").click(function(){
-		$('#fieldtable tr').last().after('<tr id="'+cnt+'"><td><input name="fieldname['+cnt+']" type="text" value=""></td><td><select name="fieldtype['+cnt+']"><option value="text">Textbox</option><option value="textarea">Text Area</option></select></td><td><input name="fielddesc['+cnt+']" type="text" value=""></td><td><input name="fieldplaceholder['+cnt+']" type="text" value=""></td><td><input name="fieldmaxchar['+cnt+']" type="text" value=""></td><td><select name="fieldvalidate['+cnt+']"><option value="none">None</option><option value="email">Email</option><option value="notempty">Cannot Be Blank</option><option value="numbers">Numbers Only</option><option value="phone">Phone</option></select></td><td><span onClick="delrow('+cnt+')" class="red button">Delete</span></td></tr>');
+		$('#fieldtable tr').last().after('<tr id="'+cnt+'"><td><input name="fieldname['+cnt+']" type="text" value=""></td><td><select name="fieldtype['+cnt+']"><option value="text">Textbox</option><option value="textarea">Text Area</option></select></td><td><input name="fielddesc['+cnt+']" type="text" value=""></td><td><input name="fieldplaceholder['+cnt+']" type="text" value=""></td><td><input name="fieldmaxchar['+cnt+']" type="text" value=""></td><td><select name="fieldvalidate['+cnt+']"><option value="none">None</option><option value="email">Email</option><option value="notempty">Cannot Be Blank</option><option value="numbers">Numbers Only</option><option value="phone">Phone</option></select></td><td><span onClick="delrow('+cnt+')" class="btn red">Delete</span></td></tr>');
 		cnt++;
 		});
 	});
@@ -83,8 +83,8 @@ span:hover{
 <form method="post" action="edit-form.php?formid=<?php echo $_GET['formid']; ?>">
 <table cellpadding="5" id="sticker">
   <tr>
-    <td width="110px"><input name="submit" type="submit" class="green" value="Save Form" /></td>
-    <td width="110px"><a class="red" href="form-list.php">Cancel</a></td>
+    <td width="110px"><input name="submit" type="submit" class="btn green" value="Save" /></td>
+    <td width="110px"><a class="btn red" href="form-list.php">Cancel</a></td>
   <td></td>
   </tr>
 </table>
@@ -151,13 +151,13 @@ span:hover{
                 </select>
             </td>
             <td>
-                <span onClick="delrow(<?php echo $count; ?>)" class="red button">Delete</span>
+                <span onClick="delrow(<?php echo $count; ?>)" class="btn red">Delete</span>
             </td>
         </tr><?php
         $count++;
 		}
     ?></table>
-    <a href="javascript:void(0);" id='anc_add'>+ Add New Field</a>
+    <a href="javascript:void(0);" id='anc_add' class="btn green">New Field</a>
 </form>
 </td>
 </tr>

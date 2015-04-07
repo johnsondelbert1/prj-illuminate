@@ -92,7 +92,7 @@ if(isset($logo[2])){
                                 <li>
                                     <a href="page_list.php">Pages</a>
                                     <ul>
-                                        <?php if(check_permission("Pages","add_pages")){?><li><a href="edit_page.php?action=newpage">Add Pages</a></li><?php } ?>
+                                        <?php if(check_permission("Pages","add_pages")){?><li><a href="edit_page.php?action=newpage">New</a></li><?php } ?>
                                         <?php if(check_permission("Pages","edit_pages")){?><li><a href="staff-list.php">Staff</a></li><?php } ?>
                                         <?php if(check_permission(array("Sliders;add_slider","Sliders;edit_slider","Sliders;delete_slider","Sliders;rename_slider",))){?><li><a href="slider-list.php">Slider</a></li><?php } ?>
                                     </ul>
@@ -113,13 +113,16 @@ if(isset($logo[2])){
                     <?php if(check_permission(array("Users;add_users","Users;delete_users",))){?>
                     <li>
                     	<a href="accounts.php">Accounts</a>
-                    </li>
-                    <?php } ?>
-                    <?php if(check_permission(array("Users;create_rank","Users;edit_rank","Users;delete_rank",))){?>
+                        <ul>
+                               <?php if(check_permission(array("Users;create_rank","Users;edit_rank","Users;delete_rank",))){?>
                     <li>
-                    	<a href="ranks.php">Ranks</a>
+                    	<a href="ranks.php">Permissions</a>
                     </li>
                     <?php } ?>
+                                    </ul>
+                    </li>
+                    <?php } ?>
+                  
                     <?php if(check_permission(array("Forms;create_form","Forms;edit_form","Forms;delete_form",))){?>
                     <li>
                     	<a href="form-list.php">Forms</a>
@@ -127,7 +130,7 @@ if(isset($logo[2])){
                     <?php } ?>
                     <?php if(check_permission(array("Website;edit_site_settings","Website;edit_site_colors","Website;upload_favicon_banner","Website;edit_google_analytics",))){?>
                     <li>
-                    	<a href="site-settings.php">Site Settings</a>
+                    	<a href="site-settings.php">Settings</a>
                     </li>
                     <?php } ?>
                     <li>
