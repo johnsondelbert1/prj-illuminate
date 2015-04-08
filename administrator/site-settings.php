@@ -378,7 +378,7 @@ $result_pages=mysqli_query($connection, $query);
   <tr>
   	<td>
         <h2>Website Published</h2>
-        <input name="published" type="checkbox"<?php if($site['published']==1){echo " checked";} ?> maxlength="128" />
+        <input name="published" type="checkbox"<?php if($site['published']==1){echo " checked";} ?> maxlength="128" id="pub" /><label for="pub">
     </td>
   	<td>
     	<h2>Homepage</h2>

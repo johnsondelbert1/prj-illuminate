@@ -102,6 +102,13 @@ $result=mysqli_query( $connection, $query);
         });  
      });
 </script>
+<!--<<?php if(check_permission("Sliders","add_slider")){?>
+<div class="overlay"><div class="dialog"><h1>Add New Slider</h1>
+<form method="post">
+    Name: <input name="name" type="text" value="<?php if(isset($_POST['name'])){echo $_POST['name'];} ?>" maxlength="64" />
+    <input name="new" type="submit" value="Add Slider" />
+</form></div></div> 
+<?php } ?>-->
 <?php if(check_permission("Sliders","add_slider")){?>
 <h1>Add New Slider</h1>
 <form method="post">
@@ -121,7 +128,7 @@ $result=mysqli_query( $connection, $query);
             </th>
             <?php if(check_permission("Sliders","delete_slider")){?>
             <th style="text-align:center;">
-                <input type="checkbox" id="one">
+                <input type="checkbox" id="one"><label for="one">
             </th>
             <?php } ?>
         </tr>
@@ -147,7 +154,7 @@ $result=mysqli_query( $connection, $query);
 			?>
             </td>
             <?php if(check_permission("Sliders","delete_slider")){?>
-            <td width="10%" style="text-align:center;"><input type="checkbox" name="sliders[]" value="<?php echo $slider['id']; ?>" /></td>
+            <td width="10%" style="text-align:center;"><input type="checkbox" name="sliders[]" id="<?php echo $slider['id']; ?>" /><label for="<?php echo $slider['id']; ?>"></td>
             <?php } ?>
         </tr>
     

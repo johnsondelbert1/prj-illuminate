@@ -147,14 +147,14 @@ $result=mysqli_query( $connection, $query);
 
 <table cellpadding="0" id="sticker">
   <tr>
-    <td width="110"><a class="red" href="slider-list.php">Cancel</a></td>
+    <td width="110"><a class=" btn red" href="slider-list.php">Cancel</a></td>
     <td></td>
   </tr>
 </table>
 <h1>Rename Slider</h1>
 <?php if(check_permission("Sliders","rename_slider")){?>
 <form method="post">
-Name: <input name="name" type="text" value="<?php echo $slider['name']; ?>" maxlength="100" /><input name="submit" type="submit" value="Rename Slider" class="green"/>
+Name: <input name="name" type="text" value="<?php echo $slider['name']; ?>" maxlength="100" /><input name="submit" type="submit" value="Rename Slider" class="btn green"/>
 </form><br>
 <?php } ?>
 <?php //if(check_permission("Slider","add_slide")){?>
@@ -192,7 +192,7 @@ Name: <input name="name" type="text" value="<?php echo $slider['name']; ?>" maxl
             </th>
             <?php //if(check_permission("Sliders","delete_slide")){?>
             <th style="text-align:center;">
-                <input type="checkbox" id="staffall">
+                <input type="checkbox" id="staffall"><label for="staffall">
             </th>
             <?php //} ?>
         </tr>
@@ -209,7 +209,7 @@ Name: <input name="name" type="text" value="<?php echo $slider['name']; ?>" maxl
                 <td width="10%" style="text-align:center;"><input type="checkbox" name="new_tab[<?php echo $slide['id']; ?>]" value="<?php echo $slide['id']; ?>" <?php if($slide['new_tab']==1){echo 'checked';} ?> /></td>
                 <td width="10%" style="text-align:center;"><input type="checkbox" name="slide_published[<?php echo $slide['id']; ?>]" value="<?php echo $slide['id']; ?>" <?php if($slide['published']==1){echo 'checked';} ?> /></td>
 				<?php //if(check_permission("Sliders","delete_slide")){?>
-				<td width="10%" style="text-align:center;" id="staff"><input type="checkbox" name="slide[]" value="<?php echo $slide['id']; ?>" /></td>
+				<td width="10%" style="text-align:center;" id="staff"><input type="checkbox" name="slide[]" id="<?php echo $slide['id']; ?>" /><label for="<?php echo $slide['id']; ?>"></td>
 				<?php //} ?>
 			</tr>
 	<?php
@@ -222,9 +222,9 @@ Name: <input name="name" type="text" value="<?php echo $slider['name']; ?>" maxl
 	}
 	?>
     	<tr>
-        	<td style="text-align:center;"><input name="save" type="submit" value="Save Slides" class="green" /></td>
+        	<td style="text-align:center;"><input name="save" type="submit" value="Save Slides" class="btn green" /></td>
             <td colspan="5"></td>
-            <td style="text-align:center;"><?php //if(check_permission("Sliders","delete_slide")){?><input name="del" type="submit" value="Delete" class="red" /><?php //} ?></td>
+            <td style="text-align:center;"><?php //if(check_permission("Sliders","delete_slide")){?><input name="del" type="submit" value="Delete" class="btn red" /><?php //} ?></td>
         </tr>
     </table>
 </form>

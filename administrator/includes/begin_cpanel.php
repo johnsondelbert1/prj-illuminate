@@ -73,7 +73,6 @@ if(isset($logo[2])){
 
 
 <body>
-
     <div class="wrap">
     	<div class="nav">
         	<div style="background-color:#F0F0F0;">
