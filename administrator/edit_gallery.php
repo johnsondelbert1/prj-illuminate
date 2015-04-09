@@ -157,7 +157,7 @@ while($subgallery=mysqli_fetch_array($subgalleryquery)){
     ?>
         <tr>
             <td width="90%"><a href="edit_gallery.php?gallid=<?php echo urlencode($subgallery['id']); ?>"><?php echo $subgallery['name']; ?></a></td>
-            <td width="10%" style="text-align:center;"><input type="checkbox" name="subgalleries[]" id="<?php echo $subgallery['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="<?php echo $subgallery['id']; ?>"></td>
+            <td width="10%" style="text-align:center;"><input type="checkbox" name="subgalleries[]" value="<?php echo $subgallery['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="<?php echo $subgallery['id']; ?>"></td>
         </tr>
 <?php }
 } ?>

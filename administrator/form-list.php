@@ -104,7 +104,7 @@ $result=mysqli_query( $connection, $query);
 			<tr>
 				<td><a href="edit-form.php?formid=<?php echo urlencode($form['id']); ?>"><?php echo $form['name']; ?></a></td>
 				<?php if(check_permission("Galleries","delete_gallery")){?>
-				<td width="10%" style="text-align:center;"><input type="checkbox" name="forms[]" id="<?php echo $form['id']; ?>" /><label for="<?php echo $form['id']; ?>"></td>
+				<td width="10%" style="text-align:center;"><input type="checkbox" name="forms[]" value="<?php echo $form['id']; ?>" id="<?php echo $form['id']; ?>" /><label for="<?php echo $form['id']; ?>"></td>
 				<?php } ?>
 			</tr>
 	<?php

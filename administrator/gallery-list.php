@@ -181,7 +181,7 @@ $result=mysqli_query( $connection, $query);
 			?>
             </td>
             <?php if(check_permission("Galleries","delete_gallery")){?>
-            <td width="10%" style="text-align:center;"><input type="checkbox" name="galleries[]" id="<?php echo $gallery['id']; ?>" /><label for="<?php echo $gallery['id']; ?>"></td>
+            <td width="10%" style="text-align:center;"><input type="checkbox" name="galleries[]" value="<?php echo $gallery['id']; ?>" id="<?php echo $gallery['id']; ?>" /><label for="<?php echo $gallery['id']; ?>"></td>
             <?php } ?>
         </tr>
     

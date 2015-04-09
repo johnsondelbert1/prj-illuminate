@@ -704,7 +704,7 @@ display: block;
 */
 #sticker {
 	width:100%;
-	background-color:#f7f7f7;
+	background-color:#ececec;
 	-webkit-border-radius:2px;
 	border-radius:2px;
 	transition:all 200ms;

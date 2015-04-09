@@ -154,14 +154,14 @@ $result=mysqli_query( $connection, $query);
 			?>
             </td>
             <?php if(check_permission("Sliders","delete_slider")){?>
-            <td width="10%" style="text-align:center;"><input type="checkbox" name="sliders[]" id="<?php echo $slider['id']; ?>" /><label for="<?php echo $slider['id']; ?>"></td>
+            <td width="10%" style="text-align:center;"><input type="checkbox" name="sliders[]" value="<?php echo $slider['id']; ?>" id="<?php echo $slider['id']; ?>" /><label for="<?php echo $slider['id']; ?>"></td>
             <?php } ?>
         </tr>
     
     <?php } ?>
     	<tr>
         	<td colspan="2"></td>
-            <td><?php if(check_permission("Sliders","delete_slider")){?><input name="del" type="submit" value="Delete" class="red" /><?php } ?></td>
+            <td><?php if(check_permission("Sliders","delete_slider")){?><input name="del" type="submit" value="Delete" class="btn red" /><?php } ?></td>
         </tr>
     </table>
 </form>

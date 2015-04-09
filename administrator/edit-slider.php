@@ -206,10 +206,10 @@ Name: <input name="name" type="text" value="<?php echo $slider['name']; ?>" maxl
                 <!--<td><?php echo $slide['img_name'] ?></td>-->
                 <td><input type="text" name="slide_cap[<?php echo $slide['id']; ?>]" maxlength="512" value="<?php echo htmlspecialchars($slide['caption']); ?>" /></td>
                 <td><input type="text" name="slide_url[<?php echo $slide['id']; ?>]" maxlength="512" style="width:300px;" value="<?php echo htmlspecialchars($slide['url']); ?>" /></td>
-                <td width="10%" style="text-align:center;"><input type="checkbox" name="new_tab[<?php echo $slide['id']; ?>]" value="<?php echo $slide['id']; ?>" <?php if($slide['new_tab']==1){echo 'checked';} ?> /></td>
-                <td width="10%" style="text-align:center;"><input type="checkbox" name="slide_published[<?php echo $slide['id']; ?>]" value="<?php echo $slide['id']; ?>" <?php if($slide['published']==1){echo 'checked';} ?> /></td>
+                <td width="10%" style="text-align:center;"><input type="checkbox" name="new_tab[<?php echo $slide['id']; ?>]" id="tab_<?php echo $slide['id']; ?>" value="<?php echo $slide['id']; ?>" <?php if($slide['new_tab']==1){echo 'checked';} ?> /><label for="tab_<?php echo $slide['id']; ?>"></td>
+                <td width="10%" style="text-align:center;"><input type="checkbox" name="slide_published[<?php echo $slide['id']; ?>]" id="pub_<?php echo $slide['id']; ?>" value="<?php echo $slide['id']; ?>" <?php if($slide['published']==1){echo 'checked';} ?> /><label for="pub_<?php echo $slide['id']; ?>"></td>
 				<?php //if(check_permission("Sliders","delete_slide")){?>
-				<td width="10%" style="text-align:center;" id="staff"><input type="checkbox" name="slide[]" id="<?php echo $slide['id']; ?>" /><label for="<?php echo $slide['id']; ?>"></td>
+				<td width="10%" style="text-align:center;" id="staff"><input type="checkbox" name="slide[]" value="<?php echo $slide['id']; ?>" id="<?php echo $slide['id']; ?>" /><label for="<?php echo $slide['id']; ?>"></td>
 				<?php //} ?>
 			</tr>
 	<?php
