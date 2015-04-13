@@ -252,7 +252,7 @@ function list_pages($queryresult, $is_subpg = false){
 
 <?php
 	$pgsettings = array(
-		"title" => "Edit Page",
+		"title" => "Pages",
 		"icon" => "icon-newspaper"
 	);
 	require_once("includes/begin_cpanel.php");
@@ -268,16 +268,14 @@ function list_pages($queryresult, $is_subpg = false){
      });
 </script>
 <form method="post" action="page_list.php">
-<table border="0" cellpadding="5" id="sticker">
-  <tr>
+<div id="sticker">
     <?php if(check_permission("Pages","add_pages")){ ?>
-    	<td><a href="edit_page.php?action=newpage" class="green btn">New</a></li>
+    	<a href="edit_page.php?action=newpage" class="green btn">New</a></li>
     <?php } ?>
     <?php if(check_permission("Pages","delete_pages")){ ?>
-    	<input name="delpages" type="submit" value="Delete" class="red btn" /></td>
+    	<input name="delpages" type="submit" value="Delete" class="red btn" />
     <?php } ?>
-  </tr>
-</table>
+</div>
 <h1>Horizontal Menu</h1>
 <?php list_pages($listhorizpagesquery); ?>
 <h1>Vertical Menu</h1>

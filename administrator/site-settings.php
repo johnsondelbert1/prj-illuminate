@@ -198,7 +198,7 @@ $result_pages=mysqli_query($connection, $query);
 ?>
 <?php
 	$pgsettings = array(
-		"title" => "Website Settings",
+		"title" => "Settings",
 		"icon" => "icon-cog"
 	);
 	require_once("includes/begin_cpanel.php");

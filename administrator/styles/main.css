@@ -18,7 +18,7 @@ html, body {
 }
 body
 {
-	background-color:#2c3e50;
+	background-color:#333;
 	color:#333;
 	min-height:100%;
 }
@@ -63,6 +63,7 @@ div.wrap a
 	margin-left:auto;
 	margin-right:auto;
 	padding-bottom:80px;
+	margin-top:50px;
 }
 
 .title
@@ -143,17 +144,14 @@ div.banner
 #footer
 {
 	width:100%;
-	height:50px;
-	background-color:#e74c3c;
+	height:30px;
+	line-height:30px;
+	background-color:#333;
 	color:#FFFFFF;
-	padding-top:10px;
-	padding-bottom:10px;
 	margin-top:20px;
 	position:absolute;
-  right: 0;
   bottom: 0;
   left: 0;
-
 }
 
 #footer a{
@@ -163,23 +161,18 @@ div.banner
 /*Menu*/
 div.nav{
 	width:100%;
-	font-size:1.5em;
-	min-height:40px;
+	font-size:1em;
+	min-height:30px;
 	margin-left:auto;
 	margin-right:0;
 	text-align:right;
 	background-color:#e74c3c;
-}
-
-@media all and (max-width: 930px){
-  div.nav{
-	min-height:52px;
-}
-}
-@media all and (max-width: 480px){
-  div.nav{
-	min-height:78px;
-}
+	position:fixed;
+	top:0;
+	left:0;
+	margin-bottom:20px;
+	z-index:3;
+	line-height:30px;
 }
 #horiz-menu, #horiz-menu ul {
     margin: 0;
@@ -187,7 +180,7 @@ div.nav{
     list-style: none;
 }
 #horiz-menu {
-	height:40px;
+	height:30px;
 	float:right;
 	margin-left:auto;
 	margin-right:0;
@@ -211,20 +204,20 @@ div.nav{
 #horiz-menu li {
     float: left;
     position: relative;
-	height:50px;
+	height:30px;
 	width:110px;
 }
 
 #horiz-menu a {
     float: left;
 	width:inherit;
-	padding-top:10px;
+	/*padding-top:10px;
+	font-size:16px;*/
 	height:30px;
 	text-align:center;
     color: #fff;
-	font-size:16px;
     text-decoration: none;
-	transition: all .2s ease-in-out;	
+	/*transition: all .2s ease-in-out;*/	
 }
 
 #horiz-menu li:hover > a {
@@ -240,24 +233,25 @@ div.nav{
     opacity: 0;
     visibility: hidden;
     position: absolute;
-    top: 40px;
+    top: 30px;
     left: 0;
     z-index: 1;
 	background-color:inherit;
     transition: all .2s ease-in-out;
+	
 }
-
-#horiz-menu li:hover > ul {
+#horiz-menu ul.active {
     opacity: 1;
     visibility: visible;
     margin: 0;
 }
-
 #horiz-menu ul ul {
-    top: 0;
-    left: 110px;
+	border-top:#333 solid 3px;
+    top: 30px;
+    left: 0px;
     margin: 0 0 0 20px;
     _margin: 0; /*IE6 only*/ 
+	transition: all .2s ease-in-out;
 }
 
 #horiz-menu ul li {
@@ -265,7 +259,7 @@ div.nav{
 	background-color:inherit;
     display: block;
     border: 0;
-	height:40px;
+	height:30px;
     _line-height: 0; /*IE6 only*/
 }
 
@@ -274,7 +268,7 @@ div.nav{
 }
 
 #horiz-menu ul a {
-	padding-top:10px;
+	/*padding-top:10px;*/
 	width:inherit;
     _height: 10px; /*IE6 only*/
     display: block;
@@ -289,6 +283,7 @@ div.nav{
 	color: #e8eaf6;
 
 }
+
 #horiz-menu ul li:first-child > a {
     
 }
@@ -296,7 +291,7 @@ div.nav{
 #horiz-menu ul li:first-child > a:after {
     content: '';
     position: absolute;
-    left: 40px;
+    left: 30px;
     top: -6px;
 }
 
@@ -305,7 +300,7 @@ div.nav{
     top: 50%;
     margin-top: -6px;
     border-left: 0; 
-	margin-left:-40px; 
+	margin-left:-30px; 
 }
 
 #horiz-menu ul li:first-child a:hover:after {
@@ -319,6 +314,7 @@ div.nav{
 }
 
 #horiz-menu ul li:last-child > a {
+	height:30px;
 }
 /* End Horizontal Nav Menu */
 
@@ -705,25 +701,27 @@ display: block;
 #sticker {
 	width:100%;
 	background-color:#ececec;
-	-webkit-border-radius:2px;
-	border-radius:2px;
 	transition:all 200ms;
 	-webkit-transition:all 200ms;
-	margin-bottom:20px;
-}
-#sticker tr td{
-	padding:1px;
+	height:30px;
+	margin-bottom:15px;
+	}
+#sticker .btn {
+	float:left;
+	margin:2px;
+	height:26px;
+	line-height:26px;
+	padding:0 1rem;
 }
 .stick {
 	margin-right:auto;
-	z-index:2;
+	z-index:3;
     position:fixed;
-    top:0px;
+    top:30px;
 	left:0;
-	background-color:#f7f7f7;
+	background-color:#333 !important;
 	box-shadow:0px 2px 2px rgba(0, 0, 0, 0.3);
-	-webkit-border-radius:2px;
-	border-radius:2px;
+	padding:2px;
 
 }
 hr {

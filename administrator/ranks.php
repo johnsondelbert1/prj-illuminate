@@ -57,7 +57,7 @@ confirm_query($result);
 ?>
 <?php
 	$pgsettings = array(
-		"title" => "Ranks",
+		"title" => "Permissions",
 		"icon" => "icon-flag"
 	);
 	require_once("includes/begin_cpanel.php");

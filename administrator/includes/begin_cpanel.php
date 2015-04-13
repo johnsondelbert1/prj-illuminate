@@ -76,64 +76,76 @@ if(isset($logo[2])){
     <div class="wrap">
     	<div class="nav">
         	<div style="background-color:#F0F0F0;">
-            <span style="float:left; line-height:40px; padding-left:10px;"><b>Logged in as: <?php echo $_SESSION['username']; ?></b></span>
+            <span style="float:left; line-height:30px; padding-left:10px;"><b>Logged in as: <?php echo $_SESSION['username']; ?></b></span>
                 <ul id="horiz-menu" style="display:block;">
                     <li>
-                    	<a href="../" target="_blank">Back to Site</a>
+                    	<a href="../" target="_blank">Back</a>
                     </li>
                     <li>
-                    	<a href="index.php">Home</a>
+                    	<a href="index.php">Dashboard</a>
                     </li>
                     <?php if(check_permission(array("Pages;add_pages","Pages;edit_pages","Pages;delete_pages","Galleries;add_gallery","Galleries;edit_gallery","Galleries;delete_gallery","Galleries;rename_gallery","Uploading;upload_files","Uploading;delete_files","Uploading;create_folders","Uploading;rename_folders","Uploading;delete_folders","Sliders;add_slider","Sliders;edit_slider","Sliders;delete_slider","Sliders;rename_slider",))){?>
                         <li>
-                            <a href="page_list.php">Content</a>
+                            <a href="#">Content<span class="mdi-navigation-arrow-drop-down"></a>
                             <ul>
-                                <li>
-                                    <a href="page_list.php">Pages</a>
-                                    <ul>
-                                        <?php if(check_permission("Pages","add_pages")){?><li><a href="edit_page.php?action=newpage">New</a></li><?php } ?>
-                                        <?php if(check_permission("Pages","edit_pages")){?><li><a href="staff-list.php">Staff</a></li><?php } ?>
-                                        <?php if(check_permission(array("Sliders;add_slider","Sliders;edit_slider","Sliders;delete_slider","Sliders;rename_slider",))){?><li><a href="slider-list.php">Slider</a></li><?php } ?>
-                                    </ul>
-                                </li>
-								<?php if(check_permission(array("Galleries;add_gallery","Galleries;edit_gallery","Galleries;delete_gallery","Galleries;rename_gallery"))){?>
-                                <li>
-                                    <a href="gallery-list.php">Galleries</a>
-                                </li>
-                                <?php } ?>
+                            
                                 <?php if(check_permission(array("Uploading;upload_files","Uploading;delete_files","Uploading;create_folders","Uploading;rename_folders","Uploading;delete_folders",))){?>
                                 <li>
                                     <a href="upload-files.php">Upload</a>
                                 </li>
                                 <?php } ?>
+                                <?php if(check_permission(array("Forms;create_form","Forms;edit_form","Forms;delete_form",))){?>
+                    <li>
+                    	<a href="form-list.php">Forms</a>
+                    </li>
+                    <?php } ?>
+                    <li>
+                            <a href="#">Images<span class="mdi-navigation-arrow-drop-down"></span></a>
+                            <ul>
+								<?php if(check_permission(array("Galleries;add_gallery","Galleries;edit_gallery","Galleries;delete_gallery","Galleries;rename_gallery"))){?>
+                                <li>
+                                    <a href="gallery-list.php">Galleries</a>
+                                </li>
+                                <?php } ?>
+                                 <?php if(check_permission(array("Sliders;add_slider","Sliders;edit_slider","Sliders;delete_slider","Sliders;rename_slider",))){?><li><a href="slider-list.php">Slider</a></li><?php } ?>
+                                 <li>
+                    	<a href="site-settings.php#imagery">Settings</a>
+                    </li>
+                                </ul>
+                                </li>
+                                <li>
+                                    <a href="#">Pages<span class="mdi-navigation-arrow-drop-down"></span></a>
+                                    <ul>
+                                    <li><a href="page_list.php">Edit Pages</a></li>
+                                        <?php if(check_permission("Pages","add_pages")){?><li><a href="edit_page.php?action=newpage">Create Page</a></li><?php } ?>
+                                        
+                                       
+                                    </ul>
+                                </li>
                         	</ul>
                         </li>
                     <?php } ?>
                     <?php if(check_permission(array("Users;add_users","Users;delete_users",))){?>
                     <li>
-                    	<a href="accounts.php">Accounts</a>
+                    	<a href="#">Users<span class="mdi-navigation-arrow-drop-down"></a>
                         <ul>
+                        <li><a href="accounts.php">Edit Accounts</a></li>
                                <?php if(check_permission(array("Users;create_rank","Users;edit_rank","Users;delete_rank",))){?>
                     <li>
                     	<a href="ranks.php">Permissions</a>
                     </li>
                     <?php } ?>
+                    <?php if(check_permission("Pages","edit_pages")){?><li><a href="staff-list.php">Staff</a></li><?php } ?>
                                     </ul>
                     </li>
                     <?php } ?>
-                  
-                    <?php if(check_permission(array("Forms;create_form","Forms;edit_form","Forms;delete_form",))){?>
-                    <li>
-                    	<a href="form-list.php">Forms</a>
-                    </li>
-                    <?php } ?>
                     <?php if(check_permission(array("Website;edit_site_settings","Website;edit_site_colors","Website;upload_favicon_banner","Website;edit_google_analytics",))){?>
-                    <li>
-                    	<a href="site-settings.php">Settings</a>
+                    <li style="width:55px;">
+                    	<a href="site-settings.php"><span class="icon-cog"></span></a>
                     </li>
                     <?php } ?>
-                    <li>
-                    	<a href="logout.php" style="font-size:20px;"><span class="icon-exit"></span></a>
+                    <li style="width:55px;">
+                    	<a href="logout.php"><span class="icon-exit"></span></a>
                     </li>
                 </ul>
             </div>
