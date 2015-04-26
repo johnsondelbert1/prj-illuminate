@@ -1,8 +1,9 @@
 <?php
 require_once("connection.php");
 require_once("session.php");
+require_once("globals.php");
 
-//global variables
+//global DB variables
 $query="SELECT * FROM `site_info` WHERE `id` = 1";
 $result=mysqli_query( $connection, $query);
 $site_info=mysqli_fetch_array($result);
