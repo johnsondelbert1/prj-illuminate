@@ -76,7 +76,7 @@ if(isset($logo[2])){
     <div class="wrap">
     	<div class="nav">
         	<div style="background-color:#F0F0F0;">
-            <span style="float:left; line-height:30px; padding-left:10px;"><b>Logged in as: <?php echo $_SESSION['username']; ?></b></span>
+           <!-- <span style="float:left; line-height:30px; padding-left:10px;"><b>Logged in as: <?php echo $_SESSION['username']; ?></b></span> -->
                 <ul id="horiz-menu" style="display:block;">
                     <li>
                     	<a href="../" target="_blank">Back</a>
@@ -109,7 +109,7 @@ if(isset($logo[2])){
                                 <?php } ?>
                                  <?php if(check_permission(array("Sliders;add_slider","Sliders;edit_slider","Sliders;delete_slider","Sliders;rename_slider",))){?><li><a href="slider-list.php">Slider</a></li><?php } ?>
                                  <li>
-                    	<a href="site-settings.php#imagery">Settings</a>
+                    	<a href="site-settings.php?tab=2#">Settings</a>
                     </li>
                                 </ul>
                                 </li>
@@ -149,43 +149,21 @@ if(isset($logo[2])){
                     </li>
                 </ul>
             </div>
-            <div style="clear:both;"></div>
-            <!--<ul id="menu">
-                <li class="menuitemnohover" style="height:auto; font-size:12px; line-height:30px; text-align:center; background-color:#ccc;">
-                <img src="images/logo2GD.png" width="50" height="50" style="margin-top:10px;" /><br />
-                    <?php //check_login(true); ?>
-                <!--</li>
+            </div>
+            <ul id="menu">
                 <li class="menuitem">
-                    <a href="index.php"><span class="icon-dashboard"></span><br /><h3>Control Panel</h3></a>
+                    <a href="index.php"><span class="icon-checkmark"></span></a>
                 </li>
                 <li class="menuitem">
-                    <a href="page_list.php"><span class="icon-newspaper"></span><br /><h3>Pages</h3></a>
+                    <a href="index.php"><span class="icon-blocked"></span></a>
                 </li>
                 <li class="menuitem">
-                    <a href="gallery-list.php"><span class="icon-images"></span><br /><h3>Galleries</h3></a>
+                    <a href="index.php"><span class="icon-remove"></span></a>
                 </li>
                 <li class="menuitem">
-                    <a href="upload-files.php"><span class="icon-upload"></span><br /><h3>Upload</h3></a>
+                    <a href="index.php"><span class="icon-cog"></span></a>
                 </li>
-                <li class="menuitem">
-                    <a href="accounts.php"><span class="icon-user3"></span><br /><h3>Accounts</h3></a>
-                </li>
-                <li class="menuitem">
-                    <a href="ranks.php"><span class="icon-flag"></span><br /><h3>Ranks</h3></a>
-                </li>
-                <li class="menuitem">
-                    <a href="site-settings.php"><span class="icon-code"></span><br /><h3>Site Settings</h3></a>
-                </li>
-                <li class="menuitem">
-                    <a href="logout.php"><span class="icon-switch"></span><h3>Logout</h3></a>
-                </li>
-                <li class="menuitemnohover" style="height:auto; font-size:8px; text-align:center;">
-                    <img src="images/logo.png" width="50" style="margin-top:10px;" /><br /><br />
-                    illuminateCMS<br />© 2011-<?php echo date("Y") ?>. V.1.0
-                </li>
-            </ul>-->
-            <div style="display:table-row; height:100%;"></div>
-        </div>
+                    </ul>
         <div class="contentwrap">
             <div class="title">
                 <h1><span class="<?php echo $pgsettings['icon']; ?>"></span>   <?php echo $pgsettings['title']; ?></h1>
