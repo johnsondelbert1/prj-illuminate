@@ -198,7 +198,7 @@ $result_pages=mysqli_query($connection, $query);
 ?>
 <?php
 	$pgsettings = array(
-		"title" => "Website Settings",
+		"title" => "Settings",
 		"icon" => "icon-cog"
 	);
 	require_once("includes/begin_cpanel.php");
@@ -378,7 +378,7 @@ $result_pages=mysqli_query($connection, $query);
   <tr>
   	<td>
         <h2>Website Published</h2>
-        <input name="published" type="checkbox"<?php if($site['published']==1){echo " checked";} ?> maxlength="128" />
+        <input name="published" type="checkbox"<?php if($site['published']==1){echo " checked";} ?> maxlength="128" id="pub" /><label for="pub">
     </td>
   	<td>
     	<h2>Homepage</h2>
@@ -403,19 +403,19 @@ $result_pages=mysqli_query($connection, $query);
   <tr>
   	<td colspan="2">
     	<h2>Metadata</h2>
-        <textarea name="metadata" id="metadata" rows="15" cols="80"><?php if($site['meta_tags']!=""){echo $site['meta_tags'];}else{echo "<meta name=\"description\" content=\"A description of the page\" />";} ?></textarea><br>
+        <textarea name="metadata" id="metadata" rows="15" cols="80" class="materialize-textarea"><?php if($site['meta_tags']!=""){echo $site['meta_tags'];}else{echo "<meta name=\"description\" content=\"A description of the page\" />";} ?></textarea><br>
     </td>
   </tr>
   <tr>
   	<td colspan="2">
     	<h2>Javascript</h2>
-        <textarea name="css_js" id="css_js" rows="15" cols="80"><?php echo $site['style_js_link_tags']; ?></textarea><br>
+        <textarea name="css_js" id="css_js" rows="15" cols="80" class="materialize-textarea"><?php echo $site['style_js_link_tags']; ?></textarea><br>
     </td>
   </tr>
   <tr>
   	<td colspan="2">
     	<h2>Website Footer Content</h2>
-        <textarea name="foot_content" id="foot_content" rows="15" cols="80"><?php echo $site['footer_content']; ?></textarea><br>
+        <textarea name="foot_content" id="foot_content" rows="15" cols="80" class="materialize-textarea"><?php echo $site['footer_content']; ?></textarea><br>
     </td>
   </tr>
   <tr>
@@ -436,29 +436,36 @@ $result_pages=mysqli_query($connection, $query);
 	<option>Green (Dark)</option>
    	<option>Green (Light)</option>
 </select><br><br>
-<form method="post" action="site-settings.php?tab=1">
-    <table width="75%" border="0" style="margin-left:auto; margin-right:auto;">
-      <tr>
-        <td style="text-align:right;"><label for="menucolor">Menu:</label></td><td style="text-align:left;"><input id="menucolor" name="menu_color" type="text" value="<?php echo $layout['menu_color']; ?>" maxlength="7" class="color {hash:true}" /></td>
-        <td style="text-align:right;"><label for="contentbg">Content BG:</label></td><td style="text-align:left;"><input id="contentbg" name="contentbg_color" type="text" value="<?php echo $layout['contentbg_color']; ?>" maxlength="7" class="color {hash:true}" /></td>
-      </tr>
-      <tr>
-        <td style="text-align:right;"><label for="sitebg">Site BG:</label></td><td style="text-align:left;"><input id="sitebg" name="sitebg_color" type="text" value="<?php echo $layout['sitebg_color']; ?>" maxlength="7" class="color {hash:true}" /></td>
-        <td style="text-align:right;"><label for="accent">Accent:</label></td><td style="text-align:left;"><input id="accent" name="accent_color" type="text" value="<?php echo $layout['accent_color']; ?>" maxlength="7" class="color {hash:true}" /> </td>
-      </tr>
-      <tr>
-        <td style="text-align:right;"><label for="text">Text:</label></td><td style="text-align:left;"><input id="text" name="text_color" type="text" value="<?php echo $layout['text_color']; ?>" maxlength="7" class="color {hash:true}" /></td>
-      </tr>
-      <tr>
-      	<td colspan="2"><strong>Custom CSS</strong></td>
-      </tr>
-      <tr>
-      	<td colspan="2"><textarea name="custom_css" id="custom_css" rows="15" cols="80"><?php echo $layout['custom_css']; ?></textarea></td>
-      </tr>
-      <tr>
-        <td colspan="4"><input name="chngstyle" type="submit" value="Change Styling" /></td>
-      </tr>
-    </table>
+<form method="post" action="site-settings.php?tab=1" class="col s12">
+<div class="row">
+<div class="input-field col s6">
+<input id="menucolor" name="menu_color" type="text" value="<?php echo $layout['menu_color']; ?>" maxlength="7" class="color {hash:true}" />
+<label for="menucolor">Menu:</label>
+</div>
+<div class="input-field col s6">
+<input id="contentbg" name="contentbg_color" type="text" value="<?php echo $layout['contentbg_color']; ?>" maxlength="7" class="color {hash:true}" />
+<label for="contentbg">Content BG:</label>
+</div>
+<div class="input-field col s6">
+<input id="sitebg" name="sitebg_color" type="text" value="<?php echo $layout['sitebg_color']; ?>" maxlength="7" class="color {hash:true}" />
+<label for="sitebg">Site BG:</label>
+</div>
+<div class="input-field col s6">
+<input id="accent" name="accent_color" type="text" value="<?php echo $layout['accent_color']; ?>" maxlength="7" class="color {hash:true}" />
+<label for="accent">Accent:</label>
+</div>
+<div class="input-field col s6">
+<input id="text" name="text_color" type="text" value="<?php echo $layout['text_color']; ?>" maxlength="7" class="color {hash:true}" />
+<label for="text">Text:</label>
+</div>
+</div>
+<div class="row">
+<div class="input-field col s12">
+<strong>Custom CSS</strong>
+<textarea class="materialize-textarea" name="custom_css" id="custom_css" rows="15" cols="80"><?php echo $layout['custom_css']; ?></textarea>
+<input name="chngstyle" type="submit" value="Change Styling" />
+</div>
+</div>
 </form>
 </div>
 <?php } ?>             
@@ -515,11 +522,11 @@ $result_pages=mysqli_query($connection, $query);
 	<?php 
 	$i = 0;
 	foreach($soc_networks as $network){ ?>
-    	<?php echo $soc_networks_names[$i]; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" maxlength="256" style="width:400px;" placeholder="http://" value="<?php echo $site_info[$network.'_url']; ?>" name="<?php echo $network; ?>_url" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label for="<?php echo $network; ?>_enabled">Enabled</label>&nbsp;&nbsp;<input name="<?php echo $network; ?>_enabled" id="<?php echo $network; ?>_enabled" type="checkbox"<?php if($site_info[$network.'_enabled']){echo  "checked";} ?> /><br><br>
+    	<input type="text" maxlength="256" style="width:400px;" id="<?php echo $soc_networks_names[$i]; ?>" placeholder="http://" value="<?php echo $site_info[$network.'_url']; ?>" name="<?php echo $network; ?>_url" /><label for="<?php echo $soc_networks_names[$i]; ?>>"><input name="<?php echo $network; ?>_enabled" id="<?php echo $network; ?>_enabled" type="checkbox"<?php if($site_info[$network.'_enabled']){echo  "checked";} ?> /><label for="<?php echo $network; ?>_enabled">Enabled</label><br><br>
     <?php 
 		$i++;
 	} ?>
-    <input name="socialnet" type="submit" value="Save Social Network Settings" /><br><br>
+    <input name="socialnet" type="submit" value="Save"  class="green btn" /><br><br>
 </form>
 </div>
 <?php } ?>             
@@ -529,7 +536,7 @@ $result_pages=mysqli_query($connection, $query);
   <form method="post" action="site-settings.php?tab=4">
     Enabled: <input name="analyticsenabled" type="checkbox"<?php if($site['g_analytics_enabled']){echo  "checked";} ?> /><br>
   	Google Analytics Code:<br>
-	<textarea name="analyticscode" id="analytics" rows="15" cols="80"><?php echo $site['g_analytics_code']; ?></textarea><br>
+	<textarea name="analyticscode" id="analytics" rows="15" cols="80" ><?php echo $site['g_analytics_code']; ?></textarea><br>
     <input name="chngganalytics" type="submit" value="Change Google Analytics Settings" />
   </form>
   </div>

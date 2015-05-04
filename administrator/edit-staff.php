@@ -52,8 +52,8 @@ $staff=mysqli_fetch_array($result);
 <form method="post">
 <table cellpadding="5" id="sticker">
   <tr>
-    <td width="110px"><input name="submit" type="submit" value="Update Staff Member" class="green"/></td>
-    <td width="110px"><a class="red" href="staff-list.php">Cancel</a></td>
+    <td width="110px"><input name="submit" type="submit" value="Update Staff Member" class="btn green"/></td>
+    <td width="110px"><a class="btn red" href="staff-list.php">Cancel</a></td>
   <td></td>
   </tr>
 </table>

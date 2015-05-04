@@ -535,7 +535,7 @@ function nav($position, $pgselection){
                         if(mysqli_num_rows($subpgresult)!=0){?>
                             <ul class="collapsible collapsible-accordion">
                                 <li>
-                                    <a class="collapsible-header"><i class="mdi-navigation-arrow-drop-down"></i></a>
+                                    <a class="collapsible-header"><span class="mdi-navigation-arrow-drop-down"></span></a>
                                               <div class="collapsible-body">
                                                 <ul>
                             <?php while($subpage=mysqli_fetch_array($subpgresult)){?>

@@ -292,37 +292,61 @@ if($_GET['action']=="edit"){
 
 <table cellpadding="0" id="sticker">
   <tr>
+  <td>
   	<?php if(check_permission("Pages","add_pages")){?>
-        <td width="110px"><input class="green" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "submit";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newpage";} ?>" value="Save" /></td>
-        <td width="110px"><input class="green" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "sandb";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newandb";} ?>" value="Save & Close" /></td>
-        <td width="110px"><input class="green" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "sandnewp";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newandnewp";} ?>" value="Save & New" /></td>
-	<?php } ?>
-    <?php if(check_permission("Pages","delete_pages")&&$_GET['action']=="edit"){?>
-        <?php if(isset($_GET['page'])){?><td width="110px"><a class="red" href="edit_page.php?action=delpage&&page=<?php echo $_GET['page']; ?>">Delete</a></td><?php } ?>
+        <input class="green btn" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "submit";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newpage";} ?>" value="Save" />
+            <?php if(check_permission("Pages","delete_pages")&&$_GET['action']=="edit"){?>
+        <?php if(isset($_GET['page'])){?><a class="red btn" href="edit_page.php?action=delpage&&page=<?php echo $_GET['page']; ?>">Delete</a><?php } ?>
     <?php } ?>
-    <td width="110px"><a class="red" href="page_list.php">Cancel</a></td>
-    <td></td>
+        <input class="grey btn" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "sandb";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newandb";} ?>" value="Save & Close" />
+        <input class="grey btn" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "sandnewp";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newandnewp";} ?>" value="Save & New" />
+	<?php } ?>
+    <a class="grey btn" href="page_list.php">Close</a>
+    <?php if(isset($_GET['action'])&&$_GET['action']!="newpage"){ ?>
+            <td width="10%"><div class="input-field col s6"><a href="page_list_simple.php" onclick="window.open('page_list_simple.php', 'newwindow', 'width=700, height=500'); return false;">(View Pages)</a></div></td>
+            <?php } ?>
+    </td>
   </tr>
 </table>
-<br />
+
+<table>
+<tr>
+<td width="50%">
+<div class="input-field col s6">
+        	<input id="title" type="text" value="<?php if(isset($_GET['page'])){echo $selpage['name'];} ?>" class="validate" />
+            <label for="title">Title</label>
+            </div>
+            </td>
+            <?php if(isset($_GET['action'])&&$_GET['action']!="newpage"){ ?>
+            <td width="40%"><label for="title">Page URL</label><div class="input-field col s6"><a href="<?php echo $site_info['base_url'].'/page/'.urlencode($selpage['name']); ?>" onclick="window.open('<?php echo $site_info['base_url'];?>/page/<?php echo urlencode($selpage['name']);?>', 'newwindow', 'width=1017, height=500'); return false;"><?php echo $site_info['base_url'].'/page/'.urlencode($selpage['name']); ?></a></div>
+            </td>
+            <?php } ?>
+            <td align="left">
+    	<input id="pub" type="checkbox" name="published" <?php if((isset($_GET['page'])&&$selpage['published']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/>
+        <label for="pub">Published</label>
+    </td>
+</tr>
+</table>
 <div id="TabbedPanels1" class="TabbedPanels">
             <ul class="TabbedPanelsTabGroup">
                 <li class="TabbedPanelsTab" tabindex="0">Content</li>
+                <li class="TabbedPanelsTab" tabindex="0">Other</li>
                 <li class="TabbedPanelsTab" tabindex="0">Galleries</li>
                 <li class="TabbedPanelsTab" tabindex="0">Forms</li>
             </ul>
             <div class="TabbedPanelsContentGroup">
+            <div class="TabbedPanelsContent">
+            
+            <tr>
+  	<td colspan="5">
+    	<textarea name="content" id="content" class="text" style="width:860px; height:500px;" ><?php if(isset($_GET['page'])){echo $selpage['content'];} ?></textarea>
+    </td>
+  </tr>
+            </div>
                 <div class="TabbedPanelsContent">
 
 <table width="100%" border="5" cellspacing="5" cellpadding="5" class="editpageform">
-<?php if(isset($_GET['action'])&&$_GET['action']!="newpage"){ ?>
-  <tr>
-    <td style="text-align:right;"><strong>Page URL:</strong></td>
-    <td style="text-align:left;"><a href="<?php echo $site_info['base_url'].'/page/'.urlencode($selpage['name']); ?>" onclick="window.open('<?php echo $site_info['base_url'];?>/page/<?php echo urlencode($selpage['name']);?>', 'newwindow', 'width=1017, height=500'); return false;"><?php echo $site_info['base_url'].'/page/'.urlencode($selpage['name']); ?></a></td>
-    <td colspan="2"><a href="page_list_simple.php" onclick="window.open('page_list_simple.php', 'newwindow', 'width=700, height=500'); return false;">(View Pages)</a></td>
-  </tr>
-<?php } ?>
-  <tr>
+<tr><!--
     <td align="left">
     <div class="input-field col s6">
         	<input id="title" type="text" value="<?php if(isset($_GET['page'])){echo $selpage['name'];} ?>" class="validate" />
@@ -330,10 +354,7 @@ if($_GET['action']=="edit"){
             </div>
 
     </td>
-	<td align="left">
-    	<input id="pub" type="checkbox" name="published" <?php if((isset($_GET['page'])&&$selpage['published']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/>
-        <label for="pub">Published</label>
-    </td>
+    -->
     <!--
     <td align="right">
 		<b>Visible to:</b>
@@ -441,14 +462,6 @@ if($_GET['action']=="edit"){
     <td align="left">
     	Horizontal Menu <input type="checkbox" name="horiz_menu_visible" <?php if((isset($_GET['page'])&&$selpage['horiz_menu_visible']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/><br>
         Vertical Menu <input type="checkbox" name="vert_menu_visible" <?php if((isset($_GET['page'])&&$selpage['vert_menu_visible']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/>
-    </td>
-  </tr>
-  <tr>
-  	<td colspan="5" align="center"><b>Page Content:</b></td>
-  </tr>
-  <tr>
-  	<td colspan="5">
-    	<textarea name="content" id="content" class="text" style="width:860px; height:500px;" ><?php if(isset($_GET['page'])){echo $selpage['content'];} ?></textarea>
     </td>
   </tr>
 </table>

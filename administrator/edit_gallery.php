@@ -126,8 +126,8 @@ confirm_query($subgalleryquery);
 <form method="post" action="edit_gallery.php?gallid=<?php echo $_GET['gallid']; ?>">
 <table cellpadding="5" id="sticker">
   <tr>
-    <td width="110px"><input name="submit" type="submit" value="Update Gallery" class="green"/></td>
-    <td width="110px"><a class="red" href="gallery-list.php">Cancel</a></td>
+    <td width="110px"><input name="submit" type="submit" value="Save" class="btn green"/></td>
+    <td width="110px"><a class="btn red" href="gallery-list.php">Cancel</a></td>
   <td></td>
   </tr>
 </table>
@@ -139,7 +139,8 @@ Name: <input name="galname" type="text" value="<?php echo $gallery['name']; ?>" 
   </tr>
   <tr>
     <th scope="col">Name</th>
-    <th scope="col"><input type="checkbox" id="gallall"></th>
+    <th scope="col"><input type="checkbox" id="gallall">
+    <label for="gallall"></th>
   </tr>
 <?php
 while($subgallery=mysqli_fetch_array($subgalleryquery)){
@@ -156,7 +157,7 @@ while($subgallery=mysqli_fetch_array($subgalleryquery)){
     ?>
         <tr>
             <td width="90%"><a href="edit_gallery.php?gallid=<?php echo urlencode($subgallery['id']); ?>"><?php echo $subgallery['name']; ?></a></td>
-            <td width="10%" style="text-align:center;"><input type="checkbox" name="subgalleries[]" value="<?php echo $subgallery['id']; ?>" <?php if($checked == true){echo "checked";} ?> /></td>
+            <td width="10%" style="text-align:center;"><input type="checkbox" name="subgalleries[]" value="<?php echo $subgallery['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="<?php echo $subgallery['id']; ?>"></td>
         </tr>
 <?php }
 } ?>
@@ -191,7 +192,7 @@ while($subgallery=mysqli_fetch_array($subgalleryquery)){
             make_thumb($images_dir.$file,$thumbnail_image,$thumbs_width,$thumbs_height,$extension);
           }
         }?>
-        <div class="photo-link"><span class="galleryImage"><img src="<?php echo $thumbnail_image; ?>" style="width:150px; height:150px;" /><input type="checkbox" name="files[]" value="<?php echo $file; ?>" /><input name="delete_CheckBox" type="hidden" value="false" /></span></div>
+        <div class="photo-link"><span class="galleryImage"><img src="<?php echo $thumbnail_image; ?>" style="width:150px; height:150px;" /><input type="checkbox" name="files[]" id="<?php echo $file; ?>" /><input name="delete_CheckBox" type="hidden" value="false" /></span></div>
         <?php
       }
       ?><div class="clear"></div><?php
@@ -200,7 +201,7 @@ while($subgallery=mysqli_fetch_array($subgalleryquery)){
       ?><p>(There are no images in this gallery)</p><?php
     }
     ?>
-    <input name="delfiles" type="submit" value="Delete Selected Photos" class="red" />
+    <input name="delfiles" type="submit" value="Delete Selected Photos" class="btn red" />
     </div>
 </form>
 <h1>Upload Images</h1>

@@ -73,105 +73,97 @@ if(isset($logo[2])){
 
 
 <body>
-
     <div class="wrap">
     	<div class="nav">
         	<div style="background-color:#F0F0F0;">
-            <span style="float:left; line-height:40px; padding-left:10px;"><b>Logged in as: <?php echo $_SESSION['username']; ?></b></span>
+           <!-- <span style="float:left; line-height:30px; padding-left:10px;"><b>Logged in as: <?php echo $_SESSION['username']; ?></b></span> -->
                 <ul id="horiz-menu" style="display:block;">
                     <li>
-                    	<a href="../" target="_blank">Back to Site</a>
+                    	<a href="../" target="_blank">Back</a>
                     </li>
                     <li>
-                    	<a href="index.php">Home</a>
+                    	<a href="index.php">Dashboard</a>
                     </li>
                     <?php if(check_permission(array("Pages;add_pages","Pages;edit_pages","Pages;delete_pages","Galleries;add_gallery","Galleries;edit_gallery","Galleries;delete_gallery","Galleries;rename_gallery","Uploading;upload_files","Uploading;delete_files","Uploading;create_folders","Uploading;rename_folders","Uploading;delete_folders","Sliders;add_slider","Sliders;edit_slider","Sliders;delete_slider","Sliders;rename_slider",))){?>
                         <li>
-                            <a href="page_list.php">Content</a>
+                            <a href="#">Content<span class="mdi-navigation-arrow-drop-down"></a>
                             <ul>
-                                <li>
-                                    <a href="page_list.php">Pages</a>
-                                    <ul>
-                                        <?php if(check_permission("Pages","add_pages")){?><li><a href="edit_page.php?action=newpage">Add Pages</a></li><?php } ?>
-                                        <?php if(check_permission("Pages","edit_pages")){?><li><a href="staff-list.php">Staff</a></li><?php } ?>
-                                        <?php if(check_permission(array("Sliders;add_slider","Sliders;edit_slider","Sliders;delete_slider","Sliders;rename_slider",))){?><li><a href="slider-list.php">Slider</a></li><?php } ?>
-                                    </ul>
-                                </li>
-								<?php if(check_permission(array("Galleries;add_gallery","Galleries;edit_gallery","Galleries;delete_gallery","Galleries;rename_gallery"))){?>
-                                <li>
-                                    <a href="gallery-list.php">Galleries</a>
-                                </li>
-                                <?php } ?>
+                            
                                 <?php if(check_permission(array("Uploading;upload_files","Uploading;delete_files","Uploading;create_folders","Uploading;rename_folders","Uploading;delete_folders",))){?>
                                 <li>
                                     <a href="upload-files.php">Upload</a>
                                 </li>
                                 <?php } ?>
+                                <?php if(check_permission(array("Forms;create_form","Forms;edit_form","Forms;delete_form",))){?>
+                    <li>
+                    	<a href="form-list.php">Forms</a>
+                    </li>
+                    <?php } ?>
+                    <li>
+                            <a href="#">Images<span class="mdi-navigation-arrow-drop-down"></span></a>
+                            <ul>
+								<?php if(check_permission(array("Galleries;add_gallery","Galleries;edit_gallery","Galleries;delete_gallery","Galleries;rename_gallery"))){?>
+                                <li>
+                                    <a href="gallery-list.php">Galleries</a>
+                                </li>
+                                <?php } ?>
+                                 <?php if(check_permission(array("Sliders;add_slider","Sliders;edit_slider","Sliders;delete_slider","Sliders;rename_slider",))){?><li><a href="slider-list.php">Slider</a></li><?php } ?>
+                                 <li>
+                    	<a href="site-settings.php?tab=2#">Settings</a>
+                    </li>
+                                </ul>
+                                </li>
+                                <li>
+                                    <a href="#">Pages<span class="mdi-navigation-arrow-drop-down"></span></a>
+                                    <ul>
+                                    <li><a href="page_list.php">Edit Pages</a></li>
+                                        <?php if(check_permission("Pages","add_pages")){?><li><a href="edit_page.php?action=newpage">Create Page</a></li><?php } ?>
+                                        
+                                       
+                                    </ul>
+                                </li>
                         	</ul>
                         </li>
                     <?php } ?>
                     <?php if(check_permission(array("Users;add_users","Users;delete_users",))){?>
                     <li>
-                    	<a href="accounts.php">Accounts</a>
+                    	<a href="#">Users<span class="mdi-navigation-arrow-drop-down"></a>
+                        <ul>
+                        <li><a href="accounts.php">Edit Accounts</a></li>
+                               <?php if(check_permission(array("Users;create_rank","Users;edit_rank","Users;delete_rank",))){?>
+                    <li>
+                    	<a href="ranks.php">Permissions</a>
                     </li>
                     <?php } ?>
-                    <?php if(check_permission(array("Users;create_rank","Users;edit_rank","Users;delete_rank",))){?>
-                    <li>
-                    	<a href="ranks.php">Ranks</a>
-                    </li>
-                    <?php } ?>
-                    <?php if(check_permission(array("Forms;create_form","Forms;edit_form","Forms;delete_form",))){?>
-                    <li>
-                    	<a href="form-list.php">Forms</a>
+                    <?php if(check_permission("Pages","edit_pages")){?><li><a href="staff-list.php">Staff</a></li><?php } ?>
+                                    </ul>
                     </li>
                     <?php } ?>
                     <?php if(check_permission(array("Website;edit_site_settings","Website;edit_site_colors","Website;upload_favicon_banner","Website;edit_google_analytics",))){?>
-                    <li>
-                    	<a href="site-settings.php">Site Settings</a>
+                    <li style="width:55px;">
+                    	<a href="site-settings.php"><span class="icon-cog"></span></a>
                     </li>
                     <?php } ?>
-                    <li>
-                    	<a href="logout.php" style="font-size:20px;"><span class="icon-exit"></span></a>
+                    <li style="width:55px;">
+                    	<a href="logout.php"><span class="icon-exit"></span></a>
                     </li>
                 </ul>
             </div>
-            <div style="clear:both;"></div>
-            <!--<ul id="menu">
-                <li class="menuitemnohover" style="height:auto; font-size:12px; line-height:30px; text-align:center; background-color:#ccc;">
-                <img src="images/logo2GD.png" width="50" height="50" style="margin-top:10px;" /><br />
-                    <?php //check_login(true); ?>
-                <!--</li>
+            </div>
+            <ul id="menu">
                 <li class="menuitem">
-                    <a href="index.php"><span class="icon-dashboard"></span><br /><h3>Control Panel</h3></a>
+                    <a href="index.php"><span class="icon-checkmark"></span></a>
                 </li>
                 <li class="menuitem">
-                    <a href="page_list.php"><span class="icon-newspaper"></span><br /><h3>Pages</h3></a>
+                    <a href="index.php"><span class="icon-blocked"></span></a>
                 </li>
                 <li class="menuitem">
-                    <a href="gallery-list.php"><span class="icon-images"></span><br /><h3>Galleries</h3></a>
+                    <a href="index.php"><span class="icon-remove"></span></a>
                 </li>
                 <li class="menuitem">
-                    <a href="upload-files.php"><span class="icon-upload"></span><br /><h3>Upload</h3></a>
+                    <a href="index.php"><span class="icon-cog"></span></a>
                 </li>
-                <li class="menuitem">
-                    <a href="accounts.php"><span class="icon-user3"></span><br /><h3>Accounts</h3></a>
-                </li>
-                <li class="menuitem">
-                    <a href="ranks.php"><span class="icon-flag"></span><br /><h3>Ranks</h3></a>
-                </li>
-                <li class="menuitem">
-                    <a href="site-settings.php"><span class="icon-code"></span><br /><h3>Site Settings</h3></a>
-                </li>
-                <li class="menuitem">
-                    <a href="logout.php"><span class="icon-switch"></span><h3>Logout</h3></a>
-                </li>
-                <li class="menuitemnohover" style="height:auto; font-size:8px; text-align:center;">
-                    <img src="images/logo.png" width="50" style="margin-top:10px;" /><br /><br />
-                    illuminateCMS<br />© 2011-<?php echo date("Y") ?>. V.1.0
-                </li>
-            </ul>-->
-            <div style="display:table-row; height:100%;"></div>
-        </div>
+                    </ul>
         <div class="contentwrap">
             <div class="title">
                 <h1><span class="<?php echo $pgsettings['icon']; ?>"></span>   <?php echo $pgsettings['title']; ?></h1>
