@@ -142,7 +142,7 @@ if(isset($_POST['upd_ranks'])){
         <th width="10%">Rank:</th>
         <th width="20%">Last Logged In:</th>
         <?php if(check_permission("Users","delete_users")){?>
-        	<th width="10%"><input type="checkbox" id="accountall"></th>
+        	<th width="10%"><input type="checkbox" id="accountall"><label for="accountall"></th>
         <?php } ?>
       </tr>
         <?php
@@ -176,7 +176,7 @@ if(isset($_POST['upd_ranks'])){
                 </td>
                 <td><?php if($user['last_logged_in']!="0000-00-00 00:00:00"){echo date("D, m/d/Y h:i A" ,strtotime($user['last_logged_in']));}else{echo "N/A";} ?></td>
                 <?php if(check_permission("Users","delete_users")){?>
-                	<td><?php if($user['deletable']==1){ ?><input type="checkbox" name="accounts[]" value="<?php echo $user['id']; ?>" /><?php } ?></td>
+                	<td><?php if($user['deletable']==1){ ?><input type="checkbox" name="accounts[]" id="<?php echo $user['id']; ?>" /><label for="<?php echo $user['id']; ?>"><?php } ?></td>
                 <?php } ?>
               </tr>
             <?php } ?>

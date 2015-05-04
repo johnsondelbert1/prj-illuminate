@@ -97,7 +97,7 @@ $result=mysqli_query( $connection, $query);
 <h1>Add New Staff Member</h1>
 <form method="post">
     <label for="newname">Staff Member Name: </label><input name="newname" id="newname" type="text" value="<?php if(isset($_POST['galname'])){echo $_POST['galname'];} ?>" maxlength="100" />
-    <input name="new" type="submit" value="Add Member" />
+    <input name="new" type="submit" value="Add" class="btn green" />
 </form>
 <?php //} ?>
 <h1>Staff List</h1>
@@ -119,6 +119,7 @@ $result=mysqli_query( $connection, $query);
             <?php //if(check_permission("Forms","delete_form")){?>
             <th style="text-align:center;">
                 <input type="checkbox" id="staffall">
+                <label for="staffall">
             </th>
             <?php //} ?>
         </tr>
@@ -141,7 +142,7 @@ $result=mysqli_query( $connection, $query);
                 <td><a href="edit-staff.php?id=<?php echo urlencode($staff['id']); ?>"><?php echo $staff['name']; ?></a></td>
                 <td><?php if($staff['role']!=""){echo $staff['role'];}else{echo '[N/A]';} ?></td>
 				<?php //if(check_permission("Galleries","delete_gallery")){?>
-				<td width="10%" style="text-align:center;"><input type="checkbox" name="staff[]" value="<?php echo $staff['id']; ?>" /></td>
+				<td width="10%" style="text-align:center;"><input type="checkbox" name="staff[]" id="<?php echo $staff['id']; ?>" /><label for="<?php echo $staff['id']; ?>"></td>
 				<?php //} ?>
 			</tr>
 	<?php
@@ -157,7 +158,7 @@ $result=mysqli_query( $connection, $query);
         	<td></td>
             <td></td>
             <td></td>
-            <td style="text-align:center;"><?php //if(check_permission("Forms","delete_form")){?><input name="delforms" type="submit" value="Delete" class="red" /><?php //} ?></td>
+            <td style="text-align:center;"><?php //if(check_permission("Forms","delete_form")){?><input name="delforms" type="submit" value="Delete" class="btn red" /><?php //} ?></td>
         </tr>
     </table>
 </form>

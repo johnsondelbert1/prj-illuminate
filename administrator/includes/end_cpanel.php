@@ -3,9 +3,8 @@
     		</div>
         
                 <div id="footer">
-                        <div style="float:left; text-align:left; margin-left:10px;">
-                            Project Illuminate by <a href="http://www.secondgenerationdesign.com" target="_blank">Second Gen Design</a>, Copyright © 2011-<?php echo date("Y"); ?>.<br/>
-                            Version <?php echo $site_info['version']; ?>
+                        <div style="float:right; text-align:left; margin-right:10px;">
+                            <img src="./images/favicon.png" width="16" height="16"  alt=""/><a href="http://www.illuminatecms.com" target="_blank"> IlluminateCMS </a>- v<?php echo $site_info['version']; ?><!-- by <a href="http://www.secondgenerationdesign.com" target="_blank">Second Gen Design</a>, --> Copyright © 2011-<?php echo date("Y"); ?>.
                         </div>
                     </div>
             </div>
@@ -41,5 +40,15 @@
     $('select').material_select();
   });
 	  </script>
+      <script>
+	  $( "#horiz-menu li a" ).click(function(e){
+    $(this).next('ul').toggleClass('active');
+});
+</script>
+<!--<script>
+$( "#horiz-menu li ul li a" ).click(function(e){
+    $(this).next('ul').toggleClass('active');
+});
+	  </script>-->
     </body>
 </html>
