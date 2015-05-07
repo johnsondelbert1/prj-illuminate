@@ -1,23 +1,7 @@
 <?php
-$account = simplexml_load_file(dirname(__FILE__).'/../includes/backupaccount.xml');
+require_once('begin.php');
 
-
-session_name("setup");
-session_start();
-
-if(!isset($_SESSION['username'])){
-	header("Location: setuplogin.php");
-}
-	function handleError($errno, $errstr, $errfile, $errline, array $errcontext)
-	{
-		// error was suppressed with the @-operator
-		if (0 === error_reporting()) {
-			return false;
-		}
-	
-		throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
-	}
-set_error_handler('handleError');
+$previousdb = $dbconnection;
 
 if((isset($_POST['dbserver'])&&$_POST['dbserver']=="")||(isset($_POST['dbuser'])&&$_POST['dbuser']=="")||(isset($_POST['dbname'])&&$_POST['dbname']=="")){
 	$message="<h3 class=\"error\">Server, User, or DB Name is blank.</h3>";
@@ -32,9 +16,15 @@ if((isset($_POST['dbserver'])&&$_POST['dbserver']=="")||(isset($_POST['dbuser'])
 			$b = $doc->createElement( "database" );
 			
 				$firstrun = $doc->createElement( "firstrun" );
-				$firstrun->appendChild(
-					$doc->createTextNode( "false" )
-				);
+				if($previousdb->firstrun == "false"){
+					$firstrun->appendChild(
+						$doc->createTextNode( "false" )
+					);
+				}else{
+					$firstrun->appendChild(
+						$doc->createTextNode( "true" )
+					);
+				}
 				$b->appendChild( $firstrun );
 				
 				$server = $doc->createElement( "server" );
@@ -63,18 +53,9 @@ if((isset($_POST['dbserver'])&&$_POST['dbserver']=="")||(isset($_POST['dbuser'])
 			
 			$doc->appendChild( $b );
 			
-			$doc->save(dirname(__FILE__).'/../includes/database.xml');
+			$doc->save(dirname(__FILE__).'/../../includes/database.xml');
 			
-			$_SESSION=array();
-			
-			if(isset($_COOKIE[session_name()])){
-				unset($_SESSION['username']);
-				unset($_SESSION['password']);
-			}
-			
-			session_destroy();
-			
-			header("Location: index.php");
+			header("Location: dbformat.php");
 			
 		}catch (ErrorException $e){
 			$message="<h3 class=\"error\">This information didn't work. Edit connection information here. \" ".$e->getMessage()." \"</h3>";
@@ -86,7 +67,7 @@ if((isset($_POST['dbserver'])&&$_POST['dbserver']=="")||(isset($_POST['dbuser'])
 	}
 }
 
-$dbconnect = simplexml_load_file(dirname(__FILE__).'/../includes/database.xml');
+$dbconnect = simplexml_load_file(dirname(__FILE__).'/../../includes/database.xml');
 
 if(!isset($_POST['submit'])){
 	
@@ -97,8 +78,11 @@ if(!isset($_POST['submit'])){
 		
 	}else{
 		try{
-			mysqli_connect($dbconnect->server,  $dbconnect->username,  $dbconnect->password, $dbconnect->name);
+			$connection = mysqli_connect($dbconnect->server,  $dbconnect->username,  $dbconnect->password, $dbconnect->name);
 			
+		if($dbconnect->firstrun=="true"){
+			header("Location: dbformat.php");
+		}else{
 			$_SESSION=array();
 			
 			if(isset($_COOKIE[session_name()])){
@@ -107,35 +91,18 @@ if(!isset($_POST['submit'])){
 			}
 			
 			session_destroy();
-			
 			header("Location: index.php");
+		}
 		}catch (ErrorException $e){
 			$message="<h3 class=\"error\">There is a problem connecting to the website database. Edit connection information here. Or is your SQL server down? \" ".$e->getMessage()." \"</h3>";
 		}
 	}
 }
 ?>
-<!doctype html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>Database Setup</title>
-    <link rel="shortcut icon" href="images/favicon.png">
-    <link href="styles/main.css" rel="stylesheet" type="text/css" />
-    <link href="styles/fonts.css" rel="stylesheet" type="text/css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>
-    
-    <style type="text/css">
-		body{
-			background-color:#0E4700;
-			color:#FFFFFF;
-		}
-	</style>
-</head>
-
-<body>
-<?php if(!empty($message)){echo $message;} ?>
-<?php if($dbconnect->firstrun=="true"){echo "<h1>Step 1 of 2: Connect to Database</h1>";} ?>
+<?php
+$pgtitle = 'Step 1 of 3: Connect to Database';
+require_once('begin_html.php');
+?>
 <a href="setuplogin.php?action=logout">Logout</a><br>
 <form method="post" action="dbconnect.php">
 	Server <input type="text" name="dbserver" value="<?php echo $dbconnect->server; ?>" /><br>

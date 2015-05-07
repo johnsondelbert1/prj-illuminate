@@ -159,7 +159,15 @@ $result=mysqli_query( $connection, $query);
             <?php } ?>
         </tr>
     <?php
-    while($gallery=mysqli_fetch_array($result)){ ?>
+    while($gallery=mysqli_fetch_array($result)){
+		//re-create deleted gallery folder
+		$dir = "../galleries/".$gallery['name']."/";
+		if(!file_exists($dir)){
+			mkdir($dir);
+			mkdir($dir."gallery/");
+			mkdir($dir."gallery-thumbs/");
+		}
+		?>
     
         <tr>
             <td><?php echo $gallery['id']; ?></td>
