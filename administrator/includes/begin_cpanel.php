@@ -88,18 +88,16 @@ if(isset($logo[2])){
                         <li>
                             <a href="#">Content<span class="mdi-navigation-arrow-drop-down"></a>
                             <ul>
-                            
-                                <?php if(check_permission(array("Uploading;upload_files","Uploading;delete_files","Uploading;create_folders","Uploading;rename_folders","Uploading;delete_folders",))){?>
-                                <li>
-                                    <a href="upload-files.php">Upload</a>
+                            <li>
+                                    <a href="#">Pages<span class="mdi-navigation-arrow-drop-down"></span></a>
+                                    <ul>
+                                    <li><a href="page_list.php">Edit Pages</a></li>
+                                        <?php if(check_permission("Pages","add_pages")){?><li><a href="edit_page.php?action=newpage">Create Page</a></li><?php } ?>
+                                        
+                                       
+                                    </ul>
                                 </li>
-                                <?php } ?>
-                                <?php if(check_permission(array("Forms;create_form","Forms;edit_form","Forms;delete_form",))){?>
-                    <li>
-                    	<a href="form-list.php">Forms</a>
-                    </li>
-                    <?php } ?>
-                    <li>
+                                <li>
                             <a href="#">Images<span class="mdi-navigation-arrow-drop-down"></span></a>
                             <ul>
 								<?php if(check_permission(array("Galleries;add_gallery","Galleries;edit_gallery","Galleries;delete_gallery","Galleries;rename_gallery"))){?>
@@ -113,15 +111,18 @@ if(isset($logo[2])){
                     </li>
                                 </ul>
                                 </li>
+                                <?php if(check_permission(array("Uploading;upload_files","Uploading;delete_files","Uploading;create_folders","Uploading;rename_folders","Uploading;delete_folders",))){?>
                                 <li>
-                                    <a href="#">Pages<span class="mdi-navigation-arrow-drop-down"></span></a>
-                                    <ul>
-                                    <li><a href="page_list.php">Edit Pages</a></li>
-                                        <?php if(check_permission("Pages","add_pages")){?><li><a href="edit_page.php?action=newpage">Create Page</a></li><?php } ?>
-                                        
-                                       
-                                    </ul>
+                                    <a href="upload-files.php">Upload</a>
                                 </li>
+                                <?php } ?>
+                                <?php if(check_permission(array("Forms;create_form","Forms;edit_form","Forms;delete_form",))){?>
+                    <li>
+                    	<a href="form-list.php">Forms</a>
+                    </li>
+                    <?php } ?>
+                    
+                                
                         	</ul>
                         </li>
                     <?php } ?>
@@ -150,6 +151,7 @@ if(isset($logo[2])){
                 </ul>
             </div>
             </div>
+            <!--
             <ul id="menu">
                 <li class="menuitem">
                     <a href="index.php"><span class="icon-checkmark"></span></a>
@@ -164,6 +166,7 @@ if(isset($logo[2])){
                     <a href="index.php"><span class="icon-cog"></span></a>
                 </li>
                     </ul>
+                    -->
         <div class="contentwrap">
             <div class="title">
                 <h1><span class="<?php echo $pgsettings['icon']; ?>"></span>   <?php echo $pgsettings['title']; ?></h1>

@@ -192,7 +192,7 @@ while($subgallery=mysqli_fetch_array($subgalleryquery)){
             make_thumb($images_dir.$file,$thumbnail_image,$thumbs_width,$thumbs_height,$extension);
           }
         }?>
-        <div class="photo-link"><span class="galleryImage"><img src="<?php echo $thumbnail_image; ?>" style="width:150px; height:150px;" /><input type="checkbox" name="files[]" id="<?php echo $file; ?>" /><input name="delete_CheckBox" type="hidden" value="false" /></span></div>
+        <div class="photo-link"><span class="galleryImage"><img src="<?php echo $thumbnail_image; ?>" style="width:150px; height:150px;" /><input type="checkbox" name="files[]" value="<?php echo $file; ?>" id="<?php echo $file; ?>" /><input name="delete_CheckBox" type="hidden" value="false" /></span></div>
         <?php
       }
       ?><div class="clear"></div><?php
