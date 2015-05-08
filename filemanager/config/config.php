@@ -1,8 +1,7 @@
 <?php
-require_once("../../includes/functions.php");
+require_once("../includes/functions.php");
 //session_start();
 mb_internal_encoding('UTF-8');
-date_default_timezone_set('Europe/Rome');
 //------------------------------------------------------------------------------
 // DON'T COPY THIS VARIABLES IN FOLDERS config.php FILES
 //------------------------------------------------------------------------------
@@ -28,9 +27,9 @@ $base_url = $site_info['base_url'];
 	// Get domain portion
 	$_SERVER['HTTP_HOST']; // DON'T TOUCH (base url (only domain) of site (without final /)).
 $upload_dir = '/uploads/'; // path from base_url to base of upload folder (with start and final /)
-$current_path = '../../uploads/'; // relative path from filemanager folder to upload folder (with final /)
+$current_path = '../uploads/'; // relative path from filemanager folder to upload folder (with final /)
 //thumbs folder can't put inside upload folder
-$thumbs_base_path = '../thumbs/'; // relative path from filemanager folder to thumbs folder (with final /)
+$thumbs_base_path = 'thumbs/'; // relative path from filemanager folder to thumbs folder (with final /)
 
 // OPTIONAL SECURITY
 // if set to true only those will access RF whose url contains the access key(akey) like: 

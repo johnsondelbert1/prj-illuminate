@@ -174,18 +174,19 @@ $result=mysqli_query( $connection, $query);
             <td><a href="edit_gallery.php?gallid=<?php echo urlencode($gallery['id']); ?>"><?php echo $gallery['name']; ?></a></td>
             <td>
             <?php
-			    $i = -1; 
+			    $i = 0; 
 				$dir = "../galleries/".$gallery['name']."/gallery/";
-				if ($handle = opendir($dir)) {
-					while (($file = readdir($handle)) !== false){
-						if (!in_array($file, array('.', '..')) && !is_dir($dir.$file)) 
-							$i++;
-					}
+				$files = glob($dir . '*.{jpg,gif,png,jpeg,JPG,GIF,PNG,JPEG}', GLOB_BRACE);
+				
+				if ( $files !== false )
+				{
+					$filecount = count( $files );
+					echo $filecount;
 				}
-				if($i == -1){
-					$i=0;
+				else
+				{
+					echo 0;
 				}
-				echo $i;
 			?>
             </td>
             <?php if(check_permission("Galleries","delete_gallery")){?>

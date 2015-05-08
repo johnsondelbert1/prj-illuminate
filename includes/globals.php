@@ -1,4 +1,4 @@
 <?php
 //global variables
-$site_version = '1.3';
+$site_version = '1.4';
 ?>

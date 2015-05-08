@@ -3,6 +3,8 @@ require_once("connection.php");
 require_once("session.php");
 require_once("globals.php");
 
+//echo dirname( __FILE__ ).'/';
+
 //global DB variables
 $query="SELECT * FROM `site_info` WHERE `id` = 1";
 $result=mysqli_query( $connection, $query);
@@ -495,214 +497,192 @@ function nav($position, $pgselection){
 	global $site_layout;
 	global $site_info;
 	global $logo;
-	if($position=="horiz" || "mobile"){
+
+	if($position=="mobile"){
 		$query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 0 AND `published` = 1 ORDER BY `position` ASC";
-	}elseif($position=="vert"){
-		$query="SELECT * FROM `pages` WHERE `vert_menu` = 1 AND `issubpage` = 0 AND `published` = 1 ORDER BY `position` ASC";
-	}
-	$result=mysqli_query( $connection, $query);
-	$numpages=mysqli_num_rows($result);
-	if($numpages!=0){
-		if($position=="horiz"){ ?>
-            <div class="nav" style="background-color:<?php echo $site_layout['menu_color'] ?>;">
-                <ul id="horiz-menu">
-    	<?php }elseif($position=="vert"){ ?>
-        	<td style="vertical-align:top; width:200px; padding-right:5px;" id="vert-td"><div style="width:100%;">
-    		<ul id="vert-menu">
-    	<?php }elseif($position=="mobile"){
-			
-			?>
-            <ul id="slide-out" class="side-nav">
-                <div style="height:auto; width:100%;" class="mobile-logo">
-                	<?php if($logo!=false){ ?>
-						<?php if($site_info['logo_url']!=''){?>
-                        <a href="<?php echo $site_info['logo_url']; ?>"><img src="<?php echo $site_info['base_url']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $site_info['name']; ?> Logo" width="240" /></a>
-                        <?php }else{ ?>
-                        <img src="<?php echo $site_info['base_url']; ?>/images/logo/<?php echo $logo; ?>" width="240" />
-					<?php } 
-                    } ?>
-                </div>
-                <?php
-                while($page=mysqli_fetch_array($result)){
-                    if($page['issubpage']==0){ $lastmainpage=$page['id'];?>
-                    <li<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php 
-                    
-                        nav_button($page);
-                        
-                        $query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
-                        $subpgresult=mysqli_query( $connection, $query);
-                        confirm_query($subpgresult);
-                        if(mysqli_num_rows($subpgresult)!=0){?>
-                            <ul class="collapsible collapsible-accordion">
-                                <li>
-                                    <a class="collapsible-header"><span class="mdi-navigation-arrow-drop-down"></span></a>
-                                              <div class="collapsible-body">
-                                                <ul>
-                            <?php while($subpage=mysqli_fetch_array($subpgresult)){?>
-                                <li style="width:100%;"<?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php
-                                
-                                nav_button($subpage);
-                                
-                                ?>
-                                </li>
-                            <?php } ?>
-                                    </ul>
-                                  </div>
-                                </li>
-                              </ul>
-                        <?php } ?>
-                        </li>
-                    <?php
-                    }
-                    ?>
-                    
-                <?php
-                }
-				?>
-				<br><hr/><br>
-                <?php
-				$query="SELECT * FROM `pages` WHERE `vert_menu` = 1 AND `issubpage` = 0 AND `published` = 1 ORDER BY `position` ASC";
-				$result=mysqli_query( $connection, $query);
-				$numpages=mysqli_num_rows($result);
-				
-                while($page=mysqli_fetch_array($result)){
-                    if($page['issubpage']==0){ $lastmainpage=$page['id'];?>
-                    <li<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php 
-                    
-                        nav_button($page);
-                        
-                        $query="SELECT * FROM `pages` WHERE `vert_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
-                        $subpgresult=mysqli_query( $connection, $query);
-                        confirm_query($subpgresult);
-                        if(mysqli_num_rows($subpgresult)!=0){?>
-                        <li class="no-padding">
-                            <ul class="collapsible collapsible-accordion">
-                                <li>
-                                    <a class="collapsible-header"><?php nav_button($page);?><i class="mdi-navigation-arrow-drop-down"></i></a>
-                                              <div class="collapsible-body">
-                                                <ul>
-                            <?php while($subpage=mysqli_fetch_array($subpgresult)){?>
-                                <li style="width:100%;"<?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php
-                                
-                                nav_button($subpage);
-                                
-                                ?>
-                                </li>
-                            <?php } ?>
-                                    </ul>
-                                  </div>
-                                </li>
-                              </ul>
-                              </li>
-                        <?php } ?>
-                        </li>
-                    <?php
-                    }
-                    ?>
-                    
-                <?php
-                }
-            ?>
-            <br><hr/><br>
-            <?php check_login(); ?>
-            </ul>
-    	<?php }
-		
-            //$buttonwidth = $numpages;
-            //$buttonwidth = 900 - $buttonwidth;
-            //$buttonwidth = $buttonwidth / $numpages + 1;
-            if($position=="horiz"){
-                $buttonwidth = round(100 / $numpages, 4);
-            }elseif($position=="vert"){
-                $buttonwidth = 100;
-            }
-            
-            $pageorder = 0;
-                
-            while($page=mysqli_fetch_array($result)){
-                if($page['issubpage']==0){ $lastmainpage=$page['id'];?>
-                <li style="min-width:<?php echo $buttonwidth; ?>%;"<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><a style="min-width:<?php echo $buttonwidth; ?>%;" href="<?php
-                        if($page['type']=='Custom' || $page['type']=='Staff'){
-                            echo $site_info['base_url'];?>/page/<?php echo urlencode($page['name']);
-                        }elseif($page['type']=='Blog'){
-                            echo $site_info['base_url'];?>/blog<?php
-                        }elseif($page['type']=='Forum'){
-                            echo $site_info['base_url'];?>/forums<?php
-                        }elseif($page['type']=='Link'){
-                            echo $page['url'];
-                        }
-                    ?>" <?php if($page['target']!="_self"){echo "target=\"".$page['target']."\"";} ?>><?php echo $page['name'];?></a><?php 
-                    $query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
-                    $subpgresult=mysqli_query( $connection, $query);
-                    confirm_query($subpgresult);
-                    if(mysqli_num_rows($subpgresult)!=0){?>
-                        <ul style="min-width:100%;">
-                        <?php while($subpage=mysqli_fetch_array($subpgresult)){?>
-                            <li style="width:100%;"<?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>>
-                                <a href="<?php
-                                    if($subpage['type']=='Custom' || $page['type']=='Staff'){
-                                        echo $site_info['base_url'];?>/page/<?php echo urlencode($subpage['name']);
-                                    }elseif($subpage['type']=='Blog'){
-                                        echo $site_info['base_url'];?>/blog<?php
-                                    }elseif($subpage['type']=='Forum'){
-                                        echo $site_info['base_url'];?>/forums<?php
-                                    }elseif($subpage['type']=='Link'){
-                                        echo $subpage['url'];
-                                    }
-                    ?>" <?php if($subpage['target']!="_self"){echo "target=\"".$subpage['target']."\"";} ?>><?php echo $subpage['name'];?></a>
-                            </li>
-                        <?php } ?>
-                        </ul>
-                    <?php } ?>
-                    </li>
-                <?php
-                }
-            }
+		$result=mysqli_query( $connection, $query);
+		$numpages=mysqli_num_rows($result);
+		if($numpages!=0){
 		?>
+		<ul id="slide-out" class="side-nav">
+			<div style="height:auto; width:100%;" class="mobile-logo">
+				<?php if($logo!=false){ ?>
+					<?php if($site_info['logo_url']!=''){?>
+					<a href="<?php echo $site_info['logo_url']; ?>"><img src="<?php echo $site_info['base_url']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $site_info['name']; ?> Logo" width="240" /></a>
+					<?php }else{ ?>
+					<img src="<?php echo $site_info['base_url']; ?>/images/logo/<?php echo $logo; ?>" width="240" />
+				<?php } 
+				} ?>
+			</div>
+			<?php
+			while($page=mysqli_fetch_array($result)){
+				if($page['issubpage']==0){ $lastmainpage=$page['id'];?>
+				<li<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php 
+				
+					nav_button($page);
+					
+					$query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
+					$subpgresult=mysqli_query( $connection, $query);
+					confirm_query($subpgresult);
+					if(mysqli_num_rows($subpgresult)!=0){?>
+						<ul class="collapsible collapsible-accordion">
+							<li>
+								<a class="collapsible-header"><span class="mdi-navigation-arrow-drop-down"></span></a>
+										  <div class="collapsible-body">
+											<ul>
+						<?php while($subpage=mysqli_fetch_array($subpgresult)){?>
+							<li style="width:100%;"<?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php
+							
+							nav_button($subpage);
+							
+							?>
+							</li>
+						<?php } ?>
+								</ul>
+							  </div>
+							</li>
+						  </ul>
+					<?php } ?>
+					</li>
+				<?php
+				}
+				?>
+				
+			<?php
+			}
+		}
+			?>
+			<br><hr/><br>
+			<?php
+			$query="SELECT * FROM `pages` WHERE `vert_menu` = 1 AND `issubpage` = 0 AND `published` = 1 ORDER BY `position` ASC";
+			$result=mysqli_query( $connection, $query);
+			$numpages=mysqli_num_rows($result);
+			
+			while($page=mysqli_fetch_array($result)){
+				if($page['issubpage']==0){ $lastmainpage=$page['id'];?>
+				<li<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php 
+				
+					nav_button($page);
+					
+					$query="SELECT * FROM `pages` WHERE `vert_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
+					$subpgresult=mysqli_query( $connection, $query);
+					confirm_query($subpgresult);
+					if(mysqli_num_rows($subpgresult)!=0){?>
+					<li class="no-padding">
+						<ul class="collapsible collapsible-accordion">
+							<li>
+								<a class="collapsible-header"><?php nav_button($page);?><i class="mdi-navigation-arrow-drop-down"></i></a>
+										  <div class="collapsible-body">
+											<ul>
+						<?php while($subpage=mysqli_fetch_array($subpgresult)){?>
+							<li style="width:100%;"<?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php
+							
+							nav_button($subpage);
+							
+							?>
+							</li>
+						<?php } ?>
+								</ul>
+							  </div>
+							</li>
+						  </ul>
+						  </li>
+					<?php } ?>
+					</li>
+				<?php
+				}
+				?>
+				
+			<?php
+			}
+		?>
+		<br><hr/><br>
+		<?php check_login(); ?>
 		</ul>
-        <?php if($position=="vert"){?>
-        </div></td>
-        <?php }elseif($position=="horiz"){?>
-			</div></nav>
-		<?php } ?>
-	<?php
-	}
-    $query="SELECT * FROM  `features` WHERE  `id` =  1";
-    $result=mysqli_query($connection, $query);
-    $feature=mysqli_fetch_array($result);
-    if($feature['twitterfeed']==1){
-    ?>
-    
-    <!--<script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
-    <script>
-    new TWTR.Widget({
-      version: 2,
-      type: 'profile',
-      rpp: 4,
-      interval: 30000,
-      width: 135,
-      height: 300,
-      theme: {
-        shell: {
-          background: '#FFFFFF',
-          color: '#000000'
-        },
-        tweets: {
-          background: '#000000',
-          color: '#ffffff',
-          links: '#4aed05'
-        }
-      },
-      features: {
-        scrollbar: false,
-        loop: false,
-        live: false,
-        behavior: 'all'
-      }
-    }).render().setUser('<?php //echo $feature['twitteruser']; ?>').start();
-    </script>-->
-    
-    <?php
+	<?php }
+	
+	if($position=="horiz"||$position=="vert"){
+			if($position=="horiz"){
+				$query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 0 AND `published` = 1 ORDER BY `position` ASC";
+			}elseif($position=="vert"){
+				$query="SELECT * FROM `pages` WHERE `vert_menu` = 1 AND `issubpage` = 0 AND `published` = 1 ORDER BY `position` ASC";
+			}
+			
+			$result=mysqli_query( $connection, $query);
+			$numpages=mysqli_num_rows($result);
+			
+			if($position=="horiz"){ ?>
+				<div class="nav" style="background-color:<?php echo $site_layout['menu_color'] ?>;">
+					<ul id="horiz-menu">
+			<?php }elseif($position=="vert"){ ?>
+				<td style="vertical-align:top; width:200px; padding-right:5px;" id="vert-td"><div style="width:100%;">
+					<ul id="vert-menu">
+			<?php }
+				//$buttonwidth = $numpages;
+				//$buttonwidth = 900 - $buttonwidth;
+				//$buttonwidth = $buttonwidth / $numpages + 1;
+				if($position=="horiz"){
+					$buttonwidth = round(100 / $numpages, 4);
+				}elseif($position=="vert"){
+					$buttonwidth = 100;
+				}
+				
+				$pageorder = 0;
+
+				if($numpages!=0){
+				while($page=mysqli_fetch_array($result)){
+					if($page['issubpage']==0){ $lastmainpage=$page['id'];?>
+                        <li style="min-width:<?php echo $buttonwidth; ?>%;"<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><a style="min-width:<?php echo $buttonwidth; ?>%;" href="<?php
+                                if($page['type']=='Custom' || $page['type']=='Staff'){
+                                    echo $site_info['base_url'];?>/page/<?php echo urlencode($page['name']);
+                                }elseif($page['type']=='Blog'){
+                                    echo $site_info['base_url'];?>/blog<?php
+                                }elseif($page['type']=='Forum'){
+                                    echo $site_info['base_url'];?>/forums<?php
+                                }elseif($page['type']=='Link'){
+                                    echo $page['url'];
+                                }
+                            ?>" <?php if($page['target']!="_self"){echo "target=\"".$page['target']."\"";} ?>><?php echo $page['name'];?></a><?php 
+                            if($position=="horiz"){
+                                $query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
+                            }elseif($position=="vert"){
+                                $query="SELECT * FROM `pages` WHERE `vert_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
+                            }
+                            $subpgresult=mysqli_query( $connection, $query);
+                            confirm_query($subpgresult);
+                            if(mysqli_num_rows($subpgresult)!=0){?>
+                                <ul style="min-width:100%;">
+                                <?php while($subpage=mysqli_fetch_array($subpgresult)){?>
+                                    <li style="width:100%;"<?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>>
+                                        <a href="<?php
+                                            if($subpage['type']=='Custom' || $page['type']=='Staff'){
+                                                echo $site_info['base_url'];?>/page/<?php echo urlencode($subpage['name']);
+                                            }elseif($subpage['type']=='Blog'){
+                                                echo $site_info['base_url'];?>/blog<?php
+                                            }elseif($subpage['type']=='Forum'){
+                                                echo $site_info['base_url'];?>/forums<?php
+                                            }elseif($subpage['type']=='Link'){
+                                                echo $subpage['url'];
+                                            }
+                            ?>" <?php if($subpage['target']!="_self"){echo "target=\"".$subpage['target']."\"";} ?>><?php echo $subpage['name'];?></a>
+                                    </li>
+                                <?php } ?>
+                                </ul>
+                            <?php } ?>
+                            </li>
+                        <?php
+                        }
+                    }
+				}
+			?>
+			</ul>
+			<?php if($position=="vert"){?>
+				</div></td>
+			<?php }elseif($position=="horiz"){?>
+				</div></nav>
+			<?php } ?>
+		<?php
+		
     }
 	return $numpages;
 }
