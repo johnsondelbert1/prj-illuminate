@@ -606,8 +606,15 @@ function nav($position, $pgselection){
 			}
 		?>
 		<br><hr/><br>
-		<?php check_login(); ?>
-		</ul>
+			<p><?php
+			if(logged_in()){?>
+				<?php echo "<b>".$_SESSION['username']."</b>";?>
+				 | <a href="<?php echo $site_info['base_url']; ?>/account-settings.php">Account Settings</a> | <?php if(check_permission("Website","cpanel_access")){?><a href="<?php echo $site_info['base_url']; ?>/administrator/" target="_blank">CPanel</a> | <?php } ?><a href="<?php echo $site_info['base_url']; ?>/logout.php">Logout</a>
+			<?php }else{ ?>
+					<a href="<?php echo $site_info['base_url']; ?>/index.php">Register</a> | <a href="<?php echo $site_info['base_url']; ?>/login.php">Login</a>
+			<?php }?>
+				</p>
+				</ul>
 	<?php }
 	
 	if($position=="horiz"||$position=="vert"){
