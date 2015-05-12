@@ -117,7 +117,7 @@ if(isset($_POST['deletefolder'])){
         <th width="25%">Folder:</th>
         <th width="55%">Number of files:</th>
         <?php if(check_permission("Uploading","delete_folders")){?>
-        	<th width="10%"><input type="checkbox" id="files"></th>
+        	<th width="10%"><input type="checkbox" id="files"><label for="files"></th>
         <?php } ?>
       </tr>
         <?php
@@ -140,7 +140,7 @@ if(isset($_POST['deletefolder'])){
 					<td style="text-align:left;"><a href="upload-to-folder.php?folder=<?php echo urlencode(substr($dir."/", 11));?>"><?php echo substr($dir, 11)."/";?></a></td>
 					<td><?php echo $i;?></td>
                     <?php if(check_permission("Uploading","delete_folders")){?>
-						<td><input type="checkbox" name="folders[]" value="<?php echo substr($dir, 11); ?>" /></td>
+						<td><input type="checkbox" name="folders[]" id="<?php echo substr($dir, 11); ?>" value="<?php echo substr($dir, 11); ?>" /><label for="<?php echo substr($dir, 11); ?>"></td>
                     <?php } ?>
 				  </tr>
             <?php }
@@ -153,7 +153,7 @@ if(isset($_POST['deletefolder'])){
       <tr>
         <th colspan="2"></th>
         <?php if(check_permission("Uploading","delete_folders")){?>
-        	<th width="10%"><input class="red" type="submit" name="deletefolder" value="Delete Folders" /></th>
+        	<th width="10%"><input class="red btn" type="submit" name="deletefolder" value="Delete Folders" /></th>
 		<?php } ?>
       </tr>
     </table>

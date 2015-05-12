@@ -98,7 +98,7 @@ confirm_query($subgalleryquery);
 	</script>
 <table cellpadding="5" id="sticker">
   <tr>
-    <td width="110px"><a class="red" href="upload-files.php">Cancel</a></td>
+    <td width="110px"><a class="red btn" href="upload-files.php">Cancel</a></td>
   <td></td>
   </tr>
 </table>
@@ -117,7 +117,7 @@ confirm_query($subgalleryquery);
         <th scope="col" width="45%">Filename</th>
         <th scope="col" width="45%">File path (Copy link address)</th>
         <?php if(check_permission("Uploading","delete_files")){?>
-            <th scope="col" width="10%"><input type="checkbox" id="file"></th>
+            <th scope="col" width="10%"><input type="checkbox" id="file"><label for="file"></th>
         <?php } ?>
       </tr>
         <?php
@@ -131,7 +131,7 @@ confirm_query($subgalleryquery);
                     <td><?php echo $file; ?></td>
                     <td><a href="../uploads/<?php echo urldecode($_GET['folder']).$file; ?>" target="_blank">Link</a></td>
                     <?php if(check_permission("Uploading","delete_files")){?>
-                        <td style="text-align:center;"><input type="checkbox" name="files[]" value="<?php echo $file; ?>" /></td>
+                        <td style="text-align:center;"><input type="checkbox" name="files[]" id="<?php echo $file; ?>" value="<?php echo $file; ?>" /><label for="<?php echo $file; ?>"></td>
                     <?php } ?>
                 </tr>
             <?php
@@ -144,7 +144,7 @@ confirm_query($subgalleryquery);
                 <tr>
                     <td colspan="2"></td>
                     <?php if(check_permission("Uploading","delete_files")){?>
-                        <td><input name="delfiles" type="submit" value="Delete Files" class="red" /></td>
+                        <td><input name="delfiles" type="submit" value="Delete Files" class="red btn" /></td>
                     <?php } ?>
                 </tr>
     </table>
