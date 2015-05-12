@@ -1,7 +1,7 @@
 IlluminateCMS
 ==============
 IlluminateCMS is a built from the ground up Content management system that was created because no other CMS met our needs
-
+<http://www.IlluminateCMS.com>
 License
 ==============
 Copyright (C) 2015  Second Gen Design
