@@ -516,9 +516,9 @@ function nav($position, $pgselection){
                 <div style="height:auto; width:100%;" class="mobile-logo">
                 	<?php if($logo!=false){ ?>
 						<?php if($site_info['logo_url']!=''){?>
-                        <a href="<?php echo $site_info['logo_url']; ?>"><img src="<?php echo $site_info['base_url']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $site_info['name']; ?> Logo" width="240" /></a>
+                        <a href="<?php echo $site_info['logo_url']; ?>"><img src="<?php echo $site_info['base_url']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $site_info['name']; ?> Logo" width="100%" /></a>
                         <?php }else{ ?>
-                        <img src="<?php echo $site_info['base_url']; ?>/images/logo/<?php echo $logo; ?>" width="240" />
+                        <img src="<?php echo $site_info['base_url']; ?>/images/logo/<?php echo $logo; ?>" width="100%" />
 					<?php } 
                     } ?>
                 </div>
@@ -604,7 +604,9 @@ function nav($position, $pgselection){
                 }
             ?>
             <br><hr/><br>
+            <div class="mobile-login">
             <?php check_login(); ?>
+            </div>
             </ul>
     	<?php }
 		
