@@ -93,7 +93,7 @@ if(isset($logo[2])){
 			background-color:<?php echo $site_layout['menu_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		#horiz-menu li:hover > a, #horiz-menu li:hover > ul, #horiz-menu ul a:hover, #vert-menu li:hover > a, #vert-menu li:hover > ul, #vert-menu ul a:hover, .blog, .TabbedPanelsTab, .accent, .forum tr:hover, .forumsuser, ul.MenuBarHorizontal a:hover, ul.MenuBarHorizontal a:focus, .forumfooter{
+		#horiz-menu li:hover > a, #horiz-menu li:hover > ul, #horiz-menu ul a:hover, #vert-menu li:hover > a, #vert-menu li:hover > ul, #vert-menu ul a:hover, .blog, .TabbedPanelsTab, .accent, .forum tr:hover, .forumsuser, ul.MenuBarHorizontal a:hover, ul.MenuBarHorizontal a:focus, .forumfooter, ul.side-nav li{
 			background-color:<?php echo $site_layout['accent_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
