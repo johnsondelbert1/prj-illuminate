@@ -313,7 +313,7 @@ if($_GET['action']=="edit"){
 <tr>
 <td width="50%">
 <div class="input-field col s6">
-        	<input id="title" type="text" value="<?php if(isset($_GET['page'])){echo $selpage['name'];} ?>" class="validate" />
+        	<input id="title" type="text" name="name" value="<?php if(isset($_GET['page'])){echo $selpage['name'];} ?>" class="validate" />
             <label for="title">Title</label>
             </div>
             </td>

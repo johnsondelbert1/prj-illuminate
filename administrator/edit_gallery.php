@@ -125,10 +125,10 @@ confirm_query($subgalleryquery);
 	</script>
 <form method="post" action="edit_gallery.php?gallid=<?php echo $_GET['gallid']; ?>">
 <table cellpadding="5" id="sticker">
-  <tr>
-    <td width="110px"><input name="submit" type="submit" value="Save" class="btn green"/></td>
-    <td width="110px"><a class="btn red" href="gallery-list.php">Cancel</a></td>
-  <td></td>
+  <tr><td>
+<input name="submit" type="submit" value="Save" class="btn green"/>
+<a class="btn red" href="gallery-list.php">Cancel</a>
+  </td>
   </tr>
 </table>
 <h1>Gallery Info</h1>
@@ -157,7 +157,7 @@ while($subgallery=mysqli_fetch_array($subgalleryquery)){
     ?>
         <tr>
             <td width="90%"><a href="edit_gallery.php?gallid=<?php echo urlencode($subgallery['id']); ?>"><?php echo $subgallery['name']; ?></a></td>
-            <td width="10%" style="text-align:center;"><input type="checkbox" name="subgalleries[]" value="<?php echo $subgallery['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="<?php echo $subgallery['id']; ?>"></td>
+            <td width="10%" style="text-align:center;"><input type="checkbox" name="subgalleries[]" id="<?php echo $subgallery['id']; ?>" value="<?php echo $subgallery['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="<?php echo $subgallery['id']; ?>"></td>
         </tr>
 <?php }
 } ?>
@@ -192,7 +192,7 @@ while($subgallery=mysqli_fetch_array($subgalleryquery)){
             make_thumb($images_dir.$file,$thumbnail_image,$thumbs_width,$thumbs_height,$extension);
           }
         }?>
-        <div class="photo-link"><span class="galleryImage"><img src="<?php echo $thumbnail_image; ?>" style="width:150px; height:150px;" /><input type="checkbox" name="files[]" id="<?php echo $file; ?>" /><input name="delete_CheckBox" type="hidden" value="false" /></span></div>
+        <div class="photo-link"><span class="galleryImage"><img src="<?php echo $thumbnail_image; ?>" style="width:150px; height:150px;" /><input type="checkbox" name="files[]" value="<?php echo $file; ?>" id="<?php echo $file; ?>" /><input name="delete_CheckBox" type="hidden" value="false" /></span></div>
         <?php
       }
       ?><div class="clear"></div><?php
