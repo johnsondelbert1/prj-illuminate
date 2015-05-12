@@ -5996,7 +5996,7 @@ a.waves-effect .waves-ripple {
     font-size: 1.6rem;
     line-height: 3rem;
     display: block;
-    float: left;
+    float: right;
     text-align: center;
     margin-right: 1rem; }
 
@@ -6016,7 +6016,7 @@ ul.side-nav ul.collapsible {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
-  margin-bottom:35px; }
+  margin-bottom:0; }
   ul.side-nav ul.collapsible li {
     padding: 0; }
 ul.side-nav .collapsible-header {
