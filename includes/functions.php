@@ -488,7 +488,7 @@ function nav_button($page){
 	}elseif($page['type']=='Link'){
 		echo $page['url'];
 	}
-	?>" <?php if($page['target']!="_self"){echo "target=\"".$page['target']."\"";} ?>"><?php echo $page['name'];?></a>
+	?>" <?php if($page['target']!="_self"){echo 'target="'.$page['target'].'"';} ?>><?php echo $page['name'];?></a>
 <?php
 }
 
@@ -517,27 +517,32 @@ function nav($position, $pgselection){
 			<?php
 			while($page=mysqli_fetch_array($result)){
 				if($page['issubpage']==0){ $lastmainpage=$page['id'];?>
-				<li<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php 
-				
-					nav_button($page);
+				<li<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php 	
 					
 					$query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
 					$subpgresult=mysqli_query( $connection, $query);
 					confirm_query($subpgresult);
-					if(mysqli_num_rows($subpgresult)!=0){?>
+					
+					if(mysqli_num_rows($subpgresult)==0){
+						nav_button($page);
+					}else{?>
 						<ul class="collapsible collapsible-accordion">
 							<li>
-								<a class="collapsible-header"><span class="mdi-navigation-arrow-drop-down"></span></a>
-										  <div class="collapsible-body">
-											<ul>
-						<?php while($subpage=mysqli_fetch_array($subpgresult)){?>
-							<li style="width:100%;"<?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php
-							
-							nav_button($subpage);
-							
-							?>
-							</li>
-						<?php } ?>
+								<span class="collapsible-header" style="padding-left:0px; margin-left:0px;">
+                                	<?php nav_button($page); ?>
+                                	<i class="mdi-navigation-arrow-drop-down"></i>
+                                </span>
+                                
+                                  <div class="collapsible-body">
+                                    <ul>
+									<?php while($subpage=mysqli_fetch_array($subpgresult)){?>
+                                        <li style="width:100%;"<?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php
+                                        
+                                        nav_button($subpage);
+                                        
+                                        ?>
+                                        </li>
+                                    <?php } ?>
 								</ul>
 							  </div>
 							</li>
@@ -561,27 +566,31 @@ function nav($position, $pgselection){
 			while($page=mysqli_fetch_array($result)){
 				if($page['issubpage']==0){ $lastmainpage=$page['id'];?>
 				<li<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php 
-				
-					nav_button($page);
 					
 					$query="SELECT * FROM `pages` WHERE `vert_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
 					$subpgresult=mysqli_query( $connection, $query);
 					confirm_query($subpgresult);
-					if(mysqli_num_rows($subpgresult)!=0){?>
+					
+					if(mysqli_num_rows($subpgresult)==0){
+						nav_button($page);
+					}else{?>
 					<li class="no-padding">
 						<ul class="collapsible collapsible-accordion">
 							<li>
-								<a class="collapsible-header"><?php nav_button($page);?><i class="mdi-navigation-arrow-drop-down"></i></a>
-										  <div class="collapsible-body">
-											<ul>
-						<?php while($subpage=mysqli_fetch_array($subpgresult)){?>
-							<li style="width:100%;"<?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php
-							
-							nav_button($subpage);
-							
-							?>
-							</li>
-						<?php } ?>
+								<span class="collapsible-header" style="padding-left:0px; margin-left:0px;">
+                                	<?php nav_button($page); ?>
+                                	<i class="mdi-navigation-arrow-drop-down"></i>
+                                </span>
+                                  <div class="collapsible-body">
+                                    <ul>
+									<?php while($subpage=mysqli_fetch_array($subpgresult)){?>
+                                        <li style="width:100%;"<?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php
+                                        
+                                        nav_button($subpage);
+                                        
+                                        ?>
+                                        </li>
+                                    <?php } ?>
 								</ul>
 							  </div>
 							</li>
