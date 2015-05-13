@@ -460,8 +460,8 @@ if($_GET['action']=="edit"){
     </td>
     <td align="right"><b>Menus visible on page:</b></td>
     <td align="left">
-    	Horizontal Menu <input type="checkbox" name="horiz_menu_visible" <?php if((isset($_GET['page'])&&$selpage['horiz_menu_visible']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/><br>
-        Vertical Menu <input type="checkbox" name="vert_menu_visible" <?php if((isset($_GET['page'])&&$selpage['vert_menu_visible']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/>
+    	Horizontal Menu <input type="checkbox" id="horiz_menu_visible" name="horiz_menu_visible" <?php if((isset($_GET['page'])&&$selpage['horiz_menu_visible']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/><label for="horiz_menu_visible"><br>
+        Vertical Menu <input type="checkbox" id="vert_menu_visible" name="vert_menu_visible" <?php if((isset($_GET['page'])&&$selpage['vert_menu_visible']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/><label for="vert_menu_visible">
     </td>
   </tr>
 </table>
@@ -474,7 +474,7 @@ if($_GET['action']=="edit"){
                         <table width="30%" border="0" id="gall">
                           <tr>
                             <th scope="col" style="text-align:right">Select all:</th>
-                            <th scope="col"><input type="checkbox" id="gallall"></th>
+                            <th scope="col"><input type="checkbox" id="gallall"><label for="gallall"></th>
                           </tr>
                         <?php
                         while($gallery=mysqli_fetch_array($galleryquery)){
@@ -491,7 +491,7 @@ if($_GET['action']=="edit"){
                             ?>
                             <tr>
                                 <td width="80%" style="text-align:right"><a href="edit_gallery.php?gallid=<?php echo urlencode($gallery['id']); ?>"><?php echo $gallery['name']; ?></a></td>
-                                <td width="20%" style="text-align:center;"><input type="checkbox" name="galleries[]" value="<?php echo $gallery['id']; ?>" <?php if($checked == true){echo "checked";} ?> /></td>
+                                <td width="20%" style="text-align:center;"><input type="checkbox" name="galleries[]" id="<?php echo $gallery['id']; ?>" value="<?php echo $gallery['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="<?php echo $gallery['id']; ?>"></td>
                             </tr>
                         
                     <?php } ?>
@@ -505,7 +505,7 @@ if($_GET['action']=="edit"){
                         ?><table width="30%" border="0" id="form">
                           <tr>
                             <th scope="col" style="text-align:right">Select all:</th>
-                            <th scope="col"><input type="checkbox" id="formall"></th>
+                            <th scope="col"><input type="checkbox" id="formall"><label for="formall"></th>
                           </tr>
                         <?php
                         while($form=mysqli_fetch_array($formquery)){
@@ -522,7 +522,7 @@ if($_GET['action']=="edit"){
                             ?>
                             <tr>
                                 <td width="80%" style="text-align:right"><a href="edit_form.php?gallid=<?php echo urlencode($form['id']); ?>"><?php echo $form['name']; ?></a></td>
-                                <td width="20%" style="text-align:center;"><input type="checkbox" name="forms[]" value="<?php echo $form['id']; ?>" <?php if($checked == true){echo "checked";} ?> /></td>
+                                <td width="20%" style="text-align:center;"><input type="checkbox" name="forms[]" id="<?php echo $form['id']; ?>" value="<?php echo $form['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="<?php echo $form['id']; ?>"></td>
                             </tr>
                     <?php } 
                     ?></table>
