@@ -498,25 +498,33 @@ function nav($position, $pgselection){
 	global $site_info;
 	global $logo;
 
-	if($position=="mobile"){
-		$query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 0 AND `published` = 1 ORDER BY `position` ASC";
+	if($position=="mobile"){?>
+        <ul id="slide-out" class="side-nav">
+            <div style="height:auto; width:100%;" class="mobile-logo">
+            <?php if($logo!=false){ ?>
+                <?php if($site_info['logo_url']!=''){?>
+                <a href="<?php echo $site_info['logo_url']; ?>"><img src="<?php echo $site_info['base_url']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $site_info['name']; ?> Logo" width="240" /></a>
+                <?php }else{ ?>
+                <img src="<?php echo $site_info['base_url']; ?>/images/logo/<?php echo $logo; ?>" width="240" />
+            <?php } 
+            } ?>
+        </div>
+    <?php
+		$query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 OR `vert_menu` = 1 AND `issubpage` = 0 AND `published` = 1 ORDER BY `position` ASC";
 		$result=mysqli_query( $connection, $query);
 		$numpages=mysqli_num_rows($result);
+		
 		if($numpages!=0){
-		?>
-		<ul id="slide-out" class="side-nav">
-			<div style="height:auto; width:100%;" class="mobile-logo">
-				<?php if($logo!=false){ ?>
-					<?php if($site_info['logo_url']!=''){?>
-					<a href="<?php echo $site_info['logo_url']; ?>"><img src="<?php echo $site_info['base_url']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $site_info['name']; ?> Logo" width="240" /></a>
-					<?php }else{ ?>
-					<img src="<?php echo $site_info['base_url']; ?>/images/logo/<?php echo $logo; ?>" width="240" />
-				<?php } 
-				} ?>
-			</div>
+		
+			$query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 0 AND `published` = 1 ORDER BY `position` ASC";
+			$result=mysqli_query( $connection, $query);
+			$numhorizpages=mysqli_num_rows($result);
+			
+			if($numhorizpages!=0){
+			?>
+            <ul>
 			<?php
-			while($page=mysqli_fetch_array($result)){
-				if($page['issubpage']==0){ $lastmainpage=$page['id'];?>
+			while($page=mysqli_fetch_array($result)){?>
 				<li<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php 	
 					
 					$query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
@@ -552,17 +560,19 @@ function nav($position, $pgselection){
 				<?php
 				}
 				?>
-				
+				</ul><br><hr/><br>
 			<?php
-			}
+			
 		}
 			?>
-			<br><hr/><br>
 			<?php
 			$query="SELECT * FROM `pages` WHERE `vert_menu` = 1 AND `issubpage` = 0 AND `published` = 1 ORDER BY `position` ASC";
 			$result=mysqli_query( $connection, $query);
-			$numpages=mysqli_num_rows($result);
+			$numvertpages=mysqli_num_rows($result);
 			
+			if($numvertpages!=0){?>
+            <ul>
+            <?php
 			while($page=mysqli_fetch_array($result)){
 				if($page['issubpage']==0){ $lastmainpage=$page['id'];?>
 				<li<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php 
@@ -605,16 +615,19 @@ function nav($position, $pgselection){
 			<?php
 			}
 		?>
-		<br><hr/><br>
-			<p><?php
-			if(logged_in()){?>
-				<?php echo "<b>".$_SESSION['username']."</b>";?>
-				 | <a href="<?php echo $site_info['base_url']; ?>/account-settings.php">Account Settings</a> | <?php if(check_permission("Website","cpanel_access")){?><a href="<?php echo $site_info['base_url']; ?>/administrator/" target="_blank">CPanel</a> | <?php } ?><a href="<?php echo $site_info['base_url']; ?>/logout.php">Logout</a>
-			<?php }else{ ?>
-					<a href="<?php echo $site_info['base_url']; ?>/index.php">Register</a> | <a href="<?php echo $site_info['base_url']; ?>/login.php">Login</a>
-			<?php }?>
-				</p>
-				</ul>
+        </ul><br><hr/><br>
+        <?php } 
+		}
+		?>
+        <p><?php
+        if(logged_in()){?>
+            <?php echo "<b>".$_SESSION['username']."</b>";?>
+             | <a href="<?php echo $site_info['base_url']; ?>/account-settings.php">Account Settings</a> | <?php if(check_permission("Website","cpanel_access")){?><a href="<?php echo $site_info['base_url']; ?>/administrator/" target="_blank">CPanel</a> | <?php } ?><a href="<?php echo $site_info['base_url']; ?>/logout.php">Logout</a>
+        <?php }else{ ?>
+                <a href="<?php echo $site_info['base_url']; ?>/index.php">Register</a> | <a href="<?php echo $site_info['base_url']; ?>/login.php">Login</a>
+        <?php }?>
+            </p>
+        </ul>
 	<?php }
 	
 	if($position=="horiz"||$position=="vert"){
@@ -627,10 +640,10 @@ function nav($position, $pgselection){
 			$result=mysqli_query( $connection, $query);
 			$numpages=mysqli_num_rows($result);
 			
-			if($position=="horiz"){ ?>
+			if($position=="horiz"&&$numpages!=0){ ?>
 				<div class="nav" style="background-color:<?php echo $site_layout['menu_color'] ?>;">
 					<ul id="horiz-menu">
-			<?php }elseif($position=="vert"){ ?>
+			<?php }elseif($position=="vert"&&$numpages!=0){ ?>
 				<td style="vertical-align:top; width:200px; padding-right:5px;" id="vert-td"><div style="width:100%;">
 					<ul id="vert-menu">
 			<?php }
@@ -638,7 +651,11 @@ function nav($position, $pgselection){
 				//$buttonwidth = 900 - $buttonwidth;
 				//$buttonwidth = $buttonwidth / $numpages + 1;
 				if($position=="horiz"){
-					$buttonwidth = round(100 / $numpages, 4);
+					if($numpages!=0){
+						$buttonwidth = round(100 / $numpages, 4);
+					}else{
+						$buttonwidth=100;
+					}
 				}elseif($position=="vert"){
 					$buttonwidth = 100;
 				}
@@ -692,10 +709,10 @@ function nav($position, $pgselection){
 				}
 			?>
 			</ul>
-			<?php if($position=="vert"){?>
-				</div></td>
-			<?php }elseif($position=="horiz"){?>
-				</div></nav>
+			<?php if($position=="horiz"&&$numpages!=0){?>
+				</div>
+			<?php }elseif($position=="vert"&&$numpages!=0){?>
+            	</div></td>
 			<?php } ?>
 		<?php
 		

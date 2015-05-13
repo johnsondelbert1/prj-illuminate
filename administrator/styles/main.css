@@ -790,7 +790,7 @@ div.rank-block{
 	padding:10px;
 	display:block;
 	width:200px;
-	height:200px;
+	/*height:200px;*/
 	float:left;
 	background-color:#D7D7D7;
 	border-radius:5px;
