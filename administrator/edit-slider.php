@@ -137,10 +137,17 @@ $result=mysqli_query( $connection, $query);
 ?>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript">
-   <!-- jQuery for seven sets of "Select All" checkboxes -->
+   <!-- jQuery for "Select All" checkboxes -->
     $(document).ready(function() {
-             $('input[id="staffall"]').click(function() {
-             $("#staff :checkbox").attr('checked', $(this).attr('checked'));
+		var $checkall = 'slideall';
+        $('input[id="'+$checkall+'"]').change(function() {
+			var $all_check_status = $('input[id="'+$checkall+'"]').is(':checked');
+             $("#form label").each(function(index, element) {
+				var $target = $(this).attr("for");
+				if($all_check_status!=$('input[id="'+$target+'"]').is(':checked')){
+                	$(this).trigger('click');
+				}
+            });
         });  
      });
 </script>
@@ -192,7 +199,7 @@ Name: <input name="name" type="text" value="<?php echo $slider['name']; ?>" maxl
             </th>
             <?php //if(check_permission("Sliders","delete_slide")){?>
             <th style="text-align:center;">
-                <input type="checkbox" id="staffall"><label for="staffall">
+                <input type="checkbox" id="slideall"><label for="slideall"></label>
             </th>
             <?php //} ?>
         </tr>
@@ -209,7 +216,7 @@ Name: <input name="name" type="text" value="<?php echo $slider['name']; ?>" maxl
                 <td width="10%" style="text-align:center;"><input type="checkbox" name="new_tab[<?php echo $slide['id']; ?>]" id="tab_<?php echo $slide['id']; ?>" value="<?php echo $slide['id']; ?>" <?php if($slide['new_tab']==1){echo 'checked';} ?> /><label for="tab_<?php echo $slide['id']; ?>"></td>
                 <td width="10%" style="text-align:center;"><input type="checkbox" name="slide_published[<?php echo $slide['id']; ?>]" id="pub_<?php echo $slide['id']; ?>" value="<?php echo $slide['id']; ?>" <?php if($slide['published']==1){echo 'checked';} ?> /><label for="pub_<?php echo $slide['id']; ?>"></td>
 				<?php //if(check_permission("Sliders","delete_slide")){?>
-				<td width="10%" style="text-align:center;" id="staff"><input type="checkbox" name="slide[]" value="<?php echo $slide['id']; ?>" id="<?php echo $slide['id']; ?>" /><label for="<?php echo $slide['id']; ?>"></td>
+				<td width="10%" style="text-align:center;" id="form"><input type="checkbox" name="slide[]" value="<?php echo $slide['id']; ?>" id="<?php echo $slide['id']; ?>" /><label for="<?php echo $slide['id']; ?>"></label></td>
 				<?php //} ?>
 			</tr>
 	<?php

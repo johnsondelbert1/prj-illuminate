@@ -86,10 +86,17 @@ $result=mysqli_query( $connection, $query);
 ?>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript">
-   <!-- jQuery for seven sets of "Select All" checkboxes -->
+   <!-- jQuery for "Select All" checkboxes -->
     $(document).ready(function() {
-             $('input[id="staffall"]').click(function() {
-             $("#staff :checkbox").attr('checked', $(this).attr('checked'));
+		var $checkall = 'staffall';
+        $('input[id="'+$checkall+'"]').change(function() {
+			var $all_check_status = $('input[id="'+$checkall+'"]').is(':checked');
+             $("#form label").each(function(index, element) {
+				var $target = $(this).attr("for");
+				if($all_check_status!=$('input[id="'+$target+'"]').is(':checked')){
+                	$(this).trigger('click');
+				}
+            });
         });  
      });
 </script>
@@ -102,7 +109,7 @@ $result=mysqli_query( $connection, $query);
 <?php //} ?>
 <h1>Staff List</h1>
 <form method="post">
-    <table width="90%" style="text-align:left;" class="list" border="0" cellspacing="0" id="staff">
+    <table width="90%" style="text-align:left;" class="list" border="0" cellspacing="0" id="form">
         <tr>
             <th width="10%">
                 Order
@@ -119,7 +126,7 @@ $result=mysqli_query( $connection, $query);
             <?php //if(check_permission("Forms","delete_form")){?>
             <th style="text-align:center;">
                 <input type="checkbox" id="staffall">
-                <label for="staffall">
+                <label for="staffall"></label>
             </th>
             <?php //} ?>
         </tr>
@@ -142,20 +149,21 @@ $result=mysqli_query( $connection, $query);
                 <td><a href="edit-staff.php?id=<?php echo urlencode($staff['id']); ?>"><?php echo $staff['name']; ?></a></td>
                 <td><?php if($staff['role']!=""){echo $staff['role'];}else{echo '[N/A]';} ?></td>
 				<?php //if(check_permission("Galleries","delete_gallery")){?>
-				<td width="10%" style="text-align:center;"><input type="checkbox" name="staff[]" id="<?php echo $staff['id']; ?>" /><label for="<?php echo $staff['id']; ?>"></td>
+				<td width="10%" style="text-align:center;"><input type="checkbox" name="staff[]" value="<?php echo $staff['id']; ?>" id="<?php echo $staff['id']; ?>" /><label for="<?php echo $staff['id']; ?>"></label></td>
 				<?php //} ?>
 			</tr>
 	<?php
         }
 	}else{?>
 			<tr>
-				<td colspan="4" style="text-align:center; font-size:24px;">[No Staff!]</td>
+				<td colspan="5" style="text-align:center; font-size:24px;">[No Staff!]</td>
 			</tr>
     <?php
 	}
 	?>
     	<tr>
         	<td></td>
+            <td></td>
             <td></td>
             <td></td>
             <td style="text-align:center;"><?php //if(check_permission("Forms","delete_form")){?><input name="delforms" type="submit" value="Delete" class="btn red" /><?php //} ?></td>

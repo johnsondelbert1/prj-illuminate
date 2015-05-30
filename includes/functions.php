@@ -3,8 +3,6 @@ require_once("connection.php");
 require_once("session.php");
 require_once("globals.php");
 
-//echo dirname( __FILE__ ).'/';
-
 //global DB variables
 $query="SELECT * FROM `site_info` WHERE `id` = 1";
 $result=mysqli_query( $connection, $query);
@@ -397,8 +395,8 @@ function print_multi_upload($output_dir, $maxsize, $filetypes, $cpanel = false){
 <br />
 
 <div id="container">
-    <a class="blue" id="pickfiles" href="javascript:;">Select files</a> 
-    <a class="green" id="uploadfiles" href="javascript:;">Upload</a>
+    <a class="btn blue" id="pickfiles" href="javascript:;">Select files</a> 
+    <a class="btn green" id="uploadfiles" href="javascript:;">Upload</a>
 </div>
 
 <br />

@@ -103,10 +103,17 @@ if(isset($_POST['upd_ranks'])){
 ?>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript">
-   <!-- jQuery for seven sets of "Select All" checkboxes -->
+   <!-- jQuery for "Select All" checkboxes -->
     $(document).ready(function() {
-             $('input[id="accountall"]').click(function() {
-             $("#acc :checkbox").attr('checked', $(this).attr('checked'));
+		var $checkall = 'accountall';
+        $('input[id="'+$checkall+'"]').change(function() {
+			var $all_check_status = $('input[id="'+$checkall+'"]').is(':checked');
+             $("#form label").each(function(index, element) {
+				var $target = $(this).attr("for");
+				if($all_check_status!=$('input[id="'+$target+'"]').is(':checked')){
+                	$(this).trigger('click');
+				}
+            });
         });  
      });
 </script>
@@ -134,7 +141,7 @@ if(isset($_POST['upd_ranks'])){
 <?php } ?>
 <h1>Account List</h1>
 <form method="post" action="accounts.php">
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" id="acc" style="text-align:center;">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" id="form" style="text-align:center;">
       <tr>
         <th width="10%">User Name:</th>
         <th width="30%">Email:</th>
@@ -142,7 +149,7 @@ if(isset($_POST['upd_ranks'])){
         <th width="10%">Rank:</th>
         <th width="20%">Last Logged In:</th>
         <?php if(check_permission("Users","delete_users")){?>
-        	<th width="10%"><input type="checkbox" id="accountall"><label for="accountall"></th>
+        	<th width="10%"><input type="checkbox" id="accountall" /><label name="accountall" for="accountall"></label></th>
         <?php } ?>
       </tr>
         <?php
@@ -176,13 +183,14 @@ if(isset($_POST['upd_ranks'])){
                 </td>
                 <td><?php if($user['last_logged_in']!="0000-00-00 00:00:00"){echo date("D, m/d/Y h:i A" ,strtotime($user['last_logged_in']));}else{echo "N/A";} ?></td>
                 <?php if(check_permission("Users","delete_users")){?>
-                	<td><?php if($user['deletable']==1){ ?><input type="checkbox" name="accounts[]" id="<?php echo $user['id']; ?>" /><label for="<?php echo $user['id']; ?>"><?php } ?></td>
+                	<td><input type="checkbox" name="accounts[]"<?php if($user['deletable']==0){echo ' disabled';} ?> id="<?php echo $user['id']; ?>" /><label for="<?php echo $user['id']; ?>"></td>
                 <?php } ?>
               </tr>
             <?php } ?>
       <tr>
         <th colspan="3"></th>
         <th><input class="blue btn" type="submit" name="upd_ranks" value="Change Ranks" /></th>
+        <th></th>
         <?php if(check_permission("Users","delete_users")){?>
         	<th width="10%"><input class="red btn" type="submit" name="deluser" value="Delete Accounts" /></th>
         <?php } ?>

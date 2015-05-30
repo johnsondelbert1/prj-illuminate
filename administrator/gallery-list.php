@@ -124,10 +124,17 @@ $result=mysqli_query( $connection, $query);
 ?>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript">
-   <!-- jQuery for seven sets of "Select All" checkboxes -->
+   <!-- jQuery for "Select All" checkboxes -->
     $(document).ready(function() {
-             $('input[id="gallall"]').click(function() {
-             $("#gall :checkbox").attr('checked', $(this).attr('checked'));
+		var $checkall = 'gallall';
+        $('input[id="'+$checkall+'"]').change(function() {
+			var $all_check_status = $('input[id="'+$checkall+'"]').is(':checked');
+             $("#form label").each(function(index, element) {
+				var $target = $(this).attr("for");
+				if($all_check_status!=$('input[id="'+$target+'"]').is(':checked')){
+                	$(this).trigger('click');
+				}
+            });
         });  
      });
 </script>
@@ -140,7 +147,7 @@ $result=mysqli_query( $connection, $query);
 <?php } ?>
 <h1>Gallery List</h1>
 <form method="post" action="gallery-list.php">
-    <table width="90%" style="text-align:left;" class="list" border="0" cellspacing="0" id="gall">
+    <table width="90%" style="text-align:left;" class="list" border="0" cellspacing="0" id="form">
         <tr>
             <th>
                 ID

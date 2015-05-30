@@ -30,14 +30,16 @@ if(isset($_POST['chng_info'])){
 		}else{
 			$published = 0;
 		}
+		$site_name = mysqli_real_escape_string($connection, $_POST['site_name']);
+		$copyright_text = mysqli_real_escape_string($connection, $_POST['copyright_text']);
 		$metadata = strip_tags(mysqli_real_escape_string($connection, $_POST['metadata']), "<meta>");
 		$css_js = strip_tags(mysqli_real_escape_string($connection, $_POST['css_js']), "<script>");
 		$footer_content = mysqli_real_escape_string($connection, $_POST['foot_content']);
 		
-		if($_POST['name']!=""){
+		if($site_name!=""){
 			if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 				$query="UPDATE `site_info` SET 
-					`name` = '{$_POST['name']}', `contact_email` = '{$_POST['email']}', `base_url`='{$_POST['url']}', `timezone` = '{$_POST['tz']}', `published` = {$published}, `default_rank` = {$_POST['rank']}, `homepage` = {$_POST['homepage']}, `meta_tags` = '{$metadata}', `style_js_link_tags` = '{$css_js}', `footer_content` = '{$footer_content}'";
+					`name` = '{$site_name}', `contact_email` = '{$_POST['email']}', `base_url`='{$_POST['url']}', `timezone` = '{$_POST['tz']}', `published` = {$published}, `copyright_text` = '{$copyright_text}', `default_rank` = {$_POST['rank']}, `homepage` = {$_POST['homepage']}, `meta_tags` = '{$metadata}', `style_js_link_tags` = '{$css_js}', `footer_content` = '{$footer_content}'";
 				$result=mysqli_query($connection, $query);
 				confirm_query($result);
 				$success = "Site Info has been updated!";
@@ -337,6 +339,7 @@ $result_pages=mysqli_query($connection, $query);
                 <?php if(check_permission("Website","edit_google_analytics")){ ?>
                 <li class="TabbedPanelsTab" tabindex="0">Google Analytics</li>
                 <?php } ?>
+                <li class="TabbedPanelsTab" tabindex="0">About</li>
             </ul>
             <div class="TabbedPanelsContentGroup">
                 
@@ -397,7 +400,8 @@ $result_pages=mysqli_query($connection, $query);
         <input name="url" type="text" value="<?php echo $site['base_url']; ?>" maxlength="256" style="width:300px;" />
     </td>
   	<td>
-
+        <h2>Copyright Text</h2>
+        <input name="copyright_text" type="text" value="<?php echo $site['copyright_text']; ?>" maxlength="256" style="width:400px;" />
     </td>
   </tr>
   <tr>
@@ -419,7 +423,7 @@ $result_pages=mysqli_query($connection, $query);
     </td>
   </tr>
   <tr>
-  	<td colspan="2"><input name="chng_info" type="submit" value="Change Website Info" /></td>
+  	<td colspan="2"><input name="chng_info" type="submit" class="btn green" value="Change Website Info" /></td>
   </tr>
 </table>
 </form>
@@ -463,7 +467,7 @@ $result_pages=mysqli_query($connection, $query);
 <div class="input-field col s12">
 <strong>Custom CSS</strong>
 <textarea class="materialize-textarea" name="custom_css" id="custom_css" rows="15" cols="80"><?php echo $layout['custom_css']; ?></textarea>
-<input name="chngstyle" type="submit" value="Change Styling" />
+<input name="chngstyle" type="submit" class="btn green" value="Change Styling" />
 </div>
 </div>
 </form>
@@ -476,7 +480,7 @@ $result_pages=mysqli_query($connection, $query);
 <form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
 	<input type="file" name="file" id="file" accept="image/*" /><br>
     *Recommended image size is 1510 pixels high by 800 pixels wide. Max filesize 2MB.
-	<input name="uploadbanner" type="submit" value="Upload selected banner" />
+	<input name="uploadbanner" type="submit" class="btn green" value="Upload selected banner" />
 </form><br>
 <?php
 	if($banner != false){
@@ -492,7 +496,7 @@ $result_pages=mysqli_query($connection, $query);
 <form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
 	<input type="file" name="file" id="file" accept="image/*" /><br>
     *Recommended image size is 100 pixels high and maximum 600 pixels wide. Max filesize 2MB.
-	<input name="uploadlogo" type="submit" value="Upload selected logo" />
+	<input name="uploadlogo" type="submit" class="btn green" value="Upload selected logo" />
 </form><br>
 <?php
 	if($logo != false){
@@ -506,12 +510,12 @@ $result_pages=mysqli_query($connection, $query);
 <a href="site-settings.php?tab=2&delete=logo">[Delete Logo]</a>
 <form method="post" action="site-settings.php?tab=2">
     <h2>Logo URL</h2>
-    <input name="logo_url" type="text" value="<?php echo $site['logo_url']; ?>" maxlength="256" placeholder="http://" style="width:300px;" /><input name="chng_logo_url" type="submit" value="Change Logo URL" />
+    <input name="logo_url" type="text" value="<?php echo $site['logo_url']; ?>" maxlength="256" placeholder="http://" style="width:300px;" /><input name="chng_logo_url" type="submit" class="btn green" value="Change Logo URL" />
 </form>
 <br><br><br><h2>Upload Favicon</h2>
 <form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
 	<input type="file" name="file" id="file" accept="image/*" />
-	<input name="uploadfavicon" type="submit" value="Upload selected favicon (128KB max)" />
+	<input name="uploadfavicon" type="submit" class="btn green" value="Upload selected favicon (128KB max)" />
 </form>
 </div>
 <?php } ?>    
@@ -526,7 +530,7 @@ $result_pages=mysqli_query($connection, $query);
     <?php 
 		$i++;
 	} ?>
-    <input name="socialnet" type="submit" value="Save"  class="green btn" /><br><br>
+    <input name="socialnet" type="submit" value="Save" class="green btn" /><br><br>
 </form>
 </div>
 <?php } ?>             
@@ -534,11 +538,23 @@ $result_pages=mysqli_query($connection, $query);
   <div class="TabbedPanelsContent">
   <h1 style="margin:-4px -4px 5px -4px; padding:5px;">Google Analytics</h1>
   <form method="post" action="site-settings.php?tab=4">
-    Enabled: <input name="analyticsenabled" type="checkbox"<?php if($site['g_analytics_enabled']){echo  "checked";} ?> /><br>
+    <input name="analyticsenabled" id="analyticsenabled" type="checkbox"<?php if($site['g_analytics_enabled']){echo  "checked";} ?> /><label for="analyticsenabled">Enabled</label><br>
   	Google Analytics Code:<br>
-	<textarea name="analyticscode" id="analytics" rows="15" cols="80" ><?php echo $site['g_analytics_code']; ?></textarea><br>
-    <input name="chngganalytics" type="submit" value="Change Google Analytics Settings" />
+	<textarea name="analyticscode" id="analytics" style="height:200px;" rows="15" cols="80" ><?php echo $site['g_analytics_code']; ?></textarea><br>
+    <input name="chngganalytics" type="submit" class="btn green" value="Change Google Analytics Settings" />
   </form>
   </div>
   <?php } ?>
+  <div class="TabbedPanelsContent">
+      <div style="width:100%; text-align:center;">
+          <h1 style="margin:-4px -4px 5px -4px; padding:5px;">About IlluminateCMS</h1><br>
+            <img src="images/logo.png" alt="Logo" /><br><br>
+            <h3>IlluminateCMS</h3>
+            by<br>
+            <a href="http://secondgenerationdesign.com" target="_blank"><strong>Second Gen Design</strong></a><br><br>
+            Website Version: <?php echo $site_version; ?><br>
+            Database Version: <?php echo $site_info['version']; ?><br><br>
+            (Backwards compatable to database version <?php echo $db_compatability; ?>)
+      </div>
+  </div>
 <?php require_once("includes/end_cpanel.php"); ?>

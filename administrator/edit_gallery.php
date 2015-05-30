@@ -100,17 +100,23 @@ confirm_query($subgalleryquery);
 	require_once("includes/begin_cpanel.php");
 ?>
     <script type="text/javascript">
-	<!-- jQuery for seven sets of "Select All" checkboxes -->
-	$(document).ready(function() {
-			 $('input[id="gallall"]').click(function() {
-			 $("#gall :checkbox").attr('checked', $(this).attr('checked'));
-			 });
-			 
-			 $('input[id="imgall"]').click(function() {
-			 $("#img :checkbox").attr('checked', $(this).attr('checked'));
-			 });
-		  
-	 });
+   <!-- jQuery for "Select All" checkboxes -->
+    $(document).ready(function() {
+		var $checkall = 'gallall';
+        $('input[id="'+$checkall+'"]').change(function() {
+			var $all_check_status = $('input[id="'+$checkall+'"]').is(':checked');
+             $("#gall label").each(function(index, element) {
+				var $target = $(this).attr("for");
+				if($all_check_status!=$('input[id="'+$target+'"]').is(':checked')){
+                	$(this).trigger('click');
+				}
+            });
+        }); 
+
+        $('input[id="imgall"]:checkbox').change(function() {
+             $("#img :checkbox").attr('checked', $(this).attr('checked'));
+        });   
+     });
 	 
 	var cbcfn = function(e) {
 		if (e.target.tagName.toUpperCase() != "INPUT") {
@@ -135,12 +141,12 @@ confirm_query($subgalleryquery);
 Name: <input name="galname" type="text" value="<?php echo $gallery['name']; ?>" maxlength="100" /><br>
 <table id="gall">
   <tr>
-  <th><h2>Include these galleries</h2></th>
+  <th><h2>Include these galleries:</h2></th>
   </tr>
   <tr>
     <th scope="col">Name</th>
     <th scope="col"><input type="checkbox" id="gallall">
-    <label for="gallall"></th>
+    <label for="gallall"></label></th>
   </tr>
 <?php
 while($subgallery=mysqli_fetch_array($subgalleryquery)){
@@ -157,7 +163,7 @@ while($subgallery=mysqli_fetch_array($subgalleryquery)){
     ?>
         <tr>
             <td width="90%"><a href="edit_gallery.php?gallid=<?php echo urlencode($subgallery['id']); ?>"><?php echo $subgallery['name']; ?></a></td>
-            <td width="10%" style="text-align:center;"><input type="checkbox" name="subgalleries[]" id="<?php echo $subgallery['id']; ?>" value="<?php echo $subgallery['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="<?php echo $subgallery['id']; ?>"></td>
+            <td width="10%"><input type="checkbox" name="subgalleries[]" id="<?php echo $subgallery['id']; ?>" value="<?php echo $subgallery['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="<?php echo $subgallery['id']; ?>"></label></td>
         </tr>
 <?php }
 } ?>
@@ -166,7 +172,7 @@ while($subgallery=mysqli_fetch_array($subgalleryquery)){
 <br>
 <br>
 <h1>Gallery Images</h1>
-<p style="text-align:left;">Select all: <input type="checkbox" id="imgall" /></p>
+<p style="text-align:left;">Select all: <input type="checkbox" id="imgall" /><label for="imgall"></label></p>
 <form method="post">
     <div align="center" id="img" style="text-align:center; width:100%; margin-left:auto; margin-right:auto;">
     

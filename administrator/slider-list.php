@@ -95,10 +95,17 @@ $result=mysqli_query( $connection, $query);
 ?>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript">
-   <!-- jQuery for seven sets of "Select All" checkboxes -->
+   <!-- jQuery for "Select All" checkboxes -->
     $(document).ready(function() {
-             $('input[id="one"]').click(function() {
-             $("#all :checkbox").attr('checked', $(this).attr('checked'));
+		var $checkall = 'sliderall';
+        $('input[id="'+$checkall+'"]').change(function() {
+			var $all_check_status = $('input[id="'+$checkall+'"]').is(':checked');
+             $("#form label").each(function(index, element) {
+				var $target = $(this).attr("for");
+				if($all_check_status!=$('input[id="'+$target+'"]').is(':checked')){
+                	$(this).trigger('click');
+				}
+            });
         });  
      });
 </script>
@@ -118,7 +125,7 @@ $result=mysqli_query( $connection, $query);
 <?php } ?>
 <h1>Slider List</h1>
 <form method="post">
-    <table width="90%" style="text-align:left;" class="list" border="0" cellspacing="0" id="all">
+    <table width="90%" style="text-align:left;" class="list" border="0" cellspacing="0" id="form">
         <tr>
             <th>
                 Name
@@ -128,7 +135,7 @@ $result=mysqli_query( $connection, $query);
             </th>
             <?php if(check_permission("Sliders","delete_slider")){?>
             <th style="text-align:center;">
-                <input type="checkbox" id="one"><label for="one">
+                <input type="checkbox" id="sliderall"><label for="sliderall"></label>
             </th>
             <?php } ?>
         </tr>
@@ -154,7 +161,7 @@ $result=mysqli_query( $connection, $query);
 			?>
             </td>
             <?php if(check_permission("Sliders","delete_slider")){?>
-            <td width="10%" style="text-align:center;"><input type="checkbox" name="sliders[]" value="<?php echo $slider['id']; ?>" id="<?php echo $slider['id']; ?>" /><label for="<?php echo $slider['id']; ?>"></td>
+            <td width="10%" style="text-align:center;"><input type="checkbox" name="sliders[]" value="<?php echo $slider['id']; ?>" id="<?php echo $slider['id']; ?>" /><label for="<?php echo $slider['id']; ?>"></label></td>
             <?php } ?>
         </tr>
     

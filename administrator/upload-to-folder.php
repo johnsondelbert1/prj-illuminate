@@ -89,12 +89,19 @@ confirm_query($subgalleryquery);
 			window.location = "upload-to-folder.php?folder=<?php echo $_GET['folder']; ?>&action=del&img=" + file;
 		}
 	}
-	<!-- jQuery for seven sets of "Select All" checkboxes -->
-	$(document).ready(function() {
-			 $('input[id="file"]').click(function() {
-			 $("#files :checkbox").attr('checked', $(this).attr('checked'));
-		});  
-	 });
+   <!-- jQuery for "Select All" checkboxes -->
+    $(document).ready(function() {
+		var $checkall = 'fileall';
+        $('input[id="'+$checkall+'"]').change(function() {
+			var $all_check_status = $('input[id="'+$checkall+'"]').is(':checked');
+             $("#form label").each(function(index, element) {
+				var $target = $(this).attr("for");
+				if($all_check_status!=$('input[id="'+$target+'"]').is(':checked')){
+                	$(this).trigger('click');
+				}
+            });
+        });  
+     });
 	</script>
 <table cellpadding="5" id="sticker">
   <tr>
@@ -112,12 +119,12 @@ confirm_query($subgalleryquery);
 <?php } ?>
 <h1>Files in <?php echo urldecode($_GET['folder']); ?></h1>
 <form method="post" action="upload-to-folder.php?folder=<?php echo urlencode($_GET['folder']); ?>">
-    <table id="files">
+    <table id="form">
       <tr>
         <th scope="col" width="45%">Filename</th>
         <th scope="col" width="45%">File path (Copy link address)</th>
         <?php if(check_permission("Uploading","delete_files")){?>
-            <th scope="col" width="10%"><input type="checkbox" id="file"><label for="file"></th>
+            <th scope="col" width="10%" style="text-align:center;"><input type="checkbox" id="fileall"><label for="fileall"></label></th>
         <?php } ?>
       </tr>
         <?php
@@ -131,7 +138,7 @@ confirm_query($subgalleryquery);
                     <td><?php echo $file; ?></td>
                     <td><a href="../uploads/<?php echo urldecode($_GET['folder']).$file; ?>" target="_blank">Link</a></td>
                     <?php if(check_permission("Uploading","delete_files")){?>
-                        <td style="text-align:center;"><input type="checkbox" name="files[]" id="<?php echo $file; ?>" value="<?php echo $file; ?>" /><label for="<?php echo $file; ?>"></td>
+                        <td style="text-align:center;"><input type="checkbox" name="files[]" id="<?php echo $file; ?>" value="<?php echo $file; ?>" /><label for="<?php echo $file; ?>"></label></td>
                     <?php } ?>
                 </tr>
             <?php

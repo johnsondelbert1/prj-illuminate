@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 26, 2015 at 03:08 AM
+-- Generation Time: May 30, 2015 at 11:53 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `prj_illuminate`
+-- Database: `prj_illuminate_trist`
 --
 
 -- --------------------------------------------------------
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `blog` (
   `title` varchar(1024) NOT NULL,
   `content` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `forms` (
   `field_maxchars` text NOT NULL,
   `field_validators` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `forms`
@@ -81,11 +81,11 @@ CREATE TABLE IF NOT EXISTS `forms` (
 
 INSERT INTO `forms` (`id`, `name`, `u_name`, `creator`, `date_created`, `editor`, `last_edited`, `email_to`, `email_from`, `submit_value`, `field_names`, `field_types`, `field_descs`, `field_placeholders`, `field_maxchars`, `field_validators`) VALUES
 (1, 'Test', 'eruyg3244ui3htrf', 1, '2014-10-08 20:11:41', 1, '2015-01-21 20:28:42', 'trist.beach@gmail.com', 'trist.beach@gmail.com', 'Send Comment', 'a:5:{i:0;s:5:"First";i:1;s:4:"Last";i:2;s:5:"Email";i:3;s:8:"Comments";i:4;s:3:"Zip";}', 'a:5:{i:0;s:4:"text";i:1;s:4:"text";i:2;s:4:"text";i:3;s:8:"textarea";i:4;s:4:"text";}', 'a:5:{i:0;s:10:"First Name";i:1;s:9:"Last Name";i:2;s:0:"";i:3;s:22:"qwedewqwefwefwefweffwe";i:4;s:0:"";}', 'a:5:{i:0;s:5:"First";i:1;s:4:"Last";i:2;s:5:"Email";i:3;s:0:"";i:4;s:0:"";}', 'a:5:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:4:"5000";i:4;s:0:"";}', 'a:5:{i:0;s:8:"notempty";i:1;s:8:"notempty";i:2;s:5:"email";i:3;s:4:"none";i:4;s:5:"phone";}'),
-(2, 'lol', 'wl4x69cc8c015hv4', 1, '2014-11-22 11:02:26', 1, '2014-11-22 11:02:45', 'trist.beach@gmail.com', 'trist.beach@gmail.com', 'sdfsdsdfds', 'a:1:{i:0;s:3:"lol";}', 'a:1:{i:0;s:4:"text";}', 'a:1:{i:0;s:0:"";}', 'a:1:{i:0;s:0:"";}', 'a:1:{i:0;s:0:"";}', 'a:1:{i:0;s:4:"none";}'),
 (3, 'lol', 'hk4vys4mm1m07uif', 1, '2014-11-22 11:13:50', 0, '0000-00-00 00:00:00', '', '', '', '', '', '', '', '', ''),
 (4, 'Contact Us', 'dnnqdkqc0kwndr6c', 1, '2014-11-22 12:22:05', 1, '2014-11-22 14:05:17', 'info@ssmechanicalcda.com', 'no-reply@ssmechanicalcda.com', 'Submit', 'a:8:{i:0;s:10:"First Name";i:1;s:9:"Last Name";i:2;s:5:"Email";i:3;s:12:"Phone Number";i:4;s:25:"Preferred Appointment Day";i:5;s:24:"Best Time to Contact You";i:6;s:20:"Service For Estimate";i:7;s:14:"Comments/Notes";}', 'a:8:{i:0;s:4:"text";i:1;s:4:"text";i:2;s:4:"text";i:3;s:4:"text";i:4;s:4:"text";i:5;s:4:"text";i:6;s:4:"text";i:7;s:8:"textarea";}', 'a:8:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";i:6;s:0:"";i:7;s:0:"";}', 'a:8:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:28:"Morning, Afternoon, Evening?";i:6;s:0:"";i:7;s:0:"";}', 'a:8:{i:0;s:0:"";i:1;s:0:"";i:2;s:3:"128";i:3;s:0:"";i:4;s:0:"";i:5;s:3:"256";i:6;s:0:"";i:7;s:4:"5000";}', 'a:8:{i:0;s:8:"notempty";i:1;s:8:"notempty";i:2;s:5:"email";i:3;s:8:"notempty";i:4;s:4:"none";i:5;s:8:"notempty";i:6;s:8:"notempty";i:7;s:4:"none";}'),
 (5, 'testing', 'grmifohtqf97rsj2', 1, '2015-01-06 20:24:45', 0, '0000-00-00 00:00:00', '', '', '', '', '', '', '', '', ''),
-(6, 'testing', 're8bgd2wp3vvlol2', 1, '2015-01-06 20:28:33', 0, '0000-00-00 00:00:00', '', '', '', '', '', '', '', '', '');
+(6, 'testing', 're8bgd2wp3vvlol2', 1, '2015-01-06 20:28:33', 0, '0000-00-00 00:00:00', '', '', '', '', '', '', '', '', ''),
+(7, 'lol', 'c8kle88u9iskv29u', 1, '2015-05-29 18:29:20', 0, '0000-00-00 00:00:00', '', '', '', '', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -247,17 +247,17 @@ CREATE TABLE IF NOT EXISTS `pages` (
 --
 
 INSERT INTO `pages` (`id`, `name`, `content`, `position`, `issubpage`, `parent`, `galleries`, `forms`, `visible`, `published`, `type`, `target`, `banner`, `slider`, `icon`, `url`, `views`, `created`, `creator`, `lastedited`, `editor`, `category`, `horiz_menu`, `vert_menu`, `horiz_menu_visible`, `vert_menu_visible`) VALUES
-(92, 'Galleries', '', 4, 0, 0, 'a:2:{i:0;s:1:"1";i:1;s:1:"3";}', '', 1, 1, 'Custom', '_self', 0, 1, '', '', 383, '2014-05-09 03:22:58', 1, '2015-01-31 16:16:01', 1, '', 1, 0, 1, 1),
-(65, 'Form', '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam rutrum lobortis facilisis. Vivamus ac bibendum enim. Nulla eget porta turpis. Cras odio diam, lobortis a fringilla posuere, auctor ac tortor. Integer molestie mollis justo, eget rhoncus est porta id. In pellentesque augue vitae nisl mollis elementum. Sed ultricies sed odio at vestibulum. Curabitur pulvinar magna semper elementum accumsan. In et sodales elit. Praesent quis ipsum dui. Nullam non sem diam.</p>\r\n<p>Nam porttitor, odio quis vehicula aliquet, mi tellus aliquam enim, eu consectetur lorem massa ut arcu. Phasellus pharetra tellus massa, id rhoncus odio gravida a. Pellentesque consectetur lectus a molestie scelerisque. Nullam nec tortor tristique felis vehicula vulputate eget vitae neque. Aenean erat lorem, feugiat eget metus aliquam, fermentum tempus tortor. Aliquam dignissim lorem libero, ac rutrum sem iaculis eu. Nulla pretium faucibus lobortis.</p>\r\n<p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam sit amet ultricies urna. Cras commodo rhoncus felis sed venenatis. Suspendisse ornare urna id nunc tempus, facilisis euismod velit venenatis.</p>', 3, 0, 0, '', 'a:1:{i:0;s:1:"4";}', 1, 1, 'Custom', '_self', 0, 4, '', '', 496, '2014-05-03 21:12:12', 1, '2015-01-31 16:15:56', 1, '', 1, 0, 1, 1),
-(67, 'Staff', '<p>Page 3</p>\r\n<p><a href="../uploads/test/Earth_Eastern_Hemisphere.jpg">Download File</a></p>\r\n<p>sdfds</p>', 4, 0, 0, '', '', 1, 1, 'Staff', '_self', 0, 0, '', '', 353, '2014-05-03 22:50:13', 1, '2015-01-23 20:11:02', 1, '', 1, 0, 1, 1),
-(69, 'Gallery 1', '<p>Gallery Test</p>', 5, 1, 92, 'a:1:{i:0;s:1:"1";}', '', 1, 1, 'Custom', '_self', 0, 0, '', '', 187, '2014-05-03 23:22:56', 1, '2014-11-01 14:12:56', 1, '', 1, 0, 1, 1),
+(92, 'Galleries', '', 4, 0, 0, 'a:2:{i:0;s:1:"1";i:1;s:1:"3";}', '', 1, 1, 'Custom', '_self', 0, 1, '', '', 428, '2014-05-09 03:22:58', 1, '2015-05-16 20:52:12', 1, '', 1, 0, 1, 1),
+(65, 'Form', '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam rutrum lobortis facilisis. Vivamus ac bibendum enim. Nulla eget porta turpis. Cras odio diam, lobortis a fringilla posuere, auctor ac tortor. Integer molestie mollis justo, eget rhoncus est porta id. In pellentesque augue vitae nisl mollis elementum. Sed ultricies sed odio at vestibulum. Curabitur pulvinar magna semper elementum accumsan. In et sodales elit. Praesent quis ipsum dui. Nullam non sem diam.</p>\r\n<p>Nam porttitor, odio quis vehicula aliquet, mi tellus aliquam enim, eu consectetur lorem massa ut arcu. Phasellus pharetra tellus massa, id rhoncus odio gravida a. Pellentesque consectetur lectus a molestie scelerisque. Nullam nec tortor tristique felis vehicula vulputate eget vitae neque. Aenean erat lorem, feugiat eget metus aliquam, fermentum tempus tortor. Aliquam dignissim lorem libero, ac rutrum sem iaculis eu. Nulla pretium faucibus lobortis.</p>\r\n<p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam sit amet ultricies urna. Cras commodo rhoncus felis sed venenatis. Suspendisse ornare urna id nunc tempus, facilisis euismod velit venenatis.</p>', 3, 0, 0, '', 'a:1:{i:0;s:1:"4";}', 1, 1, 'Custom', '_self', 0, 0, '', '', 500, '2014-05-03 21:12:12', 1, '2015-05-12 22:34:49', 1, '', 0, 0, 1, 1),
+(67, 'Staff', '<p>Page 3</p>\r\n<p><a href="../uploads/test/Earth_Eastern_Hemisphere.jpg">Download File</a></p>\r\n<p>sdfds</p>', 4, 0, 0, '', '', 1, 1, 'Staff', '_self', 0, 0, '', '', 362, '2014-05-03 22:50:13', 1, '2015-05-14 20:21:09', 1, '', 1, 0, 1, 1),
+(69, 'Gallery 1', '<p>Gallery Test</p>', 5, 1, 92, 'a:1:{i:0;s:1:"1";}', '', 1, 1, 'Custom', '_self', 0, 0, '', '', 190, '2014-05-03 23:22:56', 1, '2014-11-01 14:12:56', 1, '', 1, 0, 1, 1),
 (70, 'Gallery 2', '', 6, 1, 92, 'a:1:{i:0;s:1:"3";}', '', 0, 1, 'Custom', '_self', 0, 0, '', '', 70, '2014-05-03 23:23:07', 1, '2014-11-01 14:13:01', 1, '', 1, 0, 1, 1),
-(71, 'Forums', '', 8, 0, 0, '', '', 1, 1, 'Forum', '_self', 0, 0, '', '', 91, '2014-05-03 23:32:19', 1, '2015-01-23 20:11:05', 1, '', 1, 0, 1, 1),
-(81, 'Page 4', '<h1>Test</h1>\r\n<table style="height: 183px; width: 100%;" border="2" width="1798">\r\n<tbody>\r\n<tr>\r\n<td style="text-align: center;"><audio controls="controls" src="../../../uploads/Music/07%20Better%20Life.mp3" type="audio/mpeg">07 Better Life</audio></td>\r\n<td style="text-align: center;">Column 2</td>\r\n</tr>\r\n</tbody>\r\n</table>', 9, 0, 0, '', '', 1, 1, 'Custom', '_self', 0, 0, '', '', 214, '2014-05-06 18:49:14', 1, '2015-01-23 20:11:08', 1, '', 1, 0, 1, 1),
-(86, 'News', '', 1, 0, 0, '', '', 1, 1, 'Blog', '_self', 0, 1, '', '', 643, '2014-05-09 02:55:24', 1, '2015-01-31 17:33:48', 1, '', 1, 0, 1, 1),
-(95, 'Gallery 3', '', 3, 1, 92, 'a:1:{i:0;s:1:"4";}', '', 1, 1, 'Custom', '_self', 0, 0, '', '', 20, '2014-10-30 22:22:31', 1, '0000-00-00 00:00:00', 0, '', 1, 0, 1, 1),
-(96, 'Hosting Sign Up', '', 1, 0, 0, '', '', 1, 1, 'Link', '_self', 0, 0, '', 'http://cc-wd.info/home/register.php', 1, '2014-12-08 19:47:47', 1, '2015-01-23 20:11:11', 1, '', 0, 1, 1, 1),
-(97, 'Client Login', '', 12, 0, 0, '', '', 1, 1, 'Link', '_self', 0, 0, '', 'http://cc-wd.info/home/clientarea.php', 0, '2015-01-07 13:42:22', 1, '2015-01-23 20:11:15', 1, '', 0, 1, 1, 1);
+(71, 'Forums', '', 8, 0, 0, '', '', 1, 1, 'Forum', '_self', 0, 0, '', '', 91, '2014-05-03 23:32:19', 1, '2015-05-12 22:35:02', 1, '', 0, 0, 1, 1),
+(81, 'Page 4', '<h1>Test</h1>\r\n<table style="height: 183px; width: 100%;" border="2" width="1798">\r\n<tbody>\r\n<tr>\r\n<td style="text-align: center;"><audio controls="controls" src="../uploads/Music/07%20Better%20Life.mp3" type="audio/mpeg">07 Better Life</audio></td>\r\n<td style="text-align: center;">Column 2</td>\r\n</tr>\r\n</tbody>\r\n</table>', 9, 0, 0, '', '', 1, 1, 'Custom', '_self', 0, 0, '', '', 214, '2014-05-06 18:49:14', 1, '2015-05-12 22:35:07', 1, '', 0, 0, 1, 1),
+(86, 'News', '', 1, 0, 0, '', '', 1, 1, 'Blog', '_self', 0, 1, '', '', 671, '2014-05-09 02:55:24', 1, '2015-05-12 23:04:33', 1, '', 1, 0, 1, 1),
+(95, 'Gallery 3', '', 3, 1, 92, 'a:1:{i:0;s:1:"4";}', '', 1, 1, 'Custom', '_self', 0, 0, '', '', 23, '2014-10-30 22:22:31', 1, '0000-00-00 00:00:00', 0, '', 1, 0, 1, 1),
+(96, 'Hosting Sign Up', '', 1, 0, 0, '', '', 1, 1, 'Link', '_self', 0, 0, '', 'http://cc-wd.info/home/register.php', 1, '2014-12-08 19:47:47', 1, '2015-05-12 23:07:00', 1, '', 0, 1, 1, 1),
+(97, 'Client Login', '', 12, 0, 0, '', '', 1, 1, 'Link', '_self', 0, 0, '', 'http://cc-wd.info/home/clientarea.php', 0, '2015-01-07 13:42:22', 1, '2015-05-12 22:32:02', 1, '', 0, 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -304,6 +304,7 @@ CREATE TABLE IF NOT EXISTS `site_info` (
   `published` tinyint(1) NOT NULL DEFAULT '0',
   `homepage` varchar(1024) NOT NULL,
   `contact_email` varchar(128) NOT NULL,
+  `copyright_text` text NOT NULL,
   `default_rank` int(11) NOT NULL,
   `meta_tags` text NOT NULL,
   `style_js_link_tags` text NOT NULL,
@@ -328,8 +329,8 @@ CREATE TABLE IF NOT EXISTS `site_info` (
 -- Dumping data for table `site_info`
 --
 
-INSERT INTO `site_info` (`id`, `name`, `version`, `date_run`, `base_url`, `timezone`, `published`, `homepage`, `contact_email`, `default_rank`, `meta_tags`, `style_js_link_tags`, `g_analytics_enabled`, `g_analytics_code`, `footer_content`, `logo_url`, `facebook_url`, `facebook_enabled`, `googleplus_url`, `googleplus_enabled`, `twitter_url`, `twitter_enabled`, `instagram_url`, `instagram_enabled`, `linkedin_url`, `linkedin_enabled`) VALUES
-(1, 'Project Illuminate', '1.3', '0000-00-00 00:00:00', 'http://trist.2gd.net', 'America/Los_Angeles', 1, '86', 'test@website.com', 6, '<meta name="description" content="Project Illuminate, Second Gen Design" />', '', 0, '<script>\r\n  (function(i,s,o,g,r,a,m){i[''GoogleAnalyticsObject'']=r;i[r]=i[r]||function(){\r\n  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\r\n  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\r\n  })(window,document,''script'',''//www.google-analytics.com/analytics.js'',''ga'');\r\n\r\n  ga(''create'', ''UA-45206341-1'', ''auto'');\r\n  ga(''require'', ''displayfeatures'');\r\n  ga(''send'', ''pageview'');\r\n\r\n</script>', '<p><strong>Phone: </strong>(208)-555-5555<br /><strong>Address: </strong>1234 Secondgen Lane, Coeur d'' Alene, ID 83814</p>', 'http://trist.2gd.net', 'http://www.facebook.com/2ndgendesign', 1, 'http://plus.google.com', 1, 'http://www.twitter.com', 1, 'http://www.instagram.com', 1, 'http://www.linkedin.com', 1);
+INSERT INTO `site_info` (`id`, `name`, `version`, `date_run`, `base_url`, `timezone`, `published`, `homepage`, `contact_email`, `copyright_text`, `default_rank`, `meta_tags`, `style_js_link_tags`, `g_analytics_enabled`, `g_analytics_code`, `footer_content`, `logo_url`, `facebook_url`, `facebook_enabled`, `googleplus_url`, `googleplus_enabled`, `twitter_url`, `twitter_enabled`, `instagram_url`, `instagram_enabled`, `linkedin_url`, `linkedin_enabled`) VALUES
+(1, 'Project Illuminate', '1.2', '0000-00-00 00:00:00', 'http://trist.2gd.net', 'America/Los_Angeles', 1, '86', 'test@website.com', 'ghjghjkgjhjhkjhg', 6, '<meta name="description" content="Project Illuminate, Second Gen Design" />', '', 0, '<script>\r\n  (function(i,s,o,g,r,a,m){i[''GoogleAnalyticsObject'']=r;i[r]=i[r]||function(){\r\n  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\r\n  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\r\n  })(window,document,''script'',''//www.google-analytics.com/analytics.js'',''ga'');\r\n\r\n  ga(''create'', ''UA-45206341-1'', ''auto'');\r\n  ga(''require'', ''displayfeatures'');\r\n  ga(''send'', ''pageview'');\r\n\r\n</script>', '<p><strong>Phone: </strong>(208)-555-5555<br /><strong>Address: </strong>1234 Secondgen Lane, Coeur d'' Alene, ID 83814</p>', 'http://trist.2gd.net', 'http://www.facebook.com/2ndgendesign', 1, 'http://plus.google.com', 1, 'http://www.twitter.com', 1, 'http://www.instagram.com', 1, 'http://www.linkedin.com', 1);
 
 -- --------------------------------------------------------
 
@@ -424,14 +425,7 @@ CREATE TABLE IF NOT EXISTS `staff` (
   `role` varchar(128) NOT NULL,
   `bio` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `staff`
---
-
-INSERT INTO `staff` (`id`, `date_created`, `creator`, `last_edited`, `editor`, `order`, `name`, `role`, `bio`) VALUES
-(1, '2014-12-02 18:50:43', 1, '0000-00-00 00:00:00', 0, 1, 'Test', '', '');
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 -- --------------------------------------------------------
 
@@ -456,7 +450,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `hashed_pass`, `email`, `created`, `deletable`, `rank`, `last_logged_in`) VALUES
-(1, 'Admin', '9d4e1e23bd5b727046a9e3b4b7db57bd8d6ee684', 'secondgendesign@gmail.com', '2014-05-13 17:06:01', 0, 1, '2015-04-06 12:57:05'),
+(1, 'Admin', '9d4e1e23bd5b727046a9e3b4b7db57bd8d6ee684', 'secondgendesign@gmail.com', '2014-05-13 17:06:01', 0, 1, '2015-05-30 14:26:23'),
 (58, 'delbyzzthe', 'd6cf8b20798f79d9186978670bf6143eb55d4b31', 'johnsondelbert1@gmail.com', '2014-06-04 01:59:39', 1, 1, '0000-00-00 00:00:00'),
 (54, 'member', '9d4e1e23bd5b727046a9e3b4b7db57bd8d6ee684', 'secondgendesign@gmail.com', '2014-05-14 00:07:22', 1, 6, '2015-03-22 12:38:52'),
 (57, 'new', 'c2a6b03f190dfb2b4aa91f8af8d477a9bc3401dc', 'new@new.com', '2014-05-22 02:39:56', 1, 9, '0000-00-00 00:00:00');

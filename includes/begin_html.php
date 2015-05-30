@@ -1,6 +1,6 @@
 <?php
 if($site_info['published']==0){
-	redirect_to("under_construction.php");
+	redirect_to($site_info['base_url']."/under_construction.php");
 }
 
 if(isset($_GET['error'])){

@@ -280,12 +280,27 @@ if($_GET['action']=="edit"){
 	}
 	<!-- jQuery for seven sets of "Select All" checkboxes -->
 	$(document).ready(function() {
-			 $('input[id="gallall"]').click(function() {
-			 $("#gall :checkbox").attr('checked', $(this).attr('checked'));
-		});
-			 $('input[id="formall"]').click(function() {
-			 $("#form :checkbox").attr('checked', $(this).attr('checked'));
-		});
+		var $gallall = 'gallall';
+        $('input[id="'+$gallall+'"]').change(function() {
+			var $all_check_status = $('input[id="'+$gallall+'"]').is(':checked');
+             $("#gall label").each(function(index, element) {
+				var $target = $(this).attr("for");
+				if($all_check_status!=$('input[id="'+$target+'"]').is(':checked')){
+                	$(this).trigger('click');
+				}
+            });
+        });
+		
+		var $formall = 'formall';
+        $('input[id="'+$formall+'"]').change(function() {
+			var $all_check_status = $('input[id="'+$formall+'"]').is(':checked');
+             $("#form label").each(function(index, element) {
+				var $target = $(this).attr("for");
+				if($all_check_status!=$('input[id="'+$target+'"]').is(':checked')){
+                	$(this).trigger('click');
+				}
+            });
+        });
 	 });
 </script>
 <form action="edit_page.php?<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "action=edit&&page=".$selpage['id'];}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "action=newpage";} ?>" method="post" name="editpage">
@@ -330,7 +345,7 @@ if($_GET['action']=="edit"){
 <div id="TabbedPanels1" class="TabbedPanels">
             <ul class="TabbedPanelsTabGroup">
                 <li class="TabbedPanelsTab" tabindex="0">Content</li>
-                <li class="TabbedPanelsTab" tabindex="0">Other</li>
+                <li class="TabbedPanelsTab" tabindex="0">Properties</li>
                 <li class="TabbedPanelsTab" tabindex="0">Galleries</li>
                 <li class="TabbedPanelsTab" tabindex="0">Forms</li>
             </ul>
@@ -344,138 +359,137 @@ if($_GET['action']=="edit"){
   </tr>
             </div>
                 <div class="TabbedPanelsContent">
-
-<table width="100%" border="5" cellspacing="5" cellpadding="5" class="editpageform">
-<tr><!--
-    <td align="left">
-    <div class="input-field col s6">
-        	<input id="title" type="text" value="<?php if(isset($_GET['page'])){echo $selpage['name'];} ?>" class="validate" />
-            <label for="title">Title</label>
-            </div>
-
-    </td>
-    -->
-    <!--
-    <td align="right">
-		<b>Visible to:</b>
-    </td>
-    <td>
-    	<select name="visible">
-        	<option value="1"<?php if(isset($_GET['page'])&&$selpage['visible'] == 1){echo ' selected="selected"';} ?>>Everyone</option>
-            <option value="2"<?php if(isset($_GET['page'])&&$selpage['visible'] == 2){echo ' selected="selected"';} ?>>Logged in</option>
-            <option value="3"<?php if(isset($_GET['page'])&&$selpage['visible'] == 3){echo ' selected="selected"';} ?>>Admins</option>
-            <option value="0"<?php if(isset($_GET['page'])&&$selpage['visible'] == 0){echo ' selected="selected"';} ?>>(None)</option>
-        </select>
-    </td>
-  </tr>-->
-  <tr>
-    <td align="left">
-    <label>Page Order:</label>
-        <select name="pgorder"><?php $numpages=mysqli_num_rows($listpagesquery)+1; $count=1; while($numpages>=$count){ ?><option value="<?php echo $count; ?>"<?php if(isset($_GET['page'])&&intval($selpage['position'])==$count){echo " selected=\"selected\"";} ?>><?php echo $count;?></option><?php $count++; }  ?>
-        <?php if(isset($_GET['action'])&&$_GET['action']=="newpage"){?><option value="<?php echo ($count); ?>" selected="selected"><?php echo ($count); ?></option><?php }?></select>
-    </td>
-    
-    <td align="left">
-		<?php
-            $types = array('Custom', 'Blog', 'Link', 'Staff', 'Forum');
-        ?>
-        <label>Page Type:</label>
-        <select name="pgtype" onchange="disable(this)">
-        <?php
-        $typecount=0;
-        foreach($types as $type){
-        ?>
-            <option value="<?php echo $type; ?>"<?php if ((isset($selpage['type'])&&$type == $selpage['type'])||$_GET['action']=='newpage'&&$typecount==0){echo ' selected="selected"';} ?>><?php echo $type; ?></option>
-        <?php 
-        $typecount++;
-        } ?>
-        </select>
-    </td>
-    <td rowspan="4">
-    </td>
-  </tr>
-  <!--<tr>
-  	<td align="right">Icon:</td>
-    <td>
-    	<input type="text" name="icon" value="<?php if(isset($_GET['page'])){echo $selpage['icon'];} ?>" />
-    </td>
-  </tr>-->
-  <tr>
-  	
-    <td align="left">
-    	<?php
-        $query="SELECT * FROM `pages` WHERE `issubpage` = 0 ORDER BY `position` ASC";
-        $listpagesquery=mysqli_query( $connection, $query);
-        confirm_query($listpagesquery);
-        ?>
-        <label>Parent Page</label>
-        <select name="sub">
-        	<option value="none"<?php if(isset($selpage['issubpage'])&&$selpage['issubpage']==0){echo " selected=\"selected\"";} ?>>(None)</option>
-			<?php
-            while($listpage=mysqli_fetch_array($listpagesquery)){
-				if(isset($_GET['page'])&&$listpage['id']!=intval($_GET['page'])){?>
-                	<option value="<?php echo $listpage['id'];?>"<?php if(isset($selpage['parent'])&&$selpage['parent']==$listpage['id']){echo " selected=\"selected\"";} ?>><?php echo $listpage['name']?></option>
-			<?php }
-            }?>
-        </select>
-    </td>
-    <td align="left">
-    <div class="input-field col s6">
-    <label>External URL - Make sure to add "http://"</label>
-    	<input type="text" name="url" id="url" value="<?php if(isset($_GET['page'])){echo $selpage['url'];}else{echo "";} ?>" maxlength="1024" <?php if((isset($selpage['type'])&&$selpage['type']!="Link")||$_GET['action']=="newpage"){echo "readonly disabled ";} ?>/>
-    </div>
-    </td>
-  </tr>
-  <tr>
-    <td align="left">
-    <label>Open page in</label>
-        <select name="target">
-        	<option value="_self"<?php if ((isset($selpage['target'])&&$selpage['target']=="_self")){echo ' selected="selected"';}?>>Parent</option>
-            <option value="_blank"<?php if ((isset($selpage['target'])&&$selpage['target'] == "_blank")){echo ' selected="selected"';} ?>>New Tab</option>
-        </select>
-    </td>
-    <td align="right"><input id="banner" type="checkbox" name="banner" <?php if(isset($_GET['page'])&&$selpage['banner']==1){echo "checked ";} ?>/><label for="banner">Banner</label></td>
-	<td align="left">
-        <?php
-			$query="SELECT * FROM `slider_names`";
-			$listsliderssquery=mysqli_query( $connection, $query);
-			confirm_query($listsliderssquery);
-		?>
-        <label>Slider</label>
-        <select name="slider">
-        	<option value="0"<?php if(isset($selpage['slider'])&&$selpage['slider']==0){echo " selected=\"selected\"";} ?>>(None)</option>
-			<?php
-            while($listslider=mysqli_fetch_array($listsliderssquery)){?>
-                <option value="<?php echo $listslider['id'];?>"<?php if(isset($selpage['slider'])&&$selpage['slider']==$listslider['id']){echo " selected=\"selected\"";} ?>><?php echo $listslider['name']?></option>
-			<?php
-            }?>
-        </select>
-     </td>
-  </tr>
-  <tr>
-  	<td align="right"><b>Show page on:</b></td>
-    <td align="left">
-    	<input id="horiz" type="checkbox" name="horiz_menu" <?php if((isset($_GET['page'])&&$selpage['horiz_menu']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/><label for="horiz">Horiz</label><br>
-        <input id="vert" type="checkbox" name="vert_menu" <?php if(isset($_GET['page'])&&$selpage['vert_menu']==1){echo "checked ";} ?>/><label for="vert">Vert</label>
-    </td>
-    <td align="right"><b>Menus visible on page:</b></td>
-    <td align="left">
-    	Horizontal Menu <input type="checkbox" id="horiz_menu_visible" name="horiz_menu_visible" <?php if((isset($_GET['page'])&&$selpage['horiz_menu_visible']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/><label for="horiz_menu_visible"><br>
-        Vertical Menu <input type="checkbox" id="vert_menu_visible" name="vert_menu_visible" <?php if((isset($_GET['page'])&&$selpage['vert_menu_visible']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/><label for="vert_menu_visible">
-    </td>
-  </tr>
-</table>
-</div>
+                    <h1 style="margin:0;">Page Properties</h1><br>
+                    <table width="100%" border="5" cellspacing="5" cellpadding="5" class="editpageform">
+                    <tr><!--
+                        <td align="left">
+                        <div class="input-field col s6">
+                                <input id="title" type="text" value="<?php if(isset($_GET['page'])){echo $selpage['name'];} ?>" class="validate" />
+                                <label for="title">Title</label>
+                                </div>
+                    
+                        </td>
+                        -->
+                        <!--
+                        <td align="right">
+                            <b>Visible to:</b>
+                        </td>
+                        <td>
+                            <select name="visible">
+                                <option value="1"<?php if(isset($_GET['page'])&&$selpage['visible'] == 1){echo ' selected="selected"';} ?>>Everyone</option>
+                                <option value="2"<?php if(isset($_GET['page'])&&$selpage['visible'] == 2){echo ' selected="selected"';} ?>>Logged in</option>
+                                <option value="3"<?php if(isset($_GET['page'])&&$selpage['visible'] == 3){echo ' selected="selected"';} ?>>Admins</option>
+                                <option value="0"<?php if(isset($_GET['page'])&&$selpage['visible'] == 0){echo ' selected="selected"';} ?>>(None)</option>
+                            </select>
+                        </td>
+                      </tr>-->
+                      <tr>
+                        <td align="left">
+                        <label>Page Order:</label>
+                            <select name="pgorder"><?php $numpages=mysqli_num_rows($listpagesquery)+1; $count=1; while($numpages>=$count){ ?><option value="<?php echo $count; ?>"<?php if(isset($_GET['page'])&&intval($selpage['position'])==$count){echo " selected=\"selected\"";} ?>><?php echo $count;?></option><?php $count++; }  ?>
+                            <?php if(isset($_GET['action'])&&$_GET['action']=="newpage"){?><option value="<?php echo ($count); ?>" selected="selected"><?php echo ($count); ?></option><?php }?></select>
+                        </td>
+                        
+                        <td align="left">
+                            <?php
+                                $types = array('Custom', 'Blog', 'Link', 'Staff', 'Forum');
+                            ?>
+                            <label>Page Type:</label>
+                            <select name="pgtype" onchange="disable(this)">
+                            <?php
+                            $typecount=0;
+                            foreach($types as $type){
+                            ?>
+                                <option value="<?php echo $type; ?>"<?php if ((isset($selpage['type'])&&$type == $selpage['type'])||$_GET['action']=='newpage'&&$typecount==0){echo ' selected="selected"';} ?>><?php echo $type; ?></option>
+                            <?php 
+                            $typecount++;
+                            } ?>
+                            </select>
+                        </td>
+                        <td rowspan="4">
+                        </td>
+                      </tr>
+                      <!--<tr>
+                        <td align="right">Icon:</td>
+                        <td>
+                            <input type="text" name="icon" value="<?php if(isset($_GET['page'])){echo $selpage['icon'];} ?>" />
+                        </td>
+                      </tr>-->
+                      <tr>
+                        
+                        <td align="left">
+                            <?php
+                            $query="SELECT * FROM `pages` WHERE `issubpage` = 0 ORDER BY `position` ASC";
+                            $listpagesquery=mysqli_query( $connection, $query);
+                            confirm_query($listpagesquery);
+                            ?>
+                            <label>Parent Page</label>
+                            <select name="sub">
+                                <option value="none"<?php if(isset($selpage['issubpage'])&&$selpage['issubpage']==0){echo " selected=\"selected\"";} ?>>(None)</option>
+                                <?php
+                                while($listpage=mysqli_fetch_array($listpagesquery)){
+                                    if(isset($_GET['page'])&&$listpage['id']!=intval($_GET['page'])){?>
+                                        <option value="<?php echo $listpage['id'];?>"<?php if(isset($selpage['parent'])&&$selpage['parent']==$listpage['id']){echo " selected=\"selected\"";} ?>><?php echo $listpage['name']?></option>
+                                <?php }
+                                }?>
+                            </select>
+                        </td>
+                        <td align="left">
+                        <div class="input-field col s6">
+                        <label>External URL - Make sure to add "http://"</label>
+                            <input type="text" name="url" id="url" value="<?php if(isset($_GET['page'])){echo $selpage['url'];}else{echo "";} ?>" maxlength="1024" <?php if((isset($selpage['type'])&&$selpage['type']!="Link")||$_GET['action']=="newpage"){echo "readonly disabled ";} ?>/>
+                        </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="left">
+                        <label>Open page in</label>
+                            <select name="target">
+                                <option value="_self"<?php if ((isset($selpage['target'])&&$selpage['target']=="_self")){echo ' selected="selected"';}?>>Parent</option>
+                                <option value="_blank"<?php if ((isset($selpage['target'])&&$selpage['target'] == "_blank")){echo ' selected="selected"';} ?>>New Tab</option>
+                            </select>
+                        </td>
+                        <td align="right"><input id="banner" type="checkbox" name="banner" <?php if(isset($_GET['page'])&&$selpage['banner']==1){echo "checked ";} ?>/><label for="banner">Banner</label></td>
+                        <td align="left">
+                            <?php
+                                $query="SELECT * FROM `slider_names`";
+                                $listsliderssquery=mysqli_query( $connection, $query);
+                                confirm_query($listsliderssquery);
+                            ?>
+                            <label>Slider</label>
+                            <select name="slider">
+                                <option value="0"<?php if(isset($selpage['slider'])&&$selpage['slider']==0){echo " selected=\"selected\"";} ?>>(None)</option>
+                                <?php
+                                while($listslider=mysqli_fetch_array($listsliderssquery)){?>
+                                    <option value="<?php echo $listslider['id'];?>"<?php if(isset($selpage['slider'])&&$selpage['slider']==$listslider['id']){echo " selected=\"selected\"";} ?>><?php echo $listslider['name']?></option>
+                                <?php
+                                }?>
+                            </select>
+                         </td>
+                      </tr>
+                      <tr>
+                        <td align="right"><b>Show page on:</b></td>
+                        <td align="left">
+                            <input id="horiz" type="checkbox" name="horiz_menu" <?php if((isset($_GET['page'])&&$selpage['horiz_menu']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/><label for="horiz">Horiz</label><br>
+                            <input id="vert" type="checkbox" name="vert_menu" <?php if(isset($_GET['page'])&&$selpage['vert_menu']==1){echo "checked ";} ?>/><label for="vert">Vert</label>
+                        </td>
+                        <td align="right"><b>Menus visible on page:</b></td>
+                        <td align="left">
+                            <input type="checkbox" id="horiz_menu_visible" name="horiz_menu_visible" <?php if((isset($_GET['page'])&&$selpage['horiz_menu_visible']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/><label for="horiz_menu_visible">Horizontal Menu</label><br>
+                            <input type="checkbox" id="vert_menu_visible" name="vert_menu_visible" <?php if((isset($_GET['page'])&&$selpage['vert_menu_visible']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/><label for="vert_menu_visible">Vertical Menu</label>
+                        </td>
+                      </tr>
+                    </table>
+                </div>
                 <div class="TabbedPanelsContent">
+                <h1 style="margin:0;">Included Galleries</h1><br>
 					<?php
                         $query="SELECT * FROM `galleries` ORDER BY `id` ASC";
                         $galleryquery=mysqli_query( $connection, $query);
                         confirm_query($galleryquery);?>
-                        <table width="30%" border="0" id="gall">
-                          <tr>
-                            <th scope="col" style="text-align:right">Select all:</th>
-                            <th scope="col"><input type="checkbox" id="gallall"><label for="gallall"></th>
-                          </tr>
+                        <div id="gall">
+                          <ul>
+                            	<li><input type="checkbox" id="gallall"><label for="gallall"><strong>Select all</strong></label></li>
                         <?php
                         while($gallery=mysqli_fetch_array($galleryquery)){
                             $checked = false;
@@ -489,24 +503,19 @@ if($_GET['action']=="edit"){
                             }
                             
                             ?>
-                            <tr>
-                                <td width="80%" style="text-align:right"><a href="edit_gallery.php?gallid=<?php echo urlencode($gallery['id']); ?>"><?php echo $gallery['name']; ?></a></td>
-                                <td width="20%" style="text-align:center;"><input type="checkbox" name="galleries[]" id="<?php echo $gallery['id']; ?>" value="<?php echo $gallery['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="<?php echo $gallery['id']; ?>"></td>
-                            </tr>
-                        
-                    <?php } ?>
-                    </table>
+                            <li><input type="checkbox" name="galleries[]" id="<?php echo $gallery['id']; ?>" value="<?php echo $gallery['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="<?php echo $gallery['id']; ?>"><a href="edit_gallery.php?gallid=<?php echo urlencode($gallery['id']); ?>"><?php echo $gallery['name']; ?></a></label></li> <?php } ?>
+                    	</ul>
+                    </div>
                 </div>
                 <div class="TabbedPanelsContent">
+                <h1 style="margin:0;">Included Forms</h1><br>
 					<?php
                         $query="SELECT * FROM `forms` ORDER BY `id` ASC";
                         $formquery=mysqli_query( $connection, $query);
                         confirm_query($formquery);
-                        ?><table width="30%" border="0" id="form">
-                          <tr>
-                            <th scope="col" style="text-align:right">Select all:</th>
-                            <th scope="col"><input type="checkbox" id="formall"><label for="formall"></th>
-                          </tr>
+                        ?><div id="form">
+                        	<ul>
+                            	<li><input type="checkbox" id="formall"><label for="formall"><strong>Select all</strong></label></li>
                         <?php
                         while($form=mysqli_fetch_array($formquery)){
                             $checked = false;
@@ -520,12 +529,9 @@ if($_GET['action']=="edit"){
                             }
                             
                             ?>
-                            <tr>
-                                <td width="80%" style="text-align:right"><a href="edit_form.php?gallid=<?php echo urlencode($form['id']); ?>"><?php echo $form['name']; ?></a></td>
-                                <td width="20%" style="text-align:center;"><input type="checkbox" name="forms[]" id="<?php echo $form['id']; ?>" value="<?php echo $form['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="<?php echo $form['id']; ?>"></td>
-                            </tr>
-                    <?php } 
-                    ?></table>
+                            <li><input type="checkbox" name="forms[]" id="<?php echo $form['id']; ?>" value="<?php echo $form['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="<?php echo $form['id']; ?>"><a href="edit_form.php?formid=<?php echo urlencode($form['id']); ?>" target="_blank"><?php echo $form['name']; ?></a></label></li>
+                            <?php } 
+                    ?></ul></div>
 </div>
             </div>
         </div>
