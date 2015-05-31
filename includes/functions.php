@@ -26,7 +26,7 @@ date_default_timezone_set($site_info['timezone']);
 $date=date("Y/m/d H:i:s", time());
 
 //Folders to be re-created if missing
-$folders = array('images/banner/', 'images/favicon/', 'images/logo/', 'blog_galleries/', 'galleries/');
+$folders = array('images/banner/', 'images/bg/', 'images/favicon/', 'images/logo/', 'blog_galleries/', 'galleries/');
 
 function get_rank_info(){
 	//gets permissions for logged in user
@@ -310,7 +310,7 @@ function upload($files, $directory ,$maxfilesize, $allowed_file_types = false){
  
 	if (!empty($file_basename)) {
  		// rename file
-		$newfilename = $files["file"]["name"];
+		$newfilename = str_replace(" ", "_", $files["file"]["name"]);
 		if (((is_array($allowed_file_types)&&in_array($file_ext,$allowed_file_types))||$allowed_file_types == false)) {
 			if ($filesize < $maxfilesize) {	
 				if (file_exists($directory . $newfilename)) {		

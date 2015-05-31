@@ -4,6 +4,7 @@ require_once("../includes/functions.php");
 <?php
 
 $output_dir_banner = "../images/banner/";
+$output_dir_bg = "../images/bg/";
 $output_dir_logo = "../images/logo/";
 $output_dir_icon = "../images/favicon/";
 
@@ -14,6 +15,13 @@ if(isset($_GET['delete'])){
 			unlink($output_dir_banner.DIRECTORY_SEPARATOR.$item);
 		}
 		$message = 'Banner image deleted';
+	}
+	if($_GET['delete']=='bg'){
+		foreach (scandir($output_dir_bg) as $item) {
+			if ($item == '.' || $item == '..') continue;
+			unlink($output_dir_bg.DIRECTORY_SEPARATOR.$item);
+		}
+		$message = 'Background image deleted';
 	}
 	if($_GET['delete']=='logo'){
 		foreach (scandir($output_dir_logo) as $item) {
@@ -51,6 +59,29 @@ if(isset($_POST['chng_info'])){
 		}
 	}else{
 		$error="You do not have permission to edit Site Information.";
+	}
+}
+
+if(isset($_POST['bg_submit'])){
+	if(check_permission("Website","upload_favicon_banner")){
+		if(isset($_POST['bg_fixed'])){
+			$bg_fixed = 1;
+		}else{
+			$bg_fixed = 0;
+		}
+		if(isset($_POST['use_bg_color'])){
+			$use_bg_color = 1;
+		}else{
+			$use_bg_color = 0;
+		}
+		
+		$query="UPDATE `site_layout` SET 
+			`bg_repeat` = '{$_POST['bg_repeat']}', `bg_position` = '{$_POST['bg_position']}', `bg_size`='{$_POST['bg_size']}', `bg_fixed` = {$bg_fixed}, `use_bg_color` = {$use_bg_color}";
+		$result=mysqli_query($connection, $query);
+		confirm_query($result);
+		$success = "Background settings has been updated!";
+	}else{
+		$error="You do not have permission to edit the background image.";
 	}
 }
 
@@ -143,6 +174,13 @@ if(isset($_POST['uploadbanner'])){
 		unlink($output_dir_banner.DIRECTORY_SEPARATOR.$item);
 	}
 	$message = upload($_FILES, $output_dir_banner, 2097152, array('.jpeg','.jpg','.gif','.png','.ico'));
+}
+if(isset($_POST['uploadbg'])){
+	foreach (scandir($output_dir_bg) as $item) {
+		if ($item == '.' || $item == '..') continue;
+		unlink($output_dir_bg.DIRECTORY_SEPARATOR.$item);
+	}
+	$message = upload($_FILES, $output_dir_bg, 4194304, array('.jpeg','.jpg','.gif','.png','.ico'));
 }
 if(isset($_POST['uploadlogo'])){
 	foreach (scandir($output_dir_logo) as $item) {
@@ -381,7 +419,7 @@ $result_pages=mysqli_query($connection, $query);
   <tr>
   	<td>
         <h2>Website Published</h2>
-        <input name="published" type="checkbox"<?php if($site['published']==1){echo " checked";} ?> maxlength="128" id="pub" /><label for="pub">
+        <input name="published" type="checkbox"<?php if($site['published']==1){echo " checked";} ?> id="pub" /><label for="pub"></label>
     </td>
   	<td>
     	<h2>Homepage</h2>
@@ -491,7 +529,54 @@ $result_pages=mysqli_query($connection, $query);
 	}
 ?>
 <br><br>
-<a href="site-settings.php?tab=2&delete=banner">[Delete Banner]</a>
+<a href="site-settings.php?tab=2&delete=banner">[Delete Banner]</a><br><br>
+<h2>Upload Background Image</h2>
+<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
+	<input type="file" name="file" id="file" accept="image/*" /><br>
+    Max filesize 4MB.
+	<input name="uploadbg" type="submit" class="btn green" value="Upload selected background" />
+</form><br>
+<?php
+	if($bg != false){
+		?><img src="../images/bg/<?php echo $bg; ?>" width="500" /><br><br><?php
+	}else{?>
+		<div style="font-size:20px; width:500px; height:200px; border:5px dashed #B1B1B1; text-align:center; line-height:200px; vertical-align:middle; margin-left:auto; margin-right:auto;">There is currently no background image.</div>
+    <?php
+	}
+?>
+<form method="post">
+	<h3>Background Repeat</h3>
+	<select name="bg_repeat">
+    	<option value="repeat"<?php if($layout['bg_repeat']=='repeat'){echo " selected";} ?>>Tile</option>
+        <option value="repeat-x"<?php if($layout['bg_repeat']=='repeat-x'){echo " selected";} ?>>Horizontally</option>
+        <option value="repeat-y"<?php if($layout['bg_repeat']=='repeat-y'){echo " selected";} ?>>Vertically</option>
+        <option value="no-repeat"<?php if($layout['bg_repeat']=='no-repeat'){echo " selected";} ?>>No repeat</option>
+    </select>
+	<h3>Background Position</h3>
+	<select name="bg_position">
+        <option value="left top"<?php if($layout['bg_position']=='left top'){echo " selected";} ?>>left top</option>
+        <option value="left center"<?php if($layout['bg_position']=='left center'){echo " selected";} ?>>left center</option>
+        <option value="left bottom"<?php if($layout['bg_position']=='left bottom'){echo " selected";} ?>>left bottom</option>
+        <option value="right top"<?php if($layout['bg_position']=='right top'){echo " selected";} ?>>right top</option>
+        <option value="right center"<?php if($layout['bg_position']=='right center'){echo " selected";} ?>>right center</option>
+        <option value="right bottom"<?php if($layout['bg_position']=='right bottom'){echo " selected";} ?>>right bottom</option>
+        <option value="center top"<?php if($layout['bg_position']=='center top'){echo " selected";} ?>>center top</option>
+        <option value="center center"<?php if($layout['bg_position']=='center center'){echo " selected";} ?>>center center</option>
+        <option value="center bottom"<?php if($layout['bg_position']=='center bottom'){echo " selected";} ?>>center bottom</option>
+    </select>
+    <h3>Background Size</h3>
+	<select name="bg_size">
+    	<option value="auto"<?php if($layout['bg_size']=='auto'){echo " selected";} ?>>Original image size</option>
+        <option value="cover"<?php if($layout['bg_size']=='cover'){echo " selected";} ?>>Fill</option>
+    </select>
+    <h3>Background fixed</h3>
+    <input name="bg_fixed" type="checkbox"<?php if($layout['bg_fixed']==1){echo " checked";} ?> id="bg_fixed" /><label for="bg_fixed"></label>
+    <h3>Use background color</h3>
+    <input name="use_bg_color" type="checkbox"<?php if($layout['use_bg_color']==1){echo " checked";} ?> id="use_bg_color" /><label for="use_bg_color"></label><br><br>
+    <input name="bg_submit" type="submit" class="btn green" value="Save background settings" />
+</form>
+<br><br>
+<a href="site-settings.php?tab=2&delete=bg">[Delete Background]</a>
 <br><br><br><h2>Upload Logo</h2>
 <form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
 	<input type="file" name="file" id="file" accept="image/*" /><br>

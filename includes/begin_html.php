@@ -38,6 +38,12 @@ if(isset($logo[2])){
 }else{
 	$logo = false;
 }
+$bg = scandir("images/bg/");
+if(isset($bg[2])){
+	$bg = $bg[2];
+}else{
+	$bg = false;
+}
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -80,8 +86,32 @@ if(isset($logo[2])){
 			background-color:<?php echo $site_layout['sitebg_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		body, .mobile-logo{
+		.mobile-logo{
 			background-color:<?php echo $site_layout['sitebg_color'] ?> !important;
+		}
+		body{
+			<?php if($site_layout['use_bg_color']==1){ ?>
+			background-color:<?php echo $site_layout['sitebg_color'] ?> !important;
+			<?php }else{ ?>
+			background-color:#FFFFFF; ?> !important;
+			<?php }
+			if($bg!=false){?>
+			background-image:url(/images/bg/<?php echo $bg; ?>);
+			<?php }
+			if($site_layout['bg_repeat']!=''){ ?>
+			background-repeat:<?php echo $site_layout['bg_repeat'] ?> !important;
+			<?php }
+			if($site_layout['bg_position']!=''){ ?>
+			background-position:<?php echo $site_layout['bg_position'] ?> !important;
+			<?php }
+			if($site_layout['bg_size']!=''){ ?>
+			background-size:<?php echo $site_layout['bg_size'] ?> !important;
+			<?php }
+			if($site_layout['bg_fixed']==1){ ?>
+			background-attachment:fixed !important;
+			<?php }else{ ?>
+			background-attachment:scroll !important;
+			<?php } ?>
 		}
 		/*#contentwrap{
 			background-color:<?php echo $site_layout['contentbg_color'] ?> !important;
