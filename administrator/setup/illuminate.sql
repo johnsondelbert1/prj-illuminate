@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 30, 2015 at 11:53 PM
+-- Generation Time: May 31, 2015 at 09:57 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -247,14 +247,14 @@ CREATE TABLE IF NOT EXISTS `pages` (
 --
 
 INSERT INTO `pages` (`id`, `name`, `content`, `position`, `issubpage`, `parent`, `galleries`, `forms`, `visible`, `published`, `type`, `target`, `banner`, `slider`, `icon`, `url`, `views`, `created`, `creator`, `lastedited`, `editor`, `category`, `horiz_menu`, `vert_menu`, `horiz_menu_visible`, `vert_menu_visible`) VALUES
-(92, 'Galleries', '', 4, 0, 0, 'a:2:{i:0;s:1:"1";i:1;s:1:"3";}', '', 1, 1, 'Custom', '_self', 0, 1, '', '', 428, '2014-05-09 03:22:58', 1, '2015-05-16 20:52:12', 1, '', 1, 0, 1, 1),
+(92, 'Galleries', '', 4, 0, 0, 'a:2:{i:0;s:1:"1";i:1;s:1:"3";}', '', 1, 1, 'Custom', '_self', 0, 1, '', '', 442, '2014-05-09 03:22:58', 1, '2015-05-16 20:52:12', 1, '', 1, 0, 1, 1),
 (65, 'Form', '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam rutrum lobortis facilisis. Vivamus ac bibendum enim. Nulla eget porta turpis. Cras odio diam, lobortis a fringilla posuere, auctor ac tortor. Integer molestie mollis justo, eget rhoncus est porta id. In pellentesque augue vitae nisl mollis elementum. Sed ultricies sed odio at vestibulum. Curabitur pulvinar magna semper elementum accumsan. In et sodales elit. Praesent quis ipsum dui. Nullam non sem diam.</p>\r\n<p>Nam porttitor, odio quis vehicula aliquet, mi tellus aliquam enim, eu consectetur lorem massa ut arcu. Phasellus pharetra tellus massa, id rhoncus odio gravida a. Pellentesque consectetur lectus a molestie scelerisque. Nullam nec tortor tristique felis vehicula vulputate eget vitae neque. Aenean erat lorem, feugiat eget metus aliquam, fermentum tempus tortor. Aliquam dignissim lorem libero, ac rutrum sem iaculis eu. Nulla pretium faucibus lobortis.</p>\r\n<p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam sit amet ultricies urna. Cras commodo rhoncus felis sed venenatis. Suspendisse ornare urna id nunc tempus, facilisis euismod velit venenatis.</p>', 3, 0, 0, '', 'a:1:{i:0;s:1:"4";}', 1, 1, 'Custom', '_self', 0, 0, '', '', 500, '2014-05-03 21:12:12', 1, '2015-05-12 22:34:49', 1, '', 0, 0, 1, 1),
 (67, 'Staff', '<p>Page 3</p>\r\n<p><a href="../uploads/test/Earth_Eastern_Hemisphere.jpg">Download File</a></p>\r\n<p>sdfds</p>', 4, 0, 0, '', '', 1, 1, 'Staff', '_self', 0, 0, '', '', 362, '2014-05-03 22:50:13', 1, '2015-05-14 20:21:09', 1, '', 1, 0, 1, 1),
 (69, 'Gallery 1', '<p>Gallery Test</p>', 5, 1, 92, 'a:1:{i:0;s:1:"1";}', '', 1, 1, 'Custom', '_self', 0, 0, '', '', 190, '2014-05-03 23:22:56', 1, '2014-11-01 14:12:56', 1, '', 1, 0, 1, 1),
 (70, 'Gallery 2', '', 6, 1, 92, 'a:1:{i:0;s:1:"3";}', '', 0, 1, 'Custom', '_self', 0, 0, '', '', 70, '2014-05-03 23:23:07', 1, '2014-11-01 14:13:01', 1, '', 1, 0, 1, 1),
 (71, 'Forums', '', 8, 0, 0, '', '', 1, 1, 'Forum', '_self', 0, 0, '', '', 91, '2014-05-03 23:32:19', 1, '2015-05-12 22:35:02', 1, '', 0, 0, 1, 1),
 (81, 'Page 4', '<h1>Test</h1>\r\n<table style="height: 183px; width: 100%;" border="2" width="1798">\r\n<tbody>\r\n<tr>\r\n<td style="text-align: center;"><audio controls="controls" src="../uploads/Music/07%20Better%20Life.mp3" type="audio/mpeg">07 Better Life</audio></td>\r\n<td style="text-align: center;">Column 2</td>\r\n</tr>\r\n</tbody>\r\n</table>', 9, 0, 0, '', '', 1, 1, 'Custom', '_self', 0, 0, '', '', 214, '2014-05-06 18:49:14', 1, '2015-05-12 22:35:07', 1, '', 0, 0, 1, 1),
-(86, 'News', '', 1, 0, 0, '', '', 1, 1, 'Blog', '_self', 0, 1, '', '', 671, '2014-05-09 02:55:24', 1, '2015-05-12 23:04:33', 1, '', 1, 0, 1, 1),
+(86, 'News', '', 1, 0, 0, '', '', 1, 1, 'Blog', '_self', 0, 0, '', '', 671, '2014-05-09 02:55:24', 1, '2015-05-31 09:47:10', 1, '', 1, 0, 1, 1),
 (95, 'Gallery 3', '', 3, 1, 92, 'a:1:{i:0;s:1:"4";}', '', 1, 1, 'Custom', '_self', 0, 0, '', '', 23, '2014-10-30 22:22:31', 1, '0000-00-00 00:00:00', 0, '', 1, 0, 1, 1),
 (96, 'Hosting Sign Up', '', 1, 0, 0, '', '', 1, 1, 'Link', '_self', 0, 0, '', 'http://cc-wd.info/home/register.php', 1, '2014-12-08 19:47:47', 1, '2015-05-12 23:07:00', 1, '', 0, 1, 1, 1),
 (97, 'Client Login', '', 12, 0, 0, '', '', 1, 1, 'Link', '_self', 0, 0, '', 'http://cc-wd.info/home/clientarea.php', 0, '2015-01-07 13:42:22', 1, '2015-05-12 22:32:02', 1, '', 0, 0, 1, 1);
@@ -345,6 +345,11 @@ CREATE TABLE IF NOT EXISTS `site_layout` (
   `sitebg_color` varchar(7) NOT NULL,
   `accent_color` varchar(7) NOT NULL,
   `text_color` varchar(7) NOT NULL,
+  `bg_repeat` varchar(64) NOT NULL,
+  `bg_position` varchar(64) NOT NULL,
+  `bg_size` varchar(64) NOT NULL,
+  `bg_fixed` tinyint(1) NOT NULL DEFAULT '1',
+  `use_bg_color` tinyint(1) NOT NULL DEFAULT '1',
   `custom_css` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
@@ -353,8 +358,8 @@ CREATE TABLE IF NOT EXISTS `site_layout` (
 -- Dumping data for table `site_layout`
 --
 
-INSERT INTO `site_layout` (`id`, `menu_color`, `contentbg_color`, `sitebg_color`, `accent_color`, `text_color`, `custom_css`) VALUES
-(1, '#6B6B6B', '#000233', '#E0E0E0', '#CA171E', '#E0E0E0', '');
+INSERT INTO `site_layout` (`id`, `menu_color`, `contentbg_color`, `sitebg_color`, `accent_color`, `text_color`, `bg_repeat`, `bg_position`, `bg_size`, `bg_fixed`, `use_bg_color`, `custom_css`) VALUES
+(1, '#6B6B6B', '#000233', '#E0E0E0', '#CA171E', '#E0E0E0', 'no-repeat', 'left top', 'cover', 0, 1, '');
 
 -- --------------------------------------------------------
 
