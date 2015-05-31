@@ -146,6 +146,9 @@ if(isset($bg[2])){
 		.forumtitle{
 			border-bottom:2px <?php echo $site_layout['text_color'] ?> dashed;
 		}
+		.icon{
+			color:<?php echo $site_layout['menu_color'] ?> !important;
+		}
 		 ::-webkit-scrollbar-thumb{
 			/*background-color:<?php echo $site_layout['accent_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;*/
