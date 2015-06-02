@@ -54,7 +54,7 @@ if(isset($_GET['page'])){
 	confirm_query($getpagequery);
 	$selpage=mysqli_fetch_array($getpagequery);
 }
-function list_pages($queryresult, $is_subpg = false){
+function list_pages($queryresult, $pagetype, $is_subpg = false){
 	global $connection;
 	global $site_info;
 	global $site_layout;
@@ -90,8 +90,8 @@ function list_pages($queryresult, $is_subpg = false){
             </th>
             <th style="text-align:center;">
             <?php if(check_permission("Pages","delete_pages")){?>
-                <input type="checkbox" id="pageall" name="pageall">
-                <label for="pageall"></label>
+                <input type="checkbox" id="<?php echo $pagetype; ?>all" name="<?php echo $pagetype; ?>all">
+                <label for="<?php echo $pagetype; ?>all"></label>
             <?php } ?>
             </th>
             <!--<th>
@@ -157,7 +157,7 @@ function list_pages($queryresult, $is_subpg = false){
 					<a href="../index.php?page=<?php echo urlencode($listpage['id']);?>" onclick="window.open('<?php echo $site_info['base_url'];?>/page/<?php echo urlencode($listpage['name']);?>', 'newwindow', 'width=1017, height=500'); return false;">View<!--index.php?page=<?php echo urlencode($listpage['id']);?>--></a>
 				</td>
 				<?php if(check_permission("Pages","delete_pages")){?>
-				<td width="5%" style="text-align:center;"><input type="checkbox" name="pages[]" id="<?php echo $listpage['id']; ?>" value="<?php echo $listpage['id']; ?>" /><label for="<?php echo $listpage['id']; ?>"></label></td>
+				<td width="5%" style="text-align:center;" id="<?php echo $pagetype; ?>"><input type="checkbox" name="pages[]" id="<?php echo $listpage['id']; ?>" value="<?php echo $listpage['id']; ?>" /><label for="<?php echo $listpage['id']; ?>"></label></td>
 				<?php } ?>
 				<!-- Edited --><!--
 				<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
@@ -234,7 +234,7 @@ function list_pages($queryresult, $is_subpg = false){
 						<a href="../index.php?page=<?php echo urlencode($listpage['id']);?>" onclick="window.open('../index.php?page=<?php echo urlencode($listpage['name']);?>', 'newwindow', 'width=1017, height=500'); return false;">View<!--index.php?page=<?php echo urlencode($listpage['id']);?>--></a>
 					</td>
 					<?php if(check_permission("Pages","delete_pages")){?>
-					<td width="5%" style="text-align:center;"><input type="checkbox" name="pages[]" id="<?php echo $listpage['id']; ?>" value="<?php echo $listpage['id']; ?>" /><label for="<?php echo $listpage['id']; ?>"></label></td>
+					<td width="5%" style="text-align:center;" id="<?php echo $pagetype; ?>"><input type="checkbox" name="pages[]" id="<?php echo $listpage['id']; ?>" value="<?php echo $listpage['id']; ?>" /><label for="<?php echo $listpage['id']; ?>"></label></td>
 				<?php } ?>
 			<?php } ?>
 		<?php } ?>
@@ -260,11 +260,40 @@ function list_pages($queryresult, $is_subpg = false){
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript">
-   <!-- jQuery for seven sets of "Select All" checkboxes -->
+   <!-- jQuery for "Select All" checkboxes -->
     $(document).ready(function() {
-             $('input[id="pageall"]').click(function() {
-             $("#page :checkbox").attr('checked', $(this).attr('checked'));
-        });  
+		var $horizall = 'horizall';
+        $('input[id="'+$horizall+'"]').change(function() {
+			var $all_check_status = $('input[id="'+$horizall+'"]').is(':checked');
+             $("#horiz label").each(function(index, element) {
+				var $target = $(this).attr("for");
+				if($all_check_status!=$('input[id="'+$target+'"]').is(':checked')){
+                	$(this).trigger('click');
+				}
+            });
+        });
+		
+		var $vertall = 'vertall';
+        $('input[id="'+$vertall+'"]').change(function() {
+			var $all_check_status = $('input[id="'+$vertall+'"]').is(':checked');
+             $("#vert label").each(function(index, element) {
+				var $target = $(this).attr("for");
+				if($all_check_status!=$('input[id="'+$target+'"]').is(':checked')){
+                	$(this).trigger('click');
+				}
+            });
+        });
+		
+		var $noneall = 'noneall';
+        $('input[id="'+$noneall+'"]').change(function() {
+			var $all_check_status = $('input[id="'+$noneall+'"]').is(':checked');
+             $("#none label").each(function(index, element) {
+				var $target = $(this).attr("for");
+				if($all_check_status!=$('input[id="'+$target+'"]').is(':checked')){
+                	$(this).trigger('click');
+				}
+            });
+        });
      });
 </script>
 <form method="post" action="page_list.php">
@@ -277,11 +306,11 @@ function list_pages($queryresult, $is_subpg = false){
     <?php } ?>
 </div>
 <h1>Horizontal Menu</h1>
-<?php list_pages($listhorizpagesquery); ?>
+<?php list_pages($listhorizpagesquery, 'horiz'); ?>
 <h1>Vertical Menu</h1>
-<?php list_pages($listvertpagesquery); ?>
+<?php list_pages($listvertpagesquery, 'vert'); ?>
 <h1>Non-Menu</h1>
-<?php list_pages($listnomenupagesquery); ?>
+<?php list_pages($listnomenupagesquery, 'none'); ?>
 </form>
 <br />
 

@@ -1,6 +1,6 @@
 #php_value upload_max_filesize 256M
 #php_value post_max_size 256M
-ErrorDocument 404 prj-illuminate/err404.php
+ErrorDocument 404 /err404.php
 RewriteEngine on
 RewriteRule ^page/([^/.]+)/?$ index.php?page=$1 [L]
 RewriteRule   ^blog/?$   blog.php

@@ -64,10 +64,17 @@ confirm_query($result);
 ?>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript">
-   <!-- jQuery for seven sets of "Select All" checkboxes -->
+   <!-- jQuery for "Select All" checkboxes -->
     $(document).ready(function() {
-             $('input[id="ranks"]').click(function() {
-             $("#rank :checkbox").attr('checked', $(this).attr('checked'));
+		var $checkall = 'rankall';
+        $('input[id="'+$checkall+'"]').change(function() {
+			var $all_check_status = $('input[id="'+$checkall+'"]').is(':checked');
+             $("#form label").each(function(index, element) {
+				var $target = $(this).attr("for");
+				if($all_check_status!=$('input[id="'+$target+'"]').is(':checked')){
+                	$(this).trigger('click');
+				}
+            });
         });  
      });
 </script>
@@ -85,7 +92,7 @@ confirm_query($result);
 <h1>Rank List</h1>
 <div style="overflow-x:auto;">
     <form method="post" action="ranks.php">
-    <table border="1" cellspacing="0" cellpadding="0" id="rank" style="min-height:100px; background-color:#DDDDDD; width:100%;">
+    <table border="1" cellspacing="0" cellpadding="0" id="form" style="min-height:100px; background-color:#DDDDDD; width:100%;">
         <tr>
             <td style="min-width:150px;">
                 <table width="100%" border="1" cellspacing="0" cellpadding="0">
@@ -175,7 +182,8 @@ confirm_query($result);
                         </th>
                         <?php if(check_permission("Users","delete_rank")){?>
                             <th>
-                                Delete <input type="checkbox" id="ranks" />
+                                Delete<br>
+								<input type="checkbox" id="rankall" /><label for="rankall"></label>
                             </th>
                         <?php }?>
                     </tr>
@@ -187,7 +195,7 @@ confirm_query($result);
                         <tr height="35">
                             <td<?php if($rank['color']!=""){ ?> style="padding:5px; width:40px; background-color:<?php echo $rank['color'];?>;"<?php } ?>><?php if($rank['color']==""){ echo "(None)"; }?></td>
                             <?php if(check_permission("Users","delete_rank")){?>
-                                <td><?php if($rank['deletable']==1){ ?><input type="checkbox" name="ranks[]" value="<?php echo $rank['id']; ?>" /><?php }else{ ?><input type="checkbox" disabled /><?php } ?></td>
+                                <td><input type="checkbox" name="ranks[]"<?php if($rank['deletable']==0){echo ' disabled';} ?> value="<?php echo $rank['id']; ?>" id="<?php echo $rank['id']; ?>" /><label for="<?php echo $rank['id']; ?>"></label></td>
                             <?php }?>
                         </tr>
                     <?php

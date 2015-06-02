@@ -90,8 +90,8 @@ if(!empty($editing_rank_perms)){
 <form method="post" action="edit-rank.php?rank=<?php echo $_GET['rank']; ?>">
 <table cellpadding="5" id="sticker">
   <tr>
-    <td width="110px"><input name="submit" type="submit" value="Update Rank" class="green"/></td>
-    <td width="110px"><a class="red" href="ranks.php">Cancel</a></td>
+    <td width="110px"><input name="submit" type="submit" value="Update Rank" class="btn green"/></td>
+    <td width="110px"><a class="btn red" href="ranks.php">Cancel</a></td>
   <td></td>
   </tr>
 </table>

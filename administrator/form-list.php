@@ -71,10 +71,17 @@ $result=mysqli_query( $connection, $query);
 ?>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript">
-   <!-- jQuery for seven sets of "Select All" checkboxes -->
+   <!-- jQuery for "Select All" checkboxes -->
     $(document).ready(function() {
-             $('input[id="gallall"]').click(function() {
-             $("#gall :checkbox").attr('checked', $(this).attr('checked'));
+		var $checkall = 'formall';
+        $('input[id="'+$checkall+'"]').change(function() {
+			var $all_check_status = $('input[id="'+$checkall+'"]').is(':checked');
+             $("#form label").each(function(index, element) {
+				var $target = $(this).attr("for");
+				if($all_check_status!=$('input[id="'+$target+'"]').is(':checked')){
+                	$(this).trigger('click');
+				}
+            });
         });  
      });
 </script>
@@ -87,14 +94,14 @@ $result=mysqli_query( $connection, $query);
 <?php } ?>
 <h1>Form List</h1>
 <form method="post">
-    <table width="90%" style="text-align:left;" class="list" border="0" cellspacing="0" id="gall">
+    <table width="90%" style="text-align:left;" class="list" border="0" cellspacing="0" id="form">
         <tr>
             <th>
                 Name
             </th>
             <?php if(check_permission("Forms","delete_form")){?>
             <th style="text-align:center;">
-                <input type="checkbox" id="gallall"><label for="gallall">
+                <input type="checkbox" id="formall"><label for="formall"></label>
             </th>
             <?php } ?>
         </tr>
@@ -104,7 +111,7 @@ $result=mysqli_query( $connection, $query);
 			<tr>
 				<td><a href="edit-form.php?formid=<?php echo urlencode($form['id']); ?>"><?php echo $form['name']; ?></a></td>
 				<?php if(check_permission("Galleries","delete_gallery")){?>
-				<td width="10%" style="text-align:center;"><input type="checkbox" name="forms[]" value="<?php echo $form['id']; ?>" id="<?php echo $form['id']; ?>" /><label for="<?php echo $form['id']; ?>"></td>
+				<td width="10%" style="text-align:center;"><input type="checkbox" name="forms[]" value="<?php echo $form['id']; ?>" id="<?php echo $form['id']; ?>" /><label for="<?php echo $form['id']; ?>"></label></td>
 				<?php } ?>
 			</tr>
 	<?php

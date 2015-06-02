@@ -93,10 +93,17 @@ if(isset($_POST['deletefolder'])){
 ?>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript">
-   <!-- jQuery for seven sets of "Select All" checkboxes -->
+   <!-- jQuery for "Select All" checkboxes -->
     $(document).ready(function() {
-             $('input[id="files"]').click(function() {
-             $("#file :checkbox").attr('checked', $(this).attr('checked'));
+		var $checkall = 'fileall';
+        $('input[id="'+$checkall+'"]').change(function() {
+			var $all_check_status = $('input[id="'+$checkall+'"]').is(':checked');
+             $("#form label").each(function(index, element) {
+				var $target = $(this).attr("for");
+				if($all_check_status!=$('input[id="'+$target+'"]').is(':checked')){
+                	$(this).trigger('click');
+				}
+            });
         });  
      });
 </script>
@@ -112,12 +119,12 @@ if(isset($_POST['deletefolder'])){
 <?php $dirs = array_filter(glob('../uploads/*'), 'is_dir'); ?>
 
 <form method="post" action="upload-files.php">
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" id="file">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" id="form">
       <tr>
         <th width="25%">Folder:</th>
         <th width="55%">Number of files:</th>
         <?php if(check_permission("Uploading","delete_folders")){?>
-        	<th width="10%"><input type="checkbox" id="files"><label for="files"></th>
+        	<th width="10%"><input type="checkbox" id="fileall"><label for="fileall"></label></th>
         <?php } ?>
       </tr>
         <?php
@@ -140,7 +147,7 @@ if(isset($_POST['deletefolder'])){
 					<td style="text-align:left;"><a href="upload-to-folder.php?folder=<?php echo urlencode(substr($dir."/", 11));?>"><?php echo substr($dir, 11)."/";?></a></td>
 					<td><?php echo $i;?></td>
                     <?php if(check_permission("Uploading","delete_folders")){?>
-						<td><input type="checkbox" name="folders[]" id="<?php echo substr($dir, 11); ?>" value="<?php echo substr($dir, 11); ?>" /><label for="<?php echo substr($dir, 11); ?>"></td>
+						<td><input type="checkbox" name="folders[]" id="<?php echo substr($dir, 11); ?>" value="<?php echo substr($dir, 11); ?>" /><label for="<?php echo substr($dir, 11); ?>"></label></td>
                     <?php } ?>
 				  </tr>
             <?php }
