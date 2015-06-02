@@ -59,6 +59,7 @@ if(isset($bg[2])){
     <META NAME="language" CONTENT="English">
     <META NAME="revisit-after" CONTENT="7">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="theme-color" content="<?php echo $site_layout['accent_color'] ?>">
 
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
@@ -153,6 +154,12 @@ if(isset($bg[2])){
 			/*background-color:<?php echo $site_layout['accent_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;*/
 		}
+		::selection {
+			background: <?php echo $site_layout['accent_color'] ?>; /* WebKit/Blink Browsers */
+			}
+		::-moz-selection {
+			background: <?php echo $site_layout['accent_color'] ?>; /* WebKit/Blink Browsers */
+			}
 		#banner{
 			<?php if(count($banner)==3){?>background-image:url(images/banner/<?php echo $banner[2];?>);<?php } ?>
 			

@@ -28,7 +28,7 @@ require_once("includes/begin_html.php");
       </tr>
       <tr>
         <td>Remember Me</td>
-        <td><input name="remember" type="checkbox" value="" /></td>
+        <td><input name="remember" type="checkbox" value=""  id="remember"/><label for="remember"></td>
       </tr>
       <tr>
         <td colspan="2" align="center"><input type="submit" name="submit" value="Login" /><br /><br />

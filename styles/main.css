@@ -15,8 +15,7 @@ height:100%;
 }
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen 
-and (min-device-width : 320px) 
-and (max-device-width : 600px) {
+and (max-device-width : 1023px) {
 	.nav, #vert-td{
 	min-height:159px;
 	display:none!important;
@@ -58,7 +57,7 @@ and (orientation : portrait) {
 
 /* Desktops and laptops ----------- */
 @media only screen 
-and (min-width : 1224px) {
+and (min-width : 1024px) {
 /* Styles */
 .mobile{
 		display:none!important;
@@ -114,7 +113,7 @@ body{
 	position:absolute;
 }
 #footer-content{
-	width:50%;
+	width:100%;
 	float:left;
 }
 /*h1{
