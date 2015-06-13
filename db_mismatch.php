@@ -14,7 +14,6 @@ require("includes/globals.php");
 	
 	if(isset($dbversion['version'])){
 		$compare_result = version_compare($db_compatability,  $dbversion['version']);
-		echo $compare_result;
 		
 		if($compare_result == 0){
 			header("Location: index.php");

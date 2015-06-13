@@ -76,7 +76,7 @@ if(isset($_POST['submit'])){
 }
 
 if(isset($_POST['upload'])){
-	$message = upload($_FILES, $output_dir, 2097152, array('.jpeg','.jpg','.gif','.png'));
+	$message = upload($_FILES, $output_dir, 2097152, array('.jpeg','.jpg','.gif','.png','.JPEG','.JPG','.GIF','.PNG'));
 }
 
 if(isset($_FILES["myfile"])){
