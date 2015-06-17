@@ -117,14 +117,20 @@ if(isset($bg[2])){
 		/*#contentwrap{
 			background-color:<?php echo $site_layout['contentbg_color'] ?> !important;
 		}*/
+		.mobile, ul.side-nav, slide-out{
+			background-color:<?php echo $site_layout['accent_color'] ?> !important;
+		}
+		.mobile i{
+			color:<?php echo $site_layout['contentbg_color'] ?> !important;
+		}
 		#banner{
 			background-color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #vert-menu, #vert-menu li, #vert-menu ul li, .photo-link, .nav, ul.side-nav{
+		#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #vert-menu, #vert-menu li, #vert-menu ul li, .photo-link, .nav{
 			background-color:<?php echo $site_layout['menu_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		#horiz-menu li:hover > a, #horiz-menu li:hover > ul, #horiz-menu ul a:hover, #vert-menu li:hover > a, #vert-menu li:hover > ul, #vert-menu ul a:hover, .blog, .TabbedPanelsTab, .accent, .forum tr:hover, .forumsuser, ul.MenuBarHorizontal a:hover, ul.MenuBarHorizontal a:focus, .forumfooter, ul.side-nav li{
+		#horiz-menu li:hover > a, #horiz-menu li:hover > ul, #horiz-menu ul a:hover, #vert-menu li:hover > a, #vert-menu li:hover > ul, #vert-menu ul a:hover,  .TabbedPanelsTab, .accent, .forum tr:hover, .forumsuser, ul.MenuBarHorizontal a:hover, ul.MenuBarHorizontal a:focus, .forumfooter, ul.side-nav li{
 			background-color:<?php echo $site_layout['accent_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
@@ -137,7 +143,7 @@ if(isset($bg[2])){
 		.photo-link:hover{
 			background-color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		#content, .forum tr, .forumbody, #footerwrap{
+		#content, .forum tr, .forumbody, #footerwrap, .blog{
 			background-color:<?php echo $site_layout['contentbg_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
@@ -246,7 +252,7 @@ if(isset($bg[2])){
                     }
                     ?>
                 	<td style="padding-right:5px; padding-left:5px; vertical-align:top;">
-						<div id="content" style="background-color:#525252;">
+						<div id="content" style="background-color:#525252;" class="card">
 						<?php if(!empty($error)){echo "<h3 class=\"error\">".$error."</h3>";} ?>
                         <?php if(!empty($success)){echo "<h3 class=\"success\">".$success."</h3>";} ?>
                         <?php if(!empty($message)){echo "<h3 class=\"message\">".$message."</h3>";} ?>
