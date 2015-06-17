@@ -5424,8 +5424,9 @@ small {
     font-weight: 300; }
     .card .card-title.activator {
       cursor: pointer; }
+  /*
   .card a {
-    color: #ffab40;
+    color: #039be5;
     margin-right: 20px;
     -webkit-transition: color 0.3s ease;
     -moz-transition: color 0.3s ease;
@@ -5435,6 +5436,7 @@ small {
     text-transform: uppercase; }
     .card a:hover {
       color: #ffd8a6; }
+	  */
   .card.small, .card.medium, .card.large {
     position: relative; }
     .card.small .card-image, .card.medium .card-image, .card.large .card-image {

@@ -87,9 +87,11 @@ body{
 	margin-right:auto;
 	min-height:100%;
 }
+/*
 #wrapper a{
 	color:#FFF;
 }
+*/
 #contentwrap{
 	width:100%;
 	max-width:1880px;
@@ -106,14 +108,14 @@ body{
 }
 #footerwrap{
 	width:100%;
-	height:200px;
+	/*height:200px;*/
 	bottom:0;
 	left:0;
 	right:0;
 	position:absolute;
 }
 #footer-content{
-	width:100%;
+	/*width:100%;*/
 	float:left;
 }
 /*h1{
@@ -239,12 +241,13 @@ div.nav{
 	transition: all .2s ease-in-out;
 	width:100%;
 }
-
+/*
 #horiz-menu li:hover > a {
 	-webkit-box-shadow: inset 0px 4px 0px 0px rgba(50, 50, 50, 0.75);
 	-moz-box-shadow:    inset 0px 4px 0px 0px rgba(50, 50, 50, 0.75);
 	box-shadow:         inset 0px 4px 0px 0px rgba(50, 50, 50, 0.75);
 }
+*/
 
 #horiz-menu ul {
     margin: -20px 0 0 0;
@@ -999,7 +1002,6 @@ h3.message
 .blogtitle{
 	padding:5px;
 	font-weight:900;
-	font-size:1.125em;
 }
 .blogtitle a{
 	text-decoration:none;
@@ -1012,11 +1014,15 @@ h3.message
 .blogname{
 	font-weight:900;
 	font-size:0.875em;
-	border-bottom:1px dashed #111111;
 }
 .blogbody{
-	font-size:0.875em;
 	padding:0px 5px 10px 5px;
+	
+}
+.blogbody p{
+	font-size:0.8em !important;
+
+	
 }
 .blog{
 	color: #333333;
@@ -1167,56 +1173,5 @@ span.galleryImage input[type=checkbox]:checked {
     width:40%;
     -webkit-transition: all 0.5s ease-in-out;
 }
-/* buttons */
 
-.button,input[type=submit], a.blue, a.red, a.green {
-		border: none;
-		display: block;
-		color: #ffffff !important;
-		font-size:12px !important;
-		font-style:normal!important;
-		text-decoration:none;
-	font-weight:bold!important;
-		font-family: 'Roboto', sans-serif !important;
-		text-align: center;
-		/*border-radius: 5px;*/
-		/*box-shadow: 0px 3px 1px #2075aa;*/
-		-webkit-transition: all 0.15s linear;
-		-moz-transition: all 0.15s linear;
-		transition: all 0.15s linear;
-		right:auto;
-		left:auto;
-		height:40px;
-		line-height:40px;
-		min-width:100px;
-		padding: 0 3px 0 3px;
-		float:left ;
-
-	}
-	.red {background-color:#e94043 !important;}
-	.blue {background-color:#426FC5 !important;}
-	.green {background-color:#00897b !important;}
-	input[type=submit]{background-color:#426FC5;}
-	.red:hover {
-	  background: #c41411 !important;
-	  /*box-shadow: 0 3px 1px #237bb2;*/
-	}
-	.blue:hover {
-	  background: #3b50ce !important;
-	  /*box-shadow: 0 3px 1px #237bb2;*/
-	}
-	.green:hover {
-	  background: #056f00 !important;
-	  /*box-shadow: 0 3px 1px #237bb2;*/
-	}
-	input[type=submit]:hover {
-	  background: #3b50ce;
-	  /*box-shadow: 0 3px 1px #237bb2;*/
-	}
-
-.small
-{
-	height:30px !important;
-	line-height:30px !important;
-}
 /*  end */
