@@ -248,10 +248,10 @@ $result_pages=mysqli_query($connection, $query);
 	function chngcolor(select){
 		 var selectedOption = select.options[select.selectedIndex];
 		 
-		 var menulight = "cccccc";
+		 var menulight = "ffffff";
 		 var menudark = "111111";
 		 
-		 var contentbglight = "999999";
+		 var contentbglight = "ffffff";
 		 var contentbgdark = "333333";
 		 
 		 var textlight = "333333";
