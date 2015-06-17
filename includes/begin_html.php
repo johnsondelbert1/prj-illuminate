@@ -154,7 +154,7 @@ if(isset($bg[2])){
 			border-bottom:2px <?php echo $site_layout['text_color'] ?> dashed;
 		}
 		.icon{
-			color:<?php echo $site_layout['menu_color'] ?> !important;
+			color:<?php echo $site_layout['menu_color'] ?> ;
 		}
 		 ::-webkit-scrollbar-thumb{
 			/*background-color:<?php echo $site_layout['accent_color'] ?> !important;
@@ -253,6 +253,6 @@ if(isset($bg[2])){
                     ?>
                 	<td style="padding-right:5px; padding-left:5px; vertical-align:top;">
 						<div id="content" style="background-color:#525252;" class="card">
-						<?php if(!empty($error)){echo "<h3 class=\"error\">".$error."</h3>";} ?>
-                        <?php if(!empty($success)){echo "<h3 class=\"success\">".$success."</h3>";} ?>
-                        <?php if(!empty($message)){echo "<h3 class=\"message\">".$message."</h3>";} ?>
+						<?php if(!empty($error)){echo "<script type=\"text/javascript\">Materialize.toast('".$error."', 8000, 'red')</script>";} ?>
+                        <?php if(!empty($success)){echo "<script type=\"text/javascript\">Materialize.toast('".$success."', 8000, 'green')</script>";} ?>
+                        <?php if(!empty($message)){echo "<script type=\"text/javascript\">Materialize.toast('".$message."', 8000, 'yellow')</script>";} ?>

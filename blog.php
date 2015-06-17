@@ -170,14 +170,28 @@ if (mysqli_num_rows($result)!=0){
                     <div class="row right">
                     <div class="col l12 s12">
                         <?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="btn-floating blue" href="edit_blog_post.php?post=<?php echo $post['id'] ?>"><i class="mdi-editor-mode-edit"></i></a><?php } ?>
-                        
-                        <?php if(check_permission("Blog","delete_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="btn-floating red" href="blog.php?delpost=<?php echo $post['id'] ?>"><i class="mdi-action-delete"></i></a><?php } ?>
+                        <?php if(check_permission("Blog","delete_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?>
+                        <a class="modal-trigger btn-floating red" href="#modal1"><i class="mdi-action-delete"></i></a><?php } ?>
                         </div>
                     </div>
                     </td>
                 </tr>
 			</tr>
 		</table>
+        <div id="modal1" class="modal">
+    <div class="modal-content">
+      <h4>Are you sure you want to delete?</h4>
+      <p>Once you delete this post there will be no way to recover it</p>
+    </div>
+    <div class="modal-footer">
+    <div class="row right">
+    <div class="col l12 s12">
+    <a href="#!" class="modal-close waves-effect waves-blue btn blue ">Cancel</a>
+      <a href="blog.php?delpost=<?php echo $post['id'] ?>" class="modal-close waves-effect waves-red btn red ">Delete</a>
+      </div>
+      </div>
+    </div>
+  </div>
 		<br />
 	<?php }
 	echo_page($num_pages, $current_page, "blog.php?");
