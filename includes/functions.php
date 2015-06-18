@@ -260,6 +260,51 @@ function check_login(){
     	</p>
 <?php }
 
+function order_doc_files($dir){
+	global $site_info;
+	$dirfiles = scandir("uploads/".$dir);
+	if($dirfiles!=false){
+		$dirfiles = array_diff($dirfiles, array('.', '..'));
+		$chronfiles = array();
+		$nonchronfiles = array();
+		foreach($dirfiles as $file){
+			$filename = pathinfo($file);
+			$filename = str_replace('_', ' ', $filename['filename']);
+			$filedate = strtotime($filename);
+			if($filedate!=false){
+				$chronfiles[$file] = $filedate;
+			}else{
+				array_push($nonchronfiles, $file);
+			}
+		}
+		
+		arsort($chronfiles);
+		$chronnofiles = true;
+		$nonchronnofiles = true;
+		if(count($chronfiles)>0){
+			$chronnofiles = false;
+			?><ul><?php
+			foreach($chronfiles as $filename => $filedate){
+				$filedate = date('F d, Y', $filedate);
+				?>
+				<li><a href="<?php echo $site_info['base_url']; ?>/uploads/<?php echo $dir.'/'.$filename; ?>" target="_blank"><?php echo $filedate; ?></a></li>
+			<?php
+			}
+			?></ul><?php
+		}
+		if(count($nonchronfiles)>0){
+			$nonchronnofiles = false;
+			?><ul><?php
+			foreach($nonchronfiles as $file){
+				?>
+				<li><a href="<?php echo $site_info['base_url']; ?>/uploads/<?php echo $dir.'/'.$file; ?>" target="_blank"><?php echo $file; ?></a></li>
+			<?php
+			}
+			?></ul><?php
+		}
+	}
+}
+
 function gallery($images_dir, $thumbs_dir, $thumbs_width, $thumbs_height, $gallname = "gall", $num_images = false){
 	global $site_info;
 	?>
@@ -719,7 +764,9 @@ function nav($position, $pgselection){
 }
 
 function echo_page($num_pages, $current_page, $url){
-    echo "<p>Page ".$current_page." of ".$num_pages."</p>";
+	if($num_pages!=1){
+    	echo "<p>Page ".$current_page." of ".$num_pages."</p>";
+	}
 	
 	if($current_page>1){ ?>
     	<a href="<?php echo $url; ?>&page=<?php echo $current_page - 1; ?>">&#60; Prev</a>
