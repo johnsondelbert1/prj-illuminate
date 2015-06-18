@@ -2196,7 +2196,7 @@ thead {
   border-bottom: 1px solid #d0d0d0; }
 
 td, th {
-  padding: 15px 5px;
+  /*padding: 15px 5px;*/
   display: table-cell;
   text-align: left;
   vertical-align: middle;
@@ -5527,13 +5527,14 @@ small {
       bottom: 0%; } }
   @media only screen and (min-width : 601px) and (max-width : 992px) {
     #toast-container {
-      min-width: 30%;
-      left: 5%;
-      bottom: 7%; } }
+      min-width: 100%;
+      bottom: 0%; 
+	  left: 80%;
+	  } }
   @media only screen and (min-width : 993px) {
     #toast-container {
       min-width: 8%;
-      top: 10%;
+      bottom: 10%;
       right: 7%; } }
 
 .toast {
@@ -5939,9 +5940,9 @@ a.waves-effect .waves-ripple {
     padding: 24px; }
   .modal .modal-footer {
     background-color: #eee;
-    padding: 4px 6px;
+    /*padding: 4px 6px;*/
     height: 56px;
-    width: 100%; }
+    width: 100%; }*/
     .modal .modal-footer .btn, .modal .modal-footer .btn-large, .modal .modal-footer .btn-flat {
       float: right;
       margin: 6px 0; }
