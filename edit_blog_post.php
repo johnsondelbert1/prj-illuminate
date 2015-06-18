@@ -32,9 +32,9 @@ if(isset($_POST['submit'])){
 	$result = mysqli_query($connection, $query);
 	confirm_query($result);
 	if (mysqli_affected_rows($connection) == 1) {
-		$success = "The blog post was successfully updated.";
+		$success = "blog post was updated.";
 	} else {
-		$error = "The blog post could not be updated.";
+		$error = "blog post couldn't update.";
 		$error .= "<br />" . mysqli_error($connection);
 	}
 }
@@ -97,7 +97,7 @@ $pgsettings = array(
 );
 require_once("includes/begin_html.php");
 
-?><script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+?><!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>-->
 <script type="text/javascript" src="tinymce/js/tinymce/tinymce.min.js"></script>
 <script type="text/javascript">
 	tinymce.init({
