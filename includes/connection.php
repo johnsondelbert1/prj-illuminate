@@ -13,12 +13,13 @@ require("globals.php");
 	$result=mysqli_query( $connection, $query);
 	$dbversion=mysqli_fetch_array($result);
 	$compare_result = version_compare($db_compatability,  $dbversion['version']);
+	$protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://';
 	if(isset($dbversion['version'])){
 		if($compare_result != 0){
-			header("Location: ../db_mismatch.php");
+			header("Location: {$protocol}{$_SERVER['HTTP_HOST']}/db_mismatch.php");
 		}
 	}else{
-		header("Location: ../db_mismatch.php");
+		header("Location: {$protocol}{$_SERVER['HTTP_HOST']}/db_mismatch.php");
 	}
 	/*$db_connect=((bool)mysqli_query($connection, "USE " . constant('DB_NAME')));
 	if(!$db_connect){
