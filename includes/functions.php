@@ -765,17 +765,20 @@ function nav($position, $pgselection){
 
 function echo_page($num_pages, $current_page, $url){
 	if($num_pages!=1){
-    	echo "<p>Page ".$current_page." of ".$num_pages."</p>";
+		if($current_page>1){ ?>
+			<a href="<?php echo $url; ?>&page=<?php echo $current_page - 1; ?>">&#60; Prev</a>
+		<?php }else{ ?>
+        	<span class="disabled">&#60; Prev</span>
+        <?php
+		}
+    	echo "| Page ".$current_page." of ".$num_pages." |";
+		if($num_pages>1&&$current_page<$num_pages){ ?>
+    		<a href="<?php echo $url; ?>&page=<?php echo $current_page + 1; ?>">Next &#62;</a>
+    	<?php }else{ ?>
+        	<span class="disabled">Next &#62;</span>
+        <?php
+		}
 	}
-	
-	if($current_page>1){ ?>
-    	<a href="<?php echo $url; ?>&page=<?php echo $current_page - 1; ?>">&#60; Prev</a>
-    <?php } ?>
-	<?php if($num_pages>1&&$current_page<$num_pages){ ?>
-    	<a href="<?php echo $url; ?>&page=<?php echo $current_page + 1; ?>"> | Next &#62;</a>
-    <?php } ?>
-    <br/>
-    <?php
 }
 
 function slider($slider_id){

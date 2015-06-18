@@ -73,8 +73,10 @@ require_once("includes/begin_html.php");
 if (mysqli_num_rows($result)!=0){
   	if(check_permission("Blog","post_blog")){?>
 		<a class="btn green" href="new_blog_post.php">New</a>
-    </div>
-	<?php }
+    
+	<?php }?>
+	</div>
+    <?php
 	echo_page($num_pages, $current_page, "blog.php?");?>
     <?php
     $gall_num = 0;
