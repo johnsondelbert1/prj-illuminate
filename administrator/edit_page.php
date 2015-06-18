@@ -87,7 +87,7 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 				}
 				
 				$query = "UPDATE `pages` SET `content` = '{$content}', `name`='{$name}', `position`={$position}, `published`='{$published}', 
-				`issubpage`={$issub}, `parent`={$subpg}, `galleries`='{$galleries}', `forms`='{$forms}', `type`='{$_POST['pgtype']}', `target`='{$_POST['target']}', 
+				`issubpage`={$issub}, `parent`={$subpg}, `galleries`='{$galleries}', `doc_folder`='{$_POST['pgdocfolder']}', `forms`='{$forms}', `type`='{$_POST['pgtype']}', `target`='{$_POST['target']}', 
 				`banner`={$banner}, `slider`={$_POST['slider']}, `url`='{$url}', `lastedited`='{$date}', `editor`={$_SESSION['user_id']}, `horiz_menu`={$horiz_menu}, `vert_menu`={$vert_menu}, 
 				`horiz_menu_visible`={$horiz_menu_visible}, `vert_menu_visible`={$vert_menu_visible} WHERE id = {$id}";
 				
@@ -149,9 +149,9 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 				
 				if($_POST['name']!=""){
 					$query="INSERT INTO `pages` 
-					(`name`, `content`, `position`, `issubpage`, `parent`, `published`, `galleries`, `forms`, `type`, `target`, `banner`, `slider`, `url`, `created`, `creator`, `horiz_menu`, `vert_menu`, `horiz_menu_visible`, `vert_menu_visible`) 
+					(`name`, `content`, `position`, `issubpage`, `parent`, `published`, `galleries`, `doc_folder`, `forms`, `type`, `target`, `banner`, `slider`, `url`, `created`, `creator`, `horiz_menu`, `vert_menu`, `horiz_menu_visible`, `vert_menu_visible`) 
 					VALUES 
-					('{$name}', '{$content}', '{$position}', '{$issub}', '{$subpg}', {$published}, '{$galleries}', '{$forms}', '{$_POST['pgtype']}', '{$_POST['target']}', {$banner}, {$_POST['slider']}, '{$url}', '{$date}', {$_SESSION['user_id']}, {$horiz_menu}, {$vert_menu}, {$horiz_menu_visible}, {$vert_menu_visible})";
+					('{$name}', '{$content}', '{$position}', '{$issub}', '{$subpg}', {$published}, '{$galleries}', '{$_POST['pgdocfolder']}', '{$forms}', '{$_POST['pgtype']}', '{$_POST['target']}', {$banner}, {$_POST['slider']}, '{$url}', '{$date}', {$_SESSION['user_id']}, {$horiz_menu}, {$vert_menu}, {$horiz_menu_visible}, {$vert_menu_visible})";
 					$result = mysqli_query( $connection, $query);
 					confirm_query($result);
 					if(isset($_POST['newpage'])){
@@ -406,7 +406,20 @@ if($_GET['action']=="edit"){
                             } ?>
                             </select>
                         </td>
-                        <td rowspan="4">
+                        <td align="left">
+                            <label>Documents Folder:</label>
+                            <select name="pgdocfolder">
+                            <option value="">(None)</option>
+                            <?php
+                            $dirs = array_filter(glob('../uploads/*'), 'is_dir');
+                            foreach($dirs as $dir){
+								$dir = substr($dir."/", 11);
+                            ?>
+                                <option value="<?php echo $dir; ?>"<?php if (isset($selpage['doc_folder'])&&$dir == $selpage['doc_folder']){echo ' selected="selected"';} ?>><?php echo $dir; ?></option>
+                            <?php 
+                            
+                            } ?>
+                            </select>
                         </td>
                       </tr>
                       <!--<tr>
