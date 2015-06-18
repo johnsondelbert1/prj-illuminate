@@ -102,7 +102,9 @@ if(($rows)!=0){
                         	<p>[No Staff!]</p>
                         <?php
                         }
-						
+						if($page['doc_folder']!=""){
+							order_doc_files($page['doc_folder']);
+						}
 						break;
 					case "Custom":
 						$pgsettings = array(
@@ -113,7 +115,6 @@ if(($rows)!=0){
 							"slider" => $page['slider'],
 							"use_google_analytics" => 1,
 						);
-						
 						
 						if($page['forms']!=""){
 							$pageforms=unserialize($page['forms']);
@@ -211,6 +212,10 @@ if(($rows)!=0){
 						
                         <?php
 						echo $page['content'];
+						
+						if($page['doc_folder']!=""){
+							order_doc_files($page['doc_folder']);
+						}
 						
 						if($page['forms']!=""){
 							$pageforms=unserialize($page['forms']);
