@@ -719,15 +719,16 @@ function nav($position, $pgselection){
 }
 
 function echo_page($num_pages, $current_page, $url){
-    echo "<p>Page ".$current_page." of ".$num_pages."</p>";
+    
+	echo "<p>Page ".$current_page." of ".$num_pages."";
 	
 	if($current_page>1){ ?>
-    	<a href="<?php echo $url; ?>&page=<?php echo $current_page - 1; ?>">&#60; Prev</a>
+    	<a class="modal-trigger btn-floating blue" href="<?php echo $url; ?>&page=<?php echo $current_page - 1; ?>"><i class="mdi-image-navigate-before"></i></a>
     <?php } ?>
 	<?php if($num_pages>1&&$current_page<$num_pages){ ?>
-    	<a href="<?php echo $url; ?>&page=<?php echo $current_page + 1; ?>"> | Next &#62;</a>
+    	<a class="modal-trigger btn-floating blue" href="<?php echo $url; ?>&page=<?php echo $current_page + 1; ?>"><i class="mdi-image-navigate-next"></i></a>
     <?php } ?>
-    <br/>
+    
     <?php
 }
 

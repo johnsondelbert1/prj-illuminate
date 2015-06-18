@@ -6,11 +6,11 @@
 	padding: 0px;
 	font-family:'Roboto', Arial, Helvetica, sans-serif;
 	text-shadow: 0 0 1px rgba(51,51,51,0.2);
+	font-size: 1em;
 }
 html, body{
 overflow-y: auto;
 background-color: transparent;
-/* font-size: 16px;*/
 height:100%;
 }
 /* Smartphones (portrait and landscape) ----------- */
@@ -236,7 +236,8 @@ div.nav{
 	height:40px;
 	text-align:center;
     color: #999;
-	font-size:20px;
+	font-size:1.5rem;
+	line-height:1.5rem;
     text-decoration: none;
 	transition: all .2s ease-in-out;
 	width:100%;
@@ -370,7 +371,8 @@ div.nav{
 	height:40px;
 	text-align:center;
     color: #999;
-	font-size:20px;
+	font-size:1.5rem;
+	line-height:1.5rem;
     text-decoration: none;
 	transition: all .2s ease-in-out;
 	width:100%;
@@ -725,6 +727,7 @@ select{
 .editselected{
 	background-color:#800000;
 }
+/*
 .text{
 	height:25px;
 	padding:5px;
@@ -738,6 +741,7 @@ select{
 .text a:{
 	border:1px solid #FF0000;
 }
+*/
 ::-webkit-input-placeholder {
    color: #333;
 }
@@ -752,12 +756,12 @@ select{
 
 :-ms-input-placeholder {  
    color: #333; 
-}
+}/*
 tr.heading,td.heading,th.heading{
 	font-size:1.25em;
 	padding:3px;
 }
-/*div.h1{
+div.h1{
 	text-align:center;
 	font-size: xx-large;
 	font-weight: bold;
@@ -905,7 +909,7 @@ tr.forum-title{
  
 }
 tr.forum-topic{
-	font-size:0.750em;
+	font-size:0.750rem;
 	color:#666666;
 }
 tr.forum-topic:nth-child(even){
@@ -915,7 +919,7 @@ tr.forum-topic:nth-child(odd){
 	background-color:#B7B7B7;
 }
 tr.forum-topic a{
-	font-size:0.750em;
+	font-size:0.750rem;
 	color:#333333;
 	text-decoration:none;
 	font-weight:bold;
@@ -929,7 +933,7 @@ tr.forum-topic:hover{
 td.forum-table-cell-title{
 	padding-left:15px;
 	height:30px;
-	font-size:1.125em;
+	font-size:1.125rem;
 }
 td.forum-table-cell-topic{
 	padding-left:1em;
@@ -1013,15 +1017,10 @@ h3.message
 }
 .blogname{
 	font-weight:900;
-	font-size:0.875em;
+	font-size:0.875rem;
 }
 .blogbody{
 	padding:0px 5px 10px 5px;
-	
-}
-.blogbody p{
-	font-size:0.8em !important;
-
 	
 }
 .blog{
@@ -1031,7 +1030,7 @@ h3.message
 	border-spacing:0;
 }
 .blogfooter{
-	font-size:0.875em;
+	font-size:0.875rem;
 	padding:0px 5px 10px 5px;
 	
 }
@@ -1041,12 +1040,12 @@ h3.message
 
 }
 .forum tr{
-	font-size:0.750em;
+	font-size:0.750rem;
 	transition: all 200ms;
 	-webkit-transition: all 200ms; /* Safari */
 }
 .forum tr a{
-	font-size:1.125em;
+	font-size:1.125rem;
 	text-decoration:none;
 	font-weight:bold;
 	-webkit-transition: all 200ms; /* Safari */
@@ -1077,7 +1076,7 @@ h3.message
 }
 .userspost{
 	background-color: #e74c3c;
-	font-size:1.500em;
+	font-size:1.500rem;
 	
 }
 div.userbar{
@@ -1175,3 +1174,8 @@ span.galleryImage input[type=checkbox]:checked {
 }
 
 /*  end */
+.waves-effect.waves-blue .waves-ripple {
+     /* The alpha value allows the text and background color
+     of the button to still show through. */
+      background-color: rgba(33, 150, 243, 0.65);
+    }

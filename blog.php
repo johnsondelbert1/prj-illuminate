@@ -72,16 +72,10 @@ require_once("includes/begin_html.php");
 
 if (mysqli_num_rows($result)!=0){
   	if(check_permission("Blog","post_blog")){?>
-    <div class="row">
-    <div class="col s6">
 		<a class="btn green" href="new_blog_post.php">New</a>
-        </div>
-        <div class="col s6">
+    </div>
 	<?php }
 	echo_page($num_pages, $current_page, "blog.php?");?>
-    </div>
-    </div>
-    </div>
     <?php
     $gall_num = 0;
 	while($post=mysqli_fetch_array($result)){
@@ -118,18 +112,27 @@ if (mysqli_num_rows($result)!=0){
                             <div class="row">
 								
                                 <div class="col l2 s4">
-                                 <i class="mdi-device-access-time"></i>&nbsp;<?php echo date("g:i A", $createdtimestamp);
+                                 <?php
 								if($post['lastedited']!="0000-00-00 00:00:00"){
 									$lasteditedtimestamp = strtotime($post['lastedited']);
-										echo '<br><i class="mdi-editor-mode-edit"></i> '.date("g:i A", $lasteditedtimestamp);
-									}?> 
+										echo '<i class="mdi-editor-mode-edit"></i> '.date("g:i A", $lasteditedtimestamp);
+									}
+									else{
+									echo '<i class="mdi-device-access-time"></i> ' .date("M jS 'y", $createdtimestamp);	
+									}
+									?> 
                                     </div>
                                     <div class="col l2 s4">
-                                </i><i class="mdi-action-today"></i>&nbsp;<?php echo date("M jS 'y", $createdtimestamp);
+                               <?php
 								if($post['lastedited']!="0000-00-00 00:00:00"){
 									$lasteditedtimestamp = strtotime($post['lastedited']);
-										echo '<br><i class="mdi-editor-mode-edit"></i> '.date("M jS 'y", $lasteditedtimestamp);
-									}?> </div>
+										echo '<i class="mdi-editor-mode-edit"></i> '.date("M jS 'y", $lasteditedtimestamp);
+										
+									}
+									else{
+									echo '<i class="mdi-action-today"></i> ' .date("M jS 'y", $createdtimestamp);	
+									}
+										?> </div>
                                     <div class="col s4">
                                     <i class="mdi-action-face-unlock"></i> &nbsp;<b><?php echo $userdata['username']; ?></b>
                                     </div>
@@ -137,14 +140,14 @@ if (mysqli_num_rows($result)!=0){
                             </div>
 						</tr>
 						<tr>
-							<td class="blogbody flow-text" valign="top">
+							<td class="blogbody" valign="top">
 								<?php 	$content = $post['content'];
 										if (strlen($content) > 1200) {
 											// truncate string
-											$stringCut = substr($content, 0, 1200);
+											$stringCut = substr($content, 0, 600);
 										
 											// make sure it ends in a word so assassinate doesn't become ass...
-											$content = substr($stringCut, 0, strrpos($stringCut, ' ')).'...<br> <a href="view_blog_post.php?post='.$post['id'].'">Read More</a>'; 
+											$content = substr($stringCut, 0, strrpos($stringCut, ' ')).'... <a class="waves-effect waves-blue btn-flat" href="view_blog_post.php?post='.$post['id'].'">Read More</a>'; 
 										}
 										echo $content;
 								?>
@@ -167,12 +170,14 @@ if (mysqli_num_rows($result)!=0){
 				</tr>
                 <tr>
                     <td>
+                    <div class="container">
                     <div class="row right">
                     <div class="col l12 s12">
                         <?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="btn-floating blue" href="edit_blog_post.php?post=<?php echo $post['id'] ?>"><i class="mdi-editor-mode-edit"></i></a><?php } ?>
                         <?php if(check_permission("Blog","delete_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?>
                         <a class="modal-trigger btn-floating red" href="#modal1"><i class="mdi-action-delete"></i></a><?php } ?>
                         </div>
+                    </div>
                     </div>
                     </td>
                 </tr>

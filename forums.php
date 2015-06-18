@@ -150,7 +150,7 @@ require_once("includes/begin_html.php");
                     <?php if(check_permission(array("Forum;add_delete_forum","Forum;edit_forum",))){?>
                     <td style="text-align:center;">
 						<?php if(check_permission("Forum","edit_forum")){?><a class="btn-floating blue" href="forums.php?action=editforum&&forumid=<?php echo urlencode($forum['id']);?>"><i class="mdi-editor-mode-edit"></i></a><?php } ?>
-                    	<?php if(check_permission("Forum","add_delete_forum")){?><a class="modal-trigger btn-floating red" href="#modal1"><i class="mdi-action-delete"></i></a><?php } ?>
+                    	<?php if(check_permission("Forum","add_delete_forum")){?><a class="modal-trigger btn-floating red" href="#modal<?php echo urlencode($forum['id']);?>"><i class="mdi-action-delete"></i></a><?php } ?>
                     </td>
                     <?php } ?>
                 </tr>
@@ -162,7 +162,7 @@ require_once("includes/begin_html.php");
 	}
   ?>
 </table>
-<div id="modal1" class="modal">
+<div id="modal<?php echo urlencode($forum['id']);?>" class="modal">
 <div class="modal-content">
       <h4>Are you sure you want to delete?</h4>
       <p>Once you delete this there will be no way to recover it</p>
