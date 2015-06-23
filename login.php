@@ -2,7 +2,7 @@
 require_once("includes/functions.php");
 
 if(logged_in()){
-	redirect_to($site_info['base_url']."/index.php");
+	redirect_to($GLOBALS['HOST']."/index.php");
 }
 
 $pgsettings = array(

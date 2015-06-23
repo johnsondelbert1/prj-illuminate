@@ -7,6 +7,7 @@ require_once("globals.php");
 $query="SELECT * FROM `site_info` WHERE `id` = 1";
 $result=mysqli_query( $connection, $query);
 $site_info=mysqli_fetch_array($result);
+$GLOBALS['HOST']=$GLOBALS['HOST'];
 
 $query="SELECT * FROM `site_layout` WHERE `id` = 1";
 $result=mysqli_query( $connection, $query);
@@ -253,9 +254,9 @@ function check_login(){
 	?><p><?php
 	if(logged_in()){?>
         <?php echo "<b>".$_SESSION['username']."</b>";?>
-         | <a href="<?php echo $site_info['base_url']; ?>/account-settings.php">Account Settings</a> | <?php if(check_permission("Website","cpanel_access")){?><a href="<?php echo $site_info['base_url']; ?>/administrator/" target="_blank">CPanel</a> | <?php } ?><a href="<?php echo $site_info['base_url']; ?>/logout.php">Logout</a>
+         | <a href="<?php echo $GLOBALS['HOST']; ?>/account-settings.php">Account Settings</a> | <?php if(check_permission("Website","cpanel_access")){?><a href="<?php echo $GLOBALS['HOST']; ?>/administrator/" target="_blank">CPanel</a> | <?php } ?><a href="<?php echo $GLOBALS['HOST']; ?>/logout.php">Logout</a>
     <?php }else{ ?>
-			<a href="<?php echo $site_info['base_url']; ?>/index.php">Register</a> | <a href="<?php echo $site_info['base_url']; ?>/login.php">Login</a>
+			<a href="<?php echo $GLOBALS['HOST']; ?>/index.php">Register</a> | <a href="<?php echo $GLOBALS['HOST']; ?>/login.php">Login</a>
 	<?php }?>
     	</p>
 <?php }
@@ -287,7 +288,7 @@ function order_doc_files($dir){
 			foreach($chronfiles as $filename => $filedate){
 				$filedate = date('F d, Y', $filedate);
 				?>
-				<li><a href="<?php echo $site_info['base_url']; ?>/uploads/<?php echo $dir.'/'.$filename; ?>" target="_blank"><?php echo $filedate; ?></a></li>
+				<li><a href="<?php echo $GLOBALS['HOST']; ?>/uploads/<?php echo $dir.'/'.$filename; ?>" target="_blank"><?php echo $filedate; ?></a></li>
 			<?php
 			}
 			?></ul><?php
@@ -297,7 +298,7 @@ function order_doc_files($dir){
 			?><ul><?php
 			foreach($nonchronfiles as $file){
 				?>
-				<li><a href="<?php echo $site_info['base_url']; ?>/uploads/<?php echo $dir.'/'.$file; ?>" target="_blank"><?php echo $file; ?></a></li>
+				<li><a href="<?php echo $GLOBALS['HOST']; ?>/uploads/<?php echo $dir.'/'.$file; ?>" target="_blank"><?php echo $file; ?></a></li>
 			<?php
 			}
 			?></ul><?php
@@ -330,7 +331,7 @@ function gallery($images_dir, $thumbs_dir, $thumbs_width, $thumbs_height, $galln
 						make_thumb($images_dir.$file,$thumbnail_image,$thumbs_width,$thumbs_height,$extension);
 					}
 				}?>
-				<a href="<?php echo $site_info['base_url']; ?>/<?php echo $images_dir.$file; ?>" rel="prettyPhoto[<?php echo $gallname; ?>]" title="<?php echo $file; ?>" class="photo-link"><img src="<?php echo $site_info['base_url']; ?>/<?php echo $thumbnail_image;?>" style="width:<?php echo $thumbs_width; ?>px; height:<?php echo $thumbs_height; ?>px;" /></a>
+				<a href="<?php echo $GLOBALS['HOST']; ?>/<?php echo $images_dir.$file; ?>" rel="prettyPhoto[<?php echo $gallname; ?>]" title="<?php echo $file; ?>" class="photo-link"><img src="<?php echo $GLOBALS['HOST']; ?>/<?php echo $thumbnail_image;?>" style="width:<?php echo $thumbs_width; ?>px; height:<?php echo $thumbs_height; ?>px;" /></a>
 			<?php
             }
 			?><div class="clear"></div><?php
@@ -523,11 +524,11 @@ function nav_button($page){
 	?>
 <a href="<?php
 	if($page['type']=='Custom' || $page['type']=='Staff'){
-		echo $site_info['base_url'];?>/page/<?php echo urlencode($page['name']);
+		echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($page['name']);
 	}elseif($page['type']=='Blog'){
-		echo $site_info['base_url'];?>/blog<?php
+		echo $GLOBALS['HOST'];?>/blog<?php
 	}elseif($page['type']=='Forum'){
-		echo $site_info['base_url'];?>/forums<?php
+		echo $GLOBALS['HOST'];?>/forums<?php
 	}elseif($page['type']=='Link'){
 		echo $page['url'];
 	}
@@ -546,9 +547,9 @@ function nav($position, $pgselection){
             <div style="height:auto; width:100%;" class="mobile-logo">
             <?php if($logo!=false){ ?>
                 <?php if($site_info['logo_url']!=''){?>
-                <a href="<?php echo $site_info['logo_url']; ?>"><img src="<?php echo $site_info['base_url']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $site_info['name']; ?> Logo" width="240" /></a>
+                <a href="<?php echo $site_info['logo_url']; ?>"><img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $site_info['name']; ?> Logo" width="240" /></a>
                 <?php }else{ ?>
-                <img src="<?php echo $site_info['base_url']; ?>/images/logo/<?php echo $logo; ?>" width="240" />
+                <img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" width="240" />
             <?php } 
             } ?>
         </div>
@@ -665,9 +666,9 @@ function nav($position, $pgselection){
         <p><?php
         if(logged_in()){?>
             <?php echo "<b>".$_SESSION['username']."</b>";?>
-             | <a href="<?php echo $site_info['base_url']; ?>/account-settings.php">Account Settings</a> | <?php if(check_permission("Website","cpanel_access")){?><a href="<?php echo $site_info['base_url']; ?>/administrator/" target="_blank">CPanel</a> | <?php } ?><a href="<?php echo $site_info['base_url']; ?>/logout.php">Logout</a>
+             | <a href="<?php echo $GLOBALS['HOST']; ?>/account-settings.php">Account Settings</a> | <?php if(check_permission("Website","cpanel_access")){?><a href="<?php echo $GLOBALS['HOST']; ?>/administrator/" target="_blank">CPanel</a> | <?php } ?><a href="<?php echo $GLOBALS['HOST']; ?>/logout.php">Logout</a>
         <?php }else{ ?>
-                <a href="<?php echo $site_info['base_url']; ?>/index.php">Register</a> | <a href="<?php echo $site_info['base_url']; ?>/login.php">Login</a>
+                <a href="<?php echo $GLOBALS['HOST']; ?>/index.php">Register</a> | <a href="<?php echo $GLOBALS['HOST']; ?>/login.php">Login</a>
         <?php }?>
             </p>
         </ul>
@@ -710,11 +711,11 @@ function nav($position, $pgselection){
 					if($page['issubpage']==0){ $lastmainpage=$page['id'];?>
                         <li style="min-width:<?php echo $buttonwidth; ?>%;"<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><a style="min-width:<?php echo $buttonwidth; ?>%;" href="<?php
                                 if($page['type']=='Custom' || $page['type']=='Staff'){
-                                    echo $site_info['base_url'];?>/page/<?php echo urlencode($page['name']);
+                                    echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($page['name']);
                                 }elseif($page['type']=='Blog'){
-                                    echo $site_info['base_url'];?>/blog<?php
+                                    echo $GLOBALS['HOST'];?>/blog<?php
                                 }elseif($page['type']=='Forum'){
-                                    echo $site_info['base_url'];?>/forums<?php
+                                    echo $GLOBALS['HOST'];?>/forums<?php
                                 }elseif($page['type']=='Link'){
                                     echo $page['url'];
                                 }
@@ -732,11 +733,11 @@ function nav($position, $pgselection){
                                     <li style="width:100%;"<?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>>
                                         <a href="<?php
                                             if($subpage['type']=='Custom' || $page['type']=='Staff'){
-                                                echo $site_info['base_url'];?>/page/<?php echo urlencode($subpage['name']);
+                                                echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($subpage['name']);
                                             }elseif($subpage['type']=='Blog'){
-                                                echo $site_info['base_url'];?>/blog<?php
+                                                echo $GLOBALS['HOST'];?>/blog<?php
                                             }elseif($subpage['type']=='Forum'){
-                                                echo $site_info['base_url'];?>/forums<?php
+                                                echo $GLOBALS['HOST'];?>/forums<?php
                                             }elseif($subpage['type']=='Link'){
                                                 echo $subpage['url'];
                                             }
@@ -831,8 +832,8 @@ function slider($slider_id){
                         <!--<script type="text/javascript" src="jssor/jquery-1.9.1.min.js"></script>-->
                         <!-- use jssor.slider.mini.js (40KB) or jssor.sliderc.mini.js (32KB, with caption, no slideshow) or jssor.sliders.mini.js (28KB, no caption, no slideshow) instead for release -->
                         <!-- jssor.slider.mini.js = jssor.sliderc.mini.js = jssor.sliders.mini.js = (jssor.js + jssor.slider.js) -->
-                        <script type="text/javascript" src="<?php echo $site_info['base_url']; ?>/jssor/jssor.js"></script>
-                        <script type="text/javascript" src="<?php echo $site_info['base_url']; ?>/jssor/jssor.slider.js"></script>
+                        <script type="text/javascript" src="<?php echo $GLOBALS['HOST']; ?>/jssor/jssor.js"></script>
+                        <script type="text/javascript" src="<?php echo $GLOBALS['HOST']; ?>/jssor/jssor.slider.js"></script>
                         <script>
                             jQuery(document).ready(function ($) {
 								
@@ -957,7 +958,7 @@ function slider($slider_id){
 									if(mysqli_num_rows($result)!=0){
 										while($slide=mysqli_fetch_array($result)){?>
                                             <div>
-                                                <img u=image src="<?php echo $site_info['base_url']; ?>/images/slider/<?php echo $slider['name'].'/'.$slide['img_name']; ?>" />
+                                                <img u=image src="<?php echo $GLOBALS['HOST']; ?>/images/slider/<?php echo $slider['name'].'/'.$slide['img_name']; ?>" />
                                                 <!--<div u="thumb" style="background-color:rgba(0, 0, 0, 0.4); line-height:35px; padding-left:10px; margin-top:60px;"><?php if($slide['url']!=''){?><a href="<?php echo $slide['url'];?>"<?php if($slide['new_tab']==1){ echo 'target="_blank"'; } ?>><?php echo $slide['caption'];?></a><?php }else{echo $slide['caption'];} ?></div>-->
                                                 <?php if($slide['caption']!=''){ ?>
                                                 <div u=caption t="*" class="captionBlack"  style="position:absolute; left:20px; top: 30px; width:300px; height:30px; font-weight:bold;">
@@ -1037,7 +1038,7 @@ function slider($slider_id){
                                     position: absolute;
                                     cursor: pointer;
                                     display: block;
-                                    background: url(<?php echo $site_info['base_url']; ?>/jssor/img/a17.png) no-repeat;
+                                    background: url(<?php echo $GLOBALS['HOST']; ?>/jssor/img/a17.png) no-repeat;
                                     overflow:hidden;
                                 }
                                 .jssora05l { background-position: -10px -40px; }

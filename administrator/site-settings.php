@@ -47,7 +47,7 @@ if(isset($_POST['chng_info'])){
 		if($site_name!=""){
 			if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 				$query="UPDATE `site_info` SET 
-					`name` = '{$site_name}', `contact_email` = '{$_POST['email']}', `base_url`='{$_POST['url']}', `timezone` = '{$_POST['tz']}', `published` = {$published}, `copyright_text` = '{$copyright_text}', `default_rank` = {$_POST['rank']}, `homepage` = {$_POST['homepage']}, `meta_tags` = '{$metadata}', `style_js_link_tags` = '{$css_js}', `footer_content` = '{$footer_content}'";
+					`name` = '{$site_name}', `contact_email` = '{$_POST['email']}', `timezone` = '{$_POST['tz']}', `published` = {$published}, `copyright_text` = '{$copyright_text}', `default_rank` = {$_POST['rank']}, `homepage` = {$_POST['homepage']}, `meta_tags` = '{$metadata}', `style_js_link_tags` = '{$css_js}', `footer_content` = '{$footer_content}'";
 				$result=mysqli_query($connection, $query);
 				confirm_query($result);
 				$success = "Site Info has been updated!";
@@ -434,12 +434,11 @@ $result_pages=mysqli_query($connection, $query);
   </tr>
   <tr>
   	<td>
-        <h2>Site URL (ex: http://www.example.com)</h2>
-        <input name="url" type="text" value="<?php echo $site['base_url']; ?>" maxlength="256" style="width:300px;" />
-    </td>
-  	<td>
         <h2>Copyright Text</h2>
         <input name="copyright_text" type="text" value="<?php echo $site['copyright_text']; ?>" maxlength="256" style="width:400px;" />
+    </td>
+  	<td>
+    	
     </td>
   </tr>
   <tr>

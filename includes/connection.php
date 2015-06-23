@@ -16,10 +16,10 @@ require("globals.php");
 	$protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://';
 	if(isset($dbversion['version'])){
 		if($compare_result != 0){
-			header("Location: {$protocol}{$_SERVER['HTTP_HOST']}/db_mismatch.php");
+			header("Location: {$GLOBALS['HOST']}/db_mismatch.php");
 		}
 	}else{
-		header("Location: {$protocol}{$_SERVER['HTTP_HOST']}/db_mismatch.php");
+		header("Location: {$GLOBALS['HOST']}/db_mismatch.php");
 	}
 	/*$db_connect=((bool)mysqli_query($connection, "USE " . constant('DB_NAME')));
 	if(!$db_connect){

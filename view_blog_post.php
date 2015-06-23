@@ -7,7 +7,7 @@ if(isset($_GET['post'])&&$_GET['post']!=''){
 	$result=mysqli_query( $connection, $query);
 	$post=mysqli_fetch_array($result);
 }else{
-	redirect_to($site_info['base_url']."/blog");
+	redirect_to($GLOBALS['HOST']."/blog");
 }
 
 $query="SELECT * FROM `pages` WHERE `type` = 'Blog' ";
