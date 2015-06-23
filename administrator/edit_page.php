@@ -260,7 +260,7 @@ if($_GET['action']=="edit"){
                 "Times New Roman=times new roman,times;"+
                 "Trebuchet MS=trebuchet ms,geneva;"+
                 "Verdana=verdana,geneva;",
-		external_filemanager_path:"filemanager/",
+		external_filemanager_path:"../filemanager/",
 		filemanager_title:"Link to File" ,
 		external_plugins: { "filemanager" : "plugins/responsivefilemanager/plugin.min.js"}
 	});
@@ -333,7 +333,7 @@ if($_GET['action']=="edit"){
             </div>
             </td>
             <?php if(isset($_GET['action'])&&$_GET['action']!="newpage"){ ?>
-            <td width="40%"><label for="title">Page URL</label><div class="input-field col s6"><a href="<?php echo $site_info['base_url'].'/page/'.urlencode($selpage['name']); ?>" onclick="window.open('<?php echo $site_info['base_url'];?>/page/<?php echo urlencode($selpage['name']);?>', 'newwindow', 'width=1017, height=500'); return false;"><?php echo $site_info['base_url'].'/page/'.urlencode($selpage['name']); ?></a></div>
+            <td width="40%"><label for="title">Page URL</label><div class="input-field col s6"><a href="<?php echo $GLOBALS['HOST'].'/page/'.urlencode($selpage['name']); ?>" onclick="window.open('<?php echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($selpage['name']);?>', 'newwindow', 'width=1017, height=500'); return false;"><?php echo $GLOBALS['HOST'].'/page/'.urlencode($selpage['name']); ?></a></div>
             </td>
             <?php } ?>
             <td align="left">

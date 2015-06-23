@@ -4,40 +4,43 @@ require_once("includes/functions.php");
 
 if(isset($_GET['delpost'])&&$_GET['delpost']!=''){
 	
-	$query="SELECT * FROM `blog` WHERE id={$_GET['delpost']}";
-	$result = mysqli_query( $connection, $query);
-	confirm_query($result);
-	$galleryid=mysqli_fetch_array($result);
-		
 	if(check_permission("Blog","delete_blog")||(isset($_SESSION['user_id'])&&$galleryid['poster']==$_SESSION['user_id'])){
-		
-		$query="DELETE FROM `blog` WHERE `id` = {$_GET['delpost']}";
-		$result=mysqli_query($connection, $query);
+		$query="SELECT * FROM `blog` WHERE id={$_GET['delpost']}";
+		$result = mysqli_query( $connection, $query);
 		confirm_query($result);
-		
-		//Specify the target directory and add forward slash
-		$dir = "blog_galleries/".$galleryid['id']."/gallery/";
-		foreach (scandir($dir) as $item) {
-			if ($item == '.' || $item == '..') continue;
-			unlink($dir.DIRECTORY_SEPARATOR.$item);
+		if(mysqli_num_rows($result)!=0){
+			$galleryid=mysqli_fetch_array($result);
+			
+			$query="DELETE FROM `blog` WHERE `id` = {$_GET['delpost']}";
+			$result=mysqli_query($connection, $query);
+			confirm_query($result);
+			
+			//Specify the target directory and add forward slash
+			$dir = "blog_galleries/".$galleryid['id']."/gallery/";
+			foreach (scandir($dir) as $item) {
+				if ($item == '.' || $item == '..') continue;
+				unlink($dir.DIRECTORY_SEPARATOR.$item);
+			}
+			rmdir($dir);
+			$dir = "blog_galleries/".$galleryid['id']."/gallery-thumbs/";
+			foreach (scandir($dir) as $item) {
+				if ($item == '.' || $item == '..') continue;
+				unlink($dir.DIRECTORY_SEPARATOR.$item);
+			}
+			rmdir($dir);
+			$dir = "blog_galleries/".$galleryid['id']."/";
+			rmdir($dir);
+			
+			$success="Blog post deleted!";
+		}else{
+			$error="Blog post does not exist!";
 		}
-		rmdir($dir);
-		$dir = "blog_galleries/".$galleryid['id']."/gallery-thumbs/";
-		foreach (scandir($dir) as $item) {
-			if ($item == '.' || $item == '..') continue;
-			unlink($dir.DIRECTORY_SEPARATOR.$item);
-		}
-		rmdir($dir);
-		$dir = "blog_galleries/".$galleryid['id']."/";
-		rmdir($dir);
-		
-		$success="Blog post deleted!";
 	}else{
 		$error="You do not have permission to delete this post!";
 	}
 }
 if(isset($_GET['page'])&&$_GET['page']<=0){
-	redirect_to($site_info['base_url']."/blog?page=1");
+	redirect_to($GLOBALS['HOST']."/blog?page=1");
 }
 
 $query="SELECT * FROM `blog`";
@@ -68,8 +71,17 @@ $pgsettings = array(
 	"slider" => $page_properties['slider'],
 	"use_google_analytics" => 1,
 );
-require_once("includes/begin_html.php");
+require_once("includes/begin_html.php");?>
 
+<script type="text/javascript">
+$(document).ready(function () {
+	$(".btn-click-action").click(function(){
+		$("#del_button").attr("href", "blog.php?delpost="+$(this).attr('name'));
+	});
+});
+</script>
+
+<?php
 if (mysqli_num_rows($result)!=0){
   	if(check_permission("Blog","post_blog")){?>
 		<a class="btn green" href="new_blog_post.php">New</a>
@@ -177,7 +189,7 @@ if (mysqli_num_rows($result)!=0){
                     <div class="col l12 s12">
                         <?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="btn-floating blue" href="edit_blog_post.php?post=<?php echo $post['id'] ?>"><i class="mdi-editor-mode-edit"></i></a><?php } ?>
                         <?php if(check_permission("Blog","delete_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?>
-                        <a class="modal-trigger btn-floating red" href="#modal1"><i class="mdi-action-delete"></i></a><?php } ?>
+                        <a class="modal-trigger btn-floating red btn-click-action" href="#modal1" name="<?php echo $post['id'] ?>"><i class="mdi-action-delete"></i></a><?php } ?>
                         </div>
                     </div>
                     </div>
@@ -186,19 +198,19 @@ if (mysqli_num_rows($result)!=0){
 			</tr>
 		</table>
         <div id="modal1" class="modal">
-    <div class="modal-content">
-      <h4>Are you sure you want to delete?</h4>
-      <p>Once you delete this post there will be no way to recover it</p>
-    </div>
-    <div class="modal-footer">
-    <div class="row right">
-    <div class="col l12 s12">
-    <a href="#!" class="modal-close waves-effect waves-blue btn blue ">Cancel</a>
-      <a href="blog.php?delpost=<?php echo $post['id'] ?>" class="modal-close waves-effect waves-red btn red ">Delete</a>
-      </div>
-      </div>
-    </div>
-  </div>
+            <div class="modal-content">
+              <h4>Are you sure you want to delete?</h4>
+              <p>Once you delete this post there will be no way to recover it</p>
+            </div>
+            <div class="modal-footer">
+            <div class="row right">
+            <div class="col l12 s12">
+            <a href="#!" class="modal-close waves-effect waves-blue btn blue ">Cancel</a>
+              <a href="blog.php?delpost=" id="del_button" class="modal-close waves-effect waves-red btn red ">Delete</a>
+              </div>
+              </div>
+            </div>
+      	</div>
 		<br />
 	<?php }
 	echo_page($num_pages, $current_page, "blog.php?");

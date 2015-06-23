@@ -41,12 +41,12 @@ if(($rows)!=0){
 						break;
 					case "Blog":
 						if(isset($_GET['error'])){
-							redirect_to($site_info['base_url']."blog?error=".$_GET['error']);
+							redirect_to($GLOBALS['HOST']."blog?error=".$_GET['error']);
 						}
-						redirect_to($site_info['base_url']."/blog");
+						redirect_to($GLOBALS['HOST']."/blog");
 						break;
 					case "Forum":
-						redirect_to($site_info['base_url']."/forums");
+						redirect_to($GLOBALS['HOST']."/forums");
 						break;
 					case "Staff":
 						$pgsettings = array(
@@ -369,9 +369,9 @@ if(($rows)!=0){
 	}else{
 		if(mysqli_num_rows($result_homepage)!=0){
 			$homepage=mysqli_fetch_array($result_homepage);
-			redirect_to($site_info['base_url']."/page/".urlencode($homepage['name']));
+			redirect_to($GLOBALS['HOST']."/page/".urlencode($homepage['name']));
 		}else{
-			redirect_to($site_info['base_url']."/page/".urlencode($firstpage['name']));
+			redirect_to($GLOBALS['HOST']."/page/".urlencode($firstpage['name']));
 		}
 	}
 }else{

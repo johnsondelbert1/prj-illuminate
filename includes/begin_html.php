@@ -1,6 +1,6 @@
 <?php
 if($site_info['published']==0){
-	redirect_to($site_info['base_url']."/under_construction.php");
+	redirect_to($GLOBALS['HOST']."/under_construction.php");
 }
 
 if(isset($_GET['error'])){
@@ -70,18 +70,18 @@ if(isset($bg[2])){
 	}?>
     
     <!-- End custom meta tags -->
-    <link href="<?php echo $site_info['base_url']; ?>/administrator/styles/fonts.css" rel="stylesheet" type="text/css" />
-    <?php if($favicon!=false){ ?><link rel="shortcut icon" href="<?php echo $site_info['base_url']; ?>/images/favicon/<?php echo $favicon; ?>" /><?php } ?>
-    <link href="<?php echo $site_info['base_url']; ?>/styles/uploadfilemulti.css" rel="stylesheet" />
-    <link href="<?php echo $site_info['base_url']; ?>/styles/main.css" rel="stylesheet" type="text/css" />
-    <link href="<?php echo $site_info['base_url']; ?>/styles/animate.css" rel="stylesheet" type="text/css" />
-    <link href="<?php echo $site_info['base_url']; ?>/styles/materialize.css" rel="stylesheet" type="text/css" media="screen,projection"/>
-    <link href="<?php echo $site_info['base_url']; ?>/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css" media="screen" charset="utf-8" />
-    <script src="<?php echo $site_info['base_url']; ?>/jscripts/SpryTabbedPanels.js" type="text/javascript"></script>
+    <link href="<?php echo $GLOBALS['HOST']; ?>/administrator/styles/fonts.css" rel="stylesheet" type="text/css" />
+    <?php if($favicon!=false){ ?><link rel="shortcut icon" href="<?php echo $GLOBALS['HOST']; ?>/images/favicon/<?php echo $favicon; ?>" /><?php } ?>
+    <link href="<?php echo $GLOBALS['HOST']; ?>/styles/uploadfilemulti.css" rel="stylesheet" />
+    <link href="<?php echo $GLOBALS['HOST']; ?>/styles/main.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo $GLOBALS['HOST']; ?>/styles/animate.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo $GLOBALS['HOST']; ?>/styles/materialize.css" rel="stylesheet" type="text/css" media="screen,projection"/>
+    <link href="<?php echo $GLOBALS['HOST']; ?>/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css" media="screen" charset="utf-8" />
+    <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/SpryTabbedPanels.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
-    <script src="<?php echo $site_info['base_url']; ?>/jscripts/materialize.min.js"></script>
-    <script type="text/javascript" src="<?php echo $site_info['base_url']; ?>/prettyphoto/js/jquery.prettyPhoto.js" charset="utf-8"></script>
-    <script src="<?php echo $site_info['base_url']; ?>/jscripts/jquery.fileuploadmulti.min.js"></script>
+    <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/materialize.min.js"></script>
+    <script type="text/javascript" src="<?php echo $GLOBALS['HOST']; ?>/prettyphoto/js/jquery.prettyPhoto.js" charset="utf-8"></script>
+    <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/jquery.fileuploadmulti.min.js"></script>
     <style type="text/css">
 .forumtitle, tr.heading,td.heading, th.heading{
 			background-color:<?php echo $site_layout['sitebg_color'] ?> !important;
@@ -211,9 +211,9 @@ if(isset($bg[2])){
         	<?php if($logo!=false){ ?>
             	<div style="float:left; position:absolute;" id="logo">
                 	<?php if($site_info['logo_url']!=''){?>
-            		<a href="<?php echo $site_info['logo_url']; ?>"><img src="<?php echo $site_info['base_url']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $site_info['name']; ?> Logo" height="100" /></a>
+            		<a href="<?php echo $site_info['logo_url']; ?>"><img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $site_info['name']; ?> Logo" height="100" /></a>
                     <?php }else{ ?>
-                    <img src="<?php echo $site_info['base_url']; ?>/images/logo/<?php echo $logo; ?>" height="100" />
+                    <img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" height="100" />
                     <?php } ?>
                 </div>
 			<?php } ?>
@@ -234,7 +234,7 @@ if(isset($bg[2])){
 		?>
         <div id="contentwrap">
 			<?php if(isset($pgsettings['banner'])&&$pgsettings['banner'] == 1){ ?>
-    		<?php if($banner!=false){ ?><div style="width:100%; text-align:center; margin-bottom:20px;"><img src="<?php echo $site_info['base_url']; ?>/images/banner/<?php echo $banner; ?>" width="80%" style="background-color:#C9C9C9;" /></div><?php } ?>
+    		<?php if($banner!=false){ ?><div style="width:100%; text-align:center; margin-bottom:20px;"><img src="<?php echo $GLOBALS['HOST']; ?>/images/banner/<?php echo $banner; ?>" width="80%" style="background-color:#C9C9C9;" /></div><?php } ?>
 			<?php
 			}
 			?>
