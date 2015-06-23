@@ -1,7 +1,7 @@
 <?php
 require_once("includes/functions.php");
 if($site_info['published']==1){
-	redirect_to($site_info['base_url']."/index.php");
+	redirect_to($GLOBALS['HOST']."/index.php");
 }
 ?>
 <!doctype html>

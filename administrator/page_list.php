@@ -154,7 +154,7 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
 				</td>
 				<!-- URL -->
 				<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
-					<a href="../index.php?page=<?php echo urlencode($listpage['id']);?>" onclick="window.open('<?php echo $site_info['base_url'];?>/page/<?php echo urlencode($listpage['name']);?>', 'newwindow', 'width=1017, height=500'); return false;">View<!--index.php?page=<?php echo urlencode($listpage['id']);?>--></a>
+					<a href="../index.php?page=<?php echo urlencode($listpage['id']);?>" onclick="window.open('<?php echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($listpage['name']);?>', 'newwindow', 'width=1017, height=500'); return false;">View<!--index.php?page=<?php echo urlencode($listpage['id']);?>--></a>
 				</td>
 				<?php if(check_permission("Pages","delete_pages")){?>
 				<td width="5%" style="text-align:center;" id="<?php echo $pagetype; ?>"><input type="checkbox" name="pages[]" id="<?php echo $listpage['id']; ?>" value="<?php echo $listpage['id']; ?>" /><label for="<?php echo $listpage['id']; ?>"></label></td>
