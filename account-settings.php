@@ -93,57 +93,63 @@ $pgsettings = array(
 );
 require_once("includes/begin_html.php");
 ?>
-<h1>Account Settings</h1>
-
-<h2>Change Password</h2>
-
+<div class="row center">
+<div class="col s12"><h3>Account Settings</h3>
+</div>
+</div>
+</div>
+<div class="card">
+<div class="row blogtitle">
+<div class="col s12"><h5>Change Password</h5>
+</div>
+</div>
+<div class="container">
 <form action="account-settings.php" method="post">
-<table width="50%" border="0" cellspacing="5" cellpadding="0">
-  <tr>
-    <td>Current Password:</td>
-    <td><input type="password" name="cpass" class="text"/></td>
-  </tr>
-  <tr>
-    <td>New Password:</td>
-    <td><input type="password" name="npass" class="text"/></td>
-  </tr>
-  <tr>
-    <td>Confirm New Password:</td>
-    <td><input type="password" name="cnpass" class="text"/></td>
-  </tr>
-  <tr>
-    <td colspan="2" align="center"><input type="submit" name="chngpass" value="Change Password" class="submit"/></td>
-  </tr>
-</table>
-</form>
-<br />
-<h2>Change Username</h2>
+<div class="row">
+    <div class="col s12 l3">Current Password:</div>
+    <div class="col s12 l9"><input type="password" name="cpass" class="text"/></div>
+  </div>
+  <div class="row">
+    <div class="col s12 l3">New Password:</div>
+    <div class="col s12 l9"><input type="password" name="npass" class="text"/></div>
+  </div>
+  <div class="row">
+    <div class="col s12 l3">Confirm New Password:</div>
+    <div class="col s12 l9"><input type="password" name="cnpass" class="text"/></div>
+    <div class="col col offset-s6 s6 l3"><input type="submit" name="chngpass" value="Save" class="green btn"/></div>
+  </div>
 
-<form action="account-settings.php" method="post">
-<table width="50%" border="0" cellspacing="5" cellpadding="0">
-  <tr>
-    <td>New Username:</td>
-    <td><input type="text" name="newuser" class="text" maxlength="50"/></td>
-  </tr>
-  <tr>
-    <td colspan="2" align="center"><input type="submit" name="chnguser" value="Change Username" class="submit"/></td>
-  </tr>
-</table>
 </form>
-<h2>Change Email</h2>
-
+</div>
+</div>
+<div class="card">
+<div class="row blogtitle">
+<div class="col s12"><h5>Change Username</h5></div>
+</div>
+<div class="container">
 <form action="account-settings.php" method="post">
-<table width="50%" border="0" cellspacing="5" cellpadding="0">
-  <tr>
-    <td>New Email:</td>
-    <td><input type="text" name="newemail" class="text" maxlength="50"/></td>
-  </tr>
-  <tr>
-    <td colspan="2" align="center"><input type="submit" name="chngemail" value="Change Email" class="submit"/></td>
-  </tr>
-</table>
+<div class="row">
+    <div class="col s12 l3">New Username:</div>
+    <div class="col s12 l9"><input type="text" name="newuser" class="text" maxlength="50"/></div>
+    <div class="col col offset-s6 s6 l3"><input type="submit" name="chnguser" value="Save" class="green btn"/></div>
+  </div>
 </form>
-<br />
+</div>
+</div>
+<div class="card">
+<div class="row blogtitle">
+<div class="col s12"><h5>Change Email</h5></div>
+</div>
+<div class="container">
+<form action="account-settings.php" method="post">
+<div class="row">
+    <div class="col s12 l3">New Email:</div>
+    <div class="col s12 l9"><input type="text" name="newemail" class="text" maxlength="50"/></div>
+    <div class="col offset-s6 s6 l3"><input type="submit" name="chngemail" value="Save" class="green btn"/></div>
+</div>
+</form>
+</div>
+</div>
 <?php
 	require_once("includes/end_html.php");
 ?>
