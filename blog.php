@@ -88,8 +88,12 @@ if (mysqli_num_rows($result)!=0){
     
 	<?php }?>
 	</div>
+    <div class="row">
+    
     <?php
 	echo_page($num_pages, $current_page, "blog.php?");?>
+    </div>
+    
     <?php
     $gall_num = 0;
 	while($post=mysqli_fetch_array($result)){
@@ -114,7 +118,15 @@ if (mysqli_num_rows($result)!=0){
 					<div class="blogtitle" width="100%" height="100%">
 					
 								<h5><a href="view_blog_post.php?post=<?php echo $post['id']; ?>" style="color:#333;"><?php echo $post['title']; ?></a></h5>
-							
+							<div class="container">
+                    <div class="row right blog-btn">
+                    <div class="col l12 s12">
+                        <?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="btn-floating blue" href="edit_blog_post.php?post=<?php echo $post['id'] ?>"><i class="mdi-editor-mode-edit"></i></a><?php } ?>
+                        <?php if(check_permission("Blog","delete_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?>
+                        <a class="modal-trigger btn-floating red btn-click-action" href="#modal1" name="<?php echo $post['id'] ?>"><i class="mdi-action-delete"></i></a><?php } ?>
+                        </div>
+                    </div>
+                    </div>
 					</div>
 				</td>
 			</tr>
@@ -184,15 +196,17 @@ if (mysqli_num_rows($result)!=0){
 				</tr>
                 <tr>
                     <td>
+                    <!--
                     <div class="container">
                     <div class="row right">
                     <div class="col l12 s12">
-                        <?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="btn-floating blue" href="edit_blog_post.php?post=<?php echo $post['id'] ?>"><i class="mdi-editor-mode-edit"></i></a><?php } ?>
+                        <?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="btn-floating blue blog-btn" href="edit_blog_post.php?post=<?php echo $post['id'] ?>"><i class="mdi-editor-mode-edit"></i></a><?php } ?>
                         <?php if(check_permission("Blog","delete_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?>
-                        <a class="modal-trigger btn-floating red btn-click-action" href="#modal1" name="<?php echo $post['id'] ?>"><i class="mdi-action-delete"></i></a><?php } ?>
+                        <a class="modal-trigger blog-btn btn-floating red btn-click-action" href="#modal1" name="<?php echo $post['id'] ?>"><i class="mdi-action-delete"></i></a><?php } ?>
                         </div>
                     </div>
                     </div>
+                    -->
                     </td>
                 </tr>
 			</tr>
@@ -213,7 +227,6 @@ if (mysqli_num_rows($result)!=0){
       	</div>
 		<br />
 	<?php }
-	echo_page($num_pages, $current_page, "blog.php?");
 }else{
   	if(check_permission("Blog","post_blog")){?>
 		<br><a class="btn green" href="new_blog_post.php">New</a><br /><br />
@@ -222,6 +235,11 @@ if (mysqli_num_rows($result)!=0){
 <?php }
 ?>
 <div>
+    <div class="row">
+    
+    <?php
+	echo_page($num_pages, $current_page, "blog.php?");?>
+    </div>
 <?php
 require_once("includes/end_html.php");
 ?>

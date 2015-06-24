@@ -767,16 +767,16 @@ function nav($position, $pgselection){
 function echo_page($num_pages, $current_page, $url){
 	if($num_pages!=1){
 		if($current_page>1){ ?>
-			<a href="<?php echo $url; ?>&page=<?php echo $current_page - 1; ?>">&#60; Prev</a>
+			<div class="col s4 l2"><a class="btn-floating red" href="<?php echo $url; ?>&page=<?php echo $current_page - 1; ?>"><i class="mdi-image-navigate-before"></i></a></div>
 		<?php }else{ ?>
-        	<span class="disabled">&#60; Prev</span>
+        	<div class="col s4 l2"><span class="disabled btn-floating gray"><i class="mdi-image-navigate-before"></i></span></div>
         <?php
 		}
-    	echo "| Page ".$current_page." of ".$num_pages." |";
+    	echo '<div class="col s4 l8 center"> Page '.$current_page.' of '.$num_pages.'</div>';
 		if($num_pages>1&&$current_page<$num_pages){ ?>
-    		<a href="<?php echo $url; ?>&page=<?php echo $current_page + 1; ?>">Next &#62;</a>
+    		<div class="col s4 l2 right" style="text-align:right"><a class="btn-floating red" href="<?php echo $url; ?>&page=<?php echo $current_page + 1; ?>"><i class="mdi-image-navigate-next"></i></a></div>
     	<?php }else{ ?>
-        	<span class="disabled">Next &#62;</span>
+        	<div class="col s4 l2 right" style="text-align:right"><span class="disabled gray btn-floating"><i class="mdi-image-navigate-next"></i></span></div>
         <?php
 		}
 	}
