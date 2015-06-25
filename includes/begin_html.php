@@ -117,7 +117,7 @@ if(isset($bg[2])){
 		/*#contentwrap{
 			background-color:<?php echo $site_layout['contentbg_color'] ?> !important;
 		}*/
-		.mobile, ul.side-nav, slide-out, .blogtitle{
+		.mobile, ul.side-nav, slide-out, .title{
 			background-color:<?php echo $site_layout['accent_color'] ?> !important;
 		}
 		.mobile i{
@@ -143,7 +143,7 @@ if(isset($bg[2])){
 		.photo-link:hover{
 			background-color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		#content, .forum tr, .forumbody, #footerwrap, .blog{
+		/*#content, */.forum tr, .forumbody, #footerwrap, .blog{
 			background-color:<?php echo $site_layout['contentbg_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
@@ -233,6 +233,7 @@ if(isset($bg[2])){
 		}
 		?>
         <div id="contentwrap">
+        <div class="container">
 			<?php if(isset($pgsettings['banner'])&&$pgsettings['banner'] == 1){ ?>
     		<?php if($banner!=false){ ?><div style="width:100%; text-align:center; margin-bottom:20px;"><img src="<?php echo $GLOBALS['HOST']; ?>/images/banner/<?php echo $banner; ?>" width="80%" style="background-color:#C9C9C9;" /></div><?php } ?>
 			<?php
@@ -242,9 +243,8 @@ if(isset($bg[2])){
 				slider($pgsettings['slider']);
 			}
 			?>
-            <div class="container">
-            <table border="0" cellspacing="0" cellpadding="0" style="width:100%;">
-                <tr>
+            
+                <div class="row">
                     <?php
                     if(!isset($pgsettings['vert_menu_visible'])||$pgsettings['vert_menu_visible'] == true){
                         ?><?php
@@ -252,9 +252,10 @@ if(isset($bg[2])){
                         ?><?php
                     }
                     ?>
-                	<td style="padding-right:5px; padding-left:5px; vertical-align:top;">
+                    <div id="content">
+                	<div class="col l9 s12" >
                     
-						<div id="content" style="background-color:#525252;" class="card">
+						<div class="card">
 						<?php if(!empty($error)){echo "<script type=\"text/javascript\">Materialize.toast('".$error."', 8000, 'red')</script>";} ?>
                         <?php if(!empty($success)){echo "<script type=\"text/javascript\">Materialize.toast('".$success."', 8000, 'green')</script>";} ?>
                         <?php if(!empty($message)){echo "<script type=\"text/javascript\">Materialize.toast('".$message."', 8000, 'yellow')</script>";} ?>

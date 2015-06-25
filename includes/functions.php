@@ -688,8 +688,8 @@ function nav($position, $pgselection){
 				<div class="nav" style="background-color:<?php echo $site_layout['menu_color'] ?>;">
 					<ul id="horiz-menu" class="right">
 			<?php }elseif($position=="vert"&&$numpages!=0){ ?>
-				<td style="vertical-align:top; width:200px; padding-right:5px;" id="vert-td"><div style="width:100%;">
-					<ul id="vert-menu">
+				<div class=" col l3 card" id="vert-td"><div style="width:100%;">
+					<ul  id="vert-menu">
 			<?php }
 				//$buttonwidth = $numpages;
 				//$buttonwidth = 900 - $buttonwidth;
@@ -756,7 +756,7 @@ function nav($position, $pgselection){
 			<?php if($position=="horiz"&&$numpages!=0){?>
 				</div>
 			<?php }elseif($position=="vert"&&$numpages!=0){?>
-            	</div></td>
+            	</div></div>
 			<?php } ?>
 		<?php
 		

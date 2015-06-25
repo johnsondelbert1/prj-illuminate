@@ -115,7 +115,7 @@ if (mysqli_num_rows($result)!=0){
 		<table width="100%" height="100%" class="blog card">
 			<tr>
 				<td colspan="2">
-					<div class="blogtitle" width="100%" height="100%">
+					<div class="title" width="100%" height="100%">
 					
 								<h5><a href="view_blog_post.php?post=<?php echo $post['id']; ?>" style="color:#333;"><?php echo $post['title']; ?></a></h5>
 							<div class="container">

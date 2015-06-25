@@ -1,9 +1,10 @@
             	</div>
                 </div>
-            </td>
-        </tr>
-    </table>
+                </div>
+            </div>
+        </div>
     </div>
+    
     <div id="footerwrap">
         <div id="footer">
             <div id="footer-content" style="float:left;">
@@ -15,6 +16,7 @@
             </div>
         </div>
     </div>
+    
     <script type="text/javascript">
     	var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
     </script>
