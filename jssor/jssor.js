@@ -1007,7 +1007,7 @@ var $Jssor$ = window.$Jssor$ = new function () {
 
                 //needed for touch device, no need for desktop device
                 if (IsBrowserChrome() && webkitVersion > 535 && "ontouchstart" in window)
-                    transformValue += " perspective(2000px)";
+                   // transformValue += " perspective(2000px)";
 
                 elmt.style[transformProperty] = transformValue;
             }
@@ -1054,7 +1054,8 @@ var $Jssor$ = window.$Jssor$ = new function () {
 
     _This.$EnableHWA = function (elmt) {
         if (!elmt.style[GetTransformProperty(elmt)] || elmt.style[GetTransformProperty(elmt)] == "none")
-            elmt.style[GetTransformProperty(elmt)] = "perspective(2000px)";
+            //elmt.style[GetTransformProperty(elmt)] = "perspective(2000px)"
+			;
     };
 
     _This.$DisableHWA = function (elmt) {
