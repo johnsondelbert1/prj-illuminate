@@ -21,11 +21,17 @@ and (max-device-width : 1023px) {
 	display:none!important;
 	}
 	#logo, #socnet, #login-status{
-		display:none;
+		display:none!important;
 	}
 	#footer-content{
 		width:100%!important;
 	}
+	.header{
+	height:auto !important;
+}
+	#contentwrap{
+	padding-top:0px!important;
+}
 	/*html, body{
 font-size: 1em;
 }*/
@@ -63,8 +69,11 @@ and (min-width : 1024px) {
 		display:none!important;
 		
 	}
-}
 
+.headericon{
+	display:none!important;
+}
+}
 /* Large screens ----------- */
 @media only screen 
 and (min-width : 1824px) {
@@ -103,7 +112,14 @@ body{
 	padding-bottom:220px;
 	padding-top:20px;
 }
-#content, #footer{
+.header{
+	max-width:1880px;
+	width:100%; 
+	height:100px; 
+	margin-left:auto; 
+	margin-right:auto;
+}
+#footer{
 	padding:20px;
 }
 #footerwrap{
@@ -890,65 +906,67 @@ div.fbbutton{
 div.fbbutton:hover{
 		background-position: 48px, 0px;
 }
-table.forum-table{
-	border:2px solid #666666;
- 
-}
-tr.info-table:nth-child(even){
-	background-color:#666666;
-}
-tr.info-table:nth-child(odd){
-	background-color:#555555;
-}
-td.info-tabledata{
-	padding-left:5px;
-}
-/*Table forum rows*/
-tr.forum-title{
-	background-color:#131313;
- 
-}
-tr.forum-topic{
-	font-size:0.750rem;
-	color:#666666;
-}
-tr.forum-topic:nth-child(even){
-	background-color:#CCC;
-}
-tr.forum-topic:nth-child(odd){
-	background-color:#B7B7B7;
-}
-tr.forum-topic a{
-	font-size:0.750rem;
-	color:#333333;
-	text-decoration:none;
-	font-weight:bold;
- 
-}
-tr.forum-topic:hover{
-	background-color:#eee;
- 
-}
-/*Forum table induvidual cells*/
-td.forum-table-cell-title{
-	padding-left:15px;
-	height:30px;
-	font-size:1.125rem;
-}
-td.forum-table-cell-topic{
-	padding-left:1em;
-	height:70px;
-	border-bottom:1px solid #111111;
-}
-b{
-	font-weight:bolder;
-}
-.forumbody{
-	padding:	5px;
-}
-.forumfooter{
-	padding:	5px;
-}
+/*Forum table induvidual cells
+	table.forum-table{
+		border:2px solid #666666;
+	 
+	}
+	tr.info-table:nth-child(even){
+		background-color:#666666;
+	}
+	tr.info-table:nth-child(odd){
+		background-color:#555555;
+	}
+	td.info-tabledata{
+		padding-left:5px;
+	}
+	Table forum rows
+	tr.forum-title{
+		background-color:#131313;
+	 
+	}
+	tr.forum-topic{
+		font-size:0.750rem;
+		color:#666666;
+	}
+	tr.forum-topic:nth-child(even){
+		background-color:#CCC;
+	}
+	tr.forum-topic:nth-child(odd){
+		background-color:#B7B7B7;
+	}
+	tr.forum-topic a{
+		font-size:0.750rem;
+		color:#333333;
+		text-decoration:none;
+		font-weight:bold;
+	 
+	}
+	tr.forum-topic:hover{
+		background-color:#eee;
+	 
+	}
+	Forum table induvidual cells
+	td.forum-table-cell-title{
+		padding-left:15px;
+		height:30px;
+		font-size:1.125rem;
+	}
+	td.forum-table-cell-topic{
+		padding-left:1em;
+		height:70px;
+		border-bottom:1px solid #111111;
+	}
+	b{
+		font-weight:bolder;
+	}
+	.forumbody{
+		padding:	5px;
+	}
+	.forumfooter{
+		padding:	5px;
+	}
+	*/
 h3.error
 {
 	text-align:center;
@@ -1003,15 +1021,15 @@ h3.message
 	padding:20px;
 }
 /*Blog*/
-.blogtitle{
+.title{
 	padding:5px;
 	font-weight:900;
 }
-.blogtitle a{
+.title a{
 	text-decoration:none;
 
 }
-.blogtitle a:hover{
+.title a:hover{
 	text-decoration:underline;
 
 }
@@ -1034,7 +1052,7 @@ h3.message
 	padding:0px 5px 10px 5px;
 	
 }
-/*forums*/
+/*forums
 .forum{
 	
 
@@ -1042,13 +1060,13 @@ h3.message
 .forum tr{
 	font-size:0.750rem;
 	transition: all 200ms;
-	-webkit-transition: all 200ms; /* Safari */
+	-webkit-transition: all 200ms;
 }
 .forum tr a{
 	font-size:1.125rem;
 	text-decoration:none;
 	font-weight:bold;
-	-webkit-transition: all 200ms; /* Safari */
+	-webkit-transition: all 200ms;
 }
 .forum tr td{
 	padding-left:15px;
@@ -1101,6 +1119,7 @@ div.rank{
 	font-size:1.500em;
 	border-bottom:2px dashed;
 }
+*/
 input[type=text],
 input[type=url],
 input[type=tel],

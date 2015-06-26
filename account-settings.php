@@ -99,7 +99,7 @@ require_once("includes/begin_html.php");
 </div>
 </div>
 <div class="card">
-<div class="row blogtitle">
+<div class="row title">
 <div class="col s12"><h5>Change Password</h5>
 </div>
 </div>
@@ -123,7 +123,7 @@ require_once("includes/begin_html.php");
 </div>
 </div>
 <div class="card">
-<div class="row blogtitle">
+<div class="row title">
 <div class="col s12"><h5>Change Username</h5></div>
 </div>
 <div class="container">
@@ -137,7 +137,7 @@ require_once("includes/begin_html.php");
 </div>
 </div>
 <div class="card">
-<div class="row blogtitle">
+<div class="row title">
 <div class="col s12"><h5>Change Email</h5></div>
 </div>
 <div class="container">
