@@ -59,7 +59,12 @@ if(isset($bg[2])){
     <META NAME="language" CONTENT="English">
     <META NAME="revisit-after" CONTENT="7">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="theme-color" content="<?php echo $site_layout['accent_color'] ?>">
+    <?php 
+	$adrQuery="SELECT `color_hex`, `cid`, `s_name`, `style_color_id` FROM `style_colors` INNER JOIN `css_selectors` ON `cid` = `style_color_id` WHERE `s_name` = 'android_tab'";
+	$adrResult=mysqli_query( $connection, $adrQuery);
+	$adr_color = mysqli_fetch_array($adrResult);
+    ?>
+    <meta name="theme-color" content="<?php echo $adr_color['color_hex']; ?>">
 
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
@@ -88,14 +93,10 @@ if(isset($bg[2])){
 			background-color:<?php echo $site_layout['sitebg_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		.mobile-logo{
-			background-color:<?php echo $site_layout['sitebg_color'] ?> !important;
-		}
+
 		body{
-			<?php if($site_layout['use_bg_color']==1){ ?>
-			background-color:<?php echo $site_layout['sitebg_color'] ?> !important;
-			<?php }else{ ?>
-			background-color:#FFFFFF; ?> !important;
+			<?php if($site_layout['use_bg_color']!=1){ ?>
+			background-color:#FFFFFF; !important;
 			<?php }
 			if($bg!=false){?>
 			background-image:url(/images/bg/<?php echo $bg; ?>);
@@ -115,10 +116,64 @@ if(isset($bg[2])){
 			background-attachment:scroll !important;
 			<?php } ?>
 		}
+		<?php
+		//Custom Colors
+
+		$query="SELECT DISTINCT `style_color_id` FROM `css_selectors` ORDER BY `style_color_id` ASC";
+		$result=mysqli_query( $connection, $query);
+
+		while ($unique_id = mysqli_fetch_array($result)) {
+			$css_query="SELECT * FROM `css_selectors` WHERE `style_color_id` = {$unique_id['style_color_id']}";
+			$css_result=mysqli_query( $connection, $css_query);
+
+			$color_query="SELECT `color_hex` FROM `style_colors` WHERE `cid` = {$unique_id['style_color_id']}";
+			$color_result=mysqli_query( $connection, $color_query);
+			$color = mysqli_fetch_array($color_result);
+
+			$bg = array();
+			$text = array();
+
+			while ($css_selector = mysqli_fetch_array($css_result)){
+				switch ($color_styles[$css_selector['s_name']]['type']) {
+					case 'bg':
+						array_push($bg, $css_selector['s_name']);
+						break;
+					case 'text':
+						array_push($text, $css_selector['s_name']);
+						break;
+				}
+			}
+
+			if(!empty($bg)){
+				$items = count($bg);
+				$i = 1;
+				foreach ($bg as $value) {
+					echo $color_styles[$value]['selector'];
+					if($i < $items){echo ', ';}else{echo "{\r\n";}
+					$i++;
+				}
+				echo "\t".'background-color: '.$color['color_hex'].';'."\r\n}\r\n";
+			}
+			if(!empty($text)){
+				$items = count($text);
+				$i = 1;
+				foreach ($text as $value) {
+					echo $color_styles[$value]['selector'];
+					if($i < $items){echo ', ';}else{echo "{\r\n";}
+					$i++;
+				}
+				echo "\t".'color: '.$color['color_hex'].';'."\r\n}\r\n";
+			}
+		}
+
+		?>
 		/*#contentwrap{
 			background-color:<?php echo $site_layout['contentbg_color'] ?> !important;
 		}*/
 		.mobile, ul.side-nav, slide-out, .title, .jssorb01 div:hover, .jssorb01 .av:hover, jssora05l, jssora05r{
+			background-color: #FFFFFF;
+		}
+		/*.mobile, ul.side-nav, slide-out, .blogtitle{
 			background-color:<?php echo $site_layout['accent_color'] ?> !important;
 		}
 		.jssora05l .material-icons, .jssora05r .material-icons{
@@ -138,7 +193,7 @@ if(isset($bg[2])){
 			background-color:<?php echo $site_layout['accent_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		*html #horiz-menu li a:hover, #vert-menu li a:hover { /* IE6 only */
+		*html #horiz-menu li a:hover, #vert-menu li a:hover { /* IE6 only 
 			color: <?php echo $site_layout['text_color'] ?>;
 		}
 		#content a, #footer a, #horiz-menu a, #horiz-menu ul a, #vert-menu a, #vert-menu ul a, .blogtitle a, .forum tr a:hover{
@@ -162,14 +217,14 @@ if(isset($bg[2])){
 		}
 		 ::-webkit-scrollbar-thumb{
 			/*background-color:<?php echo $site_layout['accent_color'] ?> !important;
-			color:<?php echo $site_layout['text_color'] ?> !important;*/
+			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
 		::selection {
-			background: <?php echo $site_layout['accent_color'] ?>; /* WebKit/Blink Browsers */
+			background: <?php echo $site_layout['accent_color'] ?>; /* WebKit/Blink Browsers 
 			}
 		::-moz-selection {
-			background: <?php echo $site_layout['accent_color'] ?>; /* WebKit/Blink Browsers */
-			}
+			background: <?php echo $site_layout['accent_color'] ?>; /* WebKit/Blink Browsers 
+			}*/
 		#banner{
 			<?php if(count($banner)==3){?>background-image:url(images/banner/<?php echo $banner[2];?>);<?php } ?>
 			
@@ -269,6 +324,7 @@ if(isset($bg[2])){
 					 ?> s12" >
                     <div id="content">
 						<div class="card">
+
 						<?php if(!empty($error)){echo "<script type=\"text/javascript\">Materialize.toast('".$error."', 8000, 'red')</script>";} ?>
                         <?php if(!empty($success)){echo "<script type=\"text/javascript\">Materialize.toast('".$success."', 8000, 'green')</script>";} ?>
                         <?php if(!empty($message)){echo "<script type=\"text/javascript\">Materialize.toast('".$message."', 8000, 'yellow')</script>";} ?>

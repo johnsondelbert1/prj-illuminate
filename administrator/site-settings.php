@@ -85,20 +85,81 @@ if(isset($_POST['bg_submit'])){
 	}
 }
 
-if(isset($_POST['chngstyle'])){
+if(isset($_POST['new_color'])){
 	if(check_permission("Website","edit_site_colors")){
 		
-		$css = strip_tags(mysqli_real_escape_string($connection, $_POST['custom_css']),"<link>");
-		
-		$query="UPDATE `site_layout` SET 
-			`menu_color` = '{$_POST['menu_color']}', `contentbg_color` = '{$_POST['contentbg_color']}', `sitebg_color` = '{$_POST['sitebg_color']}', `accent_color` = '{$_POST['accent_color']}', `text_color` = '{$_POST['text_color']}', `custom_css` = '{$css}'";
+		$name = strip_tags(mysqli_real_escape_string($connection, $_POST['new_color_name']));
+		$hex = strip_tags(mysqli_real_escape_string($connection, $_POST['new_color_hex']));
+
+/*		$query="SELECT * FROM `style_colors` WHERE `name` = '{$name}'";
+		$result=mysqli_query($connection, $query);*/
+
+		$query="INSERT INTO `style_colors` (c_name, color_hex, date_created, creator) VALUES ('{$name}','{$hex}', '{$date}', {$_SESSION['user_id']})";
 		$result=mysqli_query($connection, $query);
 		confirm_query($result);
-		$success = "Site styling has been updated!";
+
+		if($name==""){
+			$color = $hex;
+		}else{
+			$color = $name;
+		}
+
+		$success = "Color \"".$color."\" added!";
 	}else{
 		$error="You do not have permission to edit colors.";
 	}
 }
+
+if(isset($_GET['delcolor'])){
+	if(check_permission("Website","edit_site_colors")){
+
+		$query="SELECT * FROM `style_colors` WHERE `cid` = '{$_GET['delcolor']}'";
+		$result=mysqli_query($connection, $query);
+		$colorData = mysqli_fetch_array($result);
+		if($colorData['deletable']==1){
+			$query="DELETE FROM `style_colors` WHERE `cid` = {$colorData['cid']}";
+			$result=mysqli_query($connection, $query);
+			confirm_query($result);
+
+			$selectorQuery="SELECT * FROM `css_selectors` WHERE `style_color_id` = '{$_GET['delcolor']}'";
+			$selectorResult=mysqli_query($connection, $selectorQuery);
+
+			while($selector = mysqli_fetch_array($selectorResult)){
+				$editQuery="UPDATE `css_selectors` SET `style_color_id` = '1' WHERE `cid` = {$selector['sid']}";
+				$editResult=mysqli_query($connection, $editQuery);
+			}
+
+			if($colorData['c_name']==""){
+				$color = $colorData['color_hex'];
+			}else{
+				$color = $colorData['name'];
+			}
+
+			$success = "Color \"".$color."\" deleted!";
+		}else{
+			$error="This color cannnot be deleted!";
+		}
+	}else{
+		$error="You do not have permission to edit colors.";
+	}
+}
+
+if(isset($_POST['custom_css'])){
+	if(check_permission("Website","edit_site_colors")){
+		
+		$css = strip_tags(mysqli_real_escape_string($connection, $_POST['custom_css']),"<link>");
+		
+		/*$query="UPDATE `site_layout` SET 
+			`menu_color` = '{$_POST['menu_color']}', `contentbg_color` = '{$_POST['contentbg_color']}', `sitebg_color` = '{$_POST['sitebg_color']}', `accent_color` = '{$_POST['accent_color']}', `text_color` = '{$_POST['text_color']}', `custom_css` = '{$css}'";*/
+		$query="UPDATE `site_layout` SET `custom_css` = '{$css}'";
+		$result=mysqli_query($connection, $query);
+		confirm_query($result);
+		$success = "Custom CSS has been updated!";
+	}else{
+		$error="You do not have permission to edit styles.";
+	}
+}
+
 if(isset($_POST['socialnet'])){
 	if(check_permission("Website","edit_socnet")){
 		
@@ -140,34 +201,6 @@ if(isset($_POST['socialnet'])){
 		$error="You do not have permission to edit Social Networks.";
 	}
 }
-/*
-if(isset($_POST['delbanners'])){
-	if(check_permission("Website","upload_favicon_banner")){
-		function del_file($file){
-			global $output_dir_banner;
-			if(file_exists($output_dir_banner.$file)){
-				unlink($output_dir_banner.$file);
-				return "File \"".$file."\" was deleted.";
-			}else{
-				return "File \"".$file."\" was not found. Perhaps it was already deleted?";
-			}
-		}
-		if(!empty($_POST['files'])){
-			$i = 0;
-			foreach($_POST['files'] as $file){
-				$success=del_file($file);
-				$i++;
-				if($i > 1){
-					$success=$i." files were deleted.";
-				}
-			}
-		}else{
-			$error="No files selected.";
-		}
-	}else{
-		$error="You do not have permission to delete banners!";
-	}
-}*/
 if(isset($_POST['uploadbanner'])){
 	foreach (scandir($output_dir_banner) as $item) {
 		if ($item == '.' || $item == '..') continue;
@@ -469,7 +502,15 @@ $result_pages=mysqli_query($connection, $query);
 <?php if(check_permission("Website","edit_site_colors")){ ?>
 <div class="TabbedPanelsContent">
 <h1 style="margin:-4px -4px 5px -4px; padding:5px;">Website Style</h1>
-<select onchange="chngcolor(this)">
+
+<form method="post" action="site-settings.php?tab=1">
+	<label for="new_color_name">Name</label><input type="text" id="new_color_name" name="new_color_name" value="<?php if(isset($_POST['new_color_name'])){echo $_POST['new_color_name'];} ?>" maxlength="32" />
+    <label for="new_color_hex">Color</label><input name="new_color_hex" id="new_color_hex" type="text" value="<?php if(isset($_POST['new_color_hex'])){echo $_POST['new_color_hex'];} ?>" maxlength="7" class="color {hash:true}" />
+    <input type="submit" name="new_color" class="btn green" value="Create new color" />
+</form>
+
+<?php include_once("includes/color_edit.php"); ?>
+<!--<select onchange="chngcolor(this)">
 	<option>Red (Dark)</option>
    	<option>Red (Light)</option>
 	<option>Blue (Dark)</option>
@@ -499,12 +540,12 @@ $result_pages=mysqli_query($connection, $query);
 <input id="text" name="text_color" type="text" value="<?php echo $layout['text_color']; ?>" maxlength="7" class="color {hash:true}" />
 <label for="text">Text:</label>
 </div>
-</div>
+</div>-->
 <div class="row">
 <div class="input-field col s12">
 <strong>Custom CSS</strong>
 <textarea class="materialize-textarea" name="custom_css" id="custom_css" rows="15" cols="80"><?php echo $layout['custom_css']; ?></textarea>
-<input name="chngstyle" type="submit" class="btn green" value="Change Styling" />
+<input name="Custom CSS" type="submit" class="btn green" value="Save Custom CSS" />
 </div>
 </div>
 </form>
