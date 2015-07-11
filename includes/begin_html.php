@@ -81,6 +81,7 @@ if(isset($bg[2])){
     <link href="<?php echo $GLOBALS['HOST']; ?>/styles/main.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo $GLOBALS['HOST']; ?>/styles/animate.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo $GLOBALS['HOST']; ?>/styles/materialize.css" rel="stylesheet" type="text/css" media="screen,projection"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="<?php echo $GLOBALS['HOST']; ?>/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css" media="screen" charset="utf-8" />
     <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/SpryTabbedPanels.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
@@ -169,8 +170,14 @@ if(isset($bg[2])){
 		/*#contentwrap{
 			background-color:<?php echo $site_layout['contentbg_color'] ?> !important;
 		}*/
+		.mobile, ul.side-nav, slide-out, .title, .jssorb01 div:hover, .jssorb01 .av:hover, jssora05l, jssora05r{
+			background-color: #FFFFFF;
+		}
 		/*.mobile, ul.side-nav, slide-out, .blogtitle{
 			background-color:<?php echo $site_layout['accent_color'] ?> !important;
+		}
+		.jssora05l .material-icons, .jssora05r .material-icons{
+			color:<?php echo $site_layout['menu_color'] ?> !important;
 		}
 		.mobile i{
 			color:<?php echo $site_layout['contentbg_color'] ?> !important;
@@ -178,7 +185,7 @@ if(isset($bg[2])){
 		#banner{
 			background-color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #vert-menu, #vert-menu li, #vert-menu ul li, .photo-link, .nav{
+		#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #vert-menu ul li, .photo-link, .nav, .captionBlack, .card{
 			background-color:<?php echo $site_layout['menu_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
@@ -195,7 +202,7 @@ if(isset($bg[2])){
 		.photo-link:hover{
 			background-color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		#content, .forum tr, .forumbody, #footerwrap, .blog{
+		/*#content, */.forum tr, .forumbody, #footerwrap, .blog{
 			background-color:<?php echo $site_layout['contentbg_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
@@ -259,7 +266,7 @@ if(isset($bg[2])){
             </div>
         </div>
     	<?php if($logo!=false||!empty($enabled_soc_networks)){ ?>
-    	<div style="max-width:1880px; width:100%; height:100px; margin-left:auto; margin-right:auto;">
+    	<div class="header"><span style="font-size:47px; margin-left:15px;" class="icon icon-facebook2 headericon"></span>
         	<?php if($logo!=false){ ?>
             	<div style="float:left; position:absolute;" id="logo">
                 	<?php if($site_info['logo_url']!=''){?>
@@ -285,8 +292,9 @@ if(isset($bg[2])){
 		}
 		?>
         <div id="contentwrap">
+        
 			<?php if(isset($pgsettings['banner'])&&$pgsettings['banner'] == 1){ ?>
-    		<?php if($banner!=false){ ?><div style="width:100%; text-align:center; margin-bottom:20px;"><img src="<?php echo $GLOBALS['HOST']; ?>/images/banner/<?php echo $banner; ?>" width="80%" style="background-color:#C9C9C9;" /></div><?php } ?>
+    		<?php if($banner!=false){ ?><div class="row"><div class="col l10 s12 offset-l1" style="padding:0 0 !important;"><img src="<?php echo $GLOBALS['HOST']; ?>/images/banner/<?php echo $banner; ?>" width="100%" style="background-color:#C9C9C9;" /></div></div><?php } ?>
 			<?php
 			}
 			?>
@@ -295,18 +303,28 @@ if(isset($bg[2])){
 			}
 			?>
             <div class="container">
-            <table border="0" cellspacing="0" cellpadding="0" style="width:100%;">
-                <tr>
+                <div class="row">
                     <?php
                     if(!isset($pgsettings['vert_menu_visible'])||$pgsettings['vert_menu_visible'] == true){
                         ?><?php
                             $num_vert_pages = nav("vert", $pgsettings['pageselection']);
                         ?><?php
-                    }
+                    }else{
+						$num_vert_pages = 0;
+					}
                     ?>
-                	<td style="padding-right:5px; padding-left:5px; vertical-align:top;">
-                    
-						<div id="content" class="card">
+                  
+                	<div class="col <?php
+					if($num_vert_pages == 0){
+									echo 'l12';	
+									}
+						else{
+									echo 'l9';	
+									}
+					 ?> s12" >
+                    <div id="content">
+						<div class="card">
+
 						<?php if(!empty($error)){echo "<script type=\"text/javascript\">Materialize.toast('".$error."', 8000, 'red')</script>";} ?>
                         <?php if(!empty($success)){echo "<script type=\"text/javascript\">Materialize.toast('".$success."', 8000, 'green')</script>";} ?>
                         <?php if(!empty($message)){echo "<script type=\"text/javascript\">Materialize.toast('".$message."', 8000, 'yellow')</script>";} ?>

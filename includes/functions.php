@@ -361,7 +361,10 @@ function mysql_prep( $value ) {
 }
 function check_login(){
 	global $site_info;
-	?><p><?php
+	?>
+<style type="text/css">
+</style>
+<p><?php
 	if(logged_in()){?>
         <?php echo "<b>".$_SESSION['username']."</b>";?>
          | <a href="<?php echo $GLOBALS['HOST']; ?>/account-settings.php">Account Settings</a> | <?php if(check_permission("Website","cpanel_access")){?><a href="<?php echo $GLOBALS['HOST']; ?>/administrator/" target="_blank">CPanel</a> | <?php } ?><a href="<?php echo $GLOBALS['HOST']; ?>/logout.php">Logout</a>
@@ -798,8 +801,8 @@ function nav($position, $pgselection){
 				<div class="nav">
 					<ul id="horiz-menu" class="right">
 			<?php }elseif($position=="vert"&&$numpages!=0){ ?>
-				<td style="vertical-align:top; width:200px; padding-right:5px;" id="vert-td"><div style="width:100%;">
-					<ul id="vert-menu">
+				<div class=" col l3 card" style="padding:0 !important;" id="vert-td"><div style="width:100%;">
+					<ul  id="vert-menu">
 			<?php }
 				//$buttonwidth = $numpages;
 				//$buttonwidth = 900 - $buttonwidth;
@@ -866,7 +869,7 @@ function nav($position, $pgselection){
 			<?php if($position=="horiz"&&$numpages!=0){?>
 				</div>
 			<?php }elseif($position=="vert"&&$numpages!=0){?>
-            	</div></td>
+            	</div></div>
 			<?php } ?>
 		<?php
 		
@@ -874,19 +877,20 @@ function nav($position, $pgselection){
 	return $numpages;
 }
 
+
 function echo_page($num_pages, $current_page, $url){
 	if($num_pages!=1){
 		if($current_page>1){ ?>
-			<div class="col s4 l2"><a class="btn-floating red" href="<?php echo $url; ?>&page=<?php echo $current_page - 1; ?>"><i class="mdi-image-navigate-before"></i></a></div>
+			<div class="col s4 l2"><a class="btn-floating red" href="<?php echo $url; ?>&page=<?php echo $current_page - 1; ?>"><i class="material-icons">keyboard_arrow_left</i></a></div>
 		<?php }else{ ?>
-        	<div class="col s4 l2"><span class="disabled btn-floating gray"><i class="mdi-image-navigate-before"></i></span></div>
+        	<div class="col s4 l2"><span class="disabled btn-floating gray"><i class="material-icons">keyboard_arrow_left</i></span></div>
         <?php
 		}
     	echo '<div class="col s4 l8 center"> Page '.$current_page.' of '.$num_pages.'</div>';
 		if($num_pages>1&&$current_page<$num_pages){ ?>
-    		<div class="col s4 l2 right" style="text-align:right"><a class="btn-floating red" href="<?php echo $url; ?>&page=<?php echo $current_page + 1; ?>"><i class="mdi-image-navigate-next"></i></a></div>
+    		<div class="col s4 l2 right" style="text-align:right"><a class="btn-floating red" href="<?php echo $url; ?>&page=<?php echo $current_page + 1; ?>"><i class="material-icons">keyboard_arrow_right</i></a></div>
     	<?php }else{ ?>
-        	<div class="col s4 l2 right" style="text-align:right"><span class="disabled gray btn-floating"><i class="mdi-image-navigate-next"></i></span></div>
+        	<div class="col s4 l2 right" style="text-align:right"><span class="disabled gray btn-floating"><i class="material-icons">keyboard_arrow_right</i></span></div>
         <?php
 		}
 	}
@@ -904,12 +908,11 @@ function slider($slider_id){
                         <style> 
                             .captionOrange, .captionBlack
                             {
-                                color: #fff;
                                 font-size: 20px;
                                 line-height: 30px;
                                 text-align: center;
-                                border-radius: 4px;
-                            }
+								border-radius: 2px;
+                                                            }
                             .captionOrange
                             {
                                 background: #EB5100;
@@ -919,7 +922,7 @@ function slider($slider_id){
                             {
                                 font-size:16px;
                                 background: #000;
-                                background-color: rgba(0, 0, 0, 0.4);
+                                background-color: rgb(0, 0, 0);
                             }
                             a.captionOrange, A.captionOrange:active, A.captionOrange:visited
                             {
@@ -967,13 +970,13 @@ function slider($slider_id){
                                     $AutoPlay: true,                                    //[Optional] Whether to auto play, to enable slideshow, this option must be set to true, default value is false
                                     $AutoPlaySteps: 1,                                  //[Optional] Steps to go for each navigation request (this options applys only when slideshow disabled), the default value is 1
                                     $AutoPlayInterval: 4000,                            //[Optional] Interval (in milliseconds) to go for next slide since the previous stopped if the slider is auto playing, default value is 3000
-                                    $PauseOnHover: 1,                               //[Optional] Whether to pause when mouse over if a slider is auto playing, 0 no pause, 1 pause for desktop, 2 pause for touch device, 3 pause for desktop and touch device, 4 freeze for desktop, 8 freeze for touch device, 12 freeze for desktop and touch device, default value is 1
+                                    $PauseOnHover: 3,                               //[Optional] Whether to pause when mouse over if a slider is auto playing, 0 no pause, 1 pause for desktop, 2 pause for touch device, 3 pause for desktop and touch device, 4 freeze for desktop, 8 freeze for touch device, 12 freeze for desktop and touch device, default value is 1
                     
                                     $ArrowKeyNavigation: true,   			            //[Optional] Allows keyboard (arrow key) navigation or not, default value is false
                                     $SlideDuration: 500,                                //[Optional] Specifies default duration (swipe) for slide in milliseconds, default value is 500
                                     $MinDragOffsetToSlide: 20,                          //[Optional] Minimum drag offset to trigger slide , default value is 20
-                                    //$SlideWidth: 600,                                 //[Optional] Width of every slide in pixels, default value is width of 'slides' container
-                                    //$SlideHeight: 300,                                //[Optional] Height of every slide in pixels, default value is height of 'slides' container
+                                    //$SlideWidth: 1200,                                 //[Optional] Width of every slide in pixels, default value is width of 'slides' container
+                                    //$SlideHeight: 600,                                //[Optional] Height of every slide in pixels, default value is height of 'slides' container
                                     $SlideSpacing: 0, 					                //[Optional] Space between each slide in pixels, default value is 0
                                     $DisplayPieces: 1,                                  //[Optional] Number of pieces to display (the slideshow would be disabled if the value is set to greater than 1), the default value is 1
                                     $ParkingPosition: 0,                                //[Optional] The offset position to park slide (this options applys only when slideshow disabled), default value is 0.
@@ -992,7 +995,7 @@ function slider($slider_id){
 										$Class: $JssorCaptionSlider$,                   //[Required] Class to create instance to animate caption
 										$CaptionTransitions: _CaptionTransitions,       //[Required] An array of caption transitions to play caption, see caption transition section at jssor slideshow transition builder
 										$PlayInMode: 1,                                 //[Optional] 0 None (no play), 1 Chain (goes after main slide), 3 Chain Flatten (goes after main slide and flatten all caption animations), default value is 1
-										$PlayOutMode: 3                                 //[Optional] 0 None (no play), 1 Chain (goes before main slide), 3 Chain Flatten (goes before main slide and flatten all caption animations), default value is 1
+										$PlayOutMode: 1,                                 //[Optional] 0 None (no play), 1 Chain (goes before main slide), 3 Chain Flatten (goes before main slide and flatten all caption animations), default value is 1
 									},
 									
                                     $BulletNavigatorOptions: {                                //[Optional] Options to specify and enable navigator or not
@@ -1005,7 +1008,7 @@ function slider($slider_id){
                     
                                     $ArrowNavigatorOptions: {
                                         $Class: $JssorArrowNavigator$,              //[Requried] Class to create arrow navigator instance
-                                        $ChanceToShow: 2,                                //[Required] 0 Never, 1 Mouse Over, 2 Always
+                                        $ChanceToShow: 1,                                //[Required] 0 Never, 1 Mouse Over, 2 Always
                                         $AutoCenter: 2                                 //[Optional] Auto center navigator in parent container, 0 None, 1 Horizontal, 2 Vertical, 3 Both, default value is 0
                                     },
                     
@@ -1044,7 +1047,9 @@ function slider($slider_id){
                         </script>
                         <!-- Jssor Slider Begin -->
                         <!-- You can move inline styles to css file or css block. -->
-                        <div style="width:80%; margin-left:auto; margin-right:auto;">
+                        <div class="row">
+                        <div class="col l10 s12 offset-l1" style="padding:0 0 !important;">
+                        <div style="width:100%; margin-left:auto; margin-right:auto;">
                         <div id="sliderb_container" style="position: relative; width: 600px; height: 300px; overflow: hidden; margin-left:auto; margin-right:auto; margin-bottom:20px;">
                     
                             <!-- Loading Screen -->
@@ -1086,6 +1091,7 @@ function slider($slider_id){
 									}
 								?>
                             </div>
+                            
                     
                             <!-- ThumbnailNavigator Skin Begin 
                             <div u="thumbnavigator" class="sliderb-T" style="position: absolute; top: 0px; left: 0px; height:45px; width:600px;">
@@ -1114,13 +1120,13 @@ function slider($slider_id){
                                 */
                                 .jssorb01 div, .jssorb01 div:hover, .jssorb01 .av
                                 {
-                                    filter: alpha(opacity=70);
-                                    opacity: .7;
+                                    
+                                    
                                     overflow:hidden;
                                     cursor: pointer;
-                                    border: #000 1px solid;
+									border-radius: 2px;
                                 }
-                                .jssorb01 div { background-color: gray; }
+                                .jssorb01 div { background-color: #fff;  }
                                 .jssorb01 div:hover, .jssorb01 .av:hover { background-color: #d3d3d3; }
                                 .jssorb01 .av { background-color: #fff; }
                                 .jssorb01 .dn, .jssorb01 .dn:hover { background-color: #555555; }
@@ -1148,27 +1154,26 @@ function slider($slider_id){
                                     position: absolute;
                                     cursor: pointer;
                                     display: block;
-                                    background: url(<?php echo $GLOBALS['HOST']; ?>/jssor/img/a17.png) no-repeat;
                                     overflow:hidden;
                                 }
-                                .jssora05l { background-position: -10px -40px; }
-                                .jssora05r { background-position: -70px -40px; }
+                                
                                 .jssora05l:hover { background-position: -130px -40px; }
                                 .jssora05r:hover { background-position: -190px -40px; }
                                 .jssora05ldn { background-position: -250px -40px; }
                                 .jssora05rdn { background-position: -310px -40px; }
                             </style>
                             <!-- Arrow Left -->
-                            <span u="arrowleft" class="jssora05l" style="width: 40px; height: 40px; top: 123px; left: 8px;">
+                          <span u="arrowleft" class="jssora05l" style=" top: 123px; left: 8px;"><i class="large material-icons">keyboard_arrow_left</i>
                             </span>
                             <!-- Arrow Right -->
-                            <span u="arrowright" class="jssora05r" style="width: 40px; height: 40px; top: 123px; right: 8px">
+                            <span u="arrowright" class="jssora05r" style=" top: 123px; right: 8px"><i class="large material-icons">keyboard_arrow_right</i>
                             </span>
-                            <!-- Arrow Navigator Skin End -->
-                            <a style="display: none" href="http://www.jssor.com">slideshow</a>
+                           
                             <!-- Trigger -->
                         </div>
                         </div>
+                        </div>
+                            </div>
                         <!-- Jssor Slider End -->
 <?php
 	}
