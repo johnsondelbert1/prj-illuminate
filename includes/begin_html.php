@@ -89,9 +89,9 @@ if(isset($bg[2])){
     <script type="text/javascript" src="<?php echo $GLOBALS['HOST']; ?>/prettyphoto/js/jquery.prettyPhoto.js" charset="utf-8"></script>
     <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/jquery.fileuploadmulti.min.js"></script>
     <style type="text/css">
-.forumtitle, tr.heading,td.heading, th.heading{
-			background-color:<?php echo $site_layout['sitebg_color'] ?> !important;
-			color:<?php echo $site_layout['text_color'] ?> !important;
+    .forumtitle, tr.heading,td.heading, th.heading{
+			background-color:<?php echo $site_layout['sitebg_color']; ?> !important;
+			color:<?php echo $site_layout['text_color']; ?> !important;
 		}
 
 		body{
@@ -115,6 +115,9 @@ if(isset($bg[2])){
 			<?php }else{ ?>
 			background-attachment:scroll !important;
 			<?php } ?>
+		}
+		.btn-floating{
+			z-index: 0;
 		}
 		<?php
 		//Custom Colors
@@ -167,12 +170,23 @@ if(isset($bg[2])){
 		}
 
 		?>
+		<?php
+			$selQuery="SELECT `color_hex`, `cid`, `s_name`, `style_color_id` FROM `style_colors` INNER JOIN `css_selectors` ON `cid` = `style_color_id` WHERE `s_name` = 'selection'";
+			$selResult=mysqli_query( $connection, $selQuery);
+			$sel_color = mysqli_fetch_array($selResult);
+		?>
+		::selection{
+			background-color: <?php echo $sel_color['color_hex']; ?>;
+		}
+		::-moz-selection{
+			background-color: <?php echo $sel_color['color_hex']; ?>;
+		}
 		/*#contentwrap{
 			background-color:<?php echo $site_layout['contentbg_color'] ?> !important;
 		}*/
-		.mobile, ul.side-nav, slide-out, .title, .jssorb01 div:hover, .jssorb01 .av:hover, jssora05l, jssora05r{
+/*		.mobile, ul.side-nav, slide-out, .title, .jssorb01 div:hover, .jssorb01 .av:hover, jssora05l, jssora05r{
 			background-color: #FFFFFF;
-		}
+		}*/
 		/*.mobile, ul.side-nav, slide-out, .blogtitle{
 			background-color:<?php echo $site_layout['accent_color'] ?> !important;
 		}
@@ -202,7 +216,7 @@ if(isset($bg[2])){
 		.photo-link:hover{
 			background-color:<?php echo $site_layout['text_color'] ?> !important;
 		}
-		/*#content, */.forum tr, .forumbody, #footerwrap, .blog{
+		/*#content, .forum tr, .forumbody, #footerwrap, .blog{
 			background-color:<?php echo $site_layout['contentbg_color'] ?> !important;
 			color:<?php echo $site_layout['text_color'] ?> !important;
 		}
@@ -323,7 +337,7 @@ if(isset($bg[2])){
 									}
 					 ?> s12" >
                     <div id="content">
-						<div class="card">
+						<div class="card custom">
 
 						<?php if(!empty($error)){echo "<script type=\"text/javascript\">Materialize.toast('".$error."', 8000, 'red')</script>";} ?>
                         <?php if(!empty($success)){echo "<script type=\"text/javascript\">Materialize.toast('".$success."', 8000, 'green')</script>";} ?>
