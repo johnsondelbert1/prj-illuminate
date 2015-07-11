@@ -8,20 +8,17 @@
                         </div>
                     </div>
             </div>
+            
     <script type="text/javascript">
     	var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
-    </script>
-    <script type="text/javascript" charset="utf-8">
-        $(document).ready(function(){
-            $("a[rel^='prettyPhoto']").prettyPhoto();
-        });
+
 		function changeTab(id){
 			TabbedPanels1.showPanel(id);
 			return false;
-		}
-	<?php if(isset($_GET['tab'])){?>changeTab(<?php echo $_GET['tab'];?>);<?php } ?>
+		};
+		<?php if(isset($_GET['tab'])){?>changeTab(<?php echo $_GET['tab'];?>);<?php } ?>
     </script>
-    <script src="../jscripts/jquery.fileuploadmulti.min.js"></script>
+    
         <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>-->
     <!-- dropdown -->
     <!--<script type='text/javascript'>  
@@ -33,18 +30,49 @@
     <script src="jscripts/drop/bootstrap.min.js"></script>
     <script src="jscripts/drop/bootstrap-select.js"></script>
     <script src="jscripts/drop/application.js"></script>-->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-      <script type="text/javascript" src="jscripts/materialize.min.js"></script>
-      <script type="text/javascript">
-	  $(document).ready(function() {
-    $('select').material_select();
-  });
-	  </script>
-      <script>
-	  $( "#horiz-menu li a" ).click(function(e){
-    $(this).next('ul').toggleClass('active');
-});
-</script>
+
+        <script src="../jscripts/jquery.fileuploadmulti.min.js"></script>
+		<script type="text/javascript" src="jscripts/materialize.min.js"></script>
+        <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script src="jscripts/jquery.ui.touch-punch.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				
+				$('select').material_select();
+				
+				var s = $("#sticker");
+				var pos = s.position();                    
+				$(window).scroll(function() {
+					var windowpos = $(window).scrollTop();
+					if (s.length && windowpos >= pos.top) {
+						s.addClass("stick");
+						$('.content').css("padding-top","58px");
+					} else {
+						s.removeClass("stick");
+						$('.content').css("padding-top","5px");
+					}
+				});
+			});
+        </script>
+		<script>
+            $(function() {
+                $('.sortable').sortable();
+                $('.handles').sortable({
+                    handle: 'span'
+                });
+                $('.connected').sortable({
+                    connectWith: '.connected'
+                });
+                $('.exclude').sortable({
+                    items: ':not(.disabled)'
+                });
+            });
+        </script>
+		<script>
+			$( "#horiz-menu li a" ).click(function(e){
+				$(this).next('ul').toggleClass('active');
+			});
+        </script>
 <!--<script>
 $( "#horiz-menu li ul li a" ).click(function(e){
     $(this).next('ul').toggleClass('active');

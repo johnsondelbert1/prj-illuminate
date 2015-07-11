@@ -458,7 +458,7 @@ if($_GET['action']=="edit"){
                         <td align="left">
                         <label>Open page in</label>
                             <select name="target">
-                                <option value="_self"<?php if ((isset($selpage['target'])&&$selpage['target']=="_self")){echo ' selected="selected"';}?>>Parent</option>
+                                <option value="_self"<?php if ((isset($selpage['target'])&&$selpage['target']=="_self")){echo ' selected="selected"';}?>>Self</option>
                                 <option value="_blank"<?php if ((isset($selpage['target'])&&$selpage['target'] == "_blank")){echo ' selected="selected"';} ?>>New Tab</option>
                             </select>
                         </td>
