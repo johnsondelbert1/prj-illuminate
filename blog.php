@@ -88,10 +88,14 @@ if (mysqli_num_rows($result)!=0){
     
 	<?php }?>
 	</div>
+	<div id="blog">
     <div class="row">
     
     <?php
-	echo_page($num_pages, $current_page, "blog.php?");?>
+    if($num_pages>1){
+		echo_page($num_pages, $current_page, "blog.php?");
+	}
+	?>
     </div>
     
     <?php
@@ -239,7 +243,11 @@ if (mysqli_num_rows($result)!=0){
     <div class="row">
     
     <?php
-	echo_page($num_pages, $current_page, "blog.php?");?>
+    if($num_pages>1){
+		echo_page($num_pages, $current_page, "blog.php?");
+	}
+	?>
+    </div>
     </div>
 <?php
 require_once("includes/end_html.php");

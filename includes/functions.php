@@ -38,17 +38,17 @@ $color_styles = array(
 	),
 	"content_bg" => array(
 		"disp_name" => 'Content Background',
-		"selector" => '#content',
+		"selector" => '#content .custom',
 		"type" => 'bg',
 	),
 	"content_text" => array(
 		"disp_name" => 'Content Text',
-		"selector" => '#content',
+		"selector" => '#content .custom',
 		"type" => 'text',
 	),
 	"content_link" => array(
 		"disp_name" => 'Content Link',
-		"selector" => '#content a',
+		"selector" => '#content .custom a',
 		"type" => 'text',
 	),
 	"menu_bg" => array(
@@ -83,7 +83,7 @@ $color_styles = array(
 	),
 	"footer_text" => array(
 		"disp_name" => 'Footer Text',
-		"selector" => '#footerwrap',
+		"selector" => '#footer',
 		"type" => 'text',
 	),
 	"footer_link" => array(
@@ -96,14 +96,24 @@ $color_styles = array(
 		"selector" => '.mobile-logo',
 		"type" => 'bg',
 	),
-	"blog_title" => array(
-		"disp_name" => 'Blog Title',
-		"selector" => '.blogtitle',
+	"blog_title_bg" => array(
+		"disp_name" => 'Blog Title BG',
+		"selector" => '#blog .title',
 		"type" => 'bg',
 	),
 	"blog_title_text" => array(
 		"disp_name" => 'Blog Title Text',
-		"selector" => '.blogtitle a',
+		"selector" => '#blog .title a',
+		"type" => 'text',
+	),
+	"blog_body_bg" => array(
+		"disp_name" => 'Blog Body BG',
+		"selector" => '#blog .card',
+		"type" => 'bg',
+	),
+	"blog_body_text" => array(
+		"disp_name" => 'Blog Body Text',
+		"selector" => '#blog .card',
 		"type" => 'text',
 	),
 	"android_tab" => array(
@@ -111,10 +121,30 @@ $color_styles = array(
 		"selector" => '',
 		"type" => '',
 	),
+	"slider_arrows" => array(
+		"disp_name" => 'Slider Arrows',
+		"selector" => '.large',
+		"type" => 'text',
+	),
+	"slider_bullets" => array(
+		"disp_name" => 'Slider Bullets',
+		"selector" => '.jssorb01 .av:hover, .jssorb01 div',
+		"type" => 'bg',
+	),
+	"slider_cap_bg" => array(
+		"disp_name" => 'Slider Caption BG',
+		"selector" => '.captionBlack',
+		"type" => 'bg',
+	),
+	"slider_cap_text" => array(
+		"disp_name" => 'Slider Caption Text',
+		"selector" => '.captionBlack',
+		"type" => 'text',
+	),
 	"selection" => array(
 		"disp_name" => 'Selection',
-		"selector" => '::selection, ::-moz-selection',
-		"type" => 'bg',
+		"selector" => '',
+		"type" => '',
 	),
 );
 //Add new selectors to DB
@@ -921,8 +951,7 @@ function slider($slider_id){
                             .captionBlack
                             {
                                 font-size:16px;
-                                background: #000;
-                                background-color: rgb(0, 0, 0);
+                                
                             }
                             a.captionOrange, A.captionOrange:active, A.captionOrange:visited
                             {
@@ -1126,7 +1155,7 @@ function slider($slider_id){
                                     cursor: pointer;
 									border-radius: 2px;
                                 }
-                                .jssorb01 div { background-color: #fff;  }
+                                .jssorb01 div {  }
                                 .jssorb01 div:hover, .jssorb01 .av:hover { background-color: #d3d3d3; }
                                 .jssorb01 .av { background-color: #fff; }
                                 .jssorb01 .dn, .jssorb01 .dn:hover { background-color: #555555; }
