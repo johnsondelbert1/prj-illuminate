@@ -29,6 +29,114 @@ $date=date("Y/m/d H:i:s", time());
 //Folders to be re-created if missing
 $folders = array('images/banner/', 'images/bg/', 'images/favicon/', 'images/logo/', 'blog_galleries/', 'galleries/');
 
+//Site color styling
+$color_styles = array(
+	"website_bg" => array(
+		"disp_name" => 'Website Background',
+		"selector" => 'body',
+		"type" => 'bg',
+	),
+	"content_bg" => array(
+		"disp_name" => 'Content Background',
+		"selector" => '#content',
+		"type" => 'bg',
+	),
+	"content_text" => array(
+		"disp_name" => 'Content Text',
+		"selector" => '#content',
+		"type" => 'text',
+	),
+	"content_link" => array(
+		"disp_name" => 'Content Link',
+		"selector" => '#content a',
+		"type" => 'text',
+	),
+	"menu_bg" => array(
+		"disp_name" => 'Menu Background',
+		"selector" => '#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #vert-menu, #vert-menu li, #vert-menu ul li, .nav',
+		"type" => 'bg',
+	),
+	"menu_bg_hover" => array(
+		"disp_name" => 'Menu BG Hover',
+		"selector" => '#horiz-menu li:hover > a, #horiz-menu li:hover, #horiz-menu ul a:hover, #vert-menu li:hover > a, #vert-menu li:hover > ul, #vert-menu ul a:hover',
+		"type" => 'bg',
+	),
+	"menu_text" => array(
+		"disp_name" => 'Menu Text',
+		"selector" => '#horiz-menu a, #vert-menu a',
+		"type" => 'text',
+	),
+	"menu_text_hover" => array(
+		"disp_name" => 'Menu Text Hover',
+		"selector" => '#horiz-menu li:hover > a, #horiz-menu li:hover, #horiz-menu ul a:hover, #vert-menu li:hover > a, #vert-menu li:hover > ul, #vert-menu ul a:hover',
+		"type" => 'text',
+	),
+	"icon" => array(
+		"disp_name" => 'Social Network Icons',
+		"selector" => '.icon, .mobile i',
+		"type" => 'text',
+	),
+	"footer_bg" => array(
+		"disp_name" => 'Footer Background',
+		"selector" => '#footerwrap',
+		"type" => 'bg',
+	),
+	"footer_text" => array(
+		"disp_name" => 'Footer Text',
+		"selector" => '#footerwrap',
+		"type" => 'text',
+	),
+	"footer_link" => array(
+		"disp_name" => 'Footer Link Text',
+		"selector" => '#footer a',
+		"type" => 'text',
+	),
+	"header_bg" => array(
+		"disp_name" => 'Header Background',
+		"selector" => '.mobile-logo',
+		"type" => 'bg',
+	),
+	"blog_title" => array(
+		"disp_name" => 'Blog Title',
+		"selector" => '.blogtitle',
+		"type" => 'bg',
+	),
+	"blog_title_text" => array(
+		"disp_name" => 'Blog Title Text',
+		"selector" => '.blogtitle a',
+		"type" => 'text',
+	),
+	"android_tab" => array(
+		"disp_name" => 'Android Tab',
+		"selector" => '',
+		"type" => '',
+	),
+	"selection" => array(
+		"disp_name" => 'Selection',
+		"selector" => '::selection, ::-moz-selection',
+		"type" => 'bg',
+	),
+);
+//Add new selectors to DB
+foreach ($color_styles as $key => $val){
+	$addquery="SELECT * FROM `css_selectors` WHERE `s_name` = '{$key}'";
+	$addresult=mysqli_query( $connection, $addquery);
+	if(mysqli_num_rows($addresult)==0){
+		$insertquery="INSERT INTO `css_selectors` (`s_name`, `style_color_id`) VALUES ('{$key}', '1')";
+		$insertresult=mysqli_query( $connection, $insertquery);
+	}
+}
+//Removes non-existing selectors from DB
+$removequery="SELECT * FROM `css_selectors`";
+$removeresult=mysqli_query( $connection, $removequery);
+while($css_selector=mysqli_fetch_array($removeresult)){
+	if(!array_key_exists($css_selector['s_name'], $color_styles)){
+		$delquery = "DELETE FROM `css_selectors` WHERE `s_name` = '{$css_selector['s_name']}'";
+		$delresult=mysqli_query( $connection, $delquery);
+	}
+}
+
+//Ranks & permissions
 function get_rank_info(){
 	//gets permissions for logged in user
 	global $connection;
@@ -49,6 +157,8 @@ function get_rank_info(){
 	}
 	return $user_permissions;
 }
+
+
 
 function enable_all_perms($blank_permissions){
 	$filled_perms = $blank_permissions;
@@ -685,7 +795,7 @@ function nav($position, $pgselection){
 			$numpages=mysqli_num_rows($result);
 			
 			if($position=="horiz"&&$numpages!=0){ ?>
-				<div class="nav" style="background-color:<?php echo $site_layout['menu_color'] ?>;">
+				<div class="nav">
 					<ul id="horiz-menu" class="right">
 			<?php }elseif($position=="vert"&&$numpages!=0){ ?>
 				<td style="vertical-align:top; width:200px; padding-right:5px;" id="vert-td"><div style="width:100%;">

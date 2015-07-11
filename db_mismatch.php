@@ -61,7 +61,7 @@ require("includes/globals.php");
     <br><img src="images/logo.png" alt="Logo" /><br>
     <h1>IlluminateCMS</h1><br>
     <h2>Error: Database Version Mismatch</h2>
-    <h3>Database needs to be updated to at least version <?php echo $db_compatability; ?></h3>
+    <h3>Database needs to be updated to version <?php echo $db_compatability; ?></h3>
     <h3>Current database version: <?php echo $dbversion['version']; ?></h3>
 </div>
 </body>

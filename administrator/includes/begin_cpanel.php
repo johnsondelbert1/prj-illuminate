@@ -58,16 +58,14 @@ if(isset($bg[2])){
     <META NAME="language" CONTENT="English">
     <META NAME="revisit-after" CONTENT="7">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Loading Bootstrap -->
-    <!--<link href="../styles/drop/bootstrap.css" rel="stylesheet">-->
-
-    <!-- Loading Flat UI -->
-    <!--<link href="../styles/drop/flat-ui.css" rel="stylesheet">-->
+    <!--Android 5.0-->
+    <meta name="theme-color" content="#C0392B">
     
     <link rel="shortcut icon" href="images/favicon.png" />
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>-->
     <script type="text/javascript" src="../jscolor/jscolor.js"></script>
     <script src="jscripts/SpryTabbedPanels.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <link href="../styles/uploadfilemulti.css" rel="stylesheet">
     <link href="styles/main.css" rel="stylesheet" type="text/css" />
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
@@ -75,6 +73,48 @@ if(isset($bg[2])){
     <link href="../styles/animate.css" rel="stylesheet" type="text/css" />
     <link type="text/css" rel="stylesheet" href="./styles/materialize.css"  media="screen,projection"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <style>
+		.connected{
+			display:block;
+			min-width:150px;
+			min-height:40px;
+		}
+		.connected li {
+			list-style: none;
+			border: 1px solid #CCC;
+			background: #F6F6F6;
+			font-family: "Tahoma";
+			color: #1C94C4;
+			margin: 5px;
+			padding: 5px;
+			height: 22px;
+		}
+        .connected li:hover {
+            background: #D2D2D2;
+        }
+        #connected{
+            overflow: auto;
+        }
+		#connected div{
+			float:left;
+			padding:10px;
+			margin:10px;
+			border-radius:5px;
+		}
+		#connected div p{
+			text-align:center;
+		}
+		li.ui-sortable-placeholder {
+			border: 1px dashed #CCC;
+			background-color: #BBBBBB;
+            visibility: visible !important;
+		}
+        .colorSelector{
+            margin-left: -10px;
+            margin-right: -10px;
+            margin-top: -10px;
+        }
+	</style>
 </head>
 
 
@@ -178,23 +218,12 @@ if(isset($bg[2])){
                 <h1><span class="<?php echo $pgsettings['icon']; ?>"></span>   <?php echo $pgsettings['title']; ?></h1>
             </div>
             <div class="content" id="contentarea">
-            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+            
+            <!--<script src="jscripts/jquery.sortable.js"></script>-->
+            <!--<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>-->
             <script type="text/javascript">
             	 <!-- jQuery Sticky Menu -->
-                $(document).ready(function() {
-                    var s = $("#sticker");
-                    var pos = s.position();                    
-                    $(window).scroll(function() {
-                        var windowpos = $(window).scrollTop();
-                        if (windowpos >= pos.top) {
-                            s.addClass("stick");
-                            $('.content').css("padding-top","58px");
-                        } else {
-                            s.removeClass("stick");
-                            $('.content').css("padding-top","5px");
-                        }
-                    });
-                });
+
 			</script>
             <?php if(!empty($error)){echo "<h3 class=\"error\">".$error."</h3>";} ?>
 			<?php if(!empty($success)){echo "<h3 class=\"success\">".$success."</h3>";} ?>
