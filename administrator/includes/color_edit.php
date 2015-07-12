@@ -59,7 +59,6 @@
     	<div class="card" style="overflow:visible;">
         <input name="color_field[<?php echo $style_color['cid']; ?>]" type="text" value="<?php echo $style_color['color_hex']; ?>" maxlength="7" style="margin-left: -10px; margin-right: -10px; margin-top: -10px; width:200px; text-align:center; border: 0;" class="color {hash:true}" /><br>
         <?php if($style_color['deletable'] == 1){ ?>
-        <a href="site-settings.php?tab=1&delcolor=<?php echo $style_color['cid']; ?>">[Delete]</a><br>
         <?php } ?>
         <input name="color_name[<?php echo $style_color['cid']; ?>]" type="text" value="<?php echo $style_color['c_name']; ?>" maxlength="32" /><br>
             <ul id="<?php echo $style_color['cid']; ?>" class="connected list">
@@ -70,6 +69,11 @@
                     <li id="<?php echo $css_selector['sid']; ?>"><?php echo $color_styles[$css_selector['s_name']]['disp_name']; ?></li>
                 <?php } ?>
             </ul>
+            <a href="site-settings.php?tab=1&delcolor=<?php echo $style_color['cid']; ?>">
+            <div style="margin-left: -10px; margin-right: -10px; margin-bottom: -10px; width:100%; text-align:center; border: 0; background:#E74C3C; border-radius:0px;">
+                Delete
+            </div>
+            </a>
         </div>
     <?php }?>
 </section>
