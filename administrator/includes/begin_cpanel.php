@@ -73,48 +73,6 @@ if(isset($bg[2])){
     <link href="../styles/animate.css" rel="stylesheet" type="text/css" />
     <link type="text/css" rel="stylesheet" href="./styles/materialize.css"  media="screen,projection"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <style>
-		.connected{
-			display:block;
-			min-width:150px;
-			min-height:40px;
-		}
-		.connected li {
-			list-style: none;
-			border: 1px solid #CCC;
-			background: #F6F6F6;
-			font-family: "Tahoma";
-			color: #1C94C4;
-			margin: 5px;
-			padding: 5px;
-			height: 22px;
-		}
-        .connected li:hover {
-            background: #D2D2D2;
-        }
-        #connected{
-            overflow: auto;
-        }
-		#connected div{
-			float:left;
-			padding:10px;
-			margin:10px;
-			border-radius:5px;
-		}
-		#connected div p{
-			text-align:center;
-		}
-		li.ui-sortable-placeholder {
-			border: 1px dashed #CCC;
-			background-color: #BBBBBB;
-            visibility: visible !important;
-		}
-        .colorSelector{
-            margin-left: -10px;
-            margin-right: -10px;
-            margin-top: -10px;
-        }
-	</style>
 </head>
 
 

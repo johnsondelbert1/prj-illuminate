@@ -69,8 +69,9 @@ span:hover{
 	$(document).ready(function(){
 		rows = $('#fieldtable tr').length;
 		$("#anc_add").click(function(){
-		$('#fieldtable tr').last().after('<tr id="'+cnt+'"><td><input name="fieldname['+cnt+']" type="text" value=""></td><td><select name="fieldtype['+cnt+']"><option value="text">Textbox</option><option value="textarea">Text Area</option></select></td><td><input name="fielddesc['+cnt+']" type="text" value=""></td><td><input name="fieldplaceholder['+cnt+']" type="text" value=""></td><td><input name="fieldmaxchar['+cnt+']" type="text" value=""></td><td><select name="fieldvalidate['+cnt+']"><option value="none">None</option><option value="email">Email</option><option value="notempty">Cannot Be Blank</option><option value="numbers">Numbers Only</option><option value="phone">Phone</option></select></td><td><span onClick="delrow('+cnt+')" class="btn red">Delete</span></td></tr>');
-		cnt++;
+    		$('#fieldtable tr').last().after('<tr id="'+cnt+'"><td><input name="fieldname['+cnt+']" type="text" value=""></td><td><select name="fieldtype['+cnt+']"><option value="text">Textbox</option><option value="textarea">Text Area</option></select></td><td><input name="fielddesc['+cnt+']" type="text" value=""></td><td><input name="fieldplaceholder['+cnt+']" type="text" value=""></td><td><input name="fieldmaxchar['+cnt+']" type="text" value=""></td><td><select name="fieldvalidate['+cnt+']"><option value="none">None</option><option value="email">Email</option><option value="notempty">Cannot Be Blank</option><option value="numbers">Numbers Only</option><option value="phone">Phone</option></select></td><td><span onClick="delrow('+cnt+')" class="btn red">Delete</span></td></tr>');
+    		cnt++;
+            $('select').material_select();
 		});
 	});
 	

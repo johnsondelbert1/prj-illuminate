@@ -1,18 +1,14 @@
 <?php
 require_once("includes/functions.php");
-
 $query="SELECT * FROM `pages` ORDER BY `position` ASC LIMIT 1";
 $result=mysqli_query($connection, $query);
 $firstpage=mysqli_fetch_array($result);
-
 $query="SELECT * FROM `pages` WHERE `id` = {$site_info['homepage']}";
 $result_homepage=mysqli_query($connection, $query);
 confirm_query($result_homepage);
-
 $query="SELECT * FROM `pages` WHERE `visible` = 1";
 $result=mysqli_query($connection, $query);
 $rows=mysqli_num_rows($result);
-
 if(($rows)!=0){
 	if(isset($_GET['page'])){
 		$id=intval($_GET['page']);
@@ -57,10 +53,8 @@ if(($rows)!=0){
 							"slider" => $page['slider'],
 							"use_google_analytics" => 1,
 						);
-
 						$staffquery="SELECT * FROM `staff` ORDER BY `order`";
 						$staffresult=mysqli_query( $connection, $staffquery);
-
 						require_once("includes/begin_html.php");?>
 
                         <script type="text/javascript" charset="utf-8">
@@ -118,86 +112,89 @@ if(($rows)!=0){
 						
 						if($page['forms']!=""){
 							$pageforms=unserialize($page['forms']);
-							foreach($pageforms as $pg_form){
-								$query="SELECT * FROM `forms` WHERE  `id` = {$pg_form}";
-								$result=mysqli_query($connection, $query);
-								$form=mysqli_fetch_array($result);
 								
-								if(isset($_POST[$form['u_name']])){
-									$form_validation = array();
-									$count=0;
-									$form_send = true;
-									foreach($_POST as $post_key => $post_val){
-										if($post_key != $form['u_name']){
-											$field_validators=unserialize($form['field_validators']);
+								if(isset($_POST['form_id'])){
+									$query="SELECT * FROM `forms` WHERE  `id` = {$_POST['form_id']}";
+									$result=mysqli_query($connection, $query);
+
+									if(mysqli_num_rows($result) == 1){
+										$formPost=mysqli_fetch_array($result);
+
+										$field_validators=unserialize($formPost['field_validators']);
+										$form_validation = array();
+										$count=0;
+										$form_send = true;
+										foreach($_POST as $post_key => $post_val){
 											
-											$fixed_post_key = str_replace('_', ' ', $post_key);
-											
-											switch($field_validators[$count]){
-												case "none":
-													$form_validation[$fixed_post_key] = true;
-													break;
-												case "email":
-													if(filter_var($_POST[$post_key],FILTER_VALIDATE_EMAIL)){
+											if($post_key != $formPost['u_name']&&$post_key != 'form_id'){
+
+												$fixed_post_key = str_replace('_', ' ', $post_key);
+
+												switch($field_validators[$count]){
+													case "none":
 														$form_validation[$fixed_post_key] = true;
 														break;
-													}else{
-														$form_send = false;
-														$form_validation[$fixed_post_key] = false;
-														$error = 'There were errors in the form, please fix them below.';
-													}
-													break;
-												case "notempty":
-													if($_POST[$post_key]!=""){
-														$form_validation[$fixed_post_key] = true;
+													case "email":
+														if(filter_var($_POST[$post_key],FILTER_VALIDATE_EMAIL)){
+															$form_validation[$fixed_post_key] = true;
+															break;
+														}else{
+															$form_send = false;
+															$form_validation[$fixed_post_key] = false;
+															$error = "There were errors in form \"".$formPost['name']."\", please fix them below.";
+														}
 														break;
-													}else{
-														$form_send = false;
-														$form_validation[$fixed_post_key] = false;
-														$error = 'There were errors in the form, please fix them below.';
-													}
-													break;
-												case "numbers":
-													if(is_numeric($_POST[$post_key])){
-														$form_validation[$fixed_post_key] = true;
+													case "notempty":
+														if($_POST[$post_key]!=""){
+															$form_validation[$fixed_post_key] = true;
+															break;
+														}else{
+															$form_send = false;
+															$form_validation[$fixed_post_key] = false;
+															$error = "There were errors in form \"".$formPost['name']."\", please fix them below.";
+														}
 														break;
-													}else{
-														$form_send = false;
-														$form_validation[$fixed_post_key] = false;
-														$error = 'There were errors in the form, please fix them below.';
-													}
-													break;
-												case "phone":
-													if(preg_match("/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/" ,$_POST[$post_key])){
-														$form_validation[$fixed_post_key] = true;
+													case "numbers":
+														if(is_numeric($_POST[$post_key])){
+															$form_validation[$fixed_post_key] = true;
+															break;
+														}else{
+															$form_send = false;
+															$form_validation[$fixed_post_key] = false;
+															$error = "There were errors in form \"".$formPost['name']."\", please fix them below.";
+														}
 														break;
-													}else{
-														$form_send = false;
-														$form_validation[$fixed_post_key] = false;
-														$error = 'There were errors in the form, please fix them below.';
-													}
-													break;
+													case "phone":
+														if(preg_match("/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/" ,$_POST[$post_key])){
+															$form_validation[$fixed_post_key] = true;
+															break;
+														}else{
+															$form_send = false;
+															$form_validation[$fixed_post_key] = false;
+															$error = "There were errors in form \"".$formPost['name']."\", please fix them below.";
+														}
+														break;
+												}
 											}
 											$count++;
 										}
-									}
-									if($form_send == true){
-										$email_message = 'Data from form "'.$form['name'].'", submitted at '.$date.'<br/>';
-										foreach($_POST as $post_key => $post_val){
-											if($post_key != $form['u_name']){
-												$email_message .= '<b>'.str_replace('_', ' ', $post_key).': </b>'.$post_val.'<br/>';
+										if($form_send == true){
+											$email_message = 'Data from form "'.$formPost['name'].'", submitted at '.$date.'<br/>';
+											foreach($_POST as $post_key => $post_val){
+												if($post_key != $formPost['u_name']&&$post_key != 'form_id'){
+													$email_message .= '<b>'.str_replace('_', ' ', $post_key).': </b>'.$post_val.'<br/>';
+												}
+											}
+											
+											$to = $formPost['email_to'];
+											$email_subject = '"'.$formPost['name'].'" form submission';
+											$headers  = 'MIME-Version: 1.0' . "\r\n";
+											$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+											$headers .= "From: ".$formPost['email_from']."\r\n"."X-Mailer: php";
+											if(mail ( $to , $email_subject , $email_message , $headers )){
+												$success = 'Your response has been recorded! Thank you.';
 											}
 										}
-										
-										$to = $form['email_to'];
-										$email_subject = '"'.$form['name'].'" form submission';
-										$headers  = 'MIME-Version: 1.0' . "\r\n";
-										$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-										$headers .= "From: ".$form['email_from']."\r\n"."X-Mailer: php";
-										if(mail ( $to , $email_subject , $email_message , $headers )){
-											$success = 'Your response has been recorded! Thank you.';
-										}
-									}
 								}
 							}
 						}
@@ -236,6 +233,7 @@ if(($rows)!=0){
 								
 								?>
                                 <br><br>
+                                <h2><?php echo $form['name']; ?></h2>
 								<form method="post" name="<?php echo $form['u_name']; ?>">
 								<table border="0" width="100%" cellpadding="0" cellspacing="0">
 									<?php while($num_fields>$count){
@@ -243,9 +241,14 @@ if(($rows)!=0){
 										//echo 'valid ';print_r($form_validation);echo '<br>';
 										
 										//echo 'post ';print_r($_POST);echo '<br>';
-										if(isset($form_validation)){$validation_arr=$form_validation[$field_names[$count]];}
+										if(isset($form_validation)&&$form['id']==$_POST['form_id']){
+											$validation_arr=$form_validation[$field_names[$count]];
+										}else{
+											unset($validation_arr);
+										}
+
 										$temp = str_replace(' ', '_', $field_names[$count]);
-										if(isset($_POST[$temp])){
+										if(isset($_POST[$temp])&&$form['id']==$_POST['form_id']){
 											$post_name = str_replace('_', ' ', $_POST[$temp]);
 										}else{
 											$post_name="";
@@ -265,11 +268,14 @@ if(($rows)!=0){
 										</td>
 									</tr>
 									<?php
-									$count++;
-									} ?>
+										$count++;
+									}
+									
+									?>
 									<tr>
 										<td>
-											<input type="submit" name="<?php echo $form['u_name']; ?>" value="<?php echo $form['submit_value']; ?>" />
+											<input type="hidden" name="form_id" value="<?php echo $form['id']; ?>">
+											<input type="submit" name="<?php echo $form['u_name']; ?>" value="<?php if($form['submit_value']!=""){echo $form['submit_value'];}else{echo 'Submit';} ?>" />
 										</td>
 									</tr>
 								</table>
