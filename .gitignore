@@ -6,3 +6,5 @@ administrator/styles/main - Copy.css
 includes/database.xml
 includes/database.xml
 includes/database.xml
+*.db
+includes/database.xml
