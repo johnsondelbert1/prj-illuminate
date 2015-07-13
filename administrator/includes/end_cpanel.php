@@ -35,9 +35,15 @@
 		<script type="text/javascript" src="jscripts/materialize.min.js"></script>
         <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <script src="jscripts/jquery.ui.touch-punch.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.1/masonry.pkgd.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function() {
-				
+
+                $('#connected').masonry({
+                    columnWidth: 10,
+                    itemSelector: ".card"
+                });
+
 				$('select').material_select();
 				
 				var s = $("#sticker");
@@ -73,6 +79,7 @@
 				$(this).next('ul').toggleClass('active');
 			});
         </script>
+
 <!--<script>
 $( "#horiz-menu li ul li a" ).click(function(e){
     $(this).next('ul').toggleClass('active');
