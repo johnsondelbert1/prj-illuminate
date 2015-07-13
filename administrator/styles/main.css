@@ -677,12 +677,17 @@ select
     background: #D2D2D2;
 }
 #connected{
-    overflow: auto;
-}
+            overflow: auto;
+        }
 #connected div{
 	float:left;
 	padding:10px;
 	margin:10px;
+}
+#connected .card{
+	width:200px;
+	height:auto;
+	overflow: hidden;
 }
 #connected div p{
 	text-align:center;
