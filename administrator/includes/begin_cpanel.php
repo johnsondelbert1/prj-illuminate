@@ -73,7 +73,6 @@ if(isset($bg[2])){
     <link href="../styles/animate.css" rel="stylesheet" type="text/css" />
     <link type="text/css" rel="stylesheet" href="./styles/materialize.css"  media="screen,projection"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.1/masonry.pkgd.js"></script>
 </head>
 
 

@@ -112,6 +112,9 @@ body{
 	padding-bottom:220px;
 	padding-top:20px;
 }
+#content .custom{
+	padding: 10px;
+}
 .header{
 	max-width:1880px;
 	width:100%; 

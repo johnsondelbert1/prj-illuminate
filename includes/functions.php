@@ -128,7 +128,17 @@ $color_styles = array(
 	),
 	"slider_bullets" => array(
 		"disp_name" => 'Slider Bullets',
-		"selector" => '.jssorb01 .av:hover, .jssorb01 div',
+		"selector" => '.jssorb01 div',
+		"type" => 'bg',
+	),
+	"slider_bullet_hover" => array(
+		"disp_name" => 'Slider Bullet Hover',
+		"selector" => '.jssorb01 div:hover',
+		"type" => 'bg',
+	),
+	"slider_active_bullet" => array(
+		"disp_name" => 'Slider Active Bullet',
+		"selector" => '.jssorb01 .av',
 		"type" => 'bg',
 	),
 	"slider_cap_bg" => array(
@@ -1156,8 +1166,8 @@ function slider($slider_id){
 									border-radius: 2px;
                                 }
                                 .jssorb01 div {  }
-                                .jssorb01 div:hover, .jssorb01 .av:hover { background-color: #d3d3d3; }
-                                .jssorb01 .av { background-color: #fff; }
+                                /*.jssorb01 div:hover, .jssorb01 .av:hover { background-color: #d3d3d3; }
+                                .jssorb01 .av { background-color: #fff; }*/
                                 .jssorb01 .dn, .jssorb01 .dn:hover { background-color: #555555; }
                             </style>
                             <!-- bullet navigator container -->

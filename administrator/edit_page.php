@@ -533,8 +533,8 @@ if($_GET['action']=="edit"){
                         while($form=mysqli_fetch_array($formquery)){
                             $checked = false;
                             if(isset($selpage['forms'])&&$selpage['forms']!=""){
-                                $pagegalleries=unserialize($selpage['forms']);
-                                foreach($pagegalleries as $pageformid){
+                                $pageforms=unserialize($selpage['forms']);
+                                foreach($pageforms as $pageformid){
                                     if($pageformid == $form['id']){
                                         $checked = true;
                                     }
@@ -542,7 +542,7 @@ if($_GET['action']=="edit"){
                             }
                             
                             ?>
-                            <li><input type="checkbox" name="forms[]" id="<?php echo $form['id']; ?>" value="<?php echo $form['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="<?php echo $form['id']; ?>"><a href="edit_form.php?formid=<?php echo urlencode($form['id']); ?>" target="_blank"><?php echo $form['name']; ?></a></label></li>
+                            <li><input type="checkbox" name="forms[]" id="form<?php echo $form['id']; ?>" value="<?php echo $form['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="form<?php echo $form['id']; ?>"><a href="edit_form.php?formid=<?php echo urlencode($form['id']); ?>" target="_blank"><?php echo $form['name']; ?></a></label></li>
                             <?php } 
                     ?></ul></div>
 </div>
