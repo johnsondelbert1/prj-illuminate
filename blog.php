@@ -11,10 +11,16 @@ if(isset($_GET['delpost'])&&$_GET['delpost']!=''){
 		if(mysqli_num_rows($result)!=0){
 			$galleryid=mysqli_fetch_array($result);
 			
+			//Delete blog post
 			$query="DELETE FROM `blog` WHERE `id` = {$_GET['delpost']}";
 			$result=mysqli_query($connection, $query);
 			confirm_query($result);
 			
+			//Delete comments for that posts
+			$query="DELETE FROM `blog_comments` WHERE `blog_id` = {$_GET['delpost']}";
+			$result=mysqli_query($connection, $query);
+			confirm_query($result);
+
 			//Specify the target directory and add forward slash
 			$dir = "blog_galleries/".$galleryid['id']."/gallery/";
 			foreach (scandir($dir) as $item) {
@@ -79,6 +85,77 @@ $(document).ready(function () {
 		$("#del_button").attr("href", "blog.php?delpost="+$(this).attr('name'));
 	});
 });
+function sendComment(postId){
+	$('#comment-sendbtn-'+postId).html('sending');
+    $.post("ajax_processing/post_blog_comment.php",
+    {
+        commentData: $('#blog-comment-'+postId).val(),
+        blogId: postId,
+    },
+    function(data, status){
+        if(status == 'success'){
+        	switch(data){
+        		case 'empty':
+		        	Materialize.toast('Comment cannot be empty.', 8000, 'red');
+		        	$('#comment-sendbtn-'+postId).html('<i class="material-icons">send</i>');
+        			break;
+        		case 'permission':
+		        	Materialize.toast('You do not have permission to post comments.', 8000, 'red');
+		        	$('#comment-sendbtn-'+postId).html('<i class="material-icons">send</i>');
+        			break;
+        		case 'disabled':
+		        	Materialize.toast('Comments have been disabled for this post.', 8000, 'red');
+		        	$('#comment-sendbtn-'+postId).html('<i class="material-icons">send</i>');
+        			break;
+        		case 'deleted':
+		        	Materialize.toast('Blog post has been deleted.', 8000, 'red');
+		        	$('#comment-sendbtn-'+postId).html('<i class="material-icons">send</i>');
+        			break;
+        		default:
+		        	$("#comment-block-"+postId).append(data);
+		        	$('#blog-comment-'+postId).val("");
+		        	$('#comment-sendbtn-'+postId).html('<i class="material-icons">send</i>');
+        			break;
+        	}
+        }else{
+        	Materialize.toast('An error has occured. Try again later.', 8000, 'red');
+        	$('#comment-sendbtn-'+postId).html('<i class="material-icons">send</i>');
+        }
+    });
+}
+function viewMore(postId, numComments){
+	    $.get("ajax_processing/get_blog_comments.php?blogid="+postId+"&commlimit="+numComments, function(data, status){
+	    	if(status == 'success'){
+	    		$('#comment-wrap-'+postId).html(data);
+	    	}else{
+	    		Materialize.toast('An error has occured. Try again later.', 8000, 'red');
+	    	}
+	    });
+	}
+function delComment(postId){
+	    $.post("ajax_processing/delete_blog_comment.php",
+	    {
+	    	id: postId,
+	    },
+	    	function(data, status){
+	    	if(status == 'success'){
+	        	switch(data){
+	        		case 'invalPerms':
+			        	Materialize.toast('Insufficient permission.', 8000, 'red');
+	        			break;
+	        		case 'notExist':
+			        	Materialize.toast('Comment does not exist.', 8000, 'red');
+	        			break;
+	        		default:
+			    		$('#del-comment-'+postId).parent().remove();
+			    		Materialize.toast('Comment deleted!', 8000, 'green');
+	        			break;
+	        	}
+	    	}else{
+	    		Materialize.toast('An error has occured. Try again later.', 8000, 'red');
+	    	}
+	    });
+	}
 </script>
 
 <?php
@@ -100,7 +177,10 @@ if (mysqli_num_rows($result)!=0){
     
     <?php
     $gall_num = 0;
-    
+
+    //Default limit number blog comments
+    $_GET['commlimit']=5;
+
 	while($post=mysqli_fetch_array($blogresult)){
 		$query="SELECT * FROM `users` WHERE `id` = ".$post['poster'];
 		$userresult=mysqli_query( $connection, $query);
@@ -143,27 +223,29 @@ if (mysqli_num_rows($result)!=0){
                             <div class="row">
 								
                                 <div class="col l2 s4">
-                                 <?php
-								if($post['lastedited']!="0000-00-00 00:00:00"){
+                                	<i class="mdi-device-access-time"></i> <?php echo date("g:i A", $createdtimestamp);
+/*								if($post['lastedited']!="0000-00-00 00:00:00"){
 									$lasteditedtimestamp = strtotime($post['lastedited']);
 										echo '<i class="mdi-editor-mode-edit"></i> '.date("g:i A", $lasteditedtimestamp);
 									}
 									else{
 									echo '<i class="mdi-device-access-time"></i> ' .date("M jS 'y", $createdtimestamp);	
-									}
+									}*/
+
 									?> 
                                     </div>
                                     <div class="col l2 s4">
-                               <?php
-								if($post['lastedited']!="0000-00-00 00:00:00"){
-									$lasteditedtimestamp = strtotime($post['lastedited']);
-										echo '<i class="mdi-editor-mode-edit"></i> '.date("M jS 'y", $lasteditedtimestamp);
-										
-									}
-									else{
-									echo '<i class="mdi-action-today"></i> ' .date("M jS 'y", $createdtimestamp);	
-									}
-										?> </div>
+                                    	<i class="mdi-action-today"></i> <?php echo date("M jS 'y", $createdtimestamp);
+		/*								if($post['lastedited']!="0000-00-00 00:00:00"){
+											$lasteditedtimestamp = strtotime($post['lastedited']);
+												echo '<i class="mdi-editor-mode-edit"></i> '.date("M jS 'y", $lasteditedtimestamp);
+												
+											}
+											else{
+											echo '<i class="mdi-action-today"></i> ' .date("M jS 'y", $createdtimestamp);	
+											}*/
+												?>
+										</div>
                                     <div class="col s4">
                                     <i class="mdi-action-face-unlock"></i> &nbsp;<b><?php echo $userdata['username']; ?></b>
                                     </div>
@@ -196,6 +278,22 @@ if (mysqli_num_rows($result)!=0){
 								$gall_num++;?>
 							</td>
 						</tr>
+						<?php if($post['comments_allowed'] == 1){?>
+						<tr>
+							<td colspan="2">
+								<div class="blog-comments">
+									<div id="comment-wrap-<?php echo $post['id']; ?>">
+										<?php 
+										$_GET['blogid'] = $post['id'];
+										include("ajax_processing/get_blog_comments.php"); ?>
+									</div>
+									<?php if(check_permission("Blog","post_comment")){?>
+									<input type="text" id="blog-comment-<?php echo $post['id'];?>" maxlength="1000" placeholder="Write a comment..." style="width:300px;" /><a onclick="sendComment(<?php echo $post['id'];?>)" id="comment-sendbtn-<?php echo $post['id'];?>" class="btn-floating green" ><i class="material-icons">send</i></a>
+									<?php } ?>
+								</div>
+							</td>
+						</tr>
+						<?php } ?>
 					</table>
 				</td>
 				</tr>

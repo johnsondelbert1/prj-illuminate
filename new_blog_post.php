@@ -12,11 +12,17 @@ if(isset($_POST['submit'])){
 		$title=strip_tags(mysqli_real_escape_string($connection, $_POST['title']));
 		date_default_timezone_set($site_info['timezone']);
 		$date=date("Y/m/d H:i:s", time());
+
+		if(isset($_POST['allowComments'])){
+			$allowComments = 1;
+		}else{
+			$allowComments = 0;
+		}
 		
 		$query="INSERT INTO `blog` (
-					`datecreated`, `poster`, `title`, `content` 
+					`datecreated`, `poster`, `title`, `content`, `comments_allowed` 
 				) VALUES (
-					'{$date}', '{$_SESSION['user_id']}', '{$title}', '{$content}')";
+					'{$date}', '{$_SESSION['user_id']}', '{$title}', '{$content}', {$allowComments})";
 		$result=mysqli_query( $connection, $query);
 		confirm_query($result);
 		
@@ -76,7 +82,7 @@ require_once("includes/begin_html.php");
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr bgcolor="#ffffff">
   <td>
-  <input style="width:45%;" type="text" name="title" class="text" maxlength="1024" placeholder="Title"<?php if(isset($_POST['title'])){echo $_POST['title'];} ?>/>
+  <input style="width:45%;" type="text" name="title" class="text" maxlength="1024" placeholder="Title"<?php if(isset($_POST['title'])){echo $_POST['title'];} ?>/> <input type="checkbox" name="allowComments" id="allowComments" checked><label for="allowComments">Allow Comments</label>
   </td>
   </tr>
   <tr>
@@ -86,8 +92,8 @@ require_once("includes/begin_html.php");
   <td>
   <table width="200" border="0">
   <tr>
-    <td><input class="green" class="button" type="submit" name="submit" value="Submit" /></td>
-    <td><a class="blue" href="blog.php">Cancel</a></td>
+    <td><input class="btn green" class="button" type="submit" name="submit" value="Submit" /></td>
+    <td><a class="btn red" href="blog.php">Cancel</a></td>
   </tr>
 </table>
   </td>

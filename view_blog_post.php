@@ -22,8 +22,85 @@ $pgsettings = array(
 	"slider" => $page_properties['slider'],
 	"use_google_analytics" => 1,
 );
+
+//Default limit number blog comments
+$_GET['commlimit']=10;
+
 require_once("includes/begin_html.php");
 ?>
+<script type="text/javascript">
+function sendComment(postId){
+    $('#comment-sendbtn-'+postId).html('sending');
+    $.post("ajax_processing/post_blog_comment.php",
+    {
+        commentData: $('#blog-comment-'+postId).val(),
+        blogId: postId,
+    },
+    function(data, status){
+        if(status == 'success'){
+            switch(data){
+                case 'empty':
+                    Materialize.toast('Comment cannot be empty.', 8000, 'red');
+                    $('#comment-sendbtn-'+postId).html('<i class="material-icons">send</i>');
+                    break;
+                case 'permission':
+                    Materialize.toast('You do not have permission to post comments.', 8000, 'red');
+                    $('#comment-sendbtn-'+postId).html('<i class="material-icons">send</i>');
+                    break;
+                case 'disabled':
+                    Materialize.toast('Comments have been disabled for this post.', 8000, 'red');
+                    $('#comment-sendbtn-'+postId).html('<i class="material-icons">send</i>');
+                    break;
+                case 'deleted':
+                    Materialize.toast('Blog post has been deleted.', 8000, 'red');
+                    $('#comment-sendbtn-'+postId).html('<i class="material-icons">send</i>');
+                    break;
+                default:
+                    $("#comment-block-"+postId).append(data);
+                    $('#blog-comment-'+postId).val("");
+                    $('#comment-sendbtn-'+postId).html('<i class="material-icons">send</i>');
+                    break;
+            }
+        }else{
+            Materialize.toast('An error has occured. Try again later.', 8000, 'red');
+            $('#comment-sendbtn-'+postId).html('<i class="material-icons">send</i>');
+        }
+    });
+}
+function viewMore(postId, numComments){
+        $.get("ajax_processing/get_blog_comments.php?blogid="+postId+"&commlimit="+numComments, function(data, status){
+            if(status == 'success'){
+                $('#comment-wrap-'+postId).html(data);
+            }else{
+                Materialize.toast('An error has occured. Try again later.', 8000, 'red');
+            }
+        });
+    }
+function delComment(postId){
+        $.post("ajax_processing/delete_blog_comment.php",
+        {
+            id: postId,
+        },
+            function(data, status){
+            if(status == 'success'){
+                switch(data){
+                    case 'invalPerms':
+                        Materialize.toast('Insufficient permission.', 8000, 'red');
+                        break;
+                    case 'notExist':
+                        Materialize.toast('Comment does not exist.', 8000, 'red');
+                        break;
+                    default:
+                        $('#del-comment-'+postId).parent().remove();
+                        Materialize.toast('Comment deleted!', 8000, 'green');
+                        break;
+                }
+            }else{
+                Materialize.toast('An error has occured. Try again later.', 8000, 'red');
+            }
+        });
+    }
+</script>
 <h1>View Blog Post</h1>
 <?php
 
@@ -35,8 +112,9 @@ require_once("includes/begin_html.php");
 	?>
     <table width="200" border="0">
   <tr>
-    <td><?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="red" href="blog.php?delpost=<?php echo $post['id'] ?>">Delete</a><?php } ?></td>
-    <td><a class="blue" href="blog.php">Back</a></td>
+    <td><?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="btn red" href="blog.php?delpost=<?php echo $post['id'] ?>">Delete</a><?php } ?></td>
+    <td><?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="btn blue" href="edit_blog_post.php?post=<?php echo $post['id'] ?>">Edit</a><?php } ?></td>
+    <td><a class="btn blue" href="blog.php">Back</a></td>
   </tr>
 </table>
 <table width="100%" height="100%" class="blog">
@@ -68,20 +146,30 @@ require_once("includes/begin_html.php");
                 </tr>
                 <tr>
                     <td class="blogbody" valign="top">
-                        <?php 	echo $post['content'];?>
+                        <?php echo $post['content'];?>
+                    </td>
+                <?php if($post['comments_allowed'] == 1){?>
+                <tr>
+                    <td>
+                        <div class="blog-comments">
+                            <div id="comment-wrap-<?php echo $post['id']; ?>">
+                                <?php 
+                                $_GET['blogid'] = $post['id'];
+                                include("ajax_processing/get_blog_comments.php"); ?>
+                            </div>
+                            <?php if(check_permission("Blog","post_comment")){?>
+                            <input type="text" id="blog-comment-<?php echo $post['id'];?>" maxlength="1000" placeholder="Write a comment..." style="width:300px;" /><a onclick="sendComment(<?php echo $post['id'];?>)" id="comment-sendbtn-<?php echo $post['id'];?>" class="btn-floating green" ><i class="material-icons">send</i></a>
+                            <?php } ?>
+                        </div>
                     </td>
                 </tr>
-                      <tr>
-                        <td colspan="2">
-                        	<?php gallery("blog_galleries/".$post['id']."/gallery/", "blog_galleries/".$post['id']."/gallery-thumbs/", 100, 100);?>
-                        </td>
-                    </tr>
+                <?php } ?>
             </table>
         </td>
         </tr>
         <tr>
         	<td>
-				<?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="blue small" href="edit_blog_post.php?post=<?php echo $post['id'] ?>">Edit</a><?php } ?>
+				
             </td>
         </tr>
     </tr>

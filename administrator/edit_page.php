@@ -32,6 +32,7 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 			$current_page = mysqli_fetch_array($result);
 			
 			if($samenames==0||$current_page['name']==$_POST['name']){
+				//prep POST values
 				$id=$_GET['page'];
 				$position=$_POST['pgorder'];
 				
@@ -60,6 +61,27 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 				}else{
 					$forms="";
 				}
+				//prep visibility POST array
+				if(isset($_POST['visible'])&&$_POST['visible']!=""){
+					if($_POST['visible'][0]!=""){
+						if(count($_POST['visible'])>1){
+							$visible=serialize(array($_POST['visible'][0]));
+						}else{
+							$visible=serialize($_POST['visible']);
+						}
+					}else{
+						if(count($_POST['visible'])>1){
+							$visible=$_POST['visible'];
+							array_shift($visible);
+							$visible=serialize($visible);
+						}else{
+							$visible=serialize(array('any'));
+						}
+						
+					}
+				}else{
+					$visible=serialize(array('any'));
+				}
 				
 				date_default_timezone_set($site_info['timezone']);
 				$date=date("Y/m/d H:i:s", time());
@@ -87,7 +109,7 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 				}
 				
 				$query = "UPDATE `pages` SET `content` = '{$content}', `name`='{$name}', `position`={$position}, `published`='{$published}', 
-				`issubpage`={$issub}, `parent`={$subpg}, `galleries`='{$galleries}', `doc_folder`='{$_POST['pgdocfolder']}', `forms`='{$forms}', `type`='{$_POST['pgtype']}', `target`='{$_POST['target']}', 
+				`issubpage`={$issub}, `parent`={$subpg}, `galleries`='{$galleries}', `doc_folder`='{$_POST['pgdocfolder']}', `forms`='{$forms}', `visible`='{$visible}', `type`='{$_POST['pgtype']}', `target`='{$_POST['target']}', 
 				`banner`={$banner}, `slider`={$_POST['slider']}, `url`='{$url}', `lastedited`='{$date}', `editor`={$_SESSION['user_id']}, `horiz_menu`={$horiz_menu}, `vert_menu`={$vert_menu}, 
 				`horiz_menu_visible`={$horiz_menu_visible}, `vert_menu_visible`={$vert_menu_visible} WHERE id = {$id}";
 				
@@ -143,15 +165,37 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 				}else{
 					$forms="";
 				}
-				
+				//prep visibility POST array
+				if(isset($_POST['visible'])&&$_POST['visible']!=""){
+					print_r($_POST['visible']);
+					if($_POST['visible'][0]!=""){
+						if(count($_POST['visible'])>1){
+							$visible=serialize(array($_POST['visible'][0]));
+						}else{
+							$visible=serialize($_POST['visible']);
+						}
+					}else{
+						if(count($_POST['visible'])>1){
+							$visible=$_POST['visible'];
+							array_shift($visible);
+							$visible=serialize($visible);
+						}else{
+							$visible=serialize(array('any'));
+						}
+						
+					}
+				}else{
+					$visible=serialize(array('any'));
+				}
+
 				date_default_timezone_set($site_info['timezone']);
 				$date=date("Y/m/d H:i:s", time());
 				
 				if($_POST['name']!=""){
 					$query="INSERT INTO `pages` 
-					(`name`, `content`, `position`, `issubpage`, `parent`, `published`, `galleries`, `doc_folder`, `forms`, `type`, `target`, `banner`, `slider`, `url`, `created`, `creator`, `horiz_menu`, `vert_menu`, `horiz_menu_visible`, `vert_menu_visible`) 
+					(`name`, `content`, `position`, `issubpage`, `parent`, `published`, `galleries`, `doc_folder`, `forms`, `visible`, `type`, `target`, `banner`, `slider`, `url`, `created`, `creator`, `horiz_menu`, `vert_menu`, `horiz_menu_visible`, `vert_menu_visible`) 
 					VALUES 
-					('{$name}', '{$content}', '{$position}', '{$issub}', '{$subpg}', {$published}, '{$galleries}', '{$_POST['pgdocfolder']}', '{$forms}', '{$_POST['pgtype']}', '{$_POST['target']}', {$banner}, {$_POST['slider']}, '{$url}', '{$date}', {$_SESSION['user_id']}, {$horiz_menu}, {$vert_menu}, {$horiz_menu_visible}, {$vert_menu_visible})";
+					('{$name}', '{$content}', '{$position}', '{$issub}', '{$subpg}', {$published}, '{$galleries}', '{$_POST['pgdocfolder']}', '{$forms}', '{$visible}', '{$_POST['pgtype']}', '{$_POST['target']}', {$banner}, {$_POST['slider']}, '{$url}', '{$date}', {$_SESSION['user_id']}, {$horiz_menu}, {$vert_menu}, {$horiz_menu_visible}, {$vert_menu_visible})";
 					$result = mysqli_query( $connection, $query);
 					confirm_query($result);
 					if(isset($_POST['newpage'])){
@@ -209,6 +253,15 @@ if(isset($_GET['page'])){
 	$getpagequery=mysqli_query( $connection, $query);
 	confirm_query($getpagequery);
 	$selpage=mysqli_fetch_array($getpagequery);
+
+	function exception_error_handler($errno, $errstr, $errfile, $errline ) {
+	    $pgVisibility = array();
+	}
+	set_error_handler("exception_error_handler");
+
+	if(!$pgVisibility = unserialize($selpage['visible'])){
+		$pgVisibility = array();
+	}
 }
 ?>
 
@@ -241,6 +294,7 @@ if($_GET['action']=="edit"){
 		],
 		toolbar1: "insertfile undo redo | fontsizeselect fontselect styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | responsivefilemanager",
 		toolbar2: "print preview media | forecolor backcolor",
+		contextmenu: "link image inserttable | tableproperties cell row column deletetable",
 		image_advtab: true,
 		templates: [
 			{title: '2 Column Table', content: '<table style="width: 100%;" border="2" width="1798"><tbody><tr><td style="text-align: center;">Column 1</td><td style="text-align: center;">Column 2</td></tr></tbody></table>'},
@@ -278,8 +332,8 @@ if($_GET['action']=="edit"){
 		 
 		 
 	}
-	<!-- jQuery for seven sets of "Select All" checkboxes -->
 	$(document).ready(function() {
+		//jQuery for seven sets of "Select All" checkboxes
 		var $gallall = 'gallall';
         $('input[id="'+$gallall+'"]').change(function() {
 			var $all_check_status = $('input[id="'+$gallall+'"]').is(':checked');
@@ -300,6 +354,14 @@ if($_GET['action']=="edit"){
                 	$(this).trigger('click');
 				}
             });
+        });
+
+        $('select[id="visibilitySelector"]').change(function() {
+        	if($(this).find("option:selected").attr('id') == 'selranks'){
+        		$('#rankcontainer').css('visibility','visible');
+        	}else{
+        		$('#rankcontainer').css('visibility','hidden');
+        	}
         });
 	 });
 </script>
@@ -370,19 +432,7 @@ if($_GET['action']=="edit"){
                     
                         </td>
                         -->
-                        <!--
-                        <td align="right">
-                            <b>Visible to:</b>
-                        </td>
-                        <td>
-                            <select name="visible">
-                                <option value="1"<?php if(isset($_GET['page'])&&$selpage['visible'] == 1){echo ' selected="selected"';} ?>>Everyone</option>
-                                <option value="2"<?php if(isset($_GET['page'])&&$selpage['visible'] == 2){echo ' selected="selected"';} ?>>Logged in</option>
-                                <option value="3"<?php if(isset($_GET['page'])&&$selpage['visible'] == 3){echo ' selected="selected"';} ?>>Admins</option>
-                                <option value="0"<?php if(isset($_GET['page'])&&$selpage['visible'] == 0){echo ' selected="selected"';} ?>>(None)</option>
-                            </select>
-                        </td>
-                      </tr>-->
+                      </tr>
                       <tr>
                         <td align="left">
                         <label>Page Order:</label>
@@ -448,10 +498,32 @@ if($_GET['action']=="edit"){
                             </select>
                         </td>
                         <td align="left">
-                        <div class="input-field col s6">
-                        <label>External URL - Make sure to add "http://"</label>
-                            <input type="text" name="url" id="url" value="<?php if(isset($_GET['page'])){echo $selpage['url'];}else{echo "";} ?>" maxlength="1024" <?php if((isset($selpage['type'])&&$selpage['type']!="Link")||$_GET['action']=="newpage"){echo "readonly disabled ";} ?>/>
-                        </div>
+	                        <div class="input-field col s6">
+	                        <label>External URL - Make sure to add "http://"</label>
+	                            <input type="text" name="url" id="url" value="<?php if(isset($_GET['page'])){echo $selpage['url'];}else{echo "";} ?>" maxlength="1024" <?php if((isset($selpage['type'])&&$selpage['type']!="Link")||$_GET['action']=="newpage"){echo "readonly disabled ";} ?>/>
+	                        </div>
+                        </td>
+                        <td>
+                        <label>Visibility:</label>
+                            <select name="visible[]" id="visibilitySelector">
+                                <option value="any"<?php if(isset($_GET['page'])&&$pgVisibility[0] == 'any'){echo ' selected="selected"';} ?>>Anyone</option>
+                                <option value="loggedin"<?php if(isset($_GET['page'])&&$pgVisibility[0] == 'loggedin'){echo ' selected="selected"';} ?>>Logged In</option>
+                                <option value="loggedout"<?php if(isset($_GET['page'])&&$pgVisibility[0] == 'loggedout'){echo ' selected="selected"';} ?>>Logged Out</option>
+                                <option value="" id="selranks" <?php if(isset($_GET['page'])&&$pgVisibility[0] != 'any'&&$pgVisibility[0] != 'loggedin'&&$pgVisibility[0] != 'loggedout'){echo ' selected="selected"';} ?>>Custom</option>
+                            </select>
+                            <div id="rankcontainer" style="background-color:#CCCCCC;<?php if(isset($_GET['page'])&&$pgVisibility[0] != 'any'&&$pgVisibility[0] != 'loggedin'&&$pgVisibility[0] != 'loggedout'){echo ' visibility:visible;';}else{echo ' visibility:hidden;';} ?>">
+                            	<?php 
+		                            $query="SELECT * FROM `ranks`";
+		                            $listrankssquery=mysqli_query( $connection, $query);
+		                            confirm_query($listrankssquery);
+
+		                            while($listrank = mysqli_fetch_array($listrankssquery)){
+                            	?>
+                            	<input id="rank-<?php echo $listrank['id']; ?>" type="checkbox" name="visible[]" value="<?php echo $listrank['id']; ?>" <?php if(isset($_GET['page'])&&in_array($listrank['id'], $pgVisibility)){echo "checked ";} ?>/><label for="rank-<?php echo $listrank['id']; ?>"><?php echo $listrank['name']; ?></label><br/>
+                            	<?php
+                            	}
+                            	?>
+                            </div>
                         </td>
                       </tr>
                       <tr>

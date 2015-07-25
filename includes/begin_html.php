@@ -59,12 +59,7 @@ if(isset($bg[2])){
     <META NAME="language" CONTENT="English">
     <META NAME="revisit-after" CONTENT="7">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <?php 
-	$adrQuery="SELECT `color_hex`, `cid`, `s_name`, `style_color_id` FROM `style_colors` INNER JOIN `css_selectors` ON `cid` = `style_color_id` WHERE `s_name` = 'android_tab'";
-	$adrResult=mysqli_query( $connection, $adrQuery);
-	$adr_color = mysqli_fetch_array($adrResult);
-    ?>
-    <meta name="theme-color" content="<?php echo $adr_color['color_hex']; ?>">
+    <meta name="theme-color" content="<?php echo get_color('android_tab'); ?>">
 
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
@@ -170,16 +165,11 @@ if(isset($bg[2])){
 		}
 
 		?>
-		<?php
-			$selQuery="SELECT `color_hex`, `cid`, `s_name`, `style_color_id` FROM `style_colors` INNER JOIN `css_selectors` ON `cid` = `style_color_id` WHERE `s_name` = 'selection'";
-			$selResult=mysqli_query( $connection, $selQuery);
-			$sel_color = mysqli_fetch_array($selResult);
-		?>
 		::selection{
-			background-color: <?php echo $sel_color['color_hex']; ?>;
+			background-color: <?php echo get_color('selection'); ?>;
 		}
 		::-moz-selection{
-			background-color: <?php echo $sel_color['color_hex']; ?>;
+			background-color: <?php echo get_color('selection'); ?>;
 		}
 		/*#contentwrap{
 			background-color:<?php echo $site_layout['contentbg_color'] ?> !important;

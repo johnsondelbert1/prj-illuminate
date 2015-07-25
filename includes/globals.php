@@ -15,5 +15,5 @@ if(strpos($_SERVER['SCRIPT_NAME'], '/administrator')===FALSE){
 //global variables
 $GLOBALS['HOST'] = $protocol.$_SERVER['HTTP_HOST'].$serv_port.$path;
 $site_version = '1.5';
-$db_compatability = '1.3';
+$db_compatability = '1.3.1';
 ?>

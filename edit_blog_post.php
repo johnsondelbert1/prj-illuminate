@@ -27,8 +27,14 @@ if(isset($_POST['submit'])){
 	$title=strip_tags(nl2br(mysqli_real_escape_string($connection, $_POST['title'])));
 	date_default_timezone_set($site_info['timezone']);
 	$date=date("Y/m/d H:i:s", time());
+
+	if(isset($_POST['allowComments'])){
+		$allowComments = 1;
+	}else{
+		$allowComments = 0;
+	}
 	
-	$query = "UPDATE `blog` SET content = '{$content}', title='{$title}', lastedited='{$date}' WHERE id = {$id}";
+	$query = "UPDATE `blog` SET content = '{$content}', title='{$title}', comments_allowed={$allowComments}, lastedited='{$date}' WHERE id = {$id}";
 	$result = mysqli_query($connection, $query);
 	confirm_query($result);
 	if (mysqli_affected_rows($connection) == 1) {
@@ -146,7 +152,7 @@ require_once("includes/begin_html.php");
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr bgcolor="#ffffff">
   <td>
-  <input type="text" name="title" class="text" maxlength="1024" value="<?php echo $blog['title']; ?>" />
+  <input type="text" name="title" class="text" maxlength="1024" value="<?php echo $blog['title']; ?>" /> <input type="checkbox" name="allowComments" id="allowComments" <?php if($blog['comments_allowed']==1){echo 'checked';} ?>><label for="allowComments">Allow Comments</label>
   </td>
   </tr>
   <tr>
@@ -156,9 +162,9 @@ require_once("includes/begin_html.php");
   <td>
   <table width="200" border="0">
   <tr>
-    <td><input class="green" type="submit" name="submit" value="Save" /></td>
-    <td><a class="red" href="blog.php?delpost=<?php echo $_GET['post']; ?>">Delete</a></td>
-    <td><a class="blue" href="blog.php">Cancel</a></td>
+    <td><input class="btn green" type="submit" name="submit" value="Save" /></td>
+    <td><a class="btn red" href="blog.php?delpost=<?php echo $_GET['post']; ?>">Delete</a></td>
+    <td><a class="btn blue" href="blog.php">Cancel</a></td>
   </tr>
 </table>
   </td>
@@ -199,7 +205,7 @@ else {
   ?><p>(There are no images in this gallery)</p><?php
 }
 ?>
-<input name="delfiles" type="submit" value="Delete Selected Photos" class="red" />
+<input name="delfiles" type="submit" value="Delete Selected Photos" class="btn red" />
 </div>
 </form>
 <table border="0" width="100%" border="0" style="margin-right:auto; margin-left:auto;">

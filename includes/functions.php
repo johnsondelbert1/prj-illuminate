@@ -218,8 +218,10 @@ $blank_permissions = array(
 	),
 	"Blog" => array(
 		"post_blog" => array("value" => 0, "disp_name" => "Post", "description" => "Enables members of this rank to post a blog."),
-		"edit_blog" => array("value" => 0, "disp_name" => "Edit", "description" => "Enables members of this rank to edit existing blogs."),
+		"edit_blog" => array("value" => 0, "disp_name" => "Edit", "description" => "Enables members of this rank to edit existing bl0ogs."),
 		"delete_blog" => array("value" => 0, "disp_name" => "Delete", "description" => "Enables members of this rank to delete."),
+		"post_comment" => array("value" => 0, "disp_name" => "Post Comments", "description" => "Enables members of this rank to post comments on a blog post."),
+		"delete_any_comment" => array("value" => 0, "disp_name" => "Delete Any Comment", "description" => "Enables members of this rank to delete any comment on a blog post."),
 	),
 	"Forum" => array(
 		"add_delete_forum" => array("value" => 0, "disp_name" => "Add & Delete Forums", "description" => "Enables members of this rank to add and delete forums."),
@@ -289,7 +291,6 @@ while($admin_rank=mysqli_fetch_array($result)){
 	}
 }
 
-
 if(logged_in()){
 	$permissions = array_replace_recursive($blank_permissions, get_rank_info());
 }else{
@@ -327,6 +328,40 @@ function check_permission($perm_group, $perm = false){
 	}else{
 		return false;
 	}
+}
+
+function get_page_permission($visibleArr){
+	global $user_info;
+	$dispPage=false;
+	switch ($visibleArr[0]) {
+		case 'any':
+			$dispPage=true;
+			break;
+		case 'loggedin':
+			if(logged_in()){
+				$dispPage=true;
+			}
+			break;
+		case 'loggedout':
+			if(!logged_in()){
+				$dispPage=true;
+			}
+			break;
+		default:
+			if(in_array($user_info['rank'], $visibleArr)){
+				$dispPage=true;
+			}
+			break;
+	}
+	return $dispPage;
+}
+
+function get_color($color){
+	global $connection;
+	$Query="SELECT `color_hex`, `cid`, `s_name`, `style_color_id` FROM `style_colors` INNER JOIN `css_selectors` ON `cid` = `style_color_id` WHERE `s_name` = '{$color}'";
+	$Result=mysqli_query( $connection, $Query);
+	$color = mysqli_fetch_array($Result);
+	return $color['color_hex'];
 }
 
 function randstring() {
@@ -861,46 +896,52 @@ function nav($position, $pgselection){
 
 				if($numpages!=0){
 				while($page=mysqli_fetch_array($result)){
-					if($page['issubpage']==0){ $lastmainpage=$page['id'];?>
-                        <li style="min-width:<?php echo $buttonwidth; ?>%;"<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><a style="min-width:<?php echo $buttonwidth; ?>%;" href="<?php
-                                if($page['type']=='Custom' || $page['type']=='Staff'){
-                                    echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($page['name']);
-                                }elseif($page['type']=='Blog'){
-                                    echo $GLOBALS['HOST'];?>/blog<?php
-                                }elseif($page['type']=='Forum'){
-                                    echo $GLOBALS['HOST'];?>/forums<?php
-                                }elseif($page['type']=='Link'){
-                                    echo $page['url'];
-                                }
-                            ?>" <?php if($page['target']!="_self"){echo "target=\"".$page['target']."\"";} ?>><?php echo $page['name'];?></a><?php 
-                            if($position=="horiz"){
-                                $query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
-                            }elseif($position=="vert"){
-                                $query="SELECT * FROM `pages` WHERE `vert_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
-                            }
-                            $subpgresult=mysqli_query( $connection, $query);
-                            confirm_query($subpgresult);
-                            if(mysqli_num_rows($subpgresult)!=0){?>
-                                <ul style="min-width:100%;">
-                                <?php while($subpage=mysqli_fetch_array($subpgresult)){?>
-                                    <li style="width:100%;"<?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>>
-                                        <a href="<?php
-                                            if($subpage['type']=='Custom' || $page['type']=='Staff'){
-                                                echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($subpage['name']);
-                                            }elseif($subpage['type']=='Blog'){
-                                                echo $GLOBALS['HOST'];?>/blog<?php
-                                            }elseif($subpage['type']=='Forum'){
-                                                echo $GLOBALS['HOST'];?>/forums<?php
-                                            }elseif($subpage['type']=='Link'){
-                                                echo $subpage['url'];
-                                            }
-                            ?>" <?php if($subpage['target']!="_self"){echo "target=\"".$subpage['target']."\"";} ?>><?php echo $subpage['name'];?></a>
-                                    </li>
-                                <?php } ?>
-                                </ul>
-                            <?php } ?>
-                            </li>
-                        <?php
+					if($page['issubpage']==0){ $lastmainpage=$page['id'];
+						if(get_page_permission(unserialize($page['visible']))){?>
+	                        <li style="min-width:<?php echo $buttonwidth; ?>%;"<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><a style="min-width:<?php echo $buttonwidth; ?>%;" href="<?php
+	                                if($page['type']=='Custom' || $page['type']=='Staff'){
+	                                    echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($page['name']);
+	                                }elseif($page['type']=='Blog'){
+	                                    echo $GLOBALS['HOST'];?>/blog<?php
+	                                }elseif($page['type']=='Forum'){
+	                                    echo $GLOBALS['HOST'];?>/forums<?php
+	                                }elseif($page['type']=='Link'){
+	                                    echo $page['url'];
+	                                }
+	                            ?>" <?php if($page['target']!="_self"){echo "target=\"".$page['target']."\"";} ?>><?php echo $page['name'];?></a><?php 
+	                            if($position=="horiz"){
+	                                $query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
+	                            }elseif($position=="vert"){
+	                                $query="SELECT * FROM `pages` WHERE `vert_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
+	                            }
+	                            $subpgresult=mysqli_query( $connection, $query);
+	                            confirm_query($subpgresult);
+	                            if(mysqli_num_rows($subpgresult)!=0){?>
+	                                <ul style="min-width:100%;">
+	                                <?php while($subpage=mysqli_fetch_array($subpgresult)){
+	                                	if(get_page_permission(unserialize($subpage['visible']))){?>
+		                                    <li style="width:100%;"<?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>>
+		                                        <a href="<?php
+		                                            if($subpage['type']=='Custom' || $page['type']=='Staff'){
+		                                                echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($subpage['name']);
+		                                            }elseif($subpage['type']=='Blog'){
+		                                                echo $GLOBALS['HOST'];?>/blog<?php
+		                                            }elseif($subpage['type']=='Forum'){
+		                                                echo $GLOBALS['HOST'];?>/forums<?php
+		                                            }elseif($subpage['type']=='Link'){
+		                                                echo $subpage['url'];
+		                                            }?>"
+		                                            <?php if($subpage['target']!="_self"){echo "target=\"".$subpage['target']."\"";} ?>><?php echo $subpage['name'];?></a>
+		                                    </li>
+		                                <?php 
+	                                		}
+		                                } ?>
+	                                </ul>
+		                            <?php 
+		                            } ?>
+	                            </li>
+	                        <?php
+	                    	}
                         }
                     }
 				}
