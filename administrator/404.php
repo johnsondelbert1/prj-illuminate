@@ -15,7 +15,7 @@ $galleryresult=mysqli_query($connection, $query);
 ?>
 <?php
 	$pgsettings = array(
-		"title" => $site_info['name']." CPanel 404",
+		"title" => $GLOBALS['site_info']['name']." CPanel 404",
 		"icon" => "icon-dashboard"
 	);
 	require_once("includes/begin_cpanel.php");

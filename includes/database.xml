@@ -3,6 +3,6 @@
   <firstrun>false</firstrun>
   <server>localhost</server>
   <username>root</username>
-  <password></password>
+  <password/>
   <name>prj_illuminate_trist</name>
 </database>

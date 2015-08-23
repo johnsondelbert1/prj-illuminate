@@ -83,7 +83,7 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 					$visible=serialize(array('any'));
 				}
 				
-				date_default_timezone_set($site_info['timezone']);
+				date_default_timezone_set($GLOBALS['site_info']['timezone']);
 				$date=date("Y/m/d H:i:s", time());
 				
 				//Check for another Blog or Forum page type
@@ -188,7 +188,7 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 					$visible=serialize(array('any'));
 				}
 
-				date_default_timezone_set($site_info['timezone']);
+				date_default_timezone_set($GLOBALS['site_info']['timezone']);
 				$date=date("Y/m/d H:i:s", time());
 				
 				if($_POST['name']!=""){

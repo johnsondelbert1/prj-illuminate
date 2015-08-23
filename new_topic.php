@@ -41,7 +41,7 @@ if(!check_permission("Forum","add_thread")&&(isset($_GET['action'])&&$_GET['acti
 		$messagebody=strip_tags($_POST['content'], "<b><i><u><del><a><p><img><br><hr><ol><ul><li><sub><sup>");
 		$forumid=$_GET['forum'];
 		$creator=$_SESSION['username'];
-		date_default_timezone_set($site_info['timezone']);
+		date_default_timezone_set($GLOBALS['site_info']['timezone']);
 		$date=date("Y/m/d H:i:s");
 			
 		if(isset($_POST['newthread'])){
@@ -181,7 +181,7 @@ if($_GET['action']=="newmessage"){
 	<h1>Editing post in "<?php echo $thread['name']; ?>"</h1>
 <?php }
 	} ?>
-<a href="forums.php"><?php echo $site_info['name']; ?> Forums</a> &gt; <a href="view_forum.php?forum=<?php echo $forum['id']; ?>"><?php echo $forum['name']; ?></a><?php if((isset($_GET['action'])&&$_GET['action']=="newmessage")||(isset($_GET['action'])&&$_GET['action']=="editpost")){?> &gt; <a href="view_thread.php?thread=<?php echo $thread['id']."&&forum=".$forum['id']; ?>"><?php echo $thread['name']; ?></a><?php } ?><br /><br /><br />
+<a href="forums.php"><?php echo $GLOBALS['site_info']['name']; ?> Forums</a> &gt; <a href="view_forum.php?forum=<?php echo $forum['id']; ?>"><?php echo $forum['name']; ?></a><?php if((isset($_GET['action'])&&$_GET['action']=="newmessage")||(isset($_GET['action'])&&$_GET['action']=="editpost")){?> &gt; <a href="view_thread.php?thread=<?php echo $thread['id']."&&forum=".$forum['id']; ?>"><?php echo $thread['name']; ?></a><?php } ?><br /><br /><br />
 <?php $actionurl="?forum=".urlencode($_GET['forum']);
 		if(isset($_GET['action'])&&$_GET['action']=="newthread"){ 
 			$actionurl.="&&action=newthread";

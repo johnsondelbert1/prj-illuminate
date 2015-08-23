@@ -1,5 +1,5 @@
 <?php
-if($site_info['published']==0){
+if($GLOBALS['site_info']['published']==0){
 	redirect_to($GLOBALS['HOST']."/under_construction.php");
 }
 
@@ -65,8 +65,8 @@ if(isset($bg[2])){
       <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
     
     <!-- Start custom meta tags -->
-    <?php if($site_info['meta_tags']!=""){
-		echo $site_info['meta_tags'];
+    <?php if($GLOBALS['site_info']['meta_tags']!=""){
+		echo $GLOBALS['site_info']['meta_tags'];
 	}?>
     
     <!-- End custom meta tags -->
@@ -83,29 +83,30 @@ if(isset($bg[2])){
     <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/materialize.min.js"></script>
     <script type="text/javascript" src="<?php echo $GLOBALS['HOST']; ?>/prettyphoto/js/jquery.prettyPhoto.js" charset="utf-8"></script>
     <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/jquery.fileuploadmulti.min.js"></script>
+    <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/autosize.js"></script>
     <style type="text/css">
     .forumtitle, tr.heading,td.heading, th.heading{
-			background-color:<?php echo $site_layout['sitebg_color']; ?> !important;
-			color:<?php echo $site_layout['text_color']; ?> !important;
+			background-color:<?php echo $GLOBALS['site_layout']['sitebg_color']; ?> !important;
+			color:<?php echo $GLOBALS['site_layout']['text_color']; ?> !important;
 		}
 
 		body{
-			<?php if($site_layout['use_bg_color']!=1){ ?>
+			<?php if($GLOBALS['site_layout']['use_bg_color']!=1){ ?>
 			background-color:#FFFFFF; !important;
 			<?php }
 			if($bg!=false){?>
 			background-image:url(/images/bg/<?php echo $bg; ?>);
 			<?php }
-			if($site_layout['bg_repeat']!=''){ ?>
-			background-repeat:<?php echo $site_layout['bg_repeat'] ?> !important;
+			if($GLOBALS['site_layout']['bg_repeat']!=''){ ?>
+			background-repeat:<?php echo $GLOBALS['site_layout']['bg_repeat'] ?> !important;
 			<?php }
-			if($site_layout['bg_position']!=''){ ?>
-			background-position:<?php echo $site_layout['bg_position'] ?> !important;
+			if($GLOBALS['site_layout']['bg_position']!=''){ ?>
+			background-position:<?php echo $GLOBALS['site_layout']['bg_position'] ?> !important;
 			<?php }
-			if($site_layout['bg_size']!=''){ ?>
-			background-size:<?php echo $site_layout['bg_size'] ?> !important;
+			if($GLOBALS['site_layout']['bg_size']!=''){ ?>
+			background-size:<?php echo $GLOBALS['site_layout']['bg_size'] ?> !important;
 			<?php }
-			if($site_layout['bg_fixed']==1){ ?>
+			if($GLOBALS['site_layout']['bg_fixed']==1){ ?>
 			background-attachment:fixed !important;
 			<?php }else{ ?>
 			background-attachment:scroll !important;
@@ -132,7 +133,7 @@ if(isset($bg[2])){
 			$text = array();
 
 			while ($css_selector = mysqli_fetch_array($css_result)){
-				switch ($color_styles[$css_selector['s_name']]['type']) {
+				switch ($GLOBALS['color_styles'][$css_selector['s_name']]['type']) {
 					case 'bg':
 						array_push($bg, $css_selector['s_name']);
 						break;
@@ -146,7 +147,7 @@ if(isset($bg[2])){
 				$items = count($bg);
 				$i = 1;
 				foreach ($bg as $value) {
-					echo $color_styles[$value]['selector'];
+					echo $GLOBALS['color_styles'][$value]['selector'];
 					if($i < $items){echo ', ';}else{echo "{\r\n";}
 					$i++;
 				}
@@ -156,7 +157,7 @@ if(isset($bg[2])){
 				$items = count($text);
 				$i = 1;
 				foreach ($text as $value) {
-					echo $color_styles[$value]['selector'];
+					echo $GLOBALS['color_styles'][$value]['selector'];
 					if($i < $items){echo ', ';}else{echo "{\r\n";}
 					$i++;
 				}
@@ -172,76 +173,76 @@ if(isset($bg[2])){
 			background-color: <?php echo get_color('selection'); ?>;
 		}
 		/*#contentwrap{
-			background-color:<?php echo $site_layout['contentbg_color'] ?> !important;
+			background-color:<?php echo $GLOBALS['site_layout']['contentbg_color'] ?> !important;
 		}*/
 /*		.mobile, ul.side-nav, slide-out, .title, .jssorb01 div:hover, .jssorb01 .av:hover, jssora05l, jssora05r{
 			background-color: #FFFFFF;
 		}*/
 		/*.mobile, ul.side-nav, slide-out, .blogtitle{
-			background-color:<?php echo $site_layout['accent_color'] ?> !important;
+			background-color:<?php echo $GLOBALS['site_layout']['accent_color'] ?> !important;
 		}
 		.jssora05l .material-icons, .jssora05r .material-icons{
-			color:<?php echo $site_layout['menu_color'] ?> !important;
+			color:<?php echo $GLOBALS['site_layout']['menu_color'] ?> !important;
 		}
 		.mobile i{
-			color:<?php echo $site_layout['contentbg_color'] ?> !important;
+			color:<?php echo $GLOBALS['site_layout']['contentbg_color'] ?> !important;
 		}
 		#banner{
-			background-color:<?php echo $site_layout['text_color'] ?> !important;
+			background-color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
 		}
 		#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #vert-menu ul li, .photo-link, .nav, .captionBlack, .card{
-			background-color:<?php echo $site_layout['menu_color'] ?> !important;
-			color:<?php echo $site_layout['text_color'] ?> !important;
+			background-color:<?php echo $GLOBALS['site_layout']['menu_color'] ?> !important;
+			color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
 		}
 		#horiz-menu li:hover > a, #horiz-menu li:hover > ul, #horiz-menu ul a:hover, #vert-menu li:hover > a, #vert-menu li:hover > ul, #vert-menu ul a:hover,  .TabbedPanelsTab, .accent, .forum tr:hover, .forumsuser, ul.MenuBarHorizontal a:hover, ul.MenuBarHorizontal a:focus, .forumfooter, ul.side-nav li{
-			background-color:<?php echo $site_layout['accent_color'] ?> !important;
-			color:<?php echo $site_layout['text_color'] ?> !important;
+			background-color:<?php echo $GLOBALS['site_layout']['accent_color'] ?> !important;
+			color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
 		}
 		*html #horiz-menu li a:hover, #vert-menu li a:hover { /* IE6 only 
-			color: <?php echo $site_layout['text_color'] ?>;
+			color: <?php echo $GLOBALS['site_layout']['text_color'] ?>;
 		}
 		#content a, #footer a, #horiz-menu a, #horiz-menu ul a, #vert-menu a, #vert-menu ul a, .blogtitle a, .forum tr a:hover{
-			color:<?php echo $site_layout['text_color'] ?> !important;
+			color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
 		}
 		.photo-link:hover{
-			background-color:<?php echo $site_layout['text_color'] ?> !important;
+			background-color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
 		}
 		/*#content, .forum tr, .forumbody, #footerwrap, .blog{
-			background-color:<?php echo $site_layout['contentbg_color'] ?> !important;
-			color:<?php echo $site_layout['text_color'] ?> !important;
+			background-color:<?php echo $GLOBALS['site_layout']['contentbg_color'] ?> !important;
+			color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
 		}
 		.forum tr a{
-			color:<?php echo $site_layout['contentbg_color'] ?> !important;
+			color:<?php echo $GLOBALS['site_layout']['contentbg_color'] ?> !important;
 		}
 		.forumtitle{
-			border-bottom:2px <?php echo $site_layout['text_color'] ?> dashed;
+			border-bottom:2px <?php echo $GLOBALS['site_layout']['text_color'] ?> dashed;
 		}
 		.icon{
-			color:<?php echo $site_layout['menu_color'] ?> ;
+			color:<?php echo $GLOBALS['site_layout']['menu_color'] ?> ;
 		}
 		 ::-webkit-scrollbar-thumb{
-			/*background-color:<?php echo $site_layout['accent_color'] ?> !important;
-			color:<?php echo $site_layout['text_color'] ?> !important;
+			/*background-color:<?php echo $GLOBALS['site_layout']['accent_color'] ?> !important;
+			color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
 		}
 		::selection {
-			background: <?php echo $site_layout['accent_color'] ?>; /* WebKit/Blink Browsers 
+			background: <?php echo $GLOBALS['site_layout']['accent_color'] ?>; /* WebKit/Blink Browsers 
 			}
 		::-moz-selection {
-			background: <?php echo $site_layout['accent_color'] ?>; /* WebKit/Blink Browsers 
+			background: <?php echo $GLOBALS['site_layout']['accent_color'] ?>; /* WebKit/Blink Browsers 
 			}*/
 		#banner{
 			<?php if(count($banner)==3){?>background-image:url(images/banner/<?php echo $banner[2];?>);<?php } ?>
 			
 		}
 		/* Start custom CSS */
-		<?php if($site_layout['custom_css']!=""){
-			echo $site_layout['custom_css'];
+		<?php if($GLOBALS['site_layout']['custom_css']!=""){
+			echo $GLOBALS['site_layout']['custom_css'];
 		}?>
 		/* End custom CSS */
 	</style>
     <!-- Start custom JS -->
-    <?php if($site_info['style_js_link_tags']!=""){
-		echo $site_info['style_js_link_tags'];
+    <?php if($GLOBALS['site_info']['style_js_link_tags']!=""){
+		echo $GLOBALS['site_info']['style_js_link_tags'];
 	}?>
     
     <!-- End custom JS -->
@@ -251,8 +252,8 @@ if(isset($bg[2])){
 <body>
 	<?php
     if(isset($pgsettings['use_google_analytics'])&&$pgsettings['use_google_analytics'] == 1){
-		if($site_info['g_analytics_enabled']==1){
-			echo $site_info['g_analytics_code'];
+		if($GLOBALS['site_info']['g_analytics_enabled']==1){
+			echo $GLOBALS['site_info']['g_analytics_code'];
 		}
 	}?>
     
@@ -262,19 +263,19 @@ if(isset($bg[2])){
             <a href="#" data-activates="slide-out" class="button-collapse" style="color:#6C6C6C;"><i class="mdi-navigation-menu"></i></a>
             <div style="float:right; font-size:32px; padding:10px;">
 				<?php
-                    foreach($enabled_soc_networks as $network){?>
-                        <a href="<?php echo $site_info[$network.'_url']; ?>" style="text-decoration:none;" target="_blank"><span class="icon icon-<?php echo $soc_networks_icons[array_search($network, $soc_networks)]; ?>"></span></a>
+                    foreach($GLOBALS['enabled_soc_networks'] as $network){?>
+                        <a href="<?php echo $GLOBALS['site_info'][$network.'_url']; ?>" style="text-decoration:none;" target="_blank"><span class="icon icon-<?php echo $GLOBALS['soc_networks_icons'][array_search($network, $GLOBALS['soc_networks'])]; ?>"></span></a>
                     <?php 
                     }
                 ?>
             </div>
         </div>
-    	<?php if($logo!=false||!empty($enabled_soc_networks)){ ?>
+    	<?php if($logo!=false||!empty($GLOBALS['enabled_soc_networks'])){ ?>
     	<div class="header"><span style="font-size:47px; margin-left:15px;" class="icon icon-facebook2 headericon"></span>
         	<?php if($logo!=false){ ?>
             	<div style="float:left; position:absolute;" id="logo">
-                	<?php if($site_info['logo_url']!=''){?>
-            		<a href="<?php echo $site_info['logo_url']; ?>"><img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $site_info['name']; ?> Logo" height="100" /></a>
+                	<?php if($GLOBALS['site_info']['logo_url']!=''){?>
+            		<a href="<?php echo $GLOBALS['site_info']['logo_url']; ?>"><img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $GLOBALS['site_info']['name']; ?> Logo" height="100" /></a>
                     <?php }else{ ?>
                     <img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" height="100" />
                     <?php } ?>
@@ -282,8 +283,8 @@ if(isset($bg[2])){
 			<?php } ?>
             <div style="float:right; font-size:32px; padding:10px;" id="socnet">
             	<?php
-					foreach($enabled_soc_networks as $network){?>
-                    	<a href="<?php echo $site_info[$network.'_url']; ?>" style="text-decoration:none;" target="_blank"><span class="icon icon-<?php echo $soc_networks_icons[array_search($network, $soc_networks)]; ?>"></span></a>
+					foreach($GLOBALS['enabled_soc_networks'] as $network){?>
+                    	<a href="<?php echo $GLOBALS['site_info'][$network.'_url']; ?>" style="text-decoration:none;" target="_blank"><span class="icon icon-<?php echo $GLOBALS['soc_networks_icons'][array_search($network, $GLOBALS['soc_networks'])]; ?>"></span></a>
 					<?php 
 					}
 				?>
@@ -328,7 +329,3 @@ if(isset($bg[2])){
 					 ?> s12" >
                     <div id="content">
 						<div class="card custom">
-
-						<?php if(!empty($error)){echo "<script type=\"text/javascript\">Materialize.toast('".$error."', 8000, 'red')</script>";} ?>
-                        <?php if(!empty($success)){echo "<script type=\"text/javascript\">Materialize.toast('".$success."', 8000, 'green')</script>";} ?>
-                        <?php if(!empty($message)){echo "<script type=\"text/javascript\">Materialize.toast('".$message."', 8000, 'yellow')</script>";} ?>

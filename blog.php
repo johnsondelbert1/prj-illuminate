@@ -45,8 +45,8 @@ if(isset($_GET['delpost'])&&$_GET['delpost']!=''){
 		$error="You do not have permission to delete this post!";
 	}
 }
-if(isset($_GET['page'])&&$_GET['page']<=0){
-	redirect_to($GLOBALS['HOST']."/blog?page=1");
+if(isset($_GET['pg'])&&$_GET['pg']<=0){
+	//redirect_to($GLOBALS['HOST']."/blog?page=1");
 }
 
 $query="SELECT * FROM `blog`";
@@ -55,8 +55,8 @@ $num_posts = mysqli_num_rows($result);
 
 $num_pages = ceil($num_posts/10);
 
-if(isset($_GET['page'])&&$_GET['page']>=1){
-	$current_page = $_GET['page'];
+if(isset($_GET['pg'])&&$_GET['pg']>=1){
+	$current_page = $_GET['pg'];
 }else{
 	$current_page = 1;
 }
@@ -68,26 +68,17 @@ $blogresult=mysqli_query( $connection, $query);
 $query="SELECT * FROM `pages` WHERE `type` = 'Blog'";
 $result_page_prop=mysqli_query( $connection, $query);
 $page_properties = mysqli_fetch_array($result_page_prop);
-
-$pgsettings = array(
-	"title" => $page_properties['name'],
-	"pageselection" => "blog",
-	"nav" => $page_properties['horiz_menu_visible'],
-	"banner" => $page_properties['banner'],
-	"slider" => $page_properties['slider'],
-	"use_google_analytics" => 1,
-);
-require_once("includes/begin_html.php");?>
+?>
 
 <script type="text/javascript">
 $(document).ready(function () {
 	$(".btn-click-action").click(function(){
-		$("#del_button").attr("href", "blog.php?delpost="+$(this).attr('name'));
+		$("#del_button").attr("href", "<?php echo $GLOBALS['HOST'].'/page/'.$GLOBALS['blog_page']; ?>&delpost="+$(this).attr('name'));
 	});
 });
 function sendComment(postId){
-	$('#comment-sendbtn-'+postId).html('sending');
-    $.post("ajax_processing/post_blog_comment.php",
+	$('#comment-sendbtn-'+postId).html('<img src="../images/ajax-load.gif" style="margin-left:10px; margin-top:10px;"/>');
+    $.post("../ajax_processing/post_blog_comment.php",
     {
         commentData: $('#blog-comment-'+postId).val(),
         blogId: postId,
@@ -98,6 +89,9 @@ function sendComment(postId){
         		case 'empty':
 		        	Materialize.toast('Comment cannot be empty.', 8000, 'red');
 		        	$('#comment-sendbtn-'+postId).html('<i class="material-icons">send</i>');
+		        	$('#blog-comment-'+postId).val("");
+		        	$('#blog-comment-'+postId).attr('rows', '1');
+		        	$('#blog-comment-'+postId).height('auto');
         			break;
         		case 'permission':
 		        	Materialize.toast('You do not have permission to post comments.', 8000, 'red');
@@ -114,6 +108,8 @@ function sendComment(postId){
         		default:
 		        	$("#comment-block-"+postId).append(data);
 		        	$('#blog-comment-'+postId).val("");
+		        	$('#blog-comment-'+postId).attr('rows', '1');
+		        	$('#blog-comment-'+postId).height('auto');
 		        	$('#comment-sendbtn-'+postId).html('<i class="material-icons">send</i>');
         			break;
         	}
@@ -124,7 +120,7 @@ function sendComment(postId){
     });
 }
 function viewMore(postId, numComments){
-	    $.get("ajax_processing/get_blog_comments.php?blogid="+postId+"&commlimit="+numComments, function(data, status){
+	    $.get("../ajax_processing/get_blog_comments.php?blogid="+postId+"&commlimit="+numComments, function(data, status){
 	    	if(status == 'success'){
 	    		$('#comment-wrap-'+postId).html(data);
 	    	}else{
@@ -133,7 +129,7 @@ function viewMore(postId, numComments){
 	    });
 	}
 function delComment(postId){
-	    $.post("ajax_processing/delete_blog_comment.php",
+	    $.post("../ajax_processing/delete_blog_comment.php",
 	    {
 	    	id: postId,
 	    },
@@ -161,7 +157,7 @@ function delComment(postId){
 <?php
 if (mysqli_num_rows($result)!=0){
   	if(check_permission("Blog","post_blog")){?>
-		<a class="btn-floating green" href="new_blog_post.php"><i class="material-icons">add</i></a>
+		<a class="btn-floating green" href="../new_blog_post"><i class="material-icons">add</i></a>
     
 	<?php }?>
 	</div>
@@ -170,7 +166,7 @@ if (mysqli_num_rows($result)!=0){
     
     <?php
     if($num_pages>1){
-		echo_page($num_pages, $current_page, "blog.php?");
+		echo_page($num_pages, $current_page, 'page/'.$page['name']);
 	}
 	?>
     </div>
@@ -202,11 +198,11 @@ if (mysqli_num_rows($result)!=0){
 				<td colspan="2">
 					<div class="title" width="100%" height="100%">
 					
-								<h5><a href="view_blog_post.php?post=<?php echo $post['id']; ?>"><?php echo $post['title']; ?></a></h5>
+								<h5><a href="<?php echo $GLOBALS['HOST']?>/view_blog_post?post=<?php echo $post['id']; ?>"><?php echo $post['title']; ?></a></h5>
 							<div class="container">
                     <div class="row right blog-btn">
                     <div class="col l12 s12">
-                        <?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="btn-floating blue" href="edit_blog_post.php?post=<?php echo $post['id'] ?>"><i class="material-icons">edit</i></a><?php } ?>
+                        <?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="btn-floating blue" href="<?php echo $GLOBALS['HOST']; ?>/edit_blog_post.php?post=<?php echo $post['id'] ?>"><i class="material-icons">edit</i></a><?php } ?>
                         <?php if(check_permission("Blog","delete_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?>
                         <a class="modal-trigger btn-floating red btn-click-action" href="#modal1" name="<?php echo $post['id'] ?>"><i class="material-icons">delete</i></a><?php } ?>
                         </div>
@@ -260,7 +256,7 @@ if (mysqli_num_rows($result)!=0){
 											$stringCut = substr($content, 0, 600);
 										
 											// make sure it ends in a word so assassinate doesn't become ass...
-											$content = substr($stringCut, 0, strrpos($stringCut, ' ')).'... <a class="waves-effect waves-blue btn-flat" href="view_blog_post.php?post='.$post['id'].'">Read More</a>'; 
+											$content = substr($stringCut, 0, strrpos($stringCut, ' ')).'... <a class="waves-effect waves-blue btn-flat" href="'.$GLOBALS['HOST'].'/view_blog_post.php?post='.$post['id'].'">Read More</a>'; 
 										}
 										echo $content;
 								?>
@@ -288,7 +284,8 @@ if (mysqli_num_rows($result)!=0){
 										include("ajax_processing/get_blog_comments.php"); ?>
 									</div>
 									<?php if(check_permission("Blog","post_comment")){?>
-									<input type="text" id="blog-comment-<?php echo $post['id'];?>" maxlength="1000" placeholder="Write a comment..." style="width:300px;" /><a onclick="sendComment(<?php echo $post['id'];?>)" id="comment-sendbtn-<?php echo $post['id'];?>" class="btn-floating green" ><i class="material-icons">send</i></a>
+									<br />
+									<textarea id="blog-comment-<?php echo $post['id'];?>" maxlength="1000" rows="1" placeholder="Write a comment..." style="width:300px; height:30px; resize:none; border-bottom:1px solid; margin-right:5px;" /></textarea><a onclick="sendComment(<?php echo $post['id'];?>)" id="comment-sendbtn-<?php echo $post['id'];?>" class="btn-floating green" ><i class="material-icons">send</i></a>
 									<?php } ?>
 								</div>
 							</td>
@@ -342,7 +339,7 @@ if (mysqli_num_rows($result)!=0){
     
     <?php
     if($num_pages>1){
-		echo_page($num_pages, $current_page, "blog.php?");
+		echo_page($num_pages, $current_page, $page['name']);
 	}
 	?>
     </div>

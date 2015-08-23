@@ -4,33 +4,51 @@ require_once("session.php");
 require_once("globals.php");
 
 //global DB variables
+
+//Info
 $query="SELECT * FROM `site_info` WHERE `id` = 1";
 $result=mysqli_query( $connection, $query);
-$site_info=mysqli_fetch_array($result);
+$GLOBALS['site_info']=mysqli_fetch_array($result);
+
 $GLOBALS['HOST']=$GLOBALS['HOST'];
 
+//Layout
 $query="SELECT * FROM `site_layout` WHERE `id` = 1";
 $result=mysqli_query( $connection, $query);
-$site_layout=mysqli_fetch_array($result);
+$GLOBALS['site_layout']=mysqli_fetch_array($result);
 
-$soc_networks = array('facebook','googleplus','twitter','instagram','linkedin');
-$soc_networks_names = array('Facebook','Google +','Twitter','Instagram','LinkedIn');
-$soc_networks_icons = array('facebook2','googleplus3','twitter2','instagram','linkedin');
-$enabled_soc_networks = array();
-foreach($soc_networks as $network){
-	if($site_info[$network.'_enabled'] == 1){
-		array_push($enabled_soc_networks, $network);
+//Social Networks
+$GLOBALS['soc_networks'] = array('facebook','googleplus','twitter','instagram','linkedin');
+$GLOBALS['soc_networks_names'] = array('Facebook','Google +','Twitter','Instagram','LinkedIn');
+$GLOBALS['soc_networks_icons'] = array('facebook2','googleplus3','twitter2','instagram','linkedin');
+$GLOBALS['enabled_soc_networks'] = array();
+foreach($GLOBALS['soc_networks'] as $network){
+	if($GLOBALS['site_info'][$network.'_enabled'] == 1){
+		array_push($GLOBALS['enabled_soc_networks'], $network);
 	}
 }
 
-date_default_timezone_set($site_info['timezone']);
-$date=date("Y/m/d H:i:s", time());
+//Date with timezone
+date_default_timezone_set($GLOBALS['site_info']['timezone']);
+$GLOBALS['date']=date("Y/m/d H:i:s", time());
+
+//Get Blog page name
+$query="SELECT * FROM `pages` WHERE `type` = 'Blog'";
+$result=mysqli_query( $connection, $query);
+$pg=mysqli_fetch_array($result);
+$GLOBALS['blog_page'] = $pg['name'];
+
+//Get Forum page name
+$query="SELECT * FROM `pages` WHERE `type` = 'Forum'";
+$result=mysqli_query( $connection, $query);
+$pg=mysqli_fetch_array($result);
+$GLOBALS['forum_page'] = $pg['name'];
 
 //Folders to be re-created if missing
 $folders = array('images/banner/', 'images/bg/', 'images/favicon/', 'images/logo/', 'blog_galleries/', 'galleries/');
 
 //Site color styling
-$color_styles = array(
+$GLOBALS['color_styles'] = array(
 	"website_bg" => array(
 		"disp_name" => 'Website Background',
 		"selector" => 'body',
@@ -158,7 +176,7 @@ $color_styles = array(
 	),
 );
 //Add new selectors to DB
-foreach ($color_styles as $key => $val){
+foreach ($GLOBALS['color_styles'] as $key => $val){
 	$addquery="SELECT * FROM `css_selectors` WHERE `s_name` = '{$key}'";
 	$addresult=mysqli_query( $connection, $addquery);
 	if(mysqli_num_rows($addresult)==0){
@@ -170,7 +188,7 @@ foreach ($color_styles as $key => $val){
 $removequery="SELECT * FROM `css_selectors`";
 $removeresult=mysqli_query( $connection, $removequery);
 while($css_selector=mysqli_fetch_array($removeresult)){
-	if(!array_key_exists($css_selector['s_name'], $color_styles)){
+	if(!array_key_exists($css_selector['s_name'], $GLOBALS['color_styles'])){
 		$delquery = "DELETE FROM `css_selectors` WHERE `s_name` = '{$css_selector['s_name']}'";
 		$delresult=mysqli_query( $connection, $delquery);
 	}
@@ -364,6 +382,13 @@ function get_color($color){
 	return $color['color_hex'];
 }
 
+function get_user($id){
+	global $connection;
+	$query="SELECT * FROM `users` WHERE `id` = {$id}";
+	$result=mysqli_query( $connection, $query);
+	return $user_info=mysqli_fetch_array($result);
+}
+
 function randstring() {
     $length = 16;
     $characters = "0123456789abcdefghijklmnopqrstuvwxyz";
@@ -412,13 +437,6 @@ function del_rank($rankid){
 	}
 }
 
-function get_user($id){
-	global $connection;
-	$query="SELECT * FROM `users` WHERE `id` = {$id}";
-	$result=mysqli_query( $connection, $query);
-	return $user_info=mysqli_fetch_array($result);
-}
-
 function mysql_prep( $value ) {
 	global $connection;
 	$magic_quotes_active = get_magic_quotes_gpc();
@@ -434,23 +452,20 @@ function mysql_prep( $value ) {
 	}
 	return $value;
 }
-function check_login(){
-	global $site_info;
-	?>
+function check_login(){ ?>
 <style type="text/css">
 </style>
 <p><?php
 	if(logged_in()){?>
         <?php echo "<b>".$_SESSION['username']."</b>";?>
-         | <a href="<?php echo $GLOBALS['HOST']; ?>/account-settings.php">Account Settings</a> | <?php if(check_permission("Website","cpanel_access")){?><a href="<?php echo $GLOBALS['HOST']; ?>/administrator/" target="_blank">CPanel</a> | <?php } ?><a href="<?php echo $GLOBALS['HOST']; ?>/logout.php">Logout</a>
+         | <a href="<?php echo $GLOBALS['HOST']; ?>/account-settings">Account Settings</a> | <?php if(check_permission("Website","cpanel_access")){?><a href="<?php echo $GLOBALS['HOST']; ?>/administrator/" target="_blank">CPanel</a> | <?php } ?><a href="<?php echo $GLOBALS['HOST']; ?>/logout">Logout</a>
     <?php }else{ ?>
-			<a href="<?php echo $GLOBALS['HOST']; ?>/index.php">Register</a> | <a href="<?php echo $GLOBALS['HOST']; ?>/login.php">Login</a>
+			<a href="<?php echo $GLOBALS['HOST']; ?>/index">Register</a> | <a href="<?php echo $GLOBALS['HOST']; ?>/login.php">Login</a>
 	<?php }?>
     	</p>
 <?php }
 
 function order_doc_files($dir){
-	global $site_info;
 	$dirfiles = scandir("uploads/".$dir);
 	if($dirfiles!=false){
 		$dirfiles = array_diff($dirfiles, array('.', '..'));
@@ -495,7 +510,6 @@ function order_doc_files($dir){
 }
 
 function gallery($images_dir, $thumbs_dir, $thumbs_width, $thumbs_height, $gallname = "gall", $num_images = false){
-	global $site_info;
 	?>
 <div align="center" style="text-align:center; width:100%; padding:4px; margin-bottom:10px;">
     <?php
@@ -528,7 +542,6 @@ function gallery($images_dir, $thumbs_dir, $thumbs_width, $thumbs_height, $galln
 		<?php
 		}
 	}else{?>
-		<p>Gallery does not exist!</p>
 	<?php
     }
 	?>
@@ -708,10 +721,10 @@ function confirm_query($result){
 }
 
 function nav_button($page){
-	global $site_info;
 	?>
 <a href="<?php
-	if($page['type']=='Custom' || $page['type']=='Staff'){
+	echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($page['name']);
+/*	if($page['type']=='Custom' || $page['type']=='Staff'){
 		echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($page['name']);
 	}elseif($page['type']=='Blog'){
 		echo $GLOBALS['HOST'];?>/blog<?php
@@ -719,23 +732,21 @@ function nav_button($page){
 		echo $GLOBALS['HOST'];?>/forums<?php
 	}elseif($page['type']=='Link'){
 		echo $page['url'];
-	}
+	}*/
 	?>" <?php if($page['target']!="_self"){echo 'target="'.$page['target'].'"';} ?>><?php echo $page['name'];?></a>
 <?php
 }
 
 function nav($position, $pgselection){
 	global $connection;
-	global $site_layout;
-	global $site_info;
 	global $logo;
 
 	if($position=="mobile"){?>
         <ul id="slide-out" class="side-nav">
             <div style="height:auto; width:100%;" class="mobile-logo">
             <?php if($logo!=false){ ?>
-                <?php if($site_info['logo_url']!=''){?>
-                <a href="<?php echo $site_info['logo_url']; ?>"><img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $site_info['name']; ?> Logo" width="240" /></a>
+                <?php if($GLOBALS['site_info']['logo_url']!=''){?>
+                <a href="<?php echo $GLOBALS['site_info']['logo_url']; ?>"><img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $GLOBALS['site_info']['name']; ?> Logo" width="240" /></a>
                 <?php }else{ ?>
                 <img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" width="240" />
             <?php } 
@@ -757,7 +768,7 @@ function nav($position, $pgselection){
             <ul>
 			<?php
 			while($page=mysqli_fetch_array($result)){?>
-				<li<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php 	
+				<li<?php if($pgselection=="true"){if(isset($_GET['page'])&&urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php 	
 					
 					$query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
 					$subpgresult=mysqli_query( $connection, $query);
@@ -776,7 +787,7 @@ function nav($position, $pgselection){
                                   <div class="collapsible-body">
                                     <ul>
 									<?php while($subpage=mysqli_fetch_array($subpgresult)){?>
-                                        <li style="width:100%;"<?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php
+                                        <li style="width:100%;"<?php if($pgselection=="true"){if(isset($_GET['page'])&&urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php
                                         
                                         nav_button($subpage);
                                         
@@ -807,7 +818,7 @@ function nav($position, $pgselection){
             <?php
 			while($page=mysqli_fetch_array($result)){
 				if($page['issubpage']==0){ $lastmainpage=$page['id'];?>
-				<li<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php 
+				<li<?php if($pgselection=="true"){if(isset($_GET['page'])&&urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php 
 					
 					$query="SELECT * FROM `pages` WHERE `vert_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
 					$subpgresult=mysqli_query( $connection, $query);
@@ -826,7 +837,7 @@ function nav($position, $pgselection){
                                   <div class="collapsible-body">
                                     <ul>
 									<?php while($subpage=mysqli_fetch_array($subpgresult)){?>
-                                        <li style="width:100%;"<?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php
+                                        <li style="width:100%;"<?php if($pgselection=="true"){if(isset($_GET['page'])&&urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php
                                         
                                         nav_button($subpage);
                                         
@@ -854,9 +865,9 @@ function nav($position, $pgselection){
         <p><?php
         if(logged_in()){?>
             <?php echo "<b>".$_SESSION['username']."</b>";?>
-             | <a href="<?php echo $GLOBALS['HOST']; ?>/account-settings.php">Account Settings</a> | <?php if(check_permission("Website","cpanel_access")){?><a href="<?php echo $GLOBALS['HOST']; ?>/administrator/" target="_blank">CPanel</a> | <?php } ?><a href="<?php echo $GLOBALS['HOST']; ?>/logout.php">Logout</a>
+             | <a href="<?php echo $GLOBALS['HOST']; ?>/account-settings">Account Settings</a> | <?php if(check_permission("Website","cpanel_access")){?><a href="<?php echo $GLOBALS['HOST']; ?>/administrator/" target="_blank">CPanel</a> | <?php } ?><a href="<?php echo $GLOBALS['HOST']; ?>/logout.php">Logout</a>
         <?php }else{ ?>
-                <a href="<?php echo $GLOBALS['HOST']; ?>/index.php">Register</a> | <a href="<?php echo $GLOBALS['HOST']; ?>/login.php">Login</a>
+                <a href="<?php echo $GLOBALS['HOST']; ?>/index">Register</a> | <a href="<?php echo $GLOBALS['HOST']; ?>/login.php">Login</a>
         <?php }?>
             </p>
         </ul>
@@ -898,8 +909,9 @@ function nav($position, $pgselection){
 				while($page=mysqli_fetch_array($result)){
 					if($page['issubpage']==0){ $lastmainpage=$page['id'];
 						if(get_page_permission(unserialize($page['visible']))){?>
-	                        <li style="min-width:<?php echo $buttonwidth; ?>%;"<?php if($pgselection=="true"){if(urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><a style="min-width:<?php echo $buttonwidth; ?>%;" href="<?php
-	                                if($page['type']=='Custom' || $page['type']=='Staff'){
+	                        <li style="min-width:<?php echo $buttonwidth; ?>%;"<?php if($pgselection=="true"){if(isset($_GET['page'])&&urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><a style="min-width:<?php echo $buttonwidth; ?>%;" href="<?php
+	                        	echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($page['name']);
+/*	                                if($page['type']=='Custom' || $page['type']=='Staff'){
 	                                    echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($page['name']);
 	                                }elseif($page['type']=='Blog'){
 	                                    echo $GLOBALS['HOST'];?>/blog<?php
@@ -907,7 +919,7 @@ function nav($position, $pgselection){
 	                                    echo $GLOBALS['HOST'];?>/forums<?php
 	                                }elseif($page['type']=='Link'){
 	                                    echo $page['url'];
-	                                }
+	                                }*/
 	                            ?>" <?php if($page['target']!="_self"){echo "target=\"".$page['target']."\"";} ?>><?php echo $page['name'];?></a><?php 
 	                            if($position=="horiz"){
 	                                $query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
@@ -920,9 +932,10 @@ function nav($position, $pgselection){
 	                                <ul style="min-width:100%;">
 	                                <?php while($subpage=mysqli_fetch_array($subpgresult)){
 	                                	if(get_page_permission(unserialize($subpage['visible']))){?>
-		                                    <li style="width:100%;"<?php if($pgselection=="true"){if(urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>>
+		                                    <li style="width:100%;"<?php if($pgselection=="true"){if(isset($_GET['page'])&&urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>>
 		                                        <a href="<?php
-		                                            if($subpage['type']=='Custom' || $page['type']=='Staff'){
+		                                        	echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($subpage['name']);
+/*		                                            if($subpage['type']=='Custom' || $page['type']=='Staff'){
 		                                                echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($subpage['name']);
 		                                            }elseif($subpage['type']=='Blog'){
 		                                                echo $GLOBALS['HOST'];?>/blog<?php
@@ -930,7 +943,7 @@ function nav($position, $pgselection){
 		                                                echo $GLOBALS['HOST'];?>/forums<?php
 		                                            }elseif($subpage['type']=='Link'){
 		                                                echo $subpage['url'];
-		                                            }?>"
+		                                            }*/?>"
 		                                            <?php if($subpage['target']!="_self"){echo "target=\"".$subpage['target']."\"";} ?>><?php echo $subpage['name'];?></a>
 		                                    </li>
 		                                <?php 
@@ -962,14 +975,14 @@ function nav($position, $pgselection){
 function echo_page($num_pages, $current_page, $url){
 	if($num_pages!=1){
 		if($current_page>1){ ?>
-			<div class="col s4 l2"><a class="btn-floating red" href="<?php echo $url; ?>&page=<?php echo $current_page - 1; ?>"><i class="material-icons">keyboard_arrow_left</i></a></div>
+			<div class="col s4 l2"><a class="btn-floating red" href="<?php echo $GLOBALS['HOST'].'/'.$url; ?>&pg=<?php echo $current_page - 1; ?>"><i class="material-icons">keyboard_arrow_left</i></a></div>
 		<?php }else{ ?>
         	<div class="col s4 l2"><span class="disabled btn-floating gray"><i class="material-icons">keyboard_arrow_left</i></span></div>
         <?php
 		}
     	echo '<div class="col s4 l8 center"> Page '.$current_page.' of '.$num_pages.'</div>';
 		if($num_pages>1&&$current_page<$num_pages){ ?>
-    		<div class="col s4 l2 right" style="text-align:right"><a class="btn-floating red" href="<?php echo $url; ?>&page=<?php echo $current_page + 1; ?>"><i class="material-icons">keyboard_arrow_right</i></a></div>
+    		<div class="col s4 l2 right" style="text-align:right"><a class="btn-floating red" href="<?php echo $GLOBALS['HOST'].'/'.$url; ?>&pg=<?php echo $current_page + 1; ?>"><i class="material-icons">keyboard_arrow_right</i></a></div>
     	<?php }else{ ?>
         	<div class="col s4 l2 right" style="text-align:right"><span class="disabled gray btn-floating"><i class="material-icons">keyboard_arrow_right</i></span></div>
         <?php
@@ -978,7 +991,6 @@ function echo_page($num_pages, $current_page, $url){
 }
 
 function slider($slider_id){
-	global $site_info;
 	global $connection;
 	$query="SELECT * FROM `slider_names` WHERE `id` = ".$slider_id;
 	$result=mysqli_query( $connection, $query);

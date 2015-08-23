@@ -30,7 +30,7 @@ require_once("includes/begin_html.php");
 ?>
 <script type="text/javascript">
 function sendComment(postId){
-    $('#comment-sendbtn-'+postId).html('sending');
+    $('#comment-sendbtn-'+postId).html('<img src="images/ajax-load.gif" style="margin-left:10px; margin-top:10px;"/>');
     $.post("ajax_processing/post_blog_comment.php",
     {
         commentData: $('#blog-comment-'+postId).val(),
@@ -42,6 +42,9 @@ function sendComment(postId){
                 case 'empty':
                     Materialize.toast('Comment cannot be empty.', 8000, 'red');
                     $('#comment-sendbtn-'+postId).html('<i class="material-icons">send</i>');
+                    $('#blog-comment-'+postId).val("");
+                    $('#blog-comment-'+postId).attr('rows', '1');
+                    $('#blog-comment-'+postId).height('auto');
                     break;
                 case 'permission':
                     Materialize.toast('You do not have permission to post comments.', 8000, 'red');
@@ -58,6 +61,8 @@ function sendComment(postId){
                 default:
                     $("#comment-block-"+postId).append(data);
                     $('#blog-comment-'+postId).val("");
+                    $('#blog-comment-'+postId).attr('rows', '1');
+                    $('#blog-comment-'+postId).height('auto');
                     $('#comment-sendbtn-'+postId).html('<i class="material-icons">send</i>');
                     break;
             }
@@ -112,9 +117,9 @@ function delComment(postId){
 	?>
     <table width="200" border="0">
   <tr>
-    <td><?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="btn red" href="blog.php?delpost=<?php echo $post['id'] ?>">Delete</a><?php } ?></td>
-    <td><?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="btn blue" href="edit_blog_post.php?post=<?php echo $post['id'] ?>">Edit</a><?php } ?></td>
-    <td><a class="btn blue" href="blog.php">Back</a></td>
+    <td><?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="btn red" href="page/<?php echo $GLOBALS['blog_page']; ?>?delpost=<?php echo $post['id']; ?>">Delete</a><?php } ?></td>
+    <td><?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="btn blue" href="edit_blog_post?post=<?php echo $post['id'] ?>">Edit</a><?php } ?></td>
+    <td><a class="btn blue" href="<?php echo $GLOBALS['HOST']."/page/".urlencode($page_properties['name']);?>">Back</a></td>
   </tr>
 </table>
 <table width="100%" height="100%" class="blog">
@@ -158,7 +163,8 @@ function delComment(postId){
                                 include("ajax_processing/get_blog_comments.php"); ?>
                             </div>
                             <?php if(check_permission("Blog","post_comment")){?>
-                            <input type="text" id="blog-comment-<?php echo $post['id'];?>" maxlength="1000" placeholder="Write a comment..." style="width:300px;" /><a onclick="sendComment(<?php echo $post['id'];?>)" id="comment-sendbtn-<?php echo $post['id'];?>" class="btn-floating green" ><i class="material-icons">send</i></a>
+                            <br />
+                            <textarea id="blog-comment-<?php echo $post['id'];?>" maxlength="1000" rows="1" placeholder="Write a comment..." style="width:300px; height:30px; resize:none; border-bottom:1px solid; margin-right:5px;" /></textarea><a onclick="sendComment(<?php echo $post['id'];?>)" id="comment-sendbtn-<?php echo $post['id'];?>" class="btn-floating green" ><i class="material-icons">send</i></a>
                             <?php } ?>
                         </div>
                     </td>

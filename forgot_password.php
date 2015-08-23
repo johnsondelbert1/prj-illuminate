@@ -19,10 +19,10 @@ if(isset($_POST['submit'])){
 			$to = $user['email'];
 			$email_subject = "Forgotten Password";
 			$email_message = "Username: ".$user['username']." New Password: ".$newpass;
-			if($site_info['contact_email']!=""){
-				$headers = "From: ".$site_info['contact_email'].PHP_EOL;
+			if($GLOBALS['site_info']['contact_email']!=""){
+				$headers = "From: ".$GLOBALS['site_info']['contact_email'].PHP_EOL;
 			}else{
-				$headers = "From: ".$site_info['name'].PHP_EOL;
+				$headers = "From: ".$GLOBALS['site_info']['name'].PHP_EOL;
 			}
 			
 			mail ( $to , $email_subject , $email_message , $headers );

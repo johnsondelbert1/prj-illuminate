@@ -3,6 +3,10 @@ require_once("includes/functions.php");
 ?>
 <?php
 
+$query="SELECT * FROM `pages` WHERE `type` = 'Blog' ";
+$result_page_prop=mysqli_query( $connection, $query);
+$page_properties = mysqli_fetch_array($result_page_prop);
+
 if(!isset($_GET['post'])){
 	redirect_to($GLOBALS['HOST']."/blog");	
 }
@@ -163,8 +167,8 @@ require_once("includes/begin_html.php");
   <table width="200" border="0">
   <tr>
     <td><input class="btn green" type="submit" name="submit" value="Save" /></td>
-    <td><a class="btn red" href="blog.php?delpost=<?php echo $_GET['post']; ?>">Delete</a></td>
-    <td><a class="btn blue" href="blog.php">Cancel</a></td>
+    <td><a class="btn red" href="page/<?php echo $GLOBALS['blog_page']; ?>?delpost=<?php echo $_GET['post']; ?>">Delete</a></td>
+    <td><a class="btn blue" href="<?php echo $GLOBALS['HOST']."/page/".urlencode($page_properties['name']);?>">Cancel</a></td>
   </tr>
 </table>
   </td>

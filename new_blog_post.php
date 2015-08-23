@@ -10,7 +10,7 @@ if(isset($_POST['submit'])){
 	if($_POST['title']!=""){
 		$content=strip_tags(nl2br(mysqli_real_escape_string($connection, $_POST['content'])), "<b><a><p><img><br><hr><ul><ol><li><sup><sub><video><source>");
 		$title=strip_tags(mysqli_real_escape_string($connection, $_POST['title']));
-		date_default_timezone_set($site_info['timezone']);
+		date_default_timezone_set($GLOBALS['site_info']['timezone']);
 		$date=date("Y/m/d H:i:s", time());
 
 		if(isset($_POST['allowComments'])){
@@ -93,7 +93,7 @@ require_once("includes/begin_html.php");
   <table width="200" border="0">
   <tr>
     <td><input class="btn green" class="button" type="submit" name="submit" value="Submit" /></td>
-    <td><a class="btn red" href="blog.php">Cancel</a></td>
+    <td><a class="btn red" href="/page/<?php echo $GLOBALS['blog_page']; ?>">Cancel</a></td>
   </tr>
 </table>
   </td>
