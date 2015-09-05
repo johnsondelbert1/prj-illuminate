@@ -8,8 +8,8 @@ CREATE TABLE IF NOT EXISTS `blog_comments` (
   `date_posted` datetime NOT NULL,
   `editor_id` int(11) NOT NULL,
   `date_edited` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`)
+  PRIMARY KEY (`bc_id`),
+  UNIQUE KEY `ic_id` (`bc_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ALTER TABLE `blog` ADD `comments_allowed` BOOLEAN NOT NULL DEFAULT TRUE ;
 ALTER TABLE `users` ADD `old_pass` BOOLEAN NOT NULL DEFAULT TRUE ;
