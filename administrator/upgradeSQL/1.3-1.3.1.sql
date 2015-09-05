@@ -14,4 +14,5 @@ CREATE TABLE IF NOT EXISTS `blog_comments` (
 ALTER TABLE `blog` ADD `comments_allowed` BOOLEAN NOT NULL DEFAULT TRUE ;
 ALTER TABLE `users` ADD `old_pass` BOOLEAN NOT NULL DEFAULT TRUE ;
 ALTER TABLE `users` CHANGE `hashed_pass` `hashed_pass` VARCHAR(255) NOT NULL;
+ALTER TABLE `users` ADD `chng_pass_authcode` VARCHAR(255) NOT NULL , ADD `chng_pass_authcode_date` DATETIME NOT NULL ;
 UPDATE `site_info` SET `version` = '1.3.1' WHERE `site_info`.`id` = 1;

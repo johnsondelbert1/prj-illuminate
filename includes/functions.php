@@ -389,8 +389,7 @@ function get_user($id){
 	return $user_info=mysqli_fetch_array($result);
 }
 
-function randstring() {
-    $length = 16;
+function randstring($length = 16) {
     $characters = "0123456789abcdefghijklmnopqrstuvwxyz";
     $string = "";    
     for ($p = 0; $p < $length; $p++) {
@@ -739,7 +738,12 @@ function nav_button($page){
 
 function nav($position, $pgselection){
 	global $connection;
-	global $logo;
+	$logo = scandir("images/logo/");
+	if(isset($logo[2])){
+		$logo = $logo[2];
+	}else{
+		$logo = false;
+	}
 
 	if($position=="mobile"){?>
         <ul id="slide-out" class="side-nav">

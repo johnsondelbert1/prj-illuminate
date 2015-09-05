@@ -33,7 +33,7 @@ require_once("includes/begin_html.php");
         <div class="col s12 l2"><input class="green btn" type="submit" name="submit" value="Login" /><br /><br />
       </div>
       <div class="row">
-      <div class="col s12 l12">(Forgot password/Username?)</a></td>
+      <div class="col s12 l12"><a href="forgot_password_request">(Forgot password/Username?)</a></td>
       </div>
 </form>
 
