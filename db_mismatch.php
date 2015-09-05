@@ -53,6 +53,12 @@ require("includes/globals.php");
 	div.content h2, div.content h3{
 		color:#FFA3A4;
 	}
+	div.content span{
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		padding: 5px;
+	}
 </style>
 </head>
 
@@ -63,6 +69,7 @@ require("includes/globals.php");
     <h2>Error: Database Version Mismatch</h2>
     <h3>Database needs to be updated to version <?php echo $db_compatability; ?></h3>
     <h3>Current database version: <?php echo $dbversion['version']; ?></h3>
+    <span>Web Ver: <?php echo $site_version; ?></span>
 </div>
 </body>
 </html>

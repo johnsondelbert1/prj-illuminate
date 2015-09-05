@@ -22,7 +22,7 @@ if(isset($_GET['success'])){
     <!-- Basic Page Needs
   ================================================== -->
     <meta charset="utf-8">
-    <title>Login to <?php echo $site_info['name']; ?> CPanel</title>
+    <title>Login to <?php echo $GLOBALS['site_info']['name']; ?> CPanel</title>
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="images/favicon.png" />
@@ -86,7 +86,7 @@ if(isset($_GET['success'])){
  <img src="images/logo.png"  alt=""/></div>
             <div id="login" class="form-action show">
             	<?php if(!empty($message)){echo $message;} ?>
-                <h1><?php echo $site_info['name']; ?></h1>
+                <h1><?php echo $GLOBALS['site_info']['name']; ?></h1>
                 <div class="row">
 				<form method="post" action="../login/login.php" class="col s12" >
                 <input type="hidden" name="redirect_to" value="administrator/index.php"/>

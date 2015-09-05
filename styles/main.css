@@ -16,22 +16,32 @@ height:100%;
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen 
 and (max-device-width : 1023px) {
+
 	.nav, #vert-td{
 	min-height:159px;
 	display:none!important;
 	}
+
 	#logo, #socnet, #login-status{
 		display:none!important;
 	}
+
 	#footer-content{
 		width:100%!important;
 	}
+
 	.header{
 	height:auto !important;
-}
+	}
+
 	#contentwrap{
 	padding-top:0px!important;
-}
+	}
+
+	span.del-blog-comment{
+		visibility: visible;
+		cursor: pointer;
+	}
 	/*html, body{
 font-size: 1em;
 }*/
@@ -72,6 +82,13 @@ and (min-width : 1024px) {
 
 .headericon{
 	display:none!important;
+}
+.blog-comments li:hover span.del-blog-comment{
+	visibility: visible;
+}
+span.del-blog-comment{
+	visibility: hidden;
+	cursor: pointer;
 }
 }
 /* Large screens ----------- */
@@ -1038,7 +1055,7 @@ h3.message
 }
 .blogbody{
 	padding:0px 5px 10px 5px;
-	
+	word-break: break-all;
 }
 .blog{
 	color: #333333;
@@ -1050,6 +1067,23 @@ h3.message
 	font-size:0.875rem;
 	padding:0px 5px 10px 5px;
 	
+}
+.blog-comments{
+	height: 100%;
+	padding: 10px;
+	border-top: dashed;
+}
+.blog-comments ul{
+	height: 100%;
+	width: 100%;
+	padding-top: 10px;
+}
+.blog-comments li{
+	word-break: break-all;
+	margin-bottom: 8px;
+}
+span.linkspan{
+	cursor: pointer;
 }
 /*forums
 .forum{

@@ -1,6 +1,6 @@
 <?php
 require_once("includes/functions.php");
-if($site_info['published']==1){
+if($GLOBALS['site_info']['published']==1){
 	redirect_to($GLOBALS['HOST']."/index.php");
 }
 ?>

@@ -87,7 +87,7 @@ require_once("includes/functions.php");
 require_once("includes/begin_html.php");
 ?>
 <h1><?php echo $forum['name']; ?></h1>
-<a style="text-decoration:none;" href="forums.php"><?php echo $site_info['name']; ?> Forums</a> &gt; <a style="text-decoration:none;" href="view_forum.php?forum=<?php echo $forum['id']; ?>"><?php echo $forum['name']; ?></a>
+<a style="text-decoration:none;" href="forums.php"><?php echo $GLOBALS['site_info']['name']; ?> Forums</a> &gt; <a style="text-decoration:none;" href="view_forum.php?forum=<?php echo $forum['id']; ?>"><?php echo $forum['name']; ?></a>
 <?php if(check_permission("Forum","add_thread")){?>
 	<br /><br /><a class="green btn " href="new_topic.php?forum=<?php echo urlencode($forum['id']); ?>&amp;&amp;action=newthread">New</a>
 <?php }

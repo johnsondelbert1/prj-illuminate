@@ -12,11 +12,12 @@ if(isset($_SESSION['username'])){
 	unset($_SESSION['username']);
 }
 
-if(isset($_COOKIE[session_name("login")])){
-	setcookie(session_name("login"),'',time()-42000,'/');
+if(isset($_COOKIE[session_name()])){
+	setcookie(session_name(), "", time()-3600, '/');
 }
 if(isset($_COOKIE['rememberme'])){
-	setcookie("rememberme", "", time()-3600);	
+	unset($_COOKIE['rememberme']);
+	setcookie("rememberme", "", time()-3600, '/');
 }
 
 session_destroy();

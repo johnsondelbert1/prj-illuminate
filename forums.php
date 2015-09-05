@@ -61,16 +61,6 @@ require_once("includes/functions.php");
 $query="SELECT * FROM `pages` WHERE `type` = 'Forum'";
 $result_page_prop=mysqli_query( $connection, $query);
 $page_properties = mysqli_fetch_array($result_page_prop);
-
-$pgsettings = array(
-	"title" => $site_info['name']." Forums",
-	"pageselection" => "forum",
-	"nav" => $page_properties['horiz_menu_visible'],
-	"banner" => $page_properties['banner'],
-	"slider" => $page_properties['slider'],
-	"use_google_analytics" => 1,
-);
-require_once("includes/begin_html.php");
 ?>
 
 <script type="text/javascript">
@@ -84,7 +74,7 @@ $(document).ready(function () {
 <h1>Welcome to the Forums!</h1>
   <?php
 	if((isset($_GET['action'])&&$_GET['action']=="editforum")&&isset($_GET['forumid'])&&check_permission("Forum","edit_forum")){?>
-		<form action="forums.php?forumid=<?php echo urlencode($_GET['forumid']) ?>" method="post">
+		<form action="<?php echo $_SERVER['REQUEST_URI']; ?>?forumid=<?php echo urlencode($_GET['forumid']) ?>" method="post">
         <?php if(isset($_GET['action'])&&$_GET['action']=="editforum"){
 			$query="SELECT name, description FROM forums WHERE id={$_GET['forumid']}";
 			$result=mysqli_query( $connection, $query);
@@ -164,7 +154,7 @@ $(document).ready(function () {
                     <td><?php if($threadcount != 0){echo date("m/d/Y h:i A" ,strtotime($messagedate['date']));}else{echo "N/A";} ?></td>
                     <?php if(check_permission(array("Forum;add_delete_forum","Forum;edit_forum",))){?>
                     <td style="text-align:center;">
-						<?php if(check_permission("Forum","edit_forum")){?><a class="btn-floating blue" href="forums.php?action=editforum&&forumid=<?php echo urlencode($forum['id']);?>"><i class="mdi-editor-mode-edit"></i></a><?php } ?>
+						<?php if(check_permission("Forum","edit_forum")){?><a class="btn-floating blue" href="<?php echo $_SERVER['REQUEST_URI']; ?>?action=editforum&&forumid=<?php echo urlencode($forum['id']);?>"><i class="mdi-editor-mode-edit"></i></a><?php } ?>
                     	<?php if(check_permission("Forum","add_delete_forum")){?><a class="modal-trigger btn-floating red btn-click-action" href="#modal1" name="<?php echo urlencode($forum['id']);?>"><i class="mdi-action-delete"></i></a><?php } ?>
                     </td>
                     <?php } ?>
