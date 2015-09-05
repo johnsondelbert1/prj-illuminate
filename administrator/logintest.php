@@ -22,7 +22,7 @@ if(isset($_GET['success'])){
     <!-- Basic Page Needs
   ================================================== -->
     <meta charset="utf-8">
-    <title>Login to <?php echo $site_info['name']; ?> CPanel</title>
+    <title>Login to <?php echo $GLOBALS['site_info']['name']; ?> CPanel</title>
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="images/favicon.png" />
@@ -163,7 +163,7 @@ input:focus ~ .highlight {
 <body>
 <div class="container">
   
-  <h2><?php echo $site_info['name']; ?><small>Login</small></h2>
+  <h2><?php echo $GLOBALS['site_info']['name']; ?><small>Login</small></h2>
   
   <form>
     

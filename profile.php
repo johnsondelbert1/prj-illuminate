@@ -61,9 +61,9 @@ require_once("includes/begin_html.php"); ?>
     <br />
 
     <?php if(check_permission("Users","delete_users")){?>
-		<div style="background-color:#8B8B8B; border-radius:5px; padding:5px;">
+<!-- 		<div style="background-color:#8B8B8B; border-radius:5px; padding:5px;">
 			<a href="#" onclick="confirmdelete()">Ban this account</a>
-		</div>
+		</div> -->
     <?php }?>
 <table width="100%" border="0" cellspacing="5" cellpadding="0" style="background-color:#8B8B8B; border-radius:5px; padding:5px; text-align:center;">
   <tr>
@@ -84,39 +84,9 @@ require_once("includes/begin_html.php"); ?>
             <td class="heading">Date Joined:</td>
             <td class="read"><?php echo date("m/d/Y" ,strtotime($user['created'])); ?></td>
           </tr>
-          <?php if($user['emailvisible']==1){?>
           <tr>
             <td class="heading">Email:</td>
             <td class="read"><?php echo $user['email'];?></td>
-          </tr>
-          <?php }
-		  if(!empty($user['minecraft_username'])){ ?>
-          <tr>
-            <td class="heading">Minecraft Username:</td>
-            <td class="read"><?php echo $user['minecraft_username']; ?></td>
-          </tr>
-          <?php }
-          if(!empty($user['location'])&&$user['locationvisible']==1){ ?>
-          <tr>
-            <td class="heading">Location:</td>
-            <td class="read"><?php echo $user['location'];?></td>
-          </tr>
-          <?php }
-		  if($user['agevisible']==1){ ?>
-          <tr>
-            <td class="heading">Age:</td>
-            <td class="read"><?php echo get_age($user['dob']);?></td>
-          </tr>
-          <?php }
-          if(!empty($user['gender'])&&$user['gendervisible']==1){ ?>
-          <tr>
-            <td class="heading">Gender:</td>
-            <td class="read"><?php echo $user['gender'];?></td>
-          </tr>
-          <?php } ?>
-          <tr>
-            <td class="heading">Forum Posts:</td>
-            <td class="read"><?php echo $user['forumpostcount']?></td>
           </tr>
           
           <tr>
@@ -127,20 +97,19 @@ require_once("includes/begin_html.php"); ?>
 
     </td>
   </tr>
-  <tr>
+<!--   <tr>
   	<td>
     	<a href="compose_mail.php?user=<?php echo urlencode($user['username'])?>"><img src="images/mail.png" alt"Message <?php echo $user['username']; ?>"/> (Message <?php echo $user['username'];?>)</a>
     </td>
-  </tr>
+  </tr> -->
   <tr>
-    <td colspan="2" align="center"><?php
-		$query="SELECT * FROM mcforummessages
-				WHERE poster='{$_GET['user']}' 
-				ORDER BY date DESC 
-				LIMIT 0,5";
-		$messagequery=mysql_query($query,$connection);
+    <td colspan="2" align="center">
+    <h3>Forum Posts</h3>
+    <?php
+		$query="SELECT * FROM `forum_posts` WHERE `poster`='{$user['username']}' ORDER BY `date` DESC LIMIT 0,5";
+		$messagequery=mysqli_query($connection, $query);
 		confirm_query($messagequery);
-		if(mysql_num_rows($messagequery)!=0){?>
+		if(mysqli_num_rows($messagequery)!=0){?>
         
         <div id="CollapsiblePanel1" class="CollapsiblePanel">
           <div class="CollapsiblePanelTab" tabindex="0">Recent Forum Posts</div>
@@ -150,12 +119,12 @@ require_once("includes/begin_html.php"); ?>
 
         <?php 
 		while($forummessage=mysql_fetch_array($messagequery)){
-			$query="SELECT * FROM mcthreads
+			$query="SELECT * FROM `forum_threads`
 					WHERE id={$forummessage['threadid']}";
 			$threadquery=mysql_query($query,$connection);
 			confirm_query($threadquery);
 			$thread=mysql_fetch_array($threadquery);
-			$query="SELECT * FROM mcforums
+			$query="SELECT * FROM `forums`
 					WHERE id={$forummessage['forumid']}";
 			$forumquery=mysql_query($query,$connection);
 			confirm_query($forumquery);
@@ -189,5 +158,5 @@ require_once("includes/begin_html.php"); ?>
 var CollapsiblePanel1 = new Spry.Widget.CollapsiblePanel("CollapsiblePanel1", {contentIsOpen:false});
 </script>
 <?php
-include("includes/footer.php");
+include("includes/end_html.php");
 ?>
