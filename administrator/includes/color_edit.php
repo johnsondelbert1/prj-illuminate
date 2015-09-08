@@ -66,7 +66,7 @@
                 $selector_query="SELECT * FROM `css_selectors` WHERE `style_color_id` = {$style_color['cid']}";
                 $selector_result=mysqli_query( $connection, $selector_query);
                 while($css_selector=mysqli_fetch_array($selector_result)){?>
-                    <li id="<?php echo $css_selector['sid']; ?>"><?php echo $color_styles[$css_selector['s_name']]['disp_name']; ?></li>
+                    <li id="<?php echo $css_selector['sid']; ?>"><?php echo $GLOBALS['color_styles'][$css_selector['s_name']]['disp_name']; ?></li>
                 <?php } ?>
             </ul>
             <a href="site-settings.php?tab=1&delcolor=<?php echo $style_color['cid']; ?>">

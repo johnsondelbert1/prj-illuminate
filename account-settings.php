@@ -11,22 +11,35 @@ $noval="--";
 				$npass=$_POST['npass'];
 				$cnpass=$_POST['cnpass'];
 				$hashedcpass=sha1($cpass);
-				$hashednpass=sha1($npass);
+				$hashednpass=password_hash($npass, PASSWORD_DEFAULT);
 				if($npass==$cnpass){
-					$query="SELECT hashed_pass FROM users
+					$query="SELECT hashed_pass, old_pass FROM users
 							WHERE `id`={$_SESSION['user_id']}";
 					$result=mysqli_query($connection, $query);
 					confirm_query($result);
 					$pass=mysqli_fetch_array($result);
-					if($pass['hashed_pass']==$hashedcpass){
-						$query="UPDATE `users` SET 
-								`hashed_pass` = '{$hashednpass}' 
-								WHERE `id` = {$_SESSION['user_id']}";
-						$result=mysqli_query($connection, $query);
-						confirm_query($result);
-						$success="Your password has been changed.";
+					if($pass['old_pass'] == 0){
+						if(password_verify($cpass, $pass['hashed_pass'])){
+							$query="UPDATE `users` SET 
+									`hashed_pass` = '{$hashednpass}' 
+									WHERE `id` = {$_SESSION['user_id']}";
+							$result=mysqli_query($connection, $query);
+							confirm_query($result);
+							$success="Your password has been changed.";
+						}else{
+							$error="The current password you entered does not match your password.";
+						}
 					}else{
-						$error="The current password you entered does not match your password.";
+						if($pass['hashed_pass']==$hashedcpass){
+							$query="UPDATE `users` SET 
+									`hashed_pass` = '{$hashednpass}' 
+									WHERE `id` = {$_SESSION['user_id']}";
+							$result=mysqli_query($connection, $query);
+							confirm_query($result);
+							$success="Your password has been changed.";
+						}else{
+							$error="The current password you entered does not match your password.";
+						}
 					}
 				}else{
 					$error="Confirm new password does not match New password.";
@@ -149,7 +162,7 @@ require_once("includes/begin_html.php");
 </div>
 </form>
 </div>
-</div>
+
 <?php
 	require_once("includes/end_html.php");
 ?>

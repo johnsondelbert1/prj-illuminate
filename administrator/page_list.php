@@ -56,8 +56,6 @@ if(isset($_GET['page'])){
 }
 function list_pages($queryresult, $pagetype, $is_subpg = false){
 	global $connection;
-	global $site_info;
-	global $site_layout;
 	?>
     <?php if($is_subpg == false){ ?>
     <table style=" text-align:left;" width="100%"  class="list" cellpadding="0" cellspacing="0" id="page">

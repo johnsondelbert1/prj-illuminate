@@ -165,7 +165,7 @@ if(isset($_POST['socialnet'])){
 		
 		$urls = array();
 		$enabled = array();
-		foreach($soc_networks as $network){
+		foreach($GLOBALS['soc_networks'] as $network){
 			if(isset($_POST[$network.'_enabled'])){$enabled[$network.'_enabled'] = 1;}else{$enabled[$network.'_enabled'] = 0;}
 			
 			$preurl = mysqli_real_escape_string($connection, $_POST[$network.'_url']);
@@ -183,9 +183,9 @@ if(isset($_POST['socialnet'])){
 		
 		$query="UPDATE `site_info` SET ";
 		$i = 0;
-		foreach($soc_networks as $network){
-			$query.="`".$soc_networks[$i]."_url` = '".$urls[$network.'_url']."', `".$soc_networks[$i]."_enabled` = ".$enabled[$network.'_enabled'];
-			if(($i+1)  != count($soc_networks)){
+		foreach($GLOBALS['soc_networks'] as $network){
+			$query.="`".$GLOBALS['soc_networks'][$i]."_url` = '".$urls[$network.'_url']."', `".$GLOBALS['soc_networks'][$i]."_enabled` = ".$enabled[$network.'_enabled'];
+			if(($i+1)  != count($GLOBALS['soc_networks'])){
 				$query.=", ";
 			}
 			$i++;
@@ -196,7 +196,7 @@ if(isset($_POST['socialnet'])){
 		
 		$query="SELECT * FROM `site_info` WHERE `id` = 1";
 		$result=mysqli_query( $connection, $query);
-		$site_info=mysqli_fetch_array($result);
+		$GLOBALS['site_info']=mysqli_fetch_array($result);
 	}else{
 		$error="You do not have permission to edit Social Networks.";
 	}
@@ -650,8 +650,8 @@ $result_pages=mysqli_query($connection, $query);
 <form method="post" enctype="multipart/form-data" action="site-settings.php?tab=3">
 	<?php 
 	$i = 0;
-	foreach($soc_networks as $network){ ?>
-    	<input type="text" maxlength="256" style="width:400px;" id="<?php echo $soc_networks_names[$i]; ?>" placeholder="http://" value="<?php echo $site_info[$network.'_url']; ?>" name="<?php echo $network; ?>_url" /><label for="<?php echo $soc_networks_names[$i]; ?>>"><input name="<?php echo $network; ?>_enabled" id="<?php echo $network; ?>_enabled" type="checkbox"<?php if($site_info[$network.'_enabled']){echo  "checked";} ?> /><label for="<?php echo $network; ?>_enabled">Enabled</label><br><br>
+	foreach($GLOBALS['soc_networks'] as $network){ ?>
+    	<input type="text" maxlength="256" style="width:400px;" id="<?php echo $GLOBALS['soc_networks_names'][$i]; ?>" placeholder="http://" value="<?php echo $GLOBALS['site_info'][$network.'_url']; ?>" name="<?php echo $network; ?>_url" /><label for="<?php echo $GLOBALS['soc_networks_names'][$i]; ?>>"><input name="<?php echo $network; ?>_enabled" id="<?php echo $network; ?>_enabled" type="checkbox"<?php if($GLOBALS['site_info'][$network.'_enabled']){echo  "checked";} ?> /><label for="<?php echo $network; ?>_enabled">Enabled</label><br><br>
     <?php 
 		$i++;
 	} ?>
@@ -678,7 +678,7 @@ $result_pages=mysqli_query($connection, $query);
             by<br>
             <a href="http://secondgenerationdesign.com" target="_blank"><strong>Second Gen Design</strong></a><br><br>
             Website Version: <?php echo $site_version; ?><br>
-            Database Version: <?php echo $site_info['version']; ?><br><br>
+            Database Version: <?php echo $GLOBALS['site_info']['version']; ?><br><br>
             (Backwards compatable to database version <?php echo $db_compatability; ?>)
       </div>
   </div>

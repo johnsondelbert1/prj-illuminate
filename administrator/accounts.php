@@ -12,7 +12,7 @@ if(isset($_POST['submit'])){
 		$email=strip_tags(trim(mysql_prep($_POST['newemail']), " \t\n\r\0\x0B"));
 		$pass=strip_tags(mysql_prep($_POST['newpass']));
 		$confpass=strip_tags(mysql_prep($_POST['newconfpass']));
-		$hashed_pass=sha1($pass);
+		$hashed_pass=password_hash($pass, PASSWORD_DEFAULT);
 		
 		if ($user!="" && $email!="" && $pass!=""){
 			if($pass==$confpass){
@@ -25,9 +25,9 @@ if(isset($_POST['submit'])){
 						$date=date("Y/m/d H:i:s", time());
 						
 						$query="INSERT INTO `users` (
-											username, created, email, hashed_pass, rank
+											username, created, email, hashed_pass, rank, old_pass
 										) VALUES (
-											'{$user}', '{$date}', '{$email}', '{$hashed_pass}', {$_POST['rank']})";
+											'{$user}', '{$date}', '{$email}', '{$hashed_pass}', {$_POST['rank']}), '0'";
 								$result=mysqli_query( $connection, $query);
 								$success="Account created!";
 					}else{

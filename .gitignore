@@ -8,3 +8,4 @@ includes/database.xml
 includes/database.xml
 *.db
 includes/database.xml
+*.db
