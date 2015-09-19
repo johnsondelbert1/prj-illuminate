@@ -891,24 +891,25 @@ function rrename($source, $destination, $is_rec = false)
 // After more feedback will merge it with rrename
 function rrename_after_cleaner($source)
 {
-	$files = scandir($source);
+	if(file_exists($source)){
+		$files = scandir($source);
 
-	foreach ($files as $file)
-	{
-		if ($file != "." && $file != "..")
+		foreach ($files as $file)
 		{
-			if (is_dir($source . DIRECTORY_SEPARATOR . $file))
+			if ($file != "." && $file != "..")
 			{
-				rrename_after_cleaner($source . DIRECTORY_SEPARATOR . $file);
-			}
-			else
-			{
-				unlink($source . DIRECTORY_SEPARATOR . $file);
+				if (is_dir($source . DIRECTORY_SEPARATOR . $file))
+				{
+					rrename_after_cleaner($source . DIRECTORY_SEPARATOR . $file);
+				}
+				else
+				{
+					unlink($source . DIRECTORY_SEPARATOR . $file);
+				}
 			}
 		}
+		return rmdir($source);
 	}
-
-	return rmdir($source);
 }
 
 /**
