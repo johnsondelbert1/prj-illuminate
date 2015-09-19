@@ -1,0 +1,4 @@
+[11-Sep-2015 06:48:55 Europe/Rome] PHP Warning:  scandir(../source/): failed to open dir: No such file or directory in /home/secgende/public_html/uploader/filemanager/dialog.php on line 462
+[11-Sep-2015 06:48:55 Europe/Rome] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/secgende/public_html/uploader/filemanager/dialog.php on line 462
+[11-Sep-2015 06:48:55 Europe/Rome] PHP Warning:  Invalid argument supplied for foreach() in /home/secgende/public_html/uploader/filemanager/dialog.php on line 471
+[11-Sep-2015 06:48:55 Europe/Rome] PHP Warning:  Invalid argument supplied for foreach() in /home/secgende/public_html/uploader/filemanager/dialog.php on line 950

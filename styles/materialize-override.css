@@ -1,0 +1,25 @@
+.card a{
+	overflow: visible;
+}
+*, *:before, *:after {
+	box-sizing: content-box;
+  }
+ td, th {
+	padding: 0;
+	display: table-cell;
+	text-align: left;
+	vertical-align: middle;
+	border-radius: 0;
+}
+.side-nav a{
+	font-size: 1.25rem;
+	display: inline;
+	height: 50px;
+	line-height: 50px;
+}
+.collapsible-header i{
+	font-size: 1.75rem;
+	float: right;
+	margin-right: 0;
+	margin-top: 5px;
+}

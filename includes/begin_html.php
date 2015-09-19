@@ -68,19 +68,21 @@ if(isset($bg[2])){
     <?php if($GLOBALS['site_info']['meta_tags']!=""){
 		echo $GLOBALS['site_info']['meta_tags'];
 	}?>
-    
     <!-- End custom meta tags -->
+
+    <link href="<?php echo $GLOBALS['HOST']; ?>/materialize/css/materialize.css" rel="stylesheet" type="text/css" media="screen,projection"/>
+    <link href="<?php echo $GLOBALS['HOST']; ?>/styles/materialize-override.css" rel="stylesheet" type="text/css" media="screen,projection"/>
     <link href="<?php echo $GLOBALS['HOST']; ?>/administrator/styles/fonts.css" rel="stylesheet" type="text/css" />
     <?php if($favicon!=false){ ?><link rel="shortcut icon" href="<?php echo $GLOBALS['HOST']; ?>/images/favicon/<?php echo $favicon; ?>" /><?php } ?>
     <link href="<?php echo $GLOBALS['HOST']; ?>/styles/uploadfilemulti.css" rel="stylesheet" />
     <link href="<?php echo $GLOBALS['HOST']; ?>/styles/main.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo $GLOBALS['HOST']; ?>/styles/animate.css" rel="stylesheet" type="text/css" />
-    <link href="<?php echo $GLOBALS['HOST']; ?>/styles/materialize.css" rel="stylesheet" type="text/css" media="screen,projection"/>
+    <!-- <link href="<?php echo $GLOBALS['HOST']; ?>/styles/materialize.css" rel="stylesheet" type="text/css" media="screen,projection"/> -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="<?php echo $GLOBALS['HOST']; ?>/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css" media="screen" charset="utf-8" />
     <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/SpryTabbedPanels.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
-    <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/materialize.min.js"></script>
+    <script src="<?php echo $GLOBALS['HOST']; ?>/materialize/js/materialize.js"></script>
     <script type="text/javascript" src="<?php echo $GLOBALS['HOST']; ?>/prettyphoto/js/jquery.prettyPhoto.js" charset="utf-8"></script>
     <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/jquery.fileuploadmulti.min.js"></script>
     <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/autosize.js"></script>

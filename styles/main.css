@@ -6,7 +6,7 @@
 	padding: 0px;
 	font-family:'Roboto', Arial, Helvetica, sans-serif;
 	text-shadow: 0 0 1px rgba(51,51,51,0.2);
-	font-size: 1em;
+	/*font-size: 1em;*/
 }
 html, body{
 overflow-y: auto;
@@ -94,12 +94,40 @@ span.del-blog-comment{
 /* Large screens ----------- */
 @media only screen 
 and (min-width : 1824px) {
-/* Styles */
 }
+
+/* Mobile Menu Styles */
+
+.side-nav hr{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
 .mobile-login{
-	bottom:0;
-	
+	font-size: 1rem;
+	line-height: 0.5rem;
+	height: 260px;
 }
+.mobile-login a{
+	font-size: 1.25rem;
+	margin: 0;
+}
+.mobile-login li{
+	height: 45px;
+	vertical-align: center;
+}
+.mobile-login span.mobile-login-username{
+	display: block;
+	height: auto;
+	line-height: 2rem;
+	font-size: 2rem;
+	text-align: center;
+	font-weight: bold;
+	width: 100%;
+}
+
+/* End Mobile Menu Styles */
+
 body{
 	overflow-x: hidden;
 	margin:0;
@@ -131,6 +159,7 @@ body{
 }
 #content .custom{
 	padding: 10px;
+	overflow-x: auto;
 }
 .header{
 	max-width:1880px;
@@ -167,7 +196,10 @@ h2{
 	margin-bottom:10px;s
 	text-align:center;
 }*/
-h1 { font-size: 2em; }
+h1 {
+	font-size: 3em;
+	text-align: center;
+}
 h2 { font-size: 1.5em; }
 h3 { font-size: 1.17em; }
 h5 { font-size: .83em; }
@@ -1039,6 +1071,7 @@ h3.message
 /*Blog*/
 .title{
 	padding:5px;
+	padding-left: 10px;
 	font-weight:900;
 }
 .title a{
@@ -1061,7 +1094,9 @@ h3.message
 	color: #333333;
 	background: #ccc;
 	margin:0;
+	margin-bottom: 25px;
 	border-spacing:0;
+	overflow: visible;
 }
 .blogfooter{
 	font-size:0.875rem;
@@ -1168,6 +1203,7 @@ input[type=password]
 	background:#fff;
 	border:none;
 	outline:none;
+	border-bottom: 1px solid;
 }
 input[type="text"]:disabled{
 	background-color:#D0D0D0;
