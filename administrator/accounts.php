@@ -101,7 +101,6 @@ if(isset($_POST['upd_ranks'])){
 	);
 	require_once("includes/begin_cpanel.php");
 ?>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript">
    <!-- jQuery for "Select All" checkboxes -->
     $(document).ready(function() {
