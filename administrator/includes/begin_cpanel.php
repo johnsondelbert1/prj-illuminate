@@ -66,12 +66,15 @@ if(isset($bg[2])){
     <script type="text/javascript" src="../jscolor/jscolor.js"></script>
     <script src="jscripts/SpryTabbedPanels.js" type="text/javascript"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    
+    <link href="../materialize/css/materialize.css" rel="stylesheet" type="text/css" media="screen,projection"/>
+    <link href="styles/materialize-override.css" rel="stylesheet" type="text/css" media="screen,projection"/>
     <link href="../styles/uploadfilemulti.css" rel="stylesheet">
     <link href="styles/main.css" rel="stylesheet" type="text/css" />
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link href="styles/fonts.css" rel="stylesheet" type="text/css" />
     <link href="../styles/animate.css" rel="stylesheet" type="text/css" />
-    <link type="text/css" rel="stylesheet" href="./styles/materialize.css"  media="screen,projection"/>
+    <!--<link type="text/css" rel="stylesheet" href="styles/materialize.css"  media="screen,projection"/>-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 </head>
 
@@ -144,7 +147,12 @@ if(isset($bg[2])){
                                     </ul>
                     </li>
                     <?php } ?>
-                    <?php if(check_permission(array("Website;edit_site_settings","Website;edit_site_colors","Website;upload_favicon_banner","Website;edit_google_analytics",))){?>
+                    <?php if(check_permission("Website","edit_site_colors")){?>
+                    <li style="width:55px;">
+                        <a href="edit-colors"><span class="icon-palette"></span></a>
+                    </li>
+                    <?php } ?>
+                    <?php if(check_permission(array("Website;edit_site_settings","Website;upload_favicon_banner","Website;edit_google_analytics",))){?>
                     <li style="width:55px;">
                     	<a href="site-settings.php"><span class="icon-cog"></span></a>
                     </li>
@@ -183,6 +191,3 @@ if(isset($bg[2])){
             	 <!-- jQuery Sticky Menu -->
 
 			</script>
-            <?php if(!empty($error)){echo "<h3 class=\"error\">".$error."</h3>";} ?>
-			<?php if(!empty($success)){echo "<h3 class=\"success\">".$success."</h3>";} ?>
-			<?php if(!empty($message)){echo "<h3 class=\"message\">".$message."</h3>";} ?>

@@ -48,7 +48,7 @@ if(isset($_GET['blogid'])){
 		</ul>
 	<?php
 		if($limiter!=false&&$totalComments>$num_comments){
-			echo '<br /><span class="linkspan" style="color:#039be5;" onclick="viewMore('.$_GET['blogid'].', '.(intval($_GET['commlimit'])+10).')">[View More]</span><span style="float:right;">'.$num_comments.' of '.$totalComments.'</span><br />';
+			echo '<br /><a href="#" class="linkspan" style="color:#039be5;" onclick="viewMore('.$_GET['blogid'].', '.(intval($_GET['commlimit'])+10).')">[View More]</a><span style="float:right;">'.$num_comments.' of '.$totalComments.'</span><br />';
 		}
 	}else{?>
 		<ul id="comment-block-<?php echo $blog_id; ?>">

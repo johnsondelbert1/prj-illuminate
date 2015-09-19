@@ -14,7 +14,7 @@ if(isset($_GET['auth'])){
 		$diff = $t2 -> diff($t1);
 		$hours = $diff -> h;
 
-		if($hours<2){
+		if($hours<48){
 			if(isset($_POST['submit'])){
 				if($_POST['resetpass']!=''){
 					if($_POST['resetpass']==$_POST['confresetpass']){

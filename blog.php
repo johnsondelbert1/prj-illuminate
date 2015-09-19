@@ -153,7 +153,7 @@ function delComment(postId){
 	    });
 	}
 </script>
-
+<h1><?php echo $page['name']; ?></h1>
 <?php
 if (mysqli_num_rows($result)!=0){
   	if(check_permission("Blog","post_blog")){?>
@@ -198,7 +198,7 @@ if (mysqli_num_rows($result)!=0){
 				<td colspan="2">
 					<div class="title" width="100%" height="100%">
 					
-								<h5><a href="<?php echo $GLOBALS['HOST']?>/view_blog_post?post=<?php echo $post['id']; ?>"><?php echo $post['title']; ?></a></h5>
+								<h2><a href="<?php echo $GLOBALS['HOST']?>/view_blog_post?post=<?php echo $post['id']; ?>"><?php echo $post['title']; ?></a></h2>
 							<div class="container">
                     <div class="row right blog-btn">
                     <div class="col l12 s12">
@@ -311,6 +311,7 @@ if (mysqli_num_rows($result)!=0){
                 </tr>
 			</tr>
 		</table>
+	<?php } ?>
         <div id="modal1" class="modal">
             <div class="modal-content">
               <h4>Are you sure you want to delete?</h4>
@@ -325,8 +326,7 @@ if (mysqli_num_rows($result)!=0){
               </div>
             </div>
       	</div>
-		<br />
-	<?php }
+<?php
 }else{
   	if(check_permission("Blog","post_blog")){?>
 		<br><a class="btn green" href="new_blog_post.php">New</a><br /><br />

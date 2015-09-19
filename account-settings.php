@@ -107,7 +107,7 @@ $pgsettings = array(
 require_once("includes/begin_html.php");
 ?>
 <div class="row center">
-<div class="col s12"><h3>Account Settings</h3>
+<div class="col s12"><h1>Account Settings</h1>
 </div>
 </div>
 </div>
