@@ -37,18 +37,19 @@ if(isset($_GET['delcolor'])){
             $result=mysqli_query($connection, $query);
             confirm_query($result);
 
-            $selectorQuery="SELECT * FROM `css_selectors` WHERE `style_color_id` = '{$_GET['delcolor']}'";
+            $selectorQuery="SELECT * FROM `css_selectors` WHERE `style_color_id` = '{$colorData['cid']}'";
             $selectorResult=mysqli_query($connection, $selectorQuery);
 
             while($selector = mysqli_fetch_array($selectorResult)){
-                $editQuery="UPDATE `css_selectors` SET `style_color_id` = '1' WHERE `cid` = {$selector['sid']}";
+                $editQuery="UPDATE `css_selectors` SET `style_color_id` = 1 WHERE `sid` = {$selector['sid']}";
                 $editResult=mysqli_query($connection, $editQuery);
             }
 
+            //Get Name or Color for delete conf msg
             if($colorData['c_name']==""){
                 $color = $colorData['color_hex'];
             }else{
-                $color = $colorData['name'];
+                $color = $colorData['c_name'];
             }
 
             $success = "Color \"".$color."\" deleted!";
@@ -118,7 +119,7 @@ if(isset($_GET['delcolor'])){
         document.addEventListener("touchcancel", touchHandler, true);
     }
 </script>
-<form method="post">
+<form method="post" action="<?php echo basename($_SERVER['PHP_SELF']); ?>">
     <label for="new_color_name">Name</label><input type="text" id="new_color_name" name="new_color_name" value="<?php if(isset($_POST['new_color_name'])){echo $_POST['new_color_name'];} ?>" maxlength="32" />
     <label for="new_color_hex">Color</label><input name="new_color_hex" id="new_color_hex" type="text" value="<?php if(isset($_POST['new_color_hex'])){echo $_POST['new_color_hex'];} ?>" maxlength="7" class="color {hash:true}" />
     <input type="submit" name="new_color" class="btn green" value="Create new color" />

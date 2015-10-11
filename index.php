@@ -5,6 +5,7 @@ require_once("includes/functions.php");
 function print_page($page){
 	global $connection;
 	global $folders;
+	global $date;
 	$query="UPDATE `pages` SET views = views + 1 WHERE `id` = {$page['id']}";
 	$result=mysqli_query( $connection, $query);
 
@@ -113,6 +114,7 @@ function print_page($page){
 							$formPost=mysqli_fetch_array($result);
 
 							$field_validators=unserialize($formPost['field_validators']);
+							$field_types=unserialize($formPost['field_types']);
 							$form_validation = array();
 							$count=0;
 							$form_send = true;
@@ -233,7 +235,7 @@ function print_page($page){
 							//echo 'valid ';print_r($form_validation);echo '<br>';
 							
 							//echo 'post ';print_r($_POST);echo '<br>';
-							if(isset($form_validation)&&$form['id']==$_POST['form_id']){
+							if(isset($form_validation[$field_names[$count]])&&$form['id']==$_POST['form_id']){
 								$validation_arr=$form_validation[$field_names[$count]];
 							}else{
 								unset($validation_arr);
@@ -248,14 +250,19 @@ function print_page($page){
 						?>
 						<tr>
 							<td>
+							<?php if($field_types[$count] != "textblock"){?>
 	                        <label for="<?php echo $field_names[$count]; ?>" style="margin-left:10px;"><?php echo $field_names[$count].':'; if($field_validators[$count]=="notempty"||$field_validators[$count]=="email"){echo '*';}?> </label><?php if(isset($validation_arr)&&$validation_arr!=true){?><div style=" display:inline; border-radius:5px; background-color:#9F0002; color:#FFFFFF; padding:3px; font-size:16px;"><?php if($field_validators[$count]=="email"){echo 'Invalid email';}elseif($field_validators[$count]=="notempty"){echo 'Cannot be blank';}elseif($field_validators[$count]=="numbers"){echo 'Field can only contain numbers';}elseif($field_validators[$count]=="phone"){echo 'Invalid Phone, valid format: "555-555-5555"';}?></div><?php } ?><br>
+	                        <?php } ?>
 	                        <span class="tooltips" style="vertical-align:middle;">
 	                            <?php if($field_types[$count] == "text"){?>
 	                                <input name="<?php echo $field_names[$count]; ?>" id="<?php echo $field_names[$count]; ?>" style=" width:250px; <?php if(isset($validation_arr)&&$validation_arr!=true){echo 'border:2px solid #9F0002;"';} ?>" value="<?php echo $post_name; ?>" type="text"<?php if($field_placeholders[$count] != ""){echo ' placeholder="'.$field_placeholders[$count].'"';} ?><?php if($maxchars != ""){echo ' maxlength="'.$maxchars.'"';} ?> />
+	                                <?php if($field_descs[$count]!=""){echo "<span>".$field_descs[$count]."</span>";}?>
 	                            <?php }elseif($field_types[$count] == "textarea"){ ?>
 	                                <textarea name="<?php echo $field_names[$count]; ?>" id="<?php echo $field_names[$count]; ?>"<?php if(isset($form_validation[$field_names[$count]])&&$form_validation[$field_names[$count]]!=true){echo ' style="border:2px solid #9F0002;"';} ?> rows="15" cols="75"<?php if($field_placeholders[$count] != ""||$maxchars != ""){$placeholder = $field_placeholders[$count]; if($maxchars != ""){$placeholder.=' (Max. '.$maxchars.' characters)';} echo ' placeholder="'.$placeholder.'"';} ?><?php if($maxchars != ""){echo ' maxlength="'.$maxchars.'"';} ?>><?php if(isset($_POST[$field_names[$count]])){echo $_POST[$field_names[$count]];} ?></textarea>
+	                                <?php if($field_descs[$count]!=""){echo "<span>".$field_descs[$count]."</span>";}?>
+	                            <?php }elseif($field_types[$count] == "textblock"){ ?>
+	                            	<?php echo $field_descs[$count]; ?>
 	                            <?php } ?>
-	                            <?php if($field_descs[$count]!=""){echo "<span>".$field_descs[$count]."</span>";}?>
 	                        </span>
 							</td>
 						</tr>

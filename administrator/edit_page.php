@@ -167,7 +167,6 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 				}
 				//prep visibility POST array
 				if(isset($_POST['visible'])&&$_POST['visible']!=""){
-					print_r($_POST['visible']);
 					if($_POST['visible'][0]!=""){
 						if(count($_POST['visible'])>1){
 							$visible=serialize(array($_POST['visible'][0]));
@@ -588,7 +587,7 @@ if($_GET['action']=="edit"){
                             }
                             
                             ?>
-                            <li><input type="checkbox" name="galleries[]" id="<?php echo $gallery['id']; ?>" value="<?php echo $gallery['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="<?php echo $gallery['id']; ?>"><a href="edit_gallery.php?gallid=<?php echo urlencode($gallery['id']); ?>"><?php echo $gallery['name']; ?></a></label></li> <?php } ?>
+                            <li><input type="checkbox" name="galleries[]" id="<?php echo $gallery['id']; ?>" value="<?php echo $gallery['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="<?php echo $gallery['id']; ?>"><?php echo $gallery['name']; ?></label></li> <?php } ?>
                     	</ul>
                     </div>
                 </div>
@@ -614,7 +613,7 @@ if($_GET['action']=="edit"){
                             }
                             
                             ?>
-                            <li><input type="checkbox" name="forms[]" id="form<?php echo $form['id']; ?>" value="<?php echo $form['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="form<?php echo $form['id']; ?>"><a href="edit_form.php?formid=<?php echo urlencode($form['id']); ?>" target="_blank"><?php echo $form['name']; ?></a></label></li>
+                            <li><input type="checkbox" name="forms[]" id="form<?php echo $form['id']; ?>" value="<?php echo $form['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="form<?php echo $form['id']; ?>"><?php echo $form['name']; ?></label></li>
                             <?php } 
                     ?></ul></div>
 </div>
