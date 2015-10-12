@@ -537,7 +537,7 @@ function gallery($images_dir, $thumbs_dir, $thumbs_width, $thumbs_height, $galln
             }
 			?><div class="clear"></div><?php
 		}else{?>
-			[No images in this gallery]
+			
 		<?php
 		}
 	}else{?>

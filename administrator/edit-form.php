@@ -70,9 +70,13 @@ span:hover{
 		rows = $('#fieldtable tr').length;
 		$("#anc_add").click(function(){
     		$('#fieldtable tr').last().after('<tr id="'+cnt+'"><td><input name="fieldname['+cnt+']" type="text" value=""></td><td><select name="fieldtype['+cnt+']"><option value="text">Textbox</option><option value="textarea">Text Area</option></select></td><td><input name="fielddesc['+cnt+']" type="text" value=""></td><td><input name="fieldplaceholder['+cnt+']" type="text" value=""></td><td><input name="fieldmaxchar['+cnt+']" type="text" value=""></td><td><select name="fieldvalidate['+cnt+']"><option value="none">None</option><option value="email">Email</option><option value="notempty">Cannot Be Blank</option><option value="numbers">Numbers Only</option><option value="phone">Phone</option></select></td><td><span onClick="delrow('+cnt+')" class="btn red">Delete</span></td></tr>');
-    		cnt++;
-            $('select').material_select();
+            $('#'+cnt+' select').material_select();
+            cnt++;
 		});
+        $("#txt_add").click(function(){
+            $('#fieldtable tr').last().after('<tr id="'+cnt+'"><td colspan="6"><textarea name="fielddesc['+cnt+']" rows="5" style="height:115px;"></textarea><input type="hidden" name="fieldname['+cnt+']" value="text-block" /><input type="hidden" name="fieldtype['+cnt+']" value="textblock" /><input type="hidden" name="fieldplaceholder['+cnt+']" value="" /><input type="hidden" name="fieldmaxchar['+cnt+']" value="" /><input type="hidden" name="fieldvalidate['+cnt+']" value="None" /></td><td><span onClick="delrow('+cnt+')" class="btn red">Delete</span></td></tr>');
+            cnt++;
+        });
 	});
 	
 	function delrow(rowid){
@@ -124,6 +128,7 @@ span:hover{
 		$count = 0;
 		while ($count<$num_fields){
         ?><tr id="<?php echo $count; ?>">
+        <?php if($field_types[$count] == 'text' || $field_types[$count] == 'textarea'){ ?>
             <td>
                 <input name="fieldname[<?php echo $count; ?>]" type="text" value="<?php if(isset($field_names[$count]))echo $field_names[$count]; ?>" maxlength="128" />
             </td>
@@ -154,11 +159,24 @@ span:hover{
             <td>
                 <span onClick="delrow(<?php echo $count; ?>)" class="btn red">Delete</span>
             </td>
+            <?php }elseif($field_types[$count] == 'textblock'){ ?>
+            <td colspan="6">
+                <textarea name="fielddesc[<?php echo $count; ?>]" rows="5" style="height:115px;"><?php echo $field_descs[$count]; ?></textarea>
+                <input type="hidden" name="fieldname[<?php echo $count; ?>]" value="text-block" />
+                <input type="hidden" name="fieldtype[<?php echo $count; ?>]" value="textblock" />
+                <input type="hidden" name="fieldplaceholder[<?php echo $count; ?>]" value="" />
+                <input type="hidden" name="fieldmaxchar[<?php echo $count; ?>]" value="" />
+                <input type="hidden" name="fieldvalidate[<?php echo $count; ?>]" value="None" />
+            </td>
+            <td>
+                <span onClick="delrow(<?php echo $count; ?>)" class="btn red">Delete</span>
+            </td>
+            <?php } ?>
         </tr><?php
         $count++;
 		}
     ?></table>
-    <a href="javascript:void(0);" id='anc_add' class="btn green">New Field</a>
+    <a href="javascript:void(0);" id='anc_add' class="btn green">New Field</a>&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" id='txt_add' class="btn green">Add Text</a>
 </form>
 </td>
 </tr>
