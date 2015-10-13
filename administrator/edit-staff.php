@@ -45,7 +45,7 @@ $staff=mysqli_fetch_array($result);
 <?php
 	$pgsettings = array(
 		"title" => "Editing Staff Member: ".$staff['name'],
-		"icon" => "icon-user3"
+		"icon" => "icon-profile"
 	);
 	require_once("includes/begin_cpanel.php");
 ?>

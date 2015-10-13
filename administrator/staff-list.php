@@ -80,7 +80,7 @@ $result=mysqli_query( $connection, $query);
 <?php
 	$pgsettings = array(
 		"title" => "Staff Member List",
-		"icon" => "icon-user3"
+		"icon" => "icon-profile"
 	);
 	require_once("includes/begin_cpanel.php");
 ?>

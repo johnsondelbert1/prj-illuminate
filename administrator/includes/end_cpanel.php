@@ -32,7 +32,7 @@
     <script src="jscripts/drop/application.js"></script>-->
 
         <script src="../jscripts/jquery.fileuploadmulti.min.js"></script>
-		<script type="text/javascript" src="jscripts/materialize.min.js"></script>
+		<script type="text/javascript" src="../materialize/js/materialize.js"></script>
         <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <script src="jscripts/jquery.ui.touch-punch.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.1/masonry.pkgd.js"></script>
@@ -45,6 +45,9 @@
                 });
 
 				$('select').material_select();
+                <?php if(!empty($error)){echo "Materialize.toast('".$error."', 8000, 'red');";} ?>
+                <?php if(!empty($success)){echo "Materialize.toast('".$success."', 8000, 'green');";} ?>
+                <?php if(!empty($message)){echo "Materialize.toast('".$message."', 8000, 'yellow');";} ?>
 				
 				var s = $("#sticker");
 				var pos = s.position();                    

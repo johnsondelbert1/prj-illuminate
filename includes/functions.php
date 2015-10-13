@@ -71,17 +71,17 @@ $GLOBALS['color_styles'] = array(
 	),
 	"menu_bg" => array(
 		"disp_name" => 'Menu Background',
-		"selector" => '#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #vert-menu, #vert-menu li, #vert-menu ul li, .nav',
+		"selector" => '#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #vert-menu, #vert-menu li, #vert-menu ul li, .nav, .side-nav, .side-nav .collapsible-header, .side-nav li:hover, .side-nav li.active',
 		"type" => 'bg',
 	),
 	"menu_bg_hover" => array(
 		"disp_name" => 'Menu BG Hover',
-		"selector" => '#horiz-menu li:hover > a, #horiz-menu li:hover, #horiz-menu ul a:hover, #vert-menu li:hover > a, #vert-menu li:hover > ul, #vert-menu ul a:hover',
+		"selector" => '#horiz-menu li:hover > a, #horiz-menu li:hover, #horiz-menu ul a:hover, #vert-menu li:hover > a, #vert-menu li:hover > ul, #vert-menu ul a:hover, .side-nav .collapsible-body',
 		"type" => 'bg',
 	),
 	"menu_text" => array(
 		"disp_name" => 'Menu Text',
-		"selector" => '#horiz-menu a, #vert-menu a',
+		"selector" => '#horiz-menu a, #vert-menu a, .side-nav a, .side-nav .mdi-navigation-arrow-drop-down, .mobile-login',
 		"type" => 'text',
 	),
 	"menu_text_hover" => array(
@@ -111,7 +111,7 @@ $GLOBALS['color_styles'] = array(
 	),
 	"header_bg" => array(
 		"disp_name" => 'Header Background',
-		"selector" => '.mobile-logo',
+		"selector" => '.mobile-logo, .mobile',
 		"type" => 'bg',
 	),
 	"blog_title_bg" => array(
@@ -166,7 +166,7 @@ $GLOBALS['color_styles'] = array(
 	),
 	"slider_cap_text" => array(
 		"disp_name" => 'Slider Caption Text',
-		"selector" => '.captionBlack',
+		"selector" => '.captionBlack, .captionBlack a',
 		"type" => 'text',
 	),
 	"selection" => array(
@@ -537,7 +537,7 @@ function gallery($images_dir, $thumbs_dir, $thumbs_width, $thumbs_height, $galln
             }
 			?><div class="clear"></div><?php
 		}else{?>
-			[No images in this gallery]
+			
 		<?php
 		}
 	}else{?>
@@ -747,7 +747,7 @@ function nav($position, $pgselection){
 
 	if($position=="mobile"){?>
         <ul id="slide-out" class="side-nav">
-            <div style="height:auto; width:100%;" class="mobile-logo">
+            <div style="height:71px; width:100%;" class="mobile-logo">
             <?php if($logo!=false){ ?>
                 <?php if($GLOBALS['site_info']['logo_url']!=''){?>
                 <a href="<?php echo $GLOBALS['site_info']['logo_url']; ?>"><img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $GLOBALS['site_info']['name']; ?> Logo" width="240" /></a>
@@ -807,7 +807,8 @@ function nav($position, $pgselection){
 				<?php
 				}
 				?>
-				</ul><br><hr/><br>
+				</ul>
+				<hr/>
 			<?php
 			
 		}
@@ -831,7 +832,7 @@ function nav($position, $pgselection){
 					if(mysqli_num_rows($subpgresult)==0){
 						nav_button($page);
 					}else{?>
-					<li class="no-padding">
+					
 						<ul class="collapsible collapsible-accordion">
 							<li>
 								<span class="collapsible-header" style="padding-left:0px; margin-left:0px;">
@@ -862,18 +863,24 @@ function nav($position, $pgselection){
 			<?php
 			}
 		?>
-        </ul><br><hr/><br>
+        </ul>
+        <hr/>
         <?php } 
 		}
 		?>
-        <p><?php
+        <div class="mobile-login">
+        	<?php
         if(logged_in()){?>
-            <?php echo "<b>".$_SESSION['username']."</b>";?>
-             | <a href="<?php echo $GLOBALS['HOST']; ?>/account-settings">Account Settings</a> | <?php if(check_permission("Website","cpanel_access")){?><a href="<?php echo $GLOBALS['HOST']; ?>/administrator/" target="_blank">CPanel</a> | <?php } ?><a href="<?php echo $GLOBALS['HOST']; ?>/logout.php">Logout</a>
+        	<ul>
+            	<li><span class="mobile-login-username"><?php echo $_SESSION['username'];?></span></li>
+	            <li><span class="icon-cog"></span><a href="<?php echo $GLOBALS['HOST']; ?>/account-settings">Settings</a></li>
+	            <?php if(check_permission("Website","cpanel_access")){?><li><span class="icon-dashboard"></span><a href="<?php echo $GLOBALS['HOST']; ?>/administrator/" target="_blank">CPanel</a></li><?php } ?>
+	            <li><span class="icon-exit"></span>                                       <a href="<?php echo $GLOBALS['HOST']; ?>/logout.php">Logout</a></li>
+            </ul>
         <?php }else{ ?>
                 <a href="<?php echo $GLOBALS['HOST']; ?>/index">Register</a> | <a href="<?php echo $GLOBALS['HOST']; ?>/login.php">Login</a>
         <?php }?>
-            </p>
+            </div>
         </ul>
 	<?php }
 	
@@ -1019,6 +1026,9 @@ function slider($slider_id){
                             {
                                 font-size:16px;
                                 
+                            }
+                            .captionBlack a{
+                            	text-decoration: underline;
                             }
                             a.captionOrange, A.captionOrange:active, A.captionOrange:visited
                             {

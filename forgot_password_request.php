@@ -21,7 +21,7 @@ if(isset($_POST['submit'])){
 				$email_subject = "Forgotten Password";
 				$email_message = 'Password change request for user "'.$user['username'].'"<br />';
 				$email_message .= 'Change Password here: <a href="'.$GLOBALS['HOST'].'/password_reset?auth='.urlencode($auth_code).'">'.$GLOBALS['HOST'].'/password_reset?auth='.urlencode($auth_code).'</a><br />';
-				$email_message .= 'This link is good for 2 hours.';
+				$email_message .= 'This link is good for 48 hours.';
 				$headers  = 'MIME-Version: 1.0' . "\r\n";
 				$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 				if($GLOBALS['site_info']['contact_email']!=""){
@@ -58,7 +58,7 @@ require_once("includes/begin_html.php");
     <table width="20%" border="0" cellspacing="5" cellpadding="0">
       <tr>
         <td>Email:</td>
-        <td><input type="text" name="email" class="text" <?php if(isset($_POST['email'])){echo 'value="'.$_POST['email'].'"'} ?> /></td>
+        <td><input type="text" name="email" class="text" <?php if(isset($_POST['email'])){echo 'value="'.$_POST['email'].'"';} ?> /></td>
       </tr>
       <tr>
         <td colspan="2" align="center"><input type="submit" class="btn green" name="submit" value="Submit" class="submit"/><br /><br />

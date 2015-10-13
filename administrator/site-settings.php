@@ -85,65 +85,6 @@ if(isset($_POST['bg_submit'])){
 	}
 }
 
-if(isset($_POST['new_color'])){
-	if(check_permission("Website","edit_site_colors")){
-		
-		$name = strip_tags(mysqli_real_escape_string($connection, $_POST['new_color_name']));
-		$hex = strip_tags(mysqli_real_escape_string($connection, $_POST['new_color_hex']));
-
-/*		$query="SELECT * FROM `style_colors` WHERE `name` = '{$name}'";
-		$result=mysqli_query($connection, $query);*/
-
-		$query="INSERT INTO `style_colors` (c_name, color_hex, date_created, creator) VALUES ('{$name}','{$hex}', '{$date}', {$_SESSION['user_id']})";
-		$result=mysqli_query($connection, $query);
-		confirm_query($result);
-
-		if($name==""){
-			$color = $hex;
-		}else{
-			$color = $name;
-		}
-
-		$success = "Color \"".$color."\" added!";
-	}else{
-		$error="You do not have permission to edit colors.";
-	}
-}
-
-if(isset($_GET['delcolor'])){
-	if(check_permission("Website","edit_site_colors")){
-
-		$query="SELECT * FROM `style_colors` WHERE `cid` = '{$_GET['delcolor']}'";
-		$result=mysqli_query($connection, $query);
-		$colorData = mysqli_fetch_array($result);
-		if($colorData['deletable']==1){
-			$query="DELETE FROM `style_colors` WHERE `cid` = {$colorData['cid']}";
-			$result=mysqli_query($connection, $query);
-			confirm_query($result);
-
-			$selectorQuery="SELECT * FROM `css_selectors` WHERE `style_color_id` = '{$_GET['delcolor']}'";
-			$selectorResult=mysqli_query($connection, $selectorQuery);
-
-			while($selector = mysqli_fetch_array($selectorResult)){
-				$editQuery="UPDATE `css_selectors` SET `style_color_id` = '1' WHERE `cid` = {$selector['sid']}";
-				$editResult=mysqli_query($connection, $editQuery);
-			}
-
-			if($colorData['c_name']==""){
-				$color = $colorData['color_hex'];
-			}else{
-				$color = $colorData['name'];
-			}
-
-			$success = "Color \"".$color."\" deleted!";
-		}else{
-			$error="This color cannnot be deleted!";
-		}
-	}else{
-		$error="You do not have permission to edit colors.";
-	}
-}
-
 if(isset($_POST['custom_css'])){
 	if(check_permission("Website","edit_site_colors")){
 		
@@ -399,7 +340,7 @@ $result_pages=mysqli_query($connection, $query);
                 	<li class="TabbedPanelsTab" tabindex="0">Settings</li>
                 <?php } ?>
                 <?php if(check_permission("Website","edit_site_colors")){ ?>
-                <li class="TabbedPanelsTab" tabindex="0">Style</li>
+                <li class="TabbedPanelsTab" tabindex="0">Custom CSS</li>
                 <?php } ?>
                 <?php if(check_permission("Website","upload_favicon_banner")){ ?>
                 <li class="TabbedPanelsTab" tabindex="0">Imagery</li>
@@ -502,14 +443,6 @@ $result_pages=mysqli_query($connection, $query);
 <?php if(check_permission("Website","edit_site_colors")){ ?>
 <div class="TabbedPanelsContent">
 <h1 style="margin:-4px -4px 5px -4px; padding:5px;">Website Style</h1>
-
-<form method="post" action="site-settings.php?tab=1">
-	<label for="new_color_name">Name</label><input type="text" id="new_color_name" name="new_color_name" value="<?php if(isset($_POST['new_color_name'])){echo $_POST['new_color_name'];} ?>" maxlength="32" />
-    <label for="new_color_hex">Color</label><input name="new_color_hex" id="new_color_hex" type="text" value="<?php if(isset($_POST['new_color_hex'])){echo $_POST['new_color_hex'];} ?>" maxlength="7" class="color {hash:true}" />
-    <input type="submit" name="new_color" class="btn green" value="Create new color" />
-</form>
-
-<?php include_once("includes/color_edit.php"); ?>
 <!--<select onchange="chngcolor(this)">
 	<option>Red (Dark)</option>
    	<option>Red (Light)</option>
@@ -584,7 +517,7 @@ $result_pages=mysqli_query($connection, $query);
     <?php
 	}
 ?>
-<form method="post">
+<form method="post" action="site-settings?tab=2">
 	<h3>Background Repeat</h3>
 	<select name="bg_repeat">
     	<option value="repeat"<?php if($layout['bg_repeat']=='repeat'){echo " selected";} ?>>Tile</option>
