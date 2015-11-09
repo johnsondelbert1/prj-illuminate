@@ -608,6 +608,15 @@ h3.message
 	padding:20px;
 }
 
+.error-block{
+	display:inline;
+	border-radius:5px;
+	background-color:#9F0002;
+	color:#FFFFFF;
+	padding:3px;
+	font-size:16px;
+}
+
 input[type=text],
 input[type=url],
 input[type=tel],
@@ -669,6 +678,7 @@ select
 .connected li {
 	list-style: none;
 	border: 1px solid #CCC;
+	border-radius: 3px;
 	background: #F6F6F6;
 	font-family: "Tahoma";
 	color: #1C94C4;
@@ -727,7 +737,8 @@ select
 	text-align:center;
 }
 li.ui-sortable-placeholder {
-	border: 1px dashed #CCC;
+	border: 1px dashed #666;
+	border-radius: 3px;
 	background-color: #BBBBBB;
     visibility: visible !important;
 }

@@ -243,7 +243,7 @@ if (mysqli_num_rows($result)!=0){
 												?>
 										</div>
                                     <div class="col s4">
-                                    <i class="mdi-action-face-unlock"></i> &nbsp;<b><?php echo $userdata['username']; ?></b>
+                                    <i class="mdi-action-face-unlock"></i> &nbsp;<a href="<?php echo $GLOBALS['HOST'].'/profile/'.urlencode($userdata['username']); ?>"><b><?php echo $userdata['username']; ?></b></a>
                                     </div>
 							</div>
                             </div>
@@ -339,7 +339,7 @@ if (mysqli_num_rows($result)!=0){
     
     <?php
     if($num_pages>1){
-		echo_page($num_pages, $current_page, $page['name']);
+		echo_page($num_pages, $current_page, 'page/'.$page['name']);
 	}
 	?>
     </div>

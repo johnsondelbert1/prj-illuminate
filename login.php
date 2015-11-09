@@ -5,6 +5,8 @@ if(logged_in()){
 	redirect_to($GLOBALS['HOST']."/index.php");
 }
 
+require_once("includes/login_auth.php");
+
 $pgsettings = array(
 	"title" => "Login to ".$GLOBALS['site_info']['name'],
 	"pageselection" => false,
@@ -14,16 +16,17 @@ $pgsettings = array(
 );
 require_once("includes/begin_html.php");
 ?>
-<form action="login/login.php" method="post">
-	<input type="hidden" name="redirect_to" value=""/>
+<h1>Login to <?php echo $GLOBALS['site_info']['name'] ?></h1>
+<form method="post" action="login">
+	<input type="hidden" name="redirect_to" value="/" />
     <input type="hidden" name="redirect_from" value="<?=($_SERVER['PHP_SELF']);?>"/>
     <div class="row center">
         <div class="col s12 l3">Username:</div>
-        <div class="col s12 l9"><input type="text" name="username" value="<?php if(isset($user)){echo $user;} ?>"/></div>
+        <div class="col s12 l3"><input type="text" name="username" value="<?php if(isset($user)){echo $user;} ?>" style="width:300px;"/></div>
       </div>
       <div class="row center">
         <div class="col s12 l3">Password:</div>
-        <div class="col s12 l9"><input type="password" name="password" /></div>
+        <div class="col s12 l3"><input type="password" name="password" style="width:300px;" /></div>
       </div>
       <div class="row center" >
         <div class="col s10 l3">Remember Me</div>

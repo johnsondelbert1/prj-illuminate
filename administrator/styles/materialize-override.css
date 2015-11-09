@@ -13,3 +13,8 @@ input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, inp
 input[type="checkbox"]:not(:checked), [type="checkbox"]:checked{
 	visibility: initial;
 }
+.dropdown-content li > a, .dropdown-content li > span {
+	text-decoration: none;
+}
+td, th {
+}

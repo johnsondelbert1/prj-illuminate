@@ -1,11 +1,10 @@
 <?php
-require_once("connection.php");
 require_once("session.php");
 require_once("globals.php");
 
 //global DB variables
 
-//Info
+//Site Info
 $query="SELECT * FROM `site_info` WHERE `id` = 1";
 $result=mysqli_query( $connection, $query);
 $GLOBALS['site_info']=mysqli_fetch_array($result);
@@ -30,7 +29,7 @@ foreach($GLOBALS['soc_networks'] as $network){
 
 //Date with timezone
 date_default_timezone_set($GLOBALS['site_info']['timezone']);
-$GLOBALS['date']=date("Y/m/d H:i:s", time());
+$GLOBALS['date']=date("Y-m-d H:i:s", time());
 
 //Get Blog page name
 $query="SELECT * FROM `pages` WHERE `type` = 'Blog'";
@@ -174,6 +173,21 @@ $GLOBALS['color_styles'] = array(
 		"selector" => '',
 		"type" => '',
 	),
+	"input_textbox_bg" => array(
+		"disp_name" => 'Textbox BG',
+		"selector" => 'input[type=text], input[type=url], input[type=tel], input[type=number], input[type=color], input[type=email], input[type=password], textarea',
+		"type" => 'bg',
+	),
+	"input_textbox_text" => array(
+		"disp_name" => 'Textbox Text',
+		"selector" => 'input[type=text], input[type=url], input[type=tel], input[type=number], input[type=color], input[type=email], input[type=password], textarea',
+		"type" => 'text',
+	),
+	"input_placeholder" => array(
+		"disp_name" => 'Textbox Placeholder',
+		"selector" => '',
+		"type" => '',
+	),
 );
 //Add new selectors to DB
 foreach ($GLOBALS['color_styles'] as $key => $val){
@@ -253,7 +267,9 @@ $blank_permissions = array(
 	),
 	"Users" => array(
 		"add_users" => array("value" => 0, "disp_name" => "Add Users", "description" => "Enables members of this rank to add users to the website and change those users' ranks."),
-		"delete_users" => array("value" => 0, "disp_name" => "Ban Users", "description" => "Enables members of this rank to ban users from the website."),
+		"delete_users" => array("value" => 0, "disp_name" => "Delete Users", "description" => "Enables members of this rank to delete users from the website."),
+		"approve_deny_new_users" => array("value" => 0, "disp_name" => "Approve/Deny New Users", "description" => "Enables members of this rank to approve or deny new users."),
+		"ban_users" => array("value" => 0, "disp_name" => "Ban Users", "description" => "Enables members of this rank to ban users from logging into the website."),
 		"create_rank" => array("value" => 0, "disp_name" => "Create Ranks", "description" => "Enables members of this rank to create ranks on the website."),
 		"edit_rank" => array("value" => 0, "disp_name" => "Edit Ranks", "description" => "Enables members of this rank to edit existing ranks on the website."),
 		"delete_rank" => array("value" => 0, "disp_name" => "Delete Ranks", "description" => "Enables members of this rank to delete ranks on the website."),
@@ -289,6 +305,7 @@ $blank_permissions = array(
 		"cpanel_access" => array("value" => 0, "disp_name" => "CPanel Access", "description" => "Enables members of this rank to access the admin CPanel."),
 		"edit_site_settings" => array("value" => 0, "disp_name" => "Edit Website Information", "description" => "Enables members of this rank to edit the website information."),
 		"edit_site_colors" => array("value" => 0, "disp_name" => "Edit Website Colors", "description" => "Enables members of this rank to modify the website theme colors."),
+		"edit_user_settings" => array("value" => 0, "disp_name" => "Edit User Settings", "description" => "Enables members of this rank to edit sitewide user settings."),
 		"upload_favicon_banner" => array("value" => 0, "disp_name" => "Upload Favicon and Banner", "description" => "Enables members of this rank to upload a favicon and banner to the website."),
 		"edit_socnet" => array("value" => 0, "disp_name" => "Edit Social Networks", "description" => "Enables members of this rank to edit the social networks the website is connected to."),
 		"edit_google_analytics" => array("value" => 0, "disp_name" => "Edit Google Analytics", "description" => "Enables members of this rank to edit the Google Analytics information."),
@@ -411,9 +428,14 @@ function del_acc($userid){
 				WHERE `id` =  '{$userid}'";
 		$result=mysqli_query($connection, $query);
 		confirm_query($result);
+
+		$query="DELETE FROM `users_custom_fields` 
+				WHERE `uid` =  '{$userid}'";
+		$result=mysqli_query($connection, $query);
+		confirm_query($result);
 		return true;
 	}else{
-		return false;	
+		return false;
 	}
 }
 
@@ -459,10 +481,33 @@ function check_login(){ ?>
         <?php echo "<b>".$_SESSION['username']."</b>";?>
          | <a href="<?php echo $GLOBALS['HOST']; ?>/account-settings">Account Settings</a> | <?php if(check_permission("Website","cpanel_access")){?><a href="<?php echo $GLOBALS['HOST']; ?>/administrator/" target="_blank">CPanel</a> | <?php } ?><a href="<?php echo $GLOBALS['HOST']; ?>/logout">Logout</a>
     <?php }else{ ?>
-			<a href="<?php echo $GLOBALS['HOST']; ?>/index">Register</a> | <a href="<?php echo $GLOBALS['HOST']; ?>/login.php">Login</a>
+			<?php if($GLOBALS['site_info']['user_creation'] == 'approval' || $GLOBALS['site_info']['user_creation'] == 'any'){ ?><a href="<?php echo $GLOBALS['HOST']; ?>/register">Register</a> | <?php } ?><a href="<?php echo $GLOBALS['HOST']; ?>/login">Login</a>
 	<?php }?>
     	</p>
 <?php }
+
+function verify_login($user){
+	//check if user can login (activated email, not banned, or approved by admin)
+	$login_flag = true;
+	$login_msg = array();
+	//Check email
+	if(($user['activated_email']==0 && $GLOBALS['site_info']['require_email_activation']==1)){
+		$login_flag = false;
+		array_push($login_msg, 'Email not activated. <a href="resend-activation?email='.urlencode($user['email']).'"> Click Here </a> to re-send activation.');
+	}
+	//Check admin approval
+	if(($user['approved_admin']==0 && $GLOBALS['site_info']['user_creation']=='approval')){
+		$login_flag = false;
+		array_push($login_msg, "Account not approved by administrator.");
+	}
+	//Check ban status
+	if(($user['banned']==1)){
+		$login_flag = false;
+		array_push($login_msg, "Account has been banned.");
+	}
+
+	return array($login_flag, $login_msg);
+}
 
 function order_doc_files($dir){
 	$dirfiles = scandir("uploads/".$dir);
@@ -723,15 +768,6 @@ function nav_button($page){
 	?>
 <a href="<?php
 	echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($page['name']);
-/*	if($page['type']=='Custom' || $page['type']=='Staff'){
-		echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($page['name']);
-	}elseif($page['type']=='Blog'){
-		echo $GLOBALS['HOST'];?>/blog<?php
-	}elseif($page['type']=='Forum'){
-		echo $GLOBALS['HOST'];?>/forums<?php
-	}elseif($page['type']=='Link'){
-		echo $page['url'];
-	}*/
 	?>" <?php if($page['target']!="_self"){echo 'target="'.$page['target'].'"';} ?>><?php echo $page['name'];?></a>
 <?php
 }
@@ -878,7 +914,7 @@ function nav($position, $pgselection){
 	            <li><span class="icon-exit"></span>                                       <a href="<?php echo $GLOBALS['HOST']; ?>/logout.php">Logout</a></li>
             </ul>
         <?php }else{ ?>
-                <a href="<?php echo $GLOBALS['HOST']; ?>/index">Register</a> | <a href="<?php echo $GLOBALS['HOST']; ?>/login.php">Login</a>
+                <?php if($GLOBALS['site_info']['user_creation'] == 'approval' || $GLOBALS['site_info']['user_creation'] == 'any'){ ?><a href="<?php echo $GLOBALS['HOST']; ?>/register">Register</a> | <?php } ?><a href="<?php echo $GLOBALS['HOST']; ?>/login">Login</a>
         <?php }?>
             </div>
         </ul>
@@ -896,7 +932,7 @@ function nav($position, $pgselection){
 			
 			if($position=="horiz"&&$numpages!=0){ ?>
 				<div class="nav">
-					<ul id="horiz-menu" class="right">
+					<ul id="horiz-menu">
 			<?php }elseif($position=="vert"&&$numpages!=0){ ?>
 				<div class=" col l3 card" style="padding:0 !important;" id="vert-td"><div style="width:100%;">
 					<ul  id="vert-menu">
@@ -922,15 +958,6 @@ function nav($position, $pgselection){
 						if(get_page_permission(unserialize($page['visible']))){?>
 	                        <li style="min-width:<?php echo $buttonwidth; ?>%;"<?php if($pgselection=="true"){if(isset($_GET['page'])&&urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><a style="min-width:<?php echo $buttonwidth; ?>%;" href="<?php
 	                        	echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($page['name']);
-/*	                                if($page['type']=='Custom' || $page['type']=='Staff'){
-	                                    echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($page['name']);
-	                                }elseif($page['type']=='Blog'){
-	                                    echo $GLOBALS['HOST'];?>/blog<?php
-	                                }elseif($page['type']=='Forum'){
-	                                    echo $GLOBALS['HOST'];?>/forums<?php
-	                                }elseif($page['type']=='Link'){
-	                                    echo $page['url'];
-	                                }*/
 	                            ?>" <?php if($page['target']!="_self"){echo "target=\"".$page['target']."\"";} ?>><?php echo $page['name'];?></a><?php 
 	                            if($position=="horiz"){
 	                                $query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
@@ -945,16 +972,7 @@ function nav($position, $pgselection){
 	                                	if(get_page_permission(unserialize($subpage['visible']))){?>
 		                                    <li style="width:100%;"<?php if($pgselection=="true"){if(isset($_GET['page'])&&urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>>
 		                                        <a href="<?php
-		                                        	echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($subpage['name']);
-/*		                                            if($subpage['type']=='Custom' || $page['type']=='Staff'){
-		                                                echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($subpage['name']);
-		                                            }elseif($subpage['type']=='Blog'){
-		                                                echo $GLOBALS['HOST'];?>/blog<?php
-		                                            }elseif($subpage['type']=='Forum'){
-		                                                echo $GLOBALS['HOST'];?>/forums<?php
-		                                            }elseif($subpage['type']=='Link'){
-		                                                echo $subpage['url'];
-		                                            }*/?>"
+		                                        	echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($subpage['name']);?>"
 		                                            <?php if($subpage['target']!="_self"){echo "target=\"".$subpage['target']."\"";} ?>><?php echo $subpage['name'];?></a>
 		                                    </li>
 		                                <?php 

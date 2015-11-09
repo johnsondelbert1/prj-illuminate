@@ -73,10 +73,12 @@ $(document).ready(function () {
 
 <h1>Welcome to the Forums!</h1>
   <?php
-	if((isset($_GET['action'])&&$_GET['action']=="editforum")&&isset($_GET['forumid'])&&check_permission("Forum","edit_forum")){?>
-		<form action="<?php echo $_SERVER['REQUEST_URI']; ?>?forumid=<?php echo urlencode($_GET['forumid']) ?>" method="post">
+	if((isset($_GET['action'])&&$_GET['action']=="editforum")&&isset($_GET['forumid'])){
+		if(check_permission("Forum","edit_forum")){
+		?>
+		<form method="post">
         <?php if(isset($_GET['action'])&&$_GET['action']=="editforum"){
-			$query="SELECT name, description FROM forums WHERE id={$_GET['forumid']}";
+			$query="SELECT `name`, `description` FROM `forums` WHERE `id`={$_GET['forumid']}";
 			$result=mysqli_query( $connection, $query);
 			$editing_forum=mysqli_fetch_array($result);
 		}?>
@@ -90,12 +92,16 @@ $(document).ready(function () {
 				<td align="center" style="padding:10px; font-size:18px;">
                     Forum Name: <input type="text" name="forumname" maxlength="50" value="<?php echo $editing_forum['name']; ?>"/>
                     Description: <input type="text" name="forumdesc" value="<?php echo $editing_forum['description']; ?>"/>
-                    <input type="submit" name="edit" value="Save Edit" />
+                    <input type="submit" class="btn green" name="edit" value="Save Edit" />
                 </td>
 			</tr>
 		  </table>
 		</form>
-	<?php }
+	<?php 
+		}else{
+			$error = "You don't have permission to do that!";
+		}
+	}
   ?>
   <?php
 	if(check_permission("Forum","add_delete_forum")){?>
@@ -110,7 +116,7 @@ $(document).ready(function () {
 				<td align="center" style="padding:10px; font-size:18px;">
                     Forum Name: <input type="text" name="forumname" maxlength="50" />
                     Description: <input type="text" name="forumdesc" />
-                    <input type="submit" name="submit" value="Create New Forum" />
+                    <input type="submit" class="btn green" name="submit" value="Create New Forum" />
                 </td>
 			</tr>
 		  </table>
@@ -119,9 +125,10 @@ $(document).ready(function () {
   ?>
 <table class="forum" width="100%" cellspacing="0" cellpadding="0">
   <tr>
-    <th class="forumtitle" colspan="3">Forum</th>
+    <th class="forumtitle" colspan="2">Forum</th>
+    <th class="forumtitle">Last thread posted</th>
     <?php if(check_permission(array("Forum;add_delete_forum","Forum;edit_forum",))){?>
-    	<th class="forumtitle" colspan="2">Controls</th>
+    	<th class="forumtitle">Controls</th>
     <?php } ?>
   </tr>
   <?php
@@ -154,7 +161,7 @@ $(document).ready(function () {
                     <td><?php if($threadcount != 0){echo date("m/d/Y h:i A" ,strtotime($messagedate['date']));}else{echo "N/A";} ?></td>
                     <?php if(check_permission(array("Forum;add_delete_forum","Forum;edit_forum",))){?>
                     <td style="text-align:center;">
-						<?php if(check_permission("Forum","edit_forum")){?><a class="btn-floating blue" href="<?php echo $_SERVER['REQUEST_URI']; ?>?action=editforum&&forumid=<?php echo urlencode($forum['id']);?>"><i class="mdi-editor-mode-edit"></i></a><?php } ?>
+						<?php if(check_permission("Forum","edit_forum")){?><a class="btn-floating blue" href="<?php echo $GLOBALS['HOST'].'/page/'.$GLOBALS['forum_page']; ?>&action=editforum&forumid=<?php echo urlencode($forum['id']);?>"><i class="mdi-editor-mode-edit"></i></a><?php } ?>
                     	<?php if(check_permission("Forum","add_delete_forum")){?><a class="modal-trigger btn-floating red btn-click-action" href="#modal1" name="<?php echo urlencode($forum['id']);?>"><i class="mdi-action-delete"></i></a><?php } ?>
                     </td>
                     <?php } ?>

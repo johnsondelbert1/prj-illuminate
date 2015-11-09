@@ -26,15 +26,13 @@ if(isset($_POST['submit'])){
 		$result=mysqli_query( $connection, $query);
 		confirm_query($result);
 		
-		$query="SELECT * FROM `blog` ORDER BY `id` DESC LIMIT 1";
-		$result=mysqli_query( $connection, $query);
-		$lastid=mysqli_fetch_array($result);
+		$lastid=mysqli_insert_id($connection);
 		
-		mkdir("blog_galleries/".$lastid['id']);
-		mkdir("blog_galleries/".$lastid['id']."/gallery");
-		mkdir("blog_galleries/".$lastid['id']."/gallery-thumbs");
+		mkdir("blog_galleries/".$lastid);
+		mkdir("blog_galleries/".$lastid."/gallery");
+		mkdir("blog_galleries/".$lastid."/gallery-thumbs");
 		
-		redirect_to($GLOBALS['HOST']."/blog?success=".urlencode("Blog posted!"));
+		redirect_to($GLOBALS['HOST']."/edit_blog_post?post=".$lastid."&success=".urlencode("Blog posted!"));
 	}else{
 		$error="Title cannot be blank.";
 	}
