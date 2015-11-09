@@ -16,10 +16,35 @@
             </div>
         </div>
     </div>
-    <?php if(!empty($error)){echo "<script type=\"text/javascript\">Materialize.toast('".$error."', 8000, 'red')</script>";} ?>
-    <?php if(!empty($success)){echo "<script type=\"text/javascript\">Materialize.toast('".$success."', 8000, 'green')</script>";} ?>
-    <?php if(!empty($message)){echo "<script type=\"text/javascript\">Materialize.toast('".$message."', 8000, 'yellow')</script>";} ?>
     <script type="text/javascript">
+    <?php
+    //Display messages
+    if(isset($error)&&!is_array($error)){
+        echo "Materialize.toast('".$error."', 8000, 'red');";
+    }elseif(isset($error)&&is_array($error)&&!empty($error)){
+        foreach ($error as $value) {
+            echo "Materialize.toast('".$value."', 8000, 'red');";
+        }
+    } 
+    ?>
+    <?php
+    if(isset($success)&&!is_array($success)){
+        echo "Materialize.toast('".$success."', 8000, 'green');";
+    }elseif(isset($success)&&is_array($success)&&!empty($success)){
+        foreach ($success as $value) {
+            echo "Materialize.toast('".$value."', 8000, 'green');";
+        }
+    } 
+    ?>
+    <?php
+    if(isset($message)&&!is_array($message)){
+        echo "Materialize.toast('".$message."', 8000, 'yellow');";
+    }elseif(isset($message)&&is_array($message)&&!empty($message)){
+        foreach ($message as $value) {
+            echo "Materialize.toast('".$value."', 8000, 'yellow');";
+        }
+    } 
+    ?>
     	var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
     </script>
     <script type="text/javascript" charset="utf-8">

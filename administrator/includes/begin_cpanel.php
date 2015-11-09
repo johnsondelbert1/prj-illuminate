@@ -43,6 +43,16 @@ if(isset($bg[2])){
 }else{
 	$bg = false;
 }
+
+//Number of pending users for approval
+
+if($GLOBALS['site_info']['user_creation'] == 'approval'){
+    $query="SELECT * FROM `users` WHERE `approved_admin` = 0 ORDER BY `id` ASC";
+    $result=mysqli_query( $connection, $query);
+    confirm_query($result);
+    $pending_users = mysqli_num_rows($result);
+}
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -58,7 +68,7 @@ if(isset($bg[2])){
     <META NAME="language" CONTENT="English">
     <META NAME="revisit-after" CONTENT="7">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--Android 5.0-->
+    <!--Android 5.0+ -->
     <meta name="theme-color" content="#C0392B">
     
     <link rel="shortcut icon" href="images/favicon.png" />
@@ -69,7 +79,6 @@ if(isset($bg[2])){
     
     <link href="../materialize/css/materialize.css" rel="stylesheet" type="text/css" media="screen,projection"/>
     <link href="styles/materialize-override.css" rel="stylesheet" type="text/css" media="screen,projection"/>
-    <link href="../styles/uploadfilemulti.css" rel="stylesheet">
     <link href="styles/main.css" rel="stylesheet" type="text/css" />
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link href="styles/fonts.css" rel="stylesheet" type="text/css" />
@@ -133,18 +142,24 @@ if(isset($bg[2])){
                         	</ul>
                         </li>
                     <?php } ?>
-                    <?php if(check_permission(array("Users;add_users","Users;delete_users",))){?>
+                    <?php if(check_permission(array("Users;add_users","Users;delete_users","Users;create_rank","Users;edit_rank","Users;delete_rank","Users;approve_deny_new_users"))){?>
                     <li>
                     	<a href="#">Users<span class="mdi-navigation-arrow-drop-down"></a>
                         <ul>
-                        <li><a href="accounts.php">Edit Accounts</a></li>
-                               <?php if(check_permission(array("Users;create_rank","Users;edit_rank","Users;delete_rank",))){?>
-                    <li>
-                    	<a href="ranks.php">Permissions</a>
+                        <?php if(check_permission(array("Users;add_users","Users;delete_users"))){?><li><a href="accounts.php">Edit Accounts</a></li><?php } ?>
+                        <?php if(check_permission("Users","approve_deny_new_users") && $GLOBALS['site_info']['user_creation'] == 'approval'){?><li><a href="approval-list">Approve/Deny (<?php echo $pending_users; ?>)</a></li><?php } ?>
+                        <?php if(check_permission(array("Users;create_rank","Users;edit_rank","Users;delete_rank",))){?>
+                        <li>
+                        	<a href="ranks.php">Permissions</a>
+                        </li>
+                        <?php } ?>
+                        <?php if(check_permission("Pages","edit_pages")){?><li><a href="staff-list.php">Staff</a></li><?php } ?>
+                        </ul>
                     </li>
                     <?php } ?>
-                    <?php if(check_permission("Pages","edit_pages")){?><li><a href="staff-list.php">Staff</a></li><?php } ?>
-                                    </ul>
+                    <?php if(check_permission("Website","edit_site_colors")){?>
+                    <li style="width:55px;">
+                        <a href="user-settings"><span class="icon-users"></span></a>
                     </li>
                     <?php } ?>
                     <?php if(check_permission("Website","edit_site_colors")){?>

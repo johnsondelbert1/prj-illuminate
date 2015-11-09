@@ -12,9 +12,9 @@ if(isset($_GET['auth'])){
 		$t1 = new DateTime($user['chng_pass_authcode_date']);
 		$t2 = new DateTime($date);
 		$diff = $t2 -> diff($t1);
-		$hours = $diff -> h;
+		$days = $diff -> days;
 
-		if($hours<48){
+		if($days<2){
 			if(isset($_POST['submit'])){
 				if($_POST['resetpass']!=''){
 					if($_POST['resetpass']==$_POST['confresetpass']){

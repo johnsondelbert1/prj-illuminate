@@ -1,42 +1,65 @@
 <?php
 require_once("includes/session.php");
 require_once("includes/functions.php");
-$nv="[Not Visible]";
-$noval="--";
 ?>
 <?php
-	if(isset($_GET['user'])){
-		if(isset($_GET['action'])=="ban"){
-		$query="SELECT * FROM users
-				WHERE username='{$_GET['user']}'";
-		$result=mysql_query($query,$connection);
-		confirm_query($result);
-		$user=mysql_fetch_array($result);
-			if(check_permission("Users","delete_users")){
-				$query="SELECT `id` FROM `users`
-						WHERE username='{$_GET['user']}'";
-				$result=mysql_query($query,$connection);
-				confirm_query($result);
-				$userid=mysql_fetch_array($result);
-				redirect_to("user_list.php?msg=banned&user=".ban_acc($_GET['user'], $userid['id']));
-			}else{
-				$error="You do not have sufficient permissions to ban this user.";
-			}
-		}
-		$query="SELECT * FROM users
-				WHERE username='{$_GET['user']}'";
-		$result=mysqli_query($connection, $query);
-		confirm_query($result);
-		if(mysqli_num_rows($result)!=0){
-			$user=mysqli_fetch_array($result);
-		}else{
-			$error="User does not exist or has been deleted!";
-		}
-		
+//Check to make sure user is set in URL
+if(isset($_GET['user'])){
+	$user = urldecode($_GET['user']);
+
+	$query="SELECT * FROM `users`
+			WHERE `username`='{$user}'";
+	$result=mysqli_query($connection, $query);
+	confirm_query($result);
+	$found_user = mysqli_num_rows($result);
+}else{
+	$found_user = 0;
+}
+if($found_user == 1){
+	//Get user data
+	$user=mysqli_fetch_array($result);
+
+	//Data not visible array
+	if($user['data_public_not_visible']!=''){
+		$not_visible = unserialize($user['data_public_not_visible']);
 	}else{
-		redirect_to("profile.php?user=".urlencode($user_info['username']));
-		//$query="SELECT id, username, email, rank, minecraft_username FROM users
-		//		WHERE username='{$_SESSION['username']}'";
+		$not_visible = array();
+	}
+
+	//Not visible presets
+	$nv="[Not Visible]";
+	$none="--";
+
+	if(isset($_GET['action']) && $_GET['action']=="ban"){
+		if(check_permission("Users","ban_users")){
+			$query="UPDATE `users` SET `banned` = 1
+					WHERE `username`='{$user['username']}'";
+			$result=mysqli_query($connection, $query);
+			confirm_query($result);
+			if($result){
+				$success = "User Banned.";
+			}else{
+				$error = "An error has occurred. Contact Administrator";
+			}
+		}else{
+			$error="You do not have sufficient permissions to ban this user.";
+		}
+	}
+
+	if(isset($_GET['action']) && $_GET['action']=="unban"){
+		if(check_permission("Users","ban_users")){
+			$query="UPDATE `users` SET `banned` = 0
+					WHERE `username`='{$user['username']}'";
+			$result=mysqli_query($connection, $query);
+			confirm_query($result);
+			if($result){
+				$success = "User Unbanned.";
+			}else{
+				$error = "An error has occurred. Contact Administrator";
+			}
+		}else{
+			$error="You do not have sufficient permissions to ban this user.";
+		}
 	}
 ?>
 <?php
@@ -44,58 +67,81 @@ $pgsettings = array(
 	"title" => $user['username']."'s Profile",
 	"pageselection" => false,
 	"nav" => true,
-	"banner" => 1,
+	"banner" => 0,
 	"use_google_analytics" => 1,
 );
 require_once("includes/begin_html.php"); ?>
     <script type="text/javascript">
-	function confirmdelete(){
+	function confirm_ban(){
 		var ans = confirm("Are you sure you want to ban this account?");
 		if (ans==true){
-			window.location = "profile.php?user=<?php echo $_GET['user'] ?>&&action=ban";
+			window.location = "<?php echo urlencode($user['username']); ?>&action=ban";
+		}
+	}
+	function confirm_unban(){
+		var ans = confirm("Are you sure you want to unban this account?");
+		if (ans==true){
+			window.location = "<?php echo urlencode($user['username']); ?>&action=unban";
 		}
 	}
 	</script>
 
 	<h1><?php echo $user['username']."'s Profile"; ?></h1>
-    <br />
 
-    <?php if(check_permission("Users","delete_users")){?>
-<!-- 		<div style="background-color:#8B8B8B; border-radius:5px; padding:5px;">
-			<a href="#" onclick="confirmdelete()">Ban this account</a>
-		</div> -->
+    <?php if(check_permission("Users","ban_users")){?>
+	<div style="margin-left:auto; margin-right:auto; text-align:center;">
+	<?php if($user['banned']==0){ ?>
+		<a href="#" onclick="confirm_ban()">[Ban this account]</a>
+	<?php }else{ ?>
+		<a href="#" onclick="confirm_unban()">[Unban this account]</a>
+	<?php } ?>
+	</div>
+	<br/>
     <?php }?>
-<table width="100%" border="0" cellspacing="5" cellpadding="0" style="background-color:#8B8B8B; border-radius:5px; padding:5px; text-align:center;">
+<table width="100%" border="0" cellspacing="5" cellpadding="0" style="border-radius:5px; padding:5px; text-align:center;">
   <tr>
-    <td>
-		<?php
-        if(!empty($user['minecraft_username'])){?>
-            <div class="profilepic">
-            	<img src="images/minecraft.php?u=<?php echo $user['minecraft_username']; ?>&s=250" alt="Minecraft Skin" />
-                <span><img src="images/minecraft.php?u=<?php echo $user['minecraft_username']; ?>&s=128" style="<?php echo echorank($user['rank']) ?>" alt="Minecraft Skin" /></span>
-            </div>    
-        <?php } ?>
-    </td>
+    <td>Date Joined:</td>
+    <td><strong><?php echo date("m/d/Y" ,strtotime($user['created'])); ?></strong></td>
   </tr>
   <tr>
+    <td>Email:</td>
+    <td><strong><?php if(!in_array('email', $not_visible)){echo $user['email'];}else{echo $nv;}?></strong></td>
+  </tr>
+  <tr>
+    <td>Rank:</td>
     <td>
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td class="heading">Date Joined:</td>
-            <td class="read"><?php echo date("m/d/Y" ,strtotime($user['created'])); ?></td>
-          </tr>
-          <tr>
-            <td class="heading">Email:</td>
-            <td class="read"><?php echo $user['email'];?></td>
-          </tr>
-          
-          <tr>
-            <td class="heading">Last Logged In:</td>
-            <td class="read"><?php if($user['last_logged_in']!="0000-00-00 00:00:00"){echo date("D, m/d/Y h:i A" ,strtotime($user['last_logged_in']));}else{echo "N/A";} ?></td>
-          </tr>
-        </table>
-
+    	<strong>
+    	<?php
+		$query="SELECT * FROM `ranks`
+				WHERE `id`='{$user['rank']}'";
+		$result=mysqli_query($connection, $query);
+		$rank_name = mysqli_fetch_array($result);
+    	echo $rank_name['name'];
+    	?>
+    	</strong>
     </td>
+  </tr>
+	<?php
+	//Get custom field list
+	$query="SELECT * FROM `custom_field_users_properties`";
+	$result=mysqli_query( $connection, $query);
+    if(mysqli_num_rows($result)!=0){
+    	while ($field = mysqli_fetch_array($result, MYSQLI_ASSOC)) {?>
+    	<tr>
+		<td><?php echo $field['name']; ?>:</td>
+    	<?php
+    		//Get user data under the custom field
+    		$query="SELECT * FROM `users_custom_fields` WHERE `uid` = ".$user['id'];
+			$cust_field_result=mysqli_query( $connection, $query);
+			$user_field = mysqli_fetch_array($cust_field_result, MYSQLI_ASSOC);?>
+			<td><strong><?php if(!in_array($field['id'], $not_visible)){echo $user_field[$field['name']];}else{echo $nv;}?></strong></td></tr>
+			<?php
+    	}
+    }
+	?>
+  <tr>
+    <td>Last Logged In:</td>
+    <td><strong><?php if(!in_array('last_logged_in', $not_visible)){if($user['last_logged_in']!="0000-00-00 00:00:00"){echo date("D, m/d/Y h:i A" ,strtotime($user['last_logged_in']));}else{echo "N/A";}}else{echo $nv;} ?></strong></td>
   </tr>
 <!--   <tr>
   	<td>
@@ -118,20 +164,20 @@ require_once("includes/begin_html.php"); ?>
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
         <?php 
-		while($forummessage=mysql_fetch_array($messagequery)){
+		while($forummessage=mysqli_fetch_array($messagequery)){
 			$query="SELECT * FROM `forum_threads`
 					WHERE id={$forummessage['threadid']}";
-			$threadquery=mysql_query($query,$connection);
+			$threadquery=mysqli_query($connection, $query);
 			confirm_query($threadquery);
-			$thread=mysql_fetch_array($threadquery);
+			$thread=mysqli_fetch_array($threadquery);
 			$query="SELECT * FROM `forums`
-					WHERE id={$forummessage['forumid']}";
-			$forumquery=mysql_query($query,$connection);
+					WHERE `id`={$forummessage['forumid']}";
+			$forumquery=mysqli_query($connection, $query);
 			confirm_query($forumquery);
-			$forum=mysql_fetch_array($forumquery);
+			$forum=mysqli_fetch_array($forumquery);
 			?>
             <tr>
-                <td align="center">Thread: <?php echo "<a href=\"view_thread.php?thread=".$thread['id']."&&forum=".$forum['id']."\">".$thread['name']."</a>"; ?><br />Forum: <?php echo "<a href=\"view_forum.php?forum=".$forum['id']."\">".$forum['name']."</a>"; ?></td>
+                <td align="center">Thread: <?php echo "<a href=\"".$GLOBALS['HOST']."/view_thread.php?thread=".$thread['id']."&&forum=".$forum['id']."\">".$thread['name']."</a>"; ?><br />Forum: <?php echo "<a href=\"".$GLOBALS['HOST']."/view_forum.php?forum=".$forum['id']."\">".$forum['name']."</a>"; ?></td>
             </tr>
             <tr>
                 <td>
@@ -154,9 +200,21 @@ require_once("includes/begin_html.php"); ?>
 	?></td>
   </tr>
 </table>
-<script type="text/javascript">
-var CollapsiblePanel1 = new Spry.Widget.CollapsiblePanel("CollapsiblePanel1", {contentIsOpen:false});
-</script>
+<?php
+}else{?>
+	<?php
+	$pgsettings = array(
+		"title" => "profile Not Found",
+		"pageselection" => false,
+		"nav" => true,
+		"banner" => 0,
+		"use_google_analytics" => 1,
+	);
+	require_once("includes/begin_html.php"); ?>
+	<h1>This user does not exist.</h1>
+<?php
+}
+?>
 <?php
 include("includes/end_html.php");
 ?>

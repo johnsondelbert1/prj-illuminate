@@ -74,7 +74,6 @@ if(isset($bg[2])){
     <link href="<?php echo $GLOBALS['HOST']; ?>/styles/materialize-override.css" rel="stylesheet" type="text/css" media="screen,projection"/>
     <link href="<?php echo $GLOBALS['HOST']; ?>/administrator/styles/fonts.css" rel="stylesheet" type="text/css" />
     <?php if($favicon!=false){ ?><link rel="shortcut icon" href="<?php echo $GLOBALS['HOST']; ?>/images/favicon/<?php echo $favicon; ?>" /><?php } ?>
-    <link href="<?php echo $GLOBALS['HOST']; ?>/styles/uploadfilemulti.css" rel="stylesheet" />
     <link href="<?php echo $GLOBALS['HOST']; ?>/styles/main.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo $GLOBALS['HOST']; ?>/styles/animate.css" rel="stylesheet" type="text/css" />
     <!-- <link href="<?php echo $GLOBALS['HOST']; ?>/styles/materialize.css" rel="stylesheet" type="text/css" media="screen,projection"/> -->
@@ -84,7 +83,6 @@ if(isset($bg[2])){
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
     <script src="<?php echo $GLOBALS['HOST']; ?>/materialize/js/materialize.js"></script>
     <script type="text/javascript" src="<?php echo $GLOBALS['HOST']; ?>/prettyphoto/js/jquery.prettyPhoto.js" charset="utf-8"></script>
-    <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/jquery.fileuploadmulti.min.js"></script>
     <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/autosize.js"></script>
     <style type="text/css">
     .forumtitle, tr.heading,td.heading, th.heading{
@@ -173,6 +171,18 @@ if(isset($bg[2])){
 		}
 		::-moz-selection{
 			background-color: <?php echo get_color('selection'); ?>;
+		}
+		::-webkit-input-placeholder {
+		   color: <?php echo get_color('input_placeholder'); ?>;
+		}
+		:-moz-placeholder { /* Firefox 18- */
+		   color: <?php echo get_color('input_placeholder'); ?>;  
+		}
+		::-moz-placeholder {  /* Firefox 19+ */
+		   color: <?php echo get_color('input_placeholder'); ?>;  
+		}
+		:-ms-input-placeholder {  
+		   color: <?php echo get_color('input_placeholder'); ?>;  
 		}
 		/*#contentwrap{
 			background-color:<?php echo $GLOBALS['site_layout']['contentbg_color'] ?> !important;

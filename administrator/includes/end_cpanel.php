@@ -31,10 +31,11 @@
     <script src="jscripts/drop/bootstrap-select.js"></script>
     <script src="jscripts/drop/application.js"></script>-->
 
-        <script src="../jscripts/jquery.fileuploadmulti.min.js"></script>
 		<script type="text/javascript" src="../materialize/js/materialize.js"></script>
         <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <!-- Drag and drop touch screens -->
         <script src="jscripts/jquery.ui.touch-punch.js"></script>
+        <!-- Auto layout cards -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.1/masonry.pkgd.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function() {
@@ -45,9 +46,34 @@
                 });
 
 				$('select').material_select();
-                <?php if(!empty($error)){echo "Materialize.toast('".$error."', 8000, 'red');";} ?>
-                <?php if(!empty($success)){echo "Materialize.toast('".$success."', 8000, 'green');";} ?>
-                <?php if(!empty($message)){echo "Materialize.toast('".$message."', 8000, 'yellow');";} ?>
+                //Display messages
+                <?php
+                if(isset($error)&&!is_array($error)){
+                    echo "Materialize.toast('".$error."', 8000, 'red');";
+                }elseif(isset($error)&&is_array($error)&&!empty($error)){
+                    foreach ($error as $value) {
+                        echo "Materialize.toast('".$value."', 8000, 'red');";
+                    }
+                } 
+                ?>
+                <?php
+                if(isset($success)&&!is_array($success)){
+                    echo "Materialize.toast('".$success."', 8000, 'green');";
+                }elseif(isset($success)&&is_array($success)&&!empty($success)){
+                    foreach ($success as $value) {
+                        echo "Materialize.toast('".$value."', 8000, 'green');";
+                    }
+                } 
+                ?>
+                <?php
+                if(isset($message)&&!is_array($message)){
+                    echo "Materialize.toast('".$message."', 8000, 'yellow');";
+                }elseif(isset($message)&&is_array($message)&&!empty($message)){
+                    foreach ($message as $value) {
+                        echo "Materialize.toast('".$value."', 8000, 'yellow');";
+                    }
+                } 
+                ?>
 				
 				var s = $("#sticker");
 				var pos = s.position();                    

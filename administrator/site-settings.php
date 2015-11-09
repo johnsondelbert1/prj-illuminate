@@ -14,21 +14,28 @@ if(isset($_GET['delete'])){
 			if ($item == '.' || $item == '..') continue;
 			unlink($output_dir_banner.DIRECTORY_SEPARATOR.$item);
 		}
-		$message = 'Banner image deleted';
+		$success = 'Banner image deleted';
 	}
 	if($_GET['delete']=='bg'){
 		foreach (scandir($output_dir_bg) as $item) {
 			if ($item == '.' || $item == '..') continue;
 			unlink($output_dir_bg.DIRECTORY_SEPARATOR.$item);
 		}
-		$message = 'Background image deleted';
+		$success = 'Background image deleted';
 	}
 	if($_GET['delete']=='logo'){
 		foreach (scandir($output_dir_logo) as $item) {
 			if ($item == '.' || $item == '..') continue;
 			unlink($output_dir_logo.DIRECTORY_SEPARATOR.$item);
 		}
-		$message = 'Logo image deleted';
+		$success = 'Logo image deleted';
+	}
+	if($_GET['delete']=='favicon'){
+		foreach (scandir($output_dir_icon) as $item) {
+			if ($item == '.' || $item == '..') continue;
+			unlink($output_dir_icon.DIRECTORY_SEPARATOR.$item);
+		}
+		$success = 'Favicon image deleted';
 	}
 }
 if(isset($_POST['chng_info'])){
@@ -377,7 +384,7 @@ $result_pages=mysqli_query($connection, $query);
   <tr>
   	<td>
         <h2>Website Contact Email</h2>
-        <input name="email" type="text" value="<?php echo $site['contact_email']; ?>" maxlength="128" style="width:250px;" />
+        <input name="email" type="email" value="<?php echo $site['contact_email']; ?>" maxlength="128" style="width:250px;" />
     </td>
   	<td>
         <h2>New User Default Rank</h2>
@@ -443,37 +450,6 @@ $result_pages=mysqli_query($connection, $query);
 <?php if(check_permission("Website","edit_site_colors")){ ?>
 <div class="TabbedPanelsContent">
 <h1 style="margin:-4px -4px 5px -4px; padding:5px;">Website Style</h1>
-<!--<select onchange="chngcolor(this)">
-	<option>Red (Dark)</option>
-   	<option>Red (Light)</option>
-	<option>Blue (Dark)</option>
-   	<option>Blue (Light)</option>
-	<option>Green (Dark)</option>
-   	<option>Green (Light)</option>
-</select><br><br>
-<form method="post" action="site-settings.php?tab=1" class="col s12">
-<div class="row">
-<div class="input-field col s6">
-<input id="menucolor" name="menu_color" type="text" value="<?php echo $layout['menu_color']; ?>" maxlength="7" class="color {hash:true}" />
-<label for="menucolor">Menu:</label>
-</div>
-<div class="input-field col s6">
-<input id="contentbg" name="contentbg_color" type="text" value="<?php echo $layout['contentbg_color']; ?>" maxlength="7" class="color {hash:true}" />
-<label for="contentbg">Content BG:</label>
-</div>
-<div class="input-field col s6">
-<input id="sitebg" name="sitebg_color" type="text" value="<?php echo $layout['sitebg_color']; ?>" maxlength="7" class="color {hash:true}" />
-<label for="sitebg">Site BG:</label>
-</div>
-<div class="input-field col s6">
-<input id="accent" name="accent_color" type="text" value="<?php echo $layout['accent_color']; ?>" maxlength="7" class="color {hash:true}" />
-<label for="accent">Accent:</label>
-</div>
-<div class="input-field col s6">
-<input id="text" name="text_color" type="text" value="<?php echo $layout['text_color']; ?>" maxlength="7" class="color {hash:true}" />
-<label for="text">Text:</label>
-</div>
-</div>-->
 <div class="row">
 <div class="input-field col s12">
 <strong>Custom CSS</strong>
@@ -545,17 +521,17 @@ $result_pages=mysqli_query($connection, $query);
     <h3>Background fixed</h3>
     <input name="bg_fixed" type="checkbox"<?php if($layout['bg_fixed']==1){echo " checked";} ?> id="bg_fixed" /><label for="bg_fixed"></label>
     <h3>Use background color</h3>
-    <input name="use_bg_color" type="checkbox"<?php if($layout['use_bg_color']==1){echo " checked";} ?> id="use_bg_color" /><label for="use_bg_color"></label><br><br>
+    <input name="use_bg_color" type="checkbox"<?php if($layout['use_bg_color']==1){echo " checked";} ?> id="use_bg_color" /><label for="use_bg_color"></label><br/><br/>
     <input name="bg_submit" type="submit" class="btn green" value="Save background settings" />
 </form>
-<br><br>
-<a href="site-settings.php?tab=2&delete=bg">[Delete Background]</a>
-<br><br><br><h2>Upload Logo</h2>
+<br/><br/>
+<a href="site-settings?tab=2&delete=bg">[Delete Background]</a>
+<br><br/><br/><h2>Upload Logo</h2>
 <form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
 	<input type="file" name="file" id="file" accept="image/*" /><br>
     *Recommended image size is 100 pixels high and maximum 600 pixels wide. Max filesize 2MB.
 	<input name="uploadlogo" type="submit" class="btn green" value="Upload selected logo" />
-</form><br>
+</form><br/>
 <?php
 	if($logo != false){
 		?><img src="../images/logo/<?php echo $logo; ?>" height="150" /><?php
@@ -565,7 +541,7 @@ $result_pages=mysqli_query($connection, $query);
 	}
 ?>
 <br><br>
-<a href="site-settings.php?tab=2&delete=logo">[Delete Logo]</a>
+<a href="site-settings?tab=2&delete=logo">[Delete Logo]</a>
 <form method="post" action="site-settings.php?tab=2">
     <h2>Logo URL</h2>
     <input name="logo_url" type="text" value="<?php echo $site['logo_url']; ?>" maxlength="256" placeholder="http://" style="width:300px;" /><input name="chng_logo_url" type="submit" class="btn green" value="Change Logo URL" />
@@ -574,7 +550,16 @@ $result_pages=mysqli_query($connection, $query);
 <form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
 	<input type="file" name="file" id="file" accept="image/*" />
 	<input name="uploadfavicon" type="submit" class="btn green" value="Upload selected favicon (128KB max)" />
-</form>
+</form><br/>
+<?php
+	if($favicon != false){
+		?><img src="../images/favicon/<?php echo $favicon; ?>" /><?php
+	}else{?>
+		<div style="font-size:20px; width:32px; height:32px; border:2px dashed #B1B1B1; text-align:center; vertical-align:middle;"></div>
+    <?php
+	}
+?><br/>
+<a href="site-settings?tab=2&delete=favicon">[Delete Favicon]</a>
 </div>
 <?php } ?>    
 <?php if(check_permission("Website","edit_socnet")){ ?>

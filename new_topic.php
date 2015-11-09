@@ -181,7 +181,7 @@ if($_GET['action']=="newmessage"){
 	<h1>Editing post in "<?php echo $thread['name']; ?>"</h1>
 <?php }
 	} ?>
-<a href="forums.php"><?php echo $GLOBALS['site_info']['name']; ?> Forums</a> &gt; <a href="view_forum.php?forum=<?php echo $forum['id']; ?>"><?php echo $forum['name']; ?></a><?php if((isset($_GET['action'])&&$_GET['action']=="newmessage")||(isset($_GET['action'])&&$_GET['action']=="editpost")){?> &gt; <a href="view_thread.php?thread=<?php echo $thread['id']."&&forum=".$forum['id']; ?>"><?php echo $thread['name']; ?></a><?php } ?><br /><br /><br />
+<a href="<?php echo $GLOBALS['HOST'].'/page/'.$GLOBALS['forum_page']; ?>"><?php echo $GLOBALS['site_info']['name']; ?> Forums</a> &gt; <a href="view_forum.php?forum=<?php echo $forum['id']; ?>"><?php echo $forum['name']; ?></a><?php if((isset($_GET['action'])&&$_GET['action']=="newmessage")||(isset($_GET['action'])&&$_GET['action']=="editpost")){?> &gt; <a href="view_thread.php?thread=<?php echo $thread['id']."&&forum=".$forum['id']; ?>"><?php echo $thread['name']; ?></a><?php } ?><br /><br /><br />
 <?php $actionurl="?forum=".urlencode($_GET['forum']);
 		if(isset($_GET['action'])&&$_GET['action']=="newthread"){ 
 			$actionurl.="&&action=newthread";
@@ -226,7 +226,7 @@ if($_GET['action']=="newmessage"){
     <td colspan="2"><textarea name="content" id="topiccontent" style="width:100%; height:400px;"/><?php if(isset($_GET['action'])&&$_GET['action']=="editpost"){echo $messagebody['message'];} ?></textarea></td>
   </tr>
   <tr align="center">
-    <td colspan="2"><input class="button" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="newthread"){echo "newthread";}elseif(isset($_GET['action'])&&$_GET['action']=="newmessage"){echo "newmessage";}elseif(isset($_GET['action'])&&$_GET['action']=="editpost"){echo "editpost";}?>" value="<?php if(isset($_GET['action'])&&$_GET['action']=="newthread"){echo "Post New Thread";}elseif(isset($_GET['action'])&&$_GET['action']=="newmessage"){echo "Post";}elseif(isset($_GET['action'])&&$_GET['action']=="editpost"){echo "Edit Post";} ?>" /></td>
+    <td colspan="2"><input class="btn green" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="newthread"){echo "newthread";}elseif(isset($_GET['action'])&&$_GET['action']=="newmessage"){echo "newmessage";}elseif(isset($_GET['action'])&&$_GET['action']=="editpost"){echo "editpost";}?>" value="<?php if(isset($_GET['action'])&&$_GET['action']=="newthread"){echo "Post New Thread";}elseif(isset($_GET['action'])&&$_GET['action']=="newmessage"){echo "Post";}elseif(isset($_GET['action'])&&$_GET['action']=="editpost"){echo "Edit Post";} ?>" /></td>
   </tr>
 </table>
 </form>
