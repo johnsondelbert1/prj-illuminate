@@ -3,10 +3,13 @@ require_once("../includes/functions.php");
 ?>
 <?php
 if(logged_in()&&!check_permission("Website","cpanel_access")){
-	redirect_to("../index.php?error=".urlencode("You do not have permission to access that!"));
+	redirect_to("../index?error=".urlencode("You do not have permission to access that!"));
 }elseif(logged_in()){
-	redirect_to("index.php");
+	redirect_to("/administrator");
 }
+
+require_once("../includes/login_auth.php");
+
 if(isset($_GET['error'])){
 	$message="<h3 class=\"error animate shake\">".urldecode($_GET['error'])."</h3>";
 }
@@ -88,8 +91,8 @@ if(isset($_GET['success'])){
             	<?php if(!empty($message)){echo $message;} ?>
                 <h1><?php echo $GLOBALS['site_info']['name']; ?></h1>
                 <div class="row">
-				<form method="post" action="../login/login.php" class="col s12" >
-                <input type="hidden" name="redirect_to" value="administrator/index.php"/>
+				<form method="post" class="col s12" >
+                <input type="hidden" name="redirect_to" value="index.php"/>
                 <input type="hidden" name="redirect_from" value="<?=($_SERVER['PHP_SELF'])?>"/>
                 <div class="row">
                 <div class="input-field col s12">

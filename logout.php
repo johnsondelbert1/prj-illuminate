@@ -21,10 +21,5 @@ if(isset($_COOKIE['rememberme'])){
 }
 
 session_destroy();
-
-if(isset($_GET['delete']) && $_GET['delete']=1){
-	redirect_to("login.php?success=".urlencode("Account has been disabled."));
-}else{
-	redirect_to("login.php?success=".urlencode("You have successfully logged out!"));
-}
+redirect_to("login.php?success=".urlencode("You have successfully logged out!"));
 ?>

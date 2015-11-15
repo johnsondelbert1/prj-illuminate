@@ -87,7 +87,7 @@ require_once("includes/functions.php");
 require_once("includes/begin_html.php");
 ?>
 <h1><?php echo $forum['name']; ?></h1>
-<a style="text-decoration:none;" href="forums.php"><?php echo $GLOBALS['site_info']['name']; ?> Forums</a> &gt; <a style="text-decoration:none;" href="view_forum.php?forum=<?php echo $forum['id']; ?>"><?php echo $forum['name']; ?></a>
+<a style="text-decoration:none;" href="<?php echo $GLOBALS['HOST'].'/page/'.$GLOBALS['forum_page']; ?>"><?php echo $GLOBALS['site_info']['name']; ?> Forums</a> &gt; <a style="text-decoration:none;" href="view_forum.php?forum=<?php echo $forum['id']; ?>"><?php echo $forum['name']; ?></a>
 <?php if(check_permission("Forum","add_thread")){?>
 	<br /><br /><a class="green btn " href="new_topic.php?forum=<?php echo urlencode($forum['id']); ?>&amp;&amp;action=newthread">New</a>
 <?php }
@@ -153,22 +153,22 @@ require_once("includes/begin_html.php");
 				<td><a href="view_thread.php?thread=<?php echo urlencode($thread['id']);?>"><?php echo $thread['name']; ?></a></td>
 				<td><?php echo $thread['creator']; ?><br /><?php echo date("m/d/Y h:i A" ,strtotime($thread['datestarted'])); ?></td>
 				<td><b><?php echo $messagecount."</b> Replies"; ?><br /><b><?php echo $thread['views']."</b> Views"; ?></td>
-				<td>By: <a href="profile.php?user=<?php echo urlencode($messageposter['poster']); ?>"><?php echo $messageposter['poster']; ?></a><br /><?php echo date("m/d/Y h:i A" ,strtotime($thread['lastpostdate'])); ?></td>
+				<td>By: <a href="<?php echo $GLOBALS['HOST'].'/profile/'.urlencode($messageposter['poster']); ?>"><?php echo $messageposter['poster']; ?></a><br /><?php echo date("m/d/Y h:i A" ,strtotime($thread['lastpostdate'])); ?></td>
 				<?php if(check_permission("Forum","pin_unpin_thread")){?>
 					<?php if($thread['pinned']==0){?>
-                        <td><a class="green" href="view_forum.php?action=pin&&thread=<?php echo urlencode($thread['id']);?>&&forum=<?php echo urlencode($forum['id']);?>"><span class="icon-pushpin" style="margin:5px;"></span>Pin</a></td>
+                        <td><a class="green" href="view_forum.php?action=pin&thread=<?php echo urlencode($thread['id']);?>&forum=<?php echo urlencode($forum['id']);?>"><span class="icon-pushpin" style="margin:5px;"></span>Pin</a></td>
                     <?php }else{?>
-                        <td><a class="green" href="view_forum.php?action=unpin&&thread=<?php echo urlencode($thread['id']);?>&&forum=<?php echo urlencode($forum['id']);?>">Unpin</a></td>
+                        <td><a class="green" href="view_forum.php?action=unpin&thread=<?php echo urlencode($thread['id']);?>&forum=<?php echo urlencode($forum['id']);?>">Unpin</a></td>
                     <?php } ?>
                 <?php } ?>
                 <?php if(check_permission("Forum","delete_thread")){?>
-                    <td><a class="red" href="view_forum.php?action=del&&thread=<?php echo urlencode($thread['id']);?>&&forum=<?php echo urlencode($forum['id']);?>">Delete</a></td>
+                    <td><a class="red" href="view_forum.php?action=del&thread=<?php echo urlencode($thread['id']);?>&forum=<?php echo urlencode($forum['id']);?>">Delete</a></td>
                 <?php } ?>
                 <?php if(check_permission("Forum","lock_unlock_thread")){?>
                     <?php if($thread['locked']==0){?>
-                        <td><a class="blue" href="view_forum.php?action=lock&&thread=<?php echo urlencode($thread['id']);?>&&forum=<?php echo urlencode($forum['id']);?>">Lock</a></td>
+                        <td><a class="blue" href="view_forum.php?action=lock&thread=<?php echo urlencode($thread['id']);?>&forum=<?php echo urlencode($forum['id']);?>">Lock</a></td>
                     <?php }else{?>
-                        <td><a class="blue" href="view_forum.php?action=unlock&&thread=<?php echo urlencode($thread['id'])?>&&forum=<?php echo urlencode($forum['id']);?>">Unlock</a></td>
+                        <td><a class="blue" href="view_forum.php?action=unlock&thread=<?php echo urlencode($thread['id'])?>&forum=<?php echo urlencode($forum['id']);?>">Unlock</a></td>
                     <?php 
                     }
                 } ?>

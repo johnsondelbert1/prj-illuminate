@@ -1,138 +1,173 @@
 <?php
 require_once("includes/connection.php");
 require_once("includes/functions.php");
+if(logged_in()){
+	redirect_to($GLOBALS['HOST']."/index.php");
+}
+if($GLOBALS['site_info']['user_creation'] == 'admin'){
+	redirect_to($GLOBALS['HOST']."/index.php");
+}
 ?>
 <?php
 if (isset($_POST['submit'])){
-	function checkstr($string){
-		if (ctype_alnum($string)) {
-			$invalchar=false;
-		} else {
-			$invalchar=true;
-		}
-		return $invalchar;
-	}
 	
-	
-	date_default_timezone_set("America/Los_Angeles");
-	
+	//Sanitize default fields
 	$user=strip_tags(trim(mysql_prep($_POST['username'])));
 	$email=strip_tags(trim(mysql_prep($_POST['email'])));
-	$mcuser=strip_tags(trim(mysql_prep($_POST['mcuser'])));
-	$validmcuser=false;
-	
-	/*$ch = curl_init();
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_URL, "http://www.minecraft.net/haspaid.jsp?user=".$mcuser);
-	$check = curl_exec($ch);
-	curl_close($ch);*/
-	
-	
-	$phone=strip_tags(trim(mysql_prep($_POST['phone'])));
-	$location=strip_tags(trim(mysql_prep($_POST['location'])));
-	$gender=strip_tags(trim(mysql_prep($_POST['gender'])));
-	$dob=$_POST['year']."-".$_POST['month']."-".$_POST['day'];
-	$datejoined=date("Y/m/d H:i:s");
-	$age = get_age($dob);
 	$pass=$_POST['pass'];
 	$confirmpass=$_POST['confirmpass'];
-	$hashed_pass=sha1($pass);
-	$verifcode=randstring();
-	if(checkdate(intval($_POST['month']), intval($_POST['day']), intval($_POST['year']))){
-		if ($pass == $confirmpass){
-			if (!empty($user) && !empty($email) && !empty($pass) && !empty($mcuser) && $user != " " && $email != " " && $pass != " " && $mcuser != " "){
-				if($age >= 13){
-					if(checkstr($user)==false){
-						if(filter_var($email,FILTER_VALIDATE_EMAIL)){
-							if($mcuser!=""){
-								$query="SELECT id, username, email, minecraft_username FROM users
-										WHERE username='{$user}' OR email='{$email}' OR minecraft_username='{$mcuser}'";
-							}else{
-								$query="SELECT id, username, email, minecraft_username FROM users
-										WHERE username='{$user}' OR email='{$email}'";
-							}
-							$result=mysql_query($query,$connection);
-							confirm_query($result);
-							if (mysql_num_rows($result)>=1){
-								if($mcuser!=""){
-									$error="Error: An account with this username, email, or minecraft username already exists!";
-								}else{
-									$error="Error: An account with this username or email already exists!";
-								}
-								$pass="";
-								$confirmpass="";
-							}else{
-								$query="INSERT INTO users (
-											username, email, minecraft_username, datejoined, dob, phone, location, gender, hashed_pass, verifcode
-										) VALUES (
-											'{$user}', '{$email}', '{$mcuser}', '{$datejoined}','{$dob}', '{$phone}', '{$location}', '{$gender}', '{$hashed_pass}', '{$verifcode}'
-										)";
-								$result=mysql_query($query, $connection);
-								
-								$to = $email;
-								$subject = "Account activation code";
-								$message = "Activate your account: http://minecraft.secondgenerationdesign.com/activate.php?code=".$verifcode." You must be logged in already on the same browser for the activation to take place.";
-								$headers = "From:StormForge@minecraft.secondgenerationdesign.com".PHP_EOL;
-								
-								mail ( $to , $subject , $message , $headers );
-								
-								$to = "johnsondelbert1@gmail.com";
-								$subject = "User has Registered";
-								$message = $user." has registered on the website. http://stormforgemc.com/user_list.php";
-								$headers = "From:StormForge@minecraft.secondgenerationdesign.com".PHP_EOL;
-								
-								mail ( $to , $subject , $message , $headers );
-								
-								if($result){
-									$success="Account was created successfully for ".$_POST['username']."! An email containing your verification code has been sent to the email you have provided.";
-									$pass="";
-									$confirmpass="";
-								}else{
-									$error="Account was not created successfully. ".mysql_error();
-									$pass="";
-									$confirmpass="";
-								}
-							}
-						}else{
-							$error="The email you have entered is invalid.";
-							$pass="";
-							$confirmpass="";
-						}
+
+	$hashed_pass=password_hash($pass, PASSWORD_DEFAULT);
+
+	$err_array = array();
+
+	//Default field validations
+	if (empty($user)){
+		$err_array['username'] = "Cannot be empty.";
+	}else{
+		if(preg_match("/[^a-zA-Z0-9-_ ]/", $user)){
+			$err_array['username'] = "Username has an invalid character in it.";
+		}
+	}
+
+	if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
+		$err_array['email'] = "Invalid Email.";
+	}
+	if (strlen($pass)<7){
+		$err_array['pass'] = "Needs to be at least 7 characters.";
+	}
+	if ($pass != $confirmpass){
+		$err_array['confirmpass'] = "Confirm password did not match entered password.";
+	}
+
+	//Custom Field validations
+	$query="SELECT * FROM `custom_field_users_properties`";
+	$result=mysqli_query( $connection, $query);
+    if($num_cust_fields = mysqli_num_rows($result)!=0){
+    	while ($field = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+			switch($field['validate']){
+				case "none":
+					
+					break;
+				case "email":
+					if(filter_var($_POST[$field['name']],FILTER_VALIDATE_EMAIL)){
+
+						break;
 					}else{
-						$error="Username has an invalid character in it.";
-						$pass="";
-						$confirmpass="";
+						$err_array[$field['name']] = "Invalid Email.";
 					}
-				}else{
-					$error="Sorry, but you must be at least 13 years of age to create and use an account on this website.";
-					$pass="";
-					$confirmpass="";
-				}
-			}else{
-				$error="Required field left blank.";
-				$pass="";
-				$confirmpass="";
+					break;
+				case "notempty":
+					if($_POST[$field['name']]!=""){
+						break;
+					}else{
+						$err_array[$field['name']] = "Cannot be empty.";
+					}
+					break;
+				case "numbers":
+					if(is_numeric($_POST[$field['name']])){
+						break;
+					}else{
+						$err_array[$field['name']] = "Only numbers allowed.";
+					}
+					break;
+				case "phone":
+					if(preg_match("/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/" ,$_POST[$field['name']])){
+						break;
+					}else{
+						$err_array[$field['name']] = "Invalid Phone.";
+					}
+					break;
 			}
+		}
+	}
+
+	if (empty($err_array)){
+		$query="SELECT `id`, `username`, `email` FROM `users`
+				WHERE `username`='{$user}' OR `email`='{$email}'";
+		$result=mysqli_query($connection, $query);
+		if (mysqli_num_rows($result)==1){
+			$error="An account with this username or email already exists!";
 		}else{
-			$error="Confirm password does not match entered password.";
-			$pass="";
-			$confirmpass="";
+			//Insert default fields
+			$query="INSERT INTO `users` (
+						`username`, `created`, `email`, `hashed_pass`, `rank`, `created_via`, `old_pass`
+					) VALUES (
+						'{$user}', '{$GLOBALS['date']}', '{$email}', '{$hashed_pass}', {$GLOBALS['site_info']['default_rank']}, 'Registration', 0)";
+			$def_result=mysqli_query($connection, $query);
+			if($def_result){
+				$success=array("Account was created successfully for ".$_POST['username']."!");
+			}
+			$new_user = mysqli_insert_id($connection);
+
+			//Set and send email activation code
+			if($GLOBALS['site_info']['require_email_activation']==1 && $def_result){
+				$verifcode=randstring();
+				$query="UPDATE `users` SET 
+					`activation_code` = '{$verifcode}', `activation_code_date` = '{$GLOBALS['date']}', `activated_email` = 0
+					WHERE `id` = ".$new_user;
+				if($result=mysqli_query($connection, $query)){
+					//Send mail
+					$to = $email;
+					$email_subject = "Account Activation";
+					$email_message = 'Account activation request for user "'.$user.'"<br />';
+					$email_message .= 'Activate account here: <a href="'.$GLOBALS['HOST'].'/email_activate?auth='.urlencode($verifcode).'">'.$GLOBALS['HOST'].'/email_activate?auth='.urlencode($verifcode).'</a><br />';
+					$email_message .= 'This link is good for 48 hours.';
+					$headers  = 'MIME-Version: 1.0' . "\r\n";
+					$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+					if($GLOBALS['site_info']['contact_email']!=""){
+						$headers .= "From: ".$GLOBALS['site_info']['contact_email'].PHP_EOL;
+					}else{
+						$headers .= "From: ".$GLOBALS['site_info']['name'].PHP_EOL;
+					}
+					mail ( $to , $email_subject , $email_message , $headers );
+
+					array_push($success,"Email sent for account activation.");
+				}else{
+					$error = "SQL Error has occurred. Contact Administrator.";
+				}
+			}
+			echo $GLOBALS['site_info']['user_creation'];
+			if($GLOBALS['site_info']['user_creation']=='approval' && $def_result){
+				$query="UPDATE `users` SET 
+					`approved_admin` = 0
+					WHERE `id` = ".$new_user;
+				if(mysqli_query($connection, $query)){
+					array_push($success,"Administrator approval needed before login.");
+				}else{
+					$error = 'SQL error';
+				}
+				
+			}
+			
+			//Insert custom fields
+			if($num_cust_fields >= 1){
+				$custom_field_names = array();
+				$custom_field_post = array();
+				$query="SELECT * FROM `custom_field_users_properties`";
+				$cust_fields_result=mysqli_query( $connection, $query);
+				while ($field = mysqli_fetch_array($cust_fields_result, MYSQLI_ASSOC)) {
+					array_push($custom_field_names, '`'.$field['name'].'`');
+					array_push($custom_field_post, "'".$_POST[$field['name']]."'");
+				}
+				$query="INSERT INTO `users_custom_fields` (`uid`, ".implode(', ', $custom_field_names).") VALUES ({$new_user}, ".implode(', ', $custom_field_post).")";
+				$cust_result=mysqli_query($connection, $query);
+			}else{
+				//If no custom fields
+				$query="INSERT INTO `users_custom_fields` (`uid`) VALUES ({$new_user})";
+				$cust_result=mysqli_query($connection, $query);
+			}
+
+			if(!$def_result || !$cust_result){
+				$error="Account was not created. ".mysqli_error($connection);
+			}
 		}
 	}else{
-		$error="Not a valid date for Birthday, ".$dob;
-		$pass="";
-		$confirmpass="";
+		$error="Errors in the Registration form.";
 	}
 }else{
 	$user="";
 	$email="";
-	$mcuser="";
-	$phone="";
-	$location="";
-	$age="";
-	$gender="";
-	$pass="";
-	$confirmpass="";
 }
 ?>
 <?php
@@ -145,46 +180,54 @@ $pgsettings = array(
 );
 require_once("includes/begin_html.php"); ?>
 
-<?php if(!empty($message)){echo "<p>".$message."</p>";} ?>
-<form action="register.php" method="post">
-<table width="35%" border="0" cellspacing="5" cellpadding="0" align="center">
+<h1>Register an Account</h1>
+<form method="post">
+<table border="0" cellspacing="5" cellpadding="0" style="width:auto;">
   <tr>
-    <td><input type="text" name="username" class="text" maxlength="50" placeholder="Username*" style="width:300px;" value="<?php echo $user; ?>"/></td>
+  	<td style="text-align:right;">Username*</td>
+    <td><input type="text" name="username" maxlength="50" placeholder="Username" style="width:300px;" value="<?php echo $user; ?>"/></td>
+    <td><?php if(isset($err_array['username'])){echo '<span class="error-block">'.$err_array['username'].'</span>';} ?></td>
   </tr>
   <tr>
-    <td><input type="text" name="email" class="text" maxlength="50" placeholder="E-mail*" style="width:300px;" value="<?php echo $email; ?>"/></td>
+  	<td style="text-align:right;">Email*</td>
+    <td><input type="email" name="email" maxlength="50" placeholder="Email" style="width:300px;" value="<?php echo $email; ?>"/></td>
+    <td><?php if(isset($err_array['email'])){echo '<span class="error-block">'.$err_array['email'].'</span>';} ?></td>
+  </tr>
+  <?php
+  //Custom User Fields
+	$query="SELECT * FROM `custom_field_users_properties`";
+	$result=mysqli_query( $connection, $query);
+
+    if(mysqli_num_rows($result)!=0){
+    	while ($field = mysqli_fetch_array($result, MYSQLI_ASSOC)) {?>
+    <tr>
+    	<td style="text-align:right;"><?php echo $field['name']; if($field['validate']=='notempty'){echo "*";}?></td>
+    	<td>
+    		<?php if($field['type'] == 'text'){ ?>
+    		<input type="text" name="<?php echo $field['name']; ?>" <?php if($field['placeholder']!=''){echo 'placeholder="'.$field['placeholder'].'"';} ?> <?php if($field['maxchar']>0){echo 'maxlength="'.$field['maxchar'].'"';} ?> value="<?php if(isset($_POST[$field['name']])){echo $_POST[$field['name']];} ?>" style="width:300px;" />
+    		<?php }elseif($field['type'] == 'textarea'){ ?>
+    		<textarea name="<?php echo $field['name'] ?>" placeholder="<?php echo $field['placeholder'] ?>" <?php echo ($field['placeholder'])? '' : 'maxlength="'.$field['placeholder'].'"' ?> style="width:300px; height:100px; padding:5px;" data-autosize-on="false"><?php if(isset($_POST[$field['name']])){echo $_POST[$field['name']];} ?></textarea>
+    		<?php } ?>
+    	</td>
+    	<td><?php if(isset($err_array[$field['name']])){echo '<span class="error-block">'.$err_array[$field['name']].'</span>';} ?></td>
+    </tr>
+    <?php
+    	}
+    }
+  ?>
+  <tr>
+  	<td style="text-align:right;">Password*</td>
+    <td><input type="password" name="pass" placeholder="Password" style="width:300px;" /></td>
+    <td><?php if(isset($err_array['pass'])){echo '<span class="error-block">'.$err_array['pass'].'</span>';} ?></td>
   </tr>
   <tr>
-    <td><input type="text" name="phone" class="text" maxlength="16" placeholder="Phone (555)555-555" style="width:300px;" value="<?php echo $phone; ?>"/></td>
+  	<td style="text-align:right;">Confirm Password*</td>
+    <td><input type="password" name="confirmpass" placeholder="Confirm Password" style="width:300px;" /></td>
+    <td><?php if(isset($err_array['confirmpass'])){echo '<span class="error-block">'.$err_array['confirmpass'].'</span>';} ?></td>
   </tr>
-  <tr>
-    <td><input type="text" name="location" class="text" maxlength="50" placeholder="Location" style="width:300px;" value="<?php echo $location; ?>"/></td>
-  </tr>
-  <tr>
-    <td>Birthday:*
-    <select name="month"></option><option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select>
-    <select name="day"><?php $count=1; while($count<32){echo "<option value=\"{$count}\">{$count}</option>"; $count++;} ?></select>
-    <select name="year"><?php $year=date("Y"); $count=0; while($count<131){$newyear=(intval($year)-$count); echo "<option value=\"".$newyear."\">".$newyear."</option>"; $count++;} ?></select>
-    </td>
-  </tr>
-  <tr>
-    <td>Gender:*
-    <select name="gender">
-      <option value="male" <?php if($gender=="male"){echo "selected=\"selected\"";} ?>>Male</option>
-      <option value="female" <?php if($gender=="female"){echo "selected=\"selected\"";} ?>>Female</option>
-    </select>
-    </td>
-  </tr>
-  <tr>
-    <td><input type="password" name="pass" class="text" placeholder="Password*" style="width:300px;" value="<?php echo $pass; ?>"/></td>
-  </tr>
-  <tr>
-    <td><input type="password" name="confirmpass" class="text" placeholder="Confirm Password*" style="width:300px;" value="<?php echo $confirmpass; ?>"/></td>
-  </tr>
-  <tr>
-    <td colspan="2" align="center"><input class="button" type= "submit" name="submit" value="Create Account" /></td>
-  </tr>
-</table>
+</table> 
+<input class="btn green" type= "submit" name="submit" value="Create Account" />
+
 
 </form>
 <?php

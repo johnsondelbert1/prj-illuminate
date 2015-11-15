@@ -143,7 +143,7 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
 				</td>
 				<!-- Hits -->
 				<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
-					<?php echo $listpage['views']; ?>
+					<?php echo number_format($listpage['views']); ?>
 				</td>
 				
 				<!-- ID -->

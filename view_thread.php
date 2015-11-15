@@ -40,10 +40,10 @@ require_once("includes/functions.php");
 		$current_page = 1;
 	}
 	
-	$query="SELECT * FROM `forum_posts` WHERE  `threadid`={$_GET['thread']} ORDER BY `date` asc LIMIT ";
+	$query="SELECT * FROM `forum_posts` WHERE  `threadid`={$_GET['thread']} ORDER BY `date` ASC LIMIT ";
 		$query.=(($current_page * 10)-10).",".($current_page * 10);
-	$result=mysqli_query( $connection, $query);
-	
+	$result_posts=mysqli_query($connection, $query);
+
 	$query="UPDATE `forum_threads` SET `views` = `views` + 1 WHERE `id` ={$_GET['thread']}";
 			
 	$threadquery=mysqli_query($connection, $query);
@@ -65,17 +65,17 @@ $pgsettings = array(
 require_once("includes/begin_html.php");
 ?>
 <h1><?php echo $thread['name']; ?></h1><br>
-<a style="text-decoration:none;" href="forums.php"><?php echo $GLOBALS['site_info']['name']; ?> Forums</a> &gt; <a style="text-decoration:none;" href="view_forum.php?forum=<?php echo $forum['id']; ?>"><?php echo $forum['name']; ?></a> &gt; <a style="text-decoration:none;" href="view_thread.php?thread=<?php echo $thread['id']; ?>"><?php echo $thread['name']; ?></a><br><br>
+<a style="text-decoration:none;" href="<?php echo $GLOBALS['HOST'].'/page/'.$GLOBALS['forum_page']; ?>"><?php echo $GLOBALS['site_info']['name']; ?> Forums</a> &gt; <a style="text-decoration:none;" href="view_forum?forum=<?php echo $forum['id']; ?>"><?php echo $forum['name']; ?></a> &gt; <a style="text-decoration:none;" href="view_thread.php?thread=<?php echo $thread['id']; ?>"><?php echo $thread['name']; ?></a><br><br>
 <?php if(check_permission("Forum","reply_to_thread")&&$thread['locked']==0){?>
-	<a class="green" href="new_topic.php?forum=<?php echo urlencode($forum['id'])."&&thread=".urlencode($thread['id']); ?>&amp;&amp;action=newmessage">Reply</a>
+	<a class="green" href="new_topic?forum=<?php echo urlencode($forum['id'])."&&thread=".urlencode($thread['id']); ?>&amp;action=newmessage">Reply</a>
 <?php } 
-	echo_page($num_pages, $current_page, "view_thread.php?thread=".$_GET['thread']);?>
+	echo_page($num_pages, $current_page, "view_thread?thread=".$_GET['thread']);?>
   <?php
   	$count=($current_page * 10)-9;
-	while($forummessage=mysqli_fetch_array($result)){
+	while($forummessage=mysqli_fetch_array($result_posts)){
 		$query="SELECT * 
 			FROM  `users` 
-			WHERE username='{$forummessage['poster']}'";
+			WHERE `username`='{$forummessage['poster']}'";
 				
 		$userquery=mysqli_query($connection, $query);
 		confirm_query($userquery);
@@ -87,7 +87,7 @@ require_once("includes/begin_html.php");
           <tr>
             <td>
             	<div style="min-height:150px;" class="forumbody">
-                    <p class="postcount" align="right"><b># <?php echo $count; ?></b></p>Posted by: <b><?php echo $forummessage['poster']; ?></b><br /><?php echo $forummessage['message']; ?></div>
+                    <p class="postcount" align="right"><b># <?php echo $count; ?></b></p>Posted by: <a href="<?php echo $GLOBALS['HOST'].'/profile/'.urlencode($forummessage['poster']); ?>"><b><?php echo $forummessage['poster']; ?></b></a><br /><?php echo $forummessage['message']; ?></div>
                     
                     <div class="forumfooter">Posted: <?php echo date("m/d/Y h:i A" ,strtotime($forummessage['date']));?><?php if($forummessage['lasteditdate']!="0000-00-00 00:00:00"){echo ", Last Edit: ".date("m/d/Y h:i A" ,strtotime($forummessage['lasteditdate']));} ?>
                     <?php
@@ -101,12 +101,12 @@ require_once("includes/begin_html.php");
 	<?php
 	$count++;
     }
-	echo_page($num_pages, $current_page, "view_thread.php?thread=".$_GET['thread']);
+	echo_page($num_pages, $current_page, "view_thread?thread=".$_GET['thread']);
   ?>
 <?php if(check_permission("Forum","reply_to_thread")&&$thread['locked']==0){?>
 	<a class="green" href="new_topic.php?forum=<?php echo urlencode($forum['id'])."&&thread=".urlencode($thread['id']); ?>&amp;&amp;action=newmessage">Reply</a><br><br>
 <?php } ?>
-<a style="text-decoration:none;" href="forums.php"><?php echo $GLOBALS['site_info']['name']; ?> Forums</a> &gt; <a style="text-decoration:none;" href="view_forum.php?forum=<?php echo $forum['id']; ?>"><?php echo $forum['name']; ?></a> &gt; <a style="text-decoration:none;" href="view_thread.php?thread=<?php echo $thread['id']; ?>"><?php echo $thread['name']; ?></a><br /><br />
+<a style="text-decoration:none;" href="<?php echo $GLOBALS['HOST'].'/page/'.$GLOBALS['forum_page']; ?>"><?php echo $GLOBALS['site_info']['name']; ?> Forums</a> &gt; <a style="text-decoration:none;" href="view_forum.php?forum=<?php echo $forum['id']; ?>"><?php echo $forum['name']; ?></a> &gt; <a style="text-decoration:none;" href="view_thread.php?thread=<?php echo $thread['id']; ?>"><?php echo $thread['name']; ?></a><br /><br />
 <?php
 	require_once("includes/end_html.php");
 ?>

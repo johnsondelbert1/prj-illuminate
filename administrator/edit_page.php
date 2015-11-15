@@ -499,7 +499,7 @@ if($_GET['action']=="edit"){
                         <td align="left">
 	                        <div class="input-field col s6">
 	                        <label>External URL - Make sure to add "http://"</label>
-	                            <input type="text" name="url" id="url" value="<?php if(isset($_GET['page'])){echo $selpage['url'];}else{echo "";} ?>" maxlength="1024" <?php if((isset($selpage['type'])&&$selpage['type']!="Link")||$_GET['action']=="newpage"){echo "readonly disabled ";} ?>/>
+	                            <input type="text" name="url" id="url" value="<?php if(isset($_GET['page'])){echo $selpage['url'];}else{echo "http://";} ?>" style="width:90%;" maxlength="1024" <?php if((isset($selpage['type'])&&$selpage['type']!="Link")||$_GET['action']=="newpage"){echo "readonly disabled ";} ?>/>
 	                        </div>
                         </td>
                         <td>

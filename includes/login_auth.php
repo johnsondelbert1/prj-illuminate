@@ -1,5 +1,4 @@
 <?php
-require_once("../includes/functions.php");
 
 if(isset($_POST['submit'])){
 
@@ -15,35 +14,40 @@ if(isset($_POST['submit'])){
 		session_name("login");
 		session_start();
 		
-		$date=date("Y/m/d H:i:s");
+		$date=date("Y-m-d H:i:s");
 		$query="UPDATE `users` SET 
 				`last_logged_in` = '{$date}' 
 				WHERE `id` = {$_SESSION['user_id']}";
 		$result=mysqli_query($connection, $query);
 		confirm_query($result);
 		
-		redirect_to("../".$_POST['redirect_to']);
+		redirect_to($_POST['redirect_to']);
 	}
 
 	$user=trim($_POST['username']);
 	$pass=$_POST['password'];
 
 	if($user == '' || $pass == ''){
-		redirect_to($_POST['redirect_from']."?error=".urlencode("field left blank"));
+		$error = "field left blank";
 	}
 	
-	$query="SELECT id, username, hashed_pass ,old_pass FROM users
-			WHERE username='{$user}'";
+	$query="SELECT * FROM users
+			WHERE `username` = '{$user}'";
 	$result=mysqli_query($connection, $query);
 	confirm_query($result);
 	if (mysqli_num_rows($result)==1){
 		$found_user = mysqli_fetch_array($result);
-		//Determine if old password hash is used, if yes, change to new password hashing
+		//Determine if old password hash is used, if yes, update user to new password hashing
 		if($found_user['old_pass']==0){
 			if(password_verify($pass, $found_user['hashed_pass'])){
-				setLoginCookie($found_user);
+				$verify_login = verify_login($found_user);
+				if($verify_login[0] == 1){
+					setLoginCookie($found_user);
+				}else{
+					$error = $verify_login[1];
+				}
 			}else{
-				redirect_to($_POST['redirect_from']."?error=".urlencode("Wrong password"));
+				$error = "Wrong password";
 			}
 		}else{
 			$hashed_pass=sha1($pass);
@@ -54,19 +58,23 @@ if(isset($_POST['submit'])){
 						WHERE `id` = {$found_user['id']}";
 				$result=mysqli_query($connection, $query);
 				confirm_query($result);
-
-				setLoginCookie($found_user);
+				$verify_login = verify_login($found_user);
+				if($verify_login[0]==1){
+					setLoginCookie($found_user);
+				}else{
+					$error = $verify_login[1];
+				}
 			}else{
-				redirect_to($_POST['redirect_from']."?error=".urlencode("Wrong password"));
+				$error = "Wrong password";
 			}
 		}
 	}else{
-		redirect_to($_POST['redirect_from']."?error=".urlencode("User does not exist"));
+		$error = "User does not exist";
 	}
 }else{
 	if(isset($_GET['logout']) && $_GET['logout']==1){
-		redirect_to($_POST['redirect_from']."?success=".urlencode("You have successfully logged out!"));
+		$success = "You have successfully logged out!";
 	}
-	redirect_to("../login.php");
+	//redirect_to("../login.php");
 }
 ?>
