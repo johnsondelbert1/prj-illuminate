@@ -11,7 +11,6 @@ if(isset($_GET['success'])){
 if(isset($_GET['message'])){
 	$message=urldecode($_GET['message']);
 }
-
 //Re-create folders
 foreach ($folders as $folder){
 	if(!file_exists('../'.$folder)){
@@ -71,7 +70,7 @@ if($GLOBALS['site_info']['user_creation'] == 'approval'){
     <!--Android 5.0+ -->
     <meta name="theme-color" content="#C0392B">
     
-    <link rel="shortcut icon" href="images/favicon.png" />
+    <link rel="shortcut icon" href="images/logo16.png" />
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>-->
     <script type="text/javascript" src="../jscolor/jscolor.js"></script>
     <script src="jscripts/SpryTabbedPanels.js" type="text/javascript"></script>

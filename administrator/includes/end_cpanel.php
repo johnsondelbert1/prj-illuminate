@@ -4,20 +4,10 @@
         
                 <div id="footer">
                         <div style="float:right; text-align:left; margin-right:10px;">
-                            <img src="./images/favicon.png" width="16" height="16"  alt=""/><a href="http://www.illuminatecms.com" target="_blank"> IlluminateCMS </a>- v<?php echo $site_version; ?><!-- by <a href="http://www.secondgenerationdesign.com" target="_blank">Second Gen Design</a>, --> Copyright © 2011-<?php echo date("Y"); ?>.
+                            <img src="images/logo16.png" width="16" height="16"  alt=""/><a href="http://www.illuminatecms.com" target="_blank"> IlluminateCMS </a>- v<?php echo $site_version; ?><!-- by <a href="http://www.secondgenerationdesign.com" target="_blank">Second Gen Design</a>, --> Copyright © 2011-<?php echo date("Y"); ?>.
                         </div>
                     </div>
             </div>
-            
-    <script type="text/javascript">
-    	var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
-
-		function changeTab(id){
-			TabbedPanels1.showPanel(id);
-			return false;
-		};
-		<?php if(isset($_GET['tab'])){?>changeTab(<?php echo $_GET['tab'];?>);<?php } ?>
-    </script>
     
         <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>-->
     <!-- dropdown -->
@@ -40,6 +30,10 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 
+                //Confirm Dialogs
+                $('.modal-trigger').leanModal();
+
+                //Masonry
                 $('#connected').masonry({
                     columnWidth: 10,
                     itemSelector: ".card"
