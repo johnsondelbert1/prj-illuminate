@@ -124,7 +124,7 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
 				<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
 					<?php 
 						if($listpage['lastedited']!="0000-00-00 00:00:00"){
-							$lasteditedtimestamp = strtotime($listpage['created']);
+							$lasteditedtimestamp = strtotime($listpage['lastedited']);
 							echo date("n/j/Y, g:i A", $lasteditedtimestamp);
 						}else{
 							echo "N/A";
@@ -201,7 +201,7 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
 					<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
 						<?php 
 							if($listpage['lastedited']!="0000-00-00 00:00:00"){
-								$lasteditedtimestamp = strtotime($listpage['created']);
+								$lasteditedtimestamp = strtotime($listpage['lastedited']);
 								echo date("n/j/Y, g:i A", $lasteditedtimestamp);
 							}else{
 								echo "N/A";
