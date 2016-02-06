@@ -381,7 +381,7 @@ if($_GET['action']=="edit"){
 	<?php } ?>
     <a class="grey btn" href="page_list.php">Close</a>
     <?php if(isset($_GET['action'])&&$_GET['action']!="newpage"){ ?>
-            <td width="10%"><div class="input-field col s6"><a href="page_list_simple.php" onclick="window.open('page_list_simple.php', 'newwindow', 'width=700, height=500'); return false;">(View Pages)</a></div></td>
+            <td width="10%"><div class="input-field col s6"><a href="page_list_simple.php" onclick="window.open('page_list_simple.php', 'newwindow', 'width=700, height=500'); return false;">(List Page URLs)</a></div></td>
             <?php } ?>
     </td>
   </tr>

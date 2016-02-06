@@ -34,7 +34,7 @@
                 $('.modal-trigger').leanModal();
 
                 //Masonry
-                $('#connected').masonry({
+                $grid = $('#connected').masonry({
                     columnWidth: 10,
                     itemSelector: ".card"
                 });
