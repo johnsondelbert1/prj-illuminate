@@ -2,66 +2,6 @@
 require_once("../includes/functions.php");
 ?>
 <?php
-if(isset($_POST['new_color'])){
-    if(check_permission("Website","edit_site_colors")){
-        
-        $name = strip_tags(mysqli_real_escape_string($connection, $_POST['new_color_name']));
-        $hex = strip_tags(mysqli_real_escape_string($connection, $_POST['new_color_hex']));
-
-/*      $query="SELECT * FROM `style_colors` WHERE `name` = '{$name}'";
-        $result=mysqli_query($connection, $query);*/
-
-        $query="INSERT INTO `style_colors` (c_name, color_hex, date_created, creator) VALUES ('{$name}','{$hex}', '{$date}', {$_SESSION['user_id']})";
-        $result=mysqli_query($connection, $query);
-        confirm_query($result);
-
-        if($name==""){
-            $color = $hex;
-        }else{
-            $color = $name;
-        }
-
-        $success = "Color \"".$color."\" added!";
-    }else{
-        $error="You do not have permission to edit colors.";
-    }
-}
-if(isset($_GET['delcolor'])){
-    if(check_permission("Website","edit_site_colors")){
-
-        $query="SELECT * FROM `style_colors` WHERE `cid` = '{$_GET['delcolor']}'";
-        $result=mysqli_query($connection, $query);
-        $colorData = mysqli_fetch_array($result);
-        if($colorData['deletable']==1){
-            $query="DELETE FROM `style_colors` WHERE `cid` = {$colorData['cid']}";
-            $result=mysqli_query($connection, $query);
-            confirm_query($result);
-
-            $selectorQuery="SELECT * FROM `css_selectors` WHERE `style_color_id` = '{$colorData['cid']}'";
-            $selectorResult=mysqli_query($connection, $selectorQuery);
-
-            while($selector = mysqli_fetch_array($selectorResult)){
-                $editQuery="UPDATE `css_selectors` SET `style_color_id` = 1 WHERE `sid` = {$selector['sid']}";
-                $editResult=mysqli_query($connection, $editQuery);
-            }
-
-            //Get Name or Color for delete conf msg
-            if($colorData['c_name']==""){
-                $color = $colorData['color_hex'];
-            }else{
-                $color = $colorData['c_name'];
-            }
-
-            $success = "Color \"".$color."\" deleted!";
-        }else{
-            $error="This color cannot be deleted!";
-        }
-    }else{
-        $error="You do not have permission to edit colors.";
-    }
-}
-?>
-<?php
     $pgsettings = array(
         "title" => "Edit Site Colors",
         "icon" => "icon-palette"
