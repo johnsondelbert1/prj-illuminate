@@ -18,3 +18,33 @@ input[type="checkbox"]:not(:checked), [type="checkbox"]:checked{
 }
 td, th {
 }
+nav {
+  color: #fff;
+  background-color: #e74c3c;
+  width: 100%;
+  height: 56px !important;
+  line-height: 56px !important;
+  overflow: hidden; 
+}
+nav .brand-logo {
+    position: absolute;
+    color: #fff;
+    display: inline-block;
+    font-size: 1.1rem;
+    padding: 0; 
+}
+  .collapsible-header i {
+    float: right !important;}
+
+ .side-nav span{
+ 	padding-right: 15px;
+ 	float:right;
+ }
+  .side-nav i{
+ 	float:right;
+ 	line-height: 64px;
+ 	padding-right: 15px;
+ }
+   .collapsible-header i{
+ 	padding-right: 0px;
+ }

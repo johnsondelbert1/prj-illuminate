@@ -48,13 +48,24 @@ if(isset($_POST['chng_info'])){
 		$site_name = mysqli_real_escape_string($connection, $_POST['site_name']);
 		$copyright_text = mysqli_real_escape_string($connection, $_POST['copyright_text']);
 		$metadata = strip_tags(mysqli_real_escape_string($connection, $_POST['metadata']), "<meta>");
-		$css_js = strip_tags(mysqli_real_escape_string($connection, $_POST['css_js']), "<script>");
+		$site_description = mysqli_real_escape_string($connection, $_POST['site_description']);
+		
 		$footer_content = mysqli_real_escape_string($connection, $_POST['foot_content']);
+		$address_line1 = mysqli_real_escape_string($connection, $_POST['address_line1']);
+		$address_line2 = mysqli_real_escape_string($connection, $_POST['address_line2']);
+		$address_city = mysqli_real_escape_string($connection, $_POST['address_city']);
+		$address_stateregion = mysqli_real_escape_string($connection, $_POST['address_stateregion']);
+		$address_zip = mysqli_real_escape_string($connection, $_POST['address_zip']);
+		$address_country = mysqli_real_escape_string($connection, $_POST['address_country']);
+		$contact_phone = mysqli_real_escape_string($connection, $_POST['contact_phone']);
 		
 		if($site_name!=""){
 			if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 				$query="UPDATE `site_info` SET 
-					`name` = '{$site_name}', `contact_email` = '{$_POST['email']}', `timezone` = '{$_POST['tz']}', `published` = {$published}, `copyright_text` = '{$copyright_text}', `default_rank` = {$_POST['rank']}, `homepage` = {$_POST['homepage']}, `meta_tags` = '{$metadata}', `style_js_link_tags` = '{$css_js}', `footer_content` = '{$footer_content}'";
+					`name` = '{$site_name}', `contact_email` = '{$_POST['email']}', `address_line1` = '{$address_line1}', `address_line2` = '{$address_line2}', `address_city` = '{$address_city}', 
+					`address_stateregion` = '{$address_stateregion}', `address_zip` = '{$address_zip}', `address_country` = '{$address_country}', `contact_phone` = '{$contact_phone}', 
+					`timezone` = '{$_POST['tz']}', `published` = {$published}, `copyright_text` = '{$copyright_text}', `default_rank` = {$_POST['rank']}, `site_description` = '{$site_description}', 
+					`homepage` = {$_POST['homepage']}, `meta_tags` = '{$metadata}', `footer_content` = '{$footer_content}'";
 				$result=mysqli_query($connection, $query);
 				confirm_query($result);
 				$success = "Site Info has been updated!";
@@ -92,17 +103,21 @@ if(isset($_POST['bg_submit'])){
 	}
 }
 
-if(isset($_POST['custom_css'])){
+if(isset($_POST['cust_css_js'])){
 	if(check_permission("Website","edit_site_colors")){
 		
 		$css = strip_tags(mysqli_real_escape_string($connection, $_POST['custom_css']),"<link>");
+		$js = strip_tags(mysqli_real_escape_string($connection, $_POST['custom_js']), "<script>");
 		
 		/*$query="UPDATE `site_layout` SET 
 			`menu_color` = '{$_POST['menu_color']}', `contentbg_color` = '{$_POST['contentbg_color']}', `sitebg_color` = '{$_POST['sitebg_color']}', `accent_color` = '{$_POST['accent_color']}', `text_color` = '{$_POST['text_color']}', `custom_css` = '{$css}'";*/
 		$query="UPDATE `site_layout` SET `custom_css` = '{$css}'";
 		$result=mysqli_query($connection, $query);
 		confirm_query($result);
-		$success = "Custom CSS has been updated!";
+		$query="UPDATE `site_info` SET `custom_js` = '{$js}'";
+		$result=mysqli_query($connection, $query);
+		confirm_query($result);
+		$success = "Custom CSS/JS has been updated!";
 	}else{
 		$error="You do not have permission to edit styles.";
 	}
@@ -226,86 +241,6 @@ $result_pages=mysqli_query($connection, $query);
 ?>
 <script type="text/javascript" src="../tinymce/js/tinymce/tinymce.min.js"></script>
 <script type="text/javascript">
-	function chngcolor(select){
-		 var selectedOption = select.options[select.selectedIndex];
-		 
-		 var menulight = "ffffff";
-		 var menudark = "111111";
-		 
-		 var contentbglight = "ffffff";
-		 var contentbgdark = "333333";
-		 
-		 var textlight = "333333";
-		 var textdark = "cccccc";
-		 
-		 var redlight = "e74c3c";
-		 var reddark = "c0392b";
-		 
-		 var bluelight = "3498db";
-		 var bluedark = "2980b9";
-		 
-		 var greenlight = "2ecc71";
-		 var greendark = "27ae60";
-		 
-		 var menu;
-		 var contentbg;
-		 var sitebg;
-		 var accent;
-		 var text;
-		 
-		 if(selectedOption.value == "Red (Dark)"){
-			 var menu = menudark;
-			 var contentbg = contentbgdark;
-			 var sitebg = redlight;
-			 var accent = reddark;
-			 var text = textdark;
-		 }else if(selectedOption.value == "Blue (Dark)"){
-			 var menu = menudark;
-			 var contentbg = contentbgdark;
-			 var sitebg = bluelight;
-			 var accent = bluedark;
-			 var text = textdark;
-		 }else if(selectedOption.value == "Green (Dark)"){
-			 var menu = menudark;
-			 var contentbg = contentbgdark;
-			 var sitebg = greenlight;
-			 var accent = greendark;
-			 var text = textdark;
-		 }else if(selectedOption.value == "Red (Light)"){
-			 var menu = menulight;
-			 var contentbg = contentbglight;
-			 var sitebg = redlight;
-			 var accent = reddark;
-			 var text = textlight;
-		 }else if(selectedOption.value == "Blue (Light)"){
-			 var menu = menulight;
-			 var contentbg = contentbglight;
-			 var sitebg = bluelight;
-			 var accent = bluedark;
-			 var text = textlight;
-		 }else if(selectedOption.value == "Green (Light)"){
-			 var menu = menulight;
-			 var contentbg = contentbglight;
-			 var sitebg = greenlight;
-			 var accent = greendark;
-			 var text = textlight;
-		 }
-		 
-		 document.getElementById('menucolor').value = "#"+menu;
-		 document.getElementById('menucolor').style.backgroundColor = "#"+menu;
-		 
-		 document.getElementById('contentbg').value = "#"+contentbg;
-		 document.getElementById('contentbg').style.backgroundColor = "#"+contentbg;
-		 
-		 document.getElementById('sitebg').value = "#"+sitebg;
-		 document.getElementById('sitebg').style.backgroundColor = "#"+sitebg;
-		 
-		 document.getElementById('accent').value = "#"+accent;
-		 document.getElementById('accent').style.backgroundColor = "#"+accent;
-		 
-		 document.getElementById('text').value = "#"+text;
-		 document.getElementById('text').style.backgroundColor = "#"+text;
-	}
 	
 	tinymce.init({
 		selector: "#foot_content",
@@ -347,7 +282,7 @@ $result_pages=mysqli_query($connection, $query);
                 	<li class="TabbedPanelsTab" tabindex="0">Settings</li>
                 <?php } ?>
                 <?php if(check_permission("Website","edit_site_colors")){ ?>
-                <li class="TabbedPanelsTab" tabindex="0">Custom CSS</li>
+                <li class="TabbedPanelsTab" tabindex="0">Custom CSS/JS</li>
                 <?php } ?>
                 <?php if(check_permission("Website","upload_favicon_banner")){ ?>
                 <li class="TabbedPanelsTab" tabindex="0">Imagery</li>
@@ -419,19 +354,28 @@ $result_pages=mysqli_query($connection, $query);
         <input name="copyright_text" type="text" value="<?php echo $site['copyright_text']; ?>" maxlength="256" style="width:400px;" />
     </td>
   	<td>
-    	
+    	<h2>Address</h2>
+    	<label for="address_line1">Line 1</label><input name="address_line1" id="address_line1" type="text" value="<?php echo $site['address_line1']; ?>" maxlength="255" style="width:400px;" /><br/>
+    	<label for="address_line2">Line 2</label><input name="address_line2" id="address_line2" type="text" value="<?php echo $site['address_line2']; ?>" maxlength="255" style="width:400px;" /><br/>
+    	<label for="address_city">City</label><input name="address_city" id="address_city" type="text" value="<?php echo $site['address_city']; ?>" maxlength="255" style="width:250px;" />
+    	<label for="address_stateregion">State / Region</label><input name="address_stateregion" id="address_stateregion" type="text" value="<?php echo $site['address_stateregion']; ?>" maxlength="255" style="width:115px;" /><br/>
+    	<label for="address_zip">Zip</label><input name="address_zip" id="address_zip" type="text" value="<?php echo $site['address_zip']; ?>" maxlength="10" style="width:100px;" />
+    	<label for="address_country">Country</label><input name="address_country" id="address_country" type="text" value="<?php echo $site['address_country']; ?>" maxlength="64" style="width:265px;" />
+    </td>
+  </tr>
+  <tr>
+  	<td>
+        <h2>Contact Phone</h2>
+        <input name="contact_phone" type="text" value="<?php echo $site['contact_phone']; ?>" maxlength="16" style="width:400px;" />
+    </td>
+  	<td>
     </td>
   </tr>
   <tr>
   	<td colspan="2">
     	<h2>Metadata</h2>
-        <textarea name="metadata" id="metadata" rows="15" cols="80" class="materialize-textarea"><?php if($site['meta_tags']!=""){echo $site['meta_tags'];}else{echo "<meta name=\"description\" content=\"A description of the page\" />";} ?></textarea><br>
-    </td>
-  </tr>
-  <tr>
-  	<td colspan="2">
-    	<h2>Javascript</h2>
-        <textarea name="css_js" id="css_js" rows="15" cols="80" class="materialize-textarea"><?php echo $site['style_js_link_tags']; ?></textarea><br>
+    	<label for="site_description">Brief Site Description</label><input name="site_description" id="site_description" type="text" value="<?php echo $site['site_description']; ?>" maxlength="255" style="width:500px;" /><br/>
+        <label for="metadata">Custom Meta Tags</label><textarea name="metadata" id="metadata" rows="15" cols="80" class="materialize-textarea"><?php echo $site['meta_tags']; ?></textarea><br>
     </td>
   </tr>
   <tr>
@@ -449,12 +393,16 @@ $result_pages=mysqli_query($connection, $query);
 <?php } ?>
 <?php if(check_permission("Website","edit_site_colors")){ ?>
 <div class="TabbedPanelsContent">
-<h1 style="margin:-4px -4px 5px -4px; padding:5px;">Website Style</h1>
+<h1 style="margin:-4px -4px 5px -4px; padding:5px;">Custom CSS/JS</h1>
 <div class="row">
 <div class="input-field col s12">
-<strong>Custom CSS</strong>
-<textarea class="materialize-textarea" name="custom_css" id="custom_css" rows="15" cols="80"><?php echo $layout['custom_css']; ?></textarea>
-<input name="Custom CSS" type="submit" class="btn green" value="Save Custom CSS" />
+	<form method="post" action="site-settings?tab=1">
+		<h2>Custom CSS</h2>
+		<textarea class="materialize-textarea" name="custom_css" id="custom_css" rows="15" cols="80"><?php echo $layout['custom_css']; ?></textarea>
+		<h2>Custom Javascript</h2>
+	    <textarea class="materialize-textarea" name="custom_js" id="custom_js" rows="15" cols="80"><?php echo $site['custom_js']; ?></textarea><br>
+		<input name="cust_css_js" type="submit" class="btn green" value="Save Custom CSS/JS" />
+	</form>
 </div>
 </div>
 </form>
@@ -542,11 +490,11 @@ $result_pages=mysqli_query($connection, $query);
 ?>
 <br><br>
 <a href="site-settings?tab=2&delete=logo">[Delete Logo]</a>
-<form method="post" action="site-settings.php?tab=2">
+<!-- <form method="post" action="site-settings.php?tab=2">
     <h2>Logo URL</h2>
     <input name="logo_url" type="text" value="<?php echo $site['logo_url']; ?>" maxlength="256" placeholder="http://" style="width:300px;" /><input name="chng_logo_url" type="submit" class="btn green" value="Change Logo URL" />
-</form>
-<br><br><br><h2>Upload Favicon</h2>
+</form><br><br> -->
+<br><h2>Upload Favicon</h2>
 <form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
 	<input type="file" name="file" id="file" accept="image/*" />
 	<input name="uploadfavicon" type="submit" class="btn green" value="Upload selected favicon (128KB max)" />

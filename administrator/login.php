@@ -11,7 +11,7 @@ if(logged_in()&&!check_permission("Website","cpanel_access")){
 require_once("../includes/login_auth.php");
 
 if(isset($_GET['error'])){
-	$message="<h3 class=\"error animate shake\">".urldecode($_GET['error'])."</h3>";
+    $message="<h3 class=\"error\">".urldecode($_GET['error'])."</h3>";
 }
 if(isset($_GET['success'])){
 	$message="<h3 class=\"success\">".urldecode($_GET['success'])."</h3>";
@@ -54,8 +54,6 @@ if(isset($_GET['success'])){
 	}
 	.content {
 	  padding:25px;
-	  width:300px;
-	  
 	}
 	.flat-form {
 		text-align: center;
@@ -80,6 +78,12 @@ if(isset($_GET['success'])){
 	.flat-form p {
 	  padding: 5px;
 	}
+    h3.error{
+        color: #FFBEBE;
+    }
+    h3.success{
+        color: #7AFF96;
+    }
 </style>
 </head>
 <body>
@@ -88,8 +92,18 @@ if(isset($_GET['success'])){
         <div class="content">
  <img src="images/logo.png"  alt=""/></div>
             <div id="login" class="form-action show">
-            	<?php if(!empty($message)){echo $message;} ?>
-                <h1><?php echo $GLOBALS['site_info']['name']; ?></h1>
+                <br/>
+                <h1><?php echo $GLOBALS['site_info']['name']; ?></h1><br/>
+                <?php if(!empty($message)){echo $message;} ?>
+                <?php
+                if(isset($error)&&!is_array($error)){
+                    echo '<h3 class = "error">'.$error.'</h3>';
+                }elseif(isset($error)&&is_array($error)&&!empty($error)){
+                    foreach ($error as $value) {
+                        echo '<h3 class = "error">'.$value.'</h3>';
+                    }
+                }
+                ?>
                 <div class="row">
 				<form method="post" class="col s12" >
                 <input type="hidden" name="redirect_to" value="index.php"/>
@@ -109,7 +123,7 @@ if(isset($_GET['success'])){
                             <input type="submit" name="submit" value="Sign in" class="btn red" tabindex="4"/>
                             </div>
                             <div class="input-field col s6">
-                            <input name="remember" id="remember" type="radio" value="" tabindex="3"/><label for="remember">Remember</label>
+                            <input name="remember" id="remember" type="checkbox" value="" tabindex="3"/><label for="remember">Remember</label>
                             </div>
                             </div>
                 </form>
