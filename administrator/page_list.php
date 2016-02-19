@@ -294,7 +294,7 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
      });
 </script>
 <form method="post" action="page_list.php">
-<div id="sticker">
+<div style="margin-bottom: 20px;">
     <?php if(check_permission("Pages","add_pages")){ ?>
     	<a href="edit_page.php?action=newpage" class="green btn">New</a></li>
     <?php } ?>

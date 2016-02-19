@@ -60,7 +60,7 @@ if($GLOBALS['site_info']['user_creation'] == 'approval'){
     
     <title><?php echo $pgsettings['title']; ?></title>
     
-    <META NAME="description" CONTENT="">
+    <META NAME="description" CONTENT="IlluminateCMS Control Panel">
     <META NAME="robot" CONTENT="index,follow">
     <META NAME="copyright" CONTENT="All Images, Video, and Source Code Property of Second Generation Design, Copyright © 2011-<?php echo date("Y"); ?>">
     <META NAME="author" CONTENT="2GD - Secondgenerationdesign.com">
@@ -82,16 +82,29 @@ if($GLOBALS['site_info']['user_creation'] == 'approval'){
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link href="styles/fonts.css" rel="stylesheet" type="text/css" />
     <link href="../styles/animate.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--<link type="text/css" rel="stylesheet" href="styles/materialize.css"  media="screen,projection"/>-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <style type="text/css">
+.contentwrap, .nav-wrapper {
+      padding-left: 240px;
+    }
+
+    @media only screen and (max-width : 992px) {
+      .contentwrap, .nav-wrapper {
+        padding-left: 0;
+      }
+    }
+    </style>
 </head>
 
 
 <body>
     <div class="wrap">
-    	<div class="nav">
+
+    	<!-- <div class="nav">
         	<div style="background-color:#F0F0F0;">
-           <!-- <span style="float:left; line-height:30px; padding-left:10px;"><b>Logged in as: <?php echo $_SESSION['username']; ?></b></span> -->
+           <span style="float:left; line-height:30px; padding-left:10px;"><b>Logged in as: <?php echo $_SESSION['username']; ?></b></span>
                 <ul id="horiz-menu" style="display:block;">
                     <li>
                     	<a href="../" target="_blank">Back</a>
@@ -176,7 +189,91 @@ if($GLOBALS['site_info']['user_creation'] == 'approval'){
                     </li>
                 </ul>
             </div>
+            </div> -->
+<nav>
+        <a href="#" class="brand-logo center"><!--<span class="<?php echo $pgsettings['icon']; ?>"></span>-->   <?php echo $pgsettings['title']; ?></a>
+<ul id="slide-out" class="side-nav fixed">
+    <li><a href="index.php"><i class="material-icons">&#xE871;</i>Dashboard</a></li>
+    <?php if(check_permission(array("Pages;add_pages","Pages;edit_pages","Pages;delete_pages"))){?>
+      <li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+          <li>
+            <a class="collapsible-header"><i class="material-icons">&#xE7F9;</i>Pages<i class="mdi-navigation-arrow-drop-down"></i></a>
+            <div class="collapsible-body">
+              <ul>
+                <li><a href="page_list.php">Edit</a></li>
+                <li><a href="staff-list.php">Staff</a></li>
+                <li><a href="edit_page.php?action=newpage">New</a></li>
+              </ul>
             </div>
+          </li>
+        </ul>
+      </li>
+    <?php } ?>
+    <?php if(check_permission(array("Galleries;add_gallery","Galleries;edit_gallery","Galleries;delete_gallery","Galleries;rename_gallery","Sliders;add_slider","Sliders;edit_slider","Sliders;delete_slider","Sliders;rename_slider",))){?>
+    <li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+          <li>
+            <a class="collapsible-header"><i class="material-icons">&#xE3B6;</i>Images<i class="mdi-navigation-arrow-drop-down"></i></a>
+            <div class="collapsible-body">
+              <ul>
+                <?php if(check_permission(array("Galleries;add_gallery","Galleries;edit_gallery","Galleries;delete_gallery","Galleries;rename_gallery"))){?>
+                <li><a href="gallery-list.php">Gallery</a></li>
+                <?php } ?>
+                <?php if(check_permission(array("Sliders;add_slider","Sliders;edit_slider","Sliders;delete_slider","Sliders;rename_slider"))){?>
+                <li><a href="slider-list.php">Slider</a></li>
+                <?php } ?>
+                <?php if(check_permission("Website","upload_favicon_banner")){ ?>
+                <li><a href="site-settings.php?tab=2#">Settings</a></li>
+                <?php } ?>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </li>
+    <?php } ?>
+    <?php if(check_permission(array("Forms;create_form","Forms;edit_form","Forms;delete_form"))){?>
+    <li><a href="form-list.php"><span class="icon-pen"></span>Forms</a></li>
+    <?php } ?>
+    <?php if(check_permission(array("Uploading;upload_files","Uploading;delete_files","Uploading;create_folders","Uploading;rename_folders","Uploading;delete_folders"))){?>
+    <li><a href="upload-files.php"><i class="material-icons">&#xE2C6;</i>Upload</a></li>
+    <?php } ?>
+    <?php if(check_permission("Website","edit_site_colors")){ ?>
+    <li><a href="edit-colors">Theme<i class="material-icons">&#xE40A;</i></a></li>
+    <?php } ?>
+    <?php if(check_permission(array("Users;add_users","Users;delete_users","Users;create_rank","Users;edit_rank","Users;delete_rank","Users;approve_deny_new_users"))){?>
+      <li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+          <li>
+            <a class="collapsible-header"><i class="material-icons">&#xE853;</i>Accounts<i class="mdi-navigation-arrow-drop-down"></i></a>
+            <div class="collapsible-body">
+              <ul>
+                <?php if(check_permission(array("Users;add_users","Users;delete_users"))){?>
+                <li><a href="accounts.php">Edit</a></li>
+                <?php } ?>
+                <?php if(check_permission("Users","approve_deny_new_users") && $GLOBALS['site_info']['user_creation'] == 'approval'){?>
+                <li><a href="approval-list">Approve/Deny</a></li>
+                <?php } ?>
+                <?php if(check_permission(array("Users;create_rank","Users;edit_rank","Users;delete_rank"))){?>
+                <li><a href="ranks.php">Permissions</a></li>
+                <?php } ?>
+                <?php if(check_permission("Website","edit_site_colors")){ ?>
+                <li><a href="user-settings">Settings</a></li>
+                <?php } ?>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </li>
+    <?php } ?>
+    <?php if(check_permission(array("Website;edit_site_settings","Website;upload_favicon_banner","Website;edit_google_analytics","Website;edit_socnet"))){?>
+    <li><a href="site-settings.php"><i class="material-icons">&#xE8B8;</i>Settings</a></li>
+    <?php } ?>
+    <li><a href="../"><i class="material-icons">&#xE5C4;</i>Back to site</a></li>
+    <li><a href="logout.php"><i class="material-icons">&#xE879;</i>Logout</a></li>
+    </ul>
+    <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+    </nav>
             <!--
             <ul id="menu">
                 <li class="menuitem">
@@ -194,9 +291,9 @@ if($GLOBALS['site_info']['user_creation'] == 'approval'){
                     </ul>
                     -->
         <div class="contentwrap">
-            <div class="title">
+            <!--<div class="title">
                 <h1><span class="<?php echo $pgsettings['icon']; ?>"></span>   <?php echo $pgsettings['title']; ?></h1>
-            </div>
+            </div>-->
             <div class="content" id="contentarea">
             
             <!--<script src="jscripts/jquery.sortable.js"></script>-->

@@ -97,10 +97,17 @@
                 });
             });
         </script>
-		<script>
-			$( "#horiz-menu li a" ).click(function(e){
-				$(this).next('ul').toggleClass('active');
-			});
+        </script>
+        <script>
+ $('.button-collapse').sideNav({
+      menuWidth: 240, // Default is 240
+      edge: 'left', // Choose the horizontal origin
+      closeOnClick: false // Closes side-nav on <a> clicks, useful for Angular/Meteor
+    }
+
+  );
+$('.collapsible').collapsible();
+
         </script>
 
 <!--<script>

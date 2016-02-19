@@ -8,14 +8,23 @@
     <div id="footerwrap">
         <div id="footer">
             <div id="footer-content" style="float:left;">
-                <?php if($GLOBALS['site_info']['footer_content']!=""){echo $GLOBALS['site_info']['footer_content']."<br>";} ?>
-                <?php echo $GLOBALS['site_info']['name']; ?> <?php echo $GLOBALS['site_info']['copyright_text']; ?>, Copyright © <?php echo date("Y"); ?>.<!-- Website designed by <a href="http://www.secondgenerationdesign.com" target="_blank">Second Gen Design</a>-->
+                <?php echo $GLOBALS['site_info']['contact_phone'];?><br/>
+                <?php echo $GLOBALS['site_info']['address_line1'];if($GLOBALS['site_info']['address_line2']!=''){echo ', '.$GLOBALS['site_info']['address_line2'];}?><br/>
+                <?php echo $GLOBALS['site_info']['address_city'];if($GLOBALS['site_info']['address_stateregion']!=''){echo ', '.$GLOBALS['site_info']['address_stateregion'];} echo ' '.$GLOBALS['site_info']['address_zip'];?><br/>
+                <?php echo $GLOBALS['site_info']['address_country'];?><br/>
+                <?php echo '<a href="mailto:'.$GLOBALS['site_info']['contact_email'].'">'.$GLOBALS['site_info']['contact_email'].'</a>';?>
+                
             </div>
-            <div style="text-align:right; font-size:10px; float:right;" id="login-status">
-                <?php check_login(); ?>
+            <div id="footer-content" style="float:left;">
+                <?php if($GLOBALS['site_info']['footer_content']!=""){echo $GLOBALS['site_info']['footer_content']."<br>";} ?>
+            </div>
+            <div style="text-align:right; font-size:14px; float:right;" id="login-status">
+                <?php check_login(); ?><br/><br/><br/>
+                <?php echo $GLOBALS['site_info']['name']; ?><?php if($GLOBALS['site_info']['copyright_text']!=''){echo ' '.$GLOBALS['site_info']['copyright_text'];} ?>, Copyright © <?php echo date("Y"); ?>.
             </div>
         </div>
     </div>
+    <!-- Website designed by Second Gen Design -->
     <script type="text/javascript">
     <?php
     //Display messages
