@@ -230,7 +230,7 @@ function get_rank_info(){
 	return $user_permissions;
 }
 
-
+//Ranks & permissions
 
 function enable_all_perms($blank_permissions){
 	$filled_perms = $blank_permissions;
@@ -303,6 +303,7 @@ $blank_permissions = array(
 	),
 	"Website" => array(
 		"cpanel_access" => array("value" => 0, "disp_name" => "CPanel Access", "description" => "Enables members of this rank to access the admin CPanel."),
+		"unpublished_access" => array("value" => 0, "disp_name" => "Unpublished Access", "description" => "Enables members of this rank to access the website when Unpublished."),
 		"edit_site_settings" => array("value" => 0, "disp_name" => "Edit Website Information", "description" => "Enables members of this rank to edit the website information."),
 		"edit_site_colors" => array("value" => 0, "disp_name" => "Edit Website Colors", "description" => "Enables members of this rank to modify the website theme colors."),
 		"edit_user_settings" => array("value" => 0, "disp_name" => "Edit User Settings", "description" => "Enables members of this rank to edit sitewide user settings."),
@@ -364,6 +365,33 @@ function check_permission($perm_group, $perm = false){
 		return false;
 	}
 }
+
+function get_user_permission($u_id, $perm_group, $perm){
+	//gets permissions for specified user ID
+	global $connection;
+	$query="SELECT `rank` FROM `users` WHERE `id` = {$u_id}";
+	$result=mysqli_query( $connection, $query);
+	$user_rank=mysqli_fetch_array($result);
+	$query="SELECT * FROM `ranks` WHERE `id` = {$user_rank['rank']}";
+	$result=mysqli_query( $connection, $query);
+	if(mysqli_num_rows($result)!=0){
+		$rank_permissions=mysqli_fetch_array($result);
+		if($rank_permissions['permissions']!=""){
+			$user_permissions = unserialize($rank_permissions['permissions']);
+			if(isset($user_permissions[$perm_group][$perm]['value'])&&$user_permissions[$perm_group][$perm]['value']==1){
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}
+	}else{
+		return false;
+	}
+}
+
+echo get_user_permission(54, 'Website', 'unpublished_access');
 
 function get_page_permission($visibleArr){
 	global $user_info;
@@ -490,6 +518,7 @@ function verify_login($user){
 	//check if user can login (activated email, not banned, or approved by admin)
 	$login_flag = true;
 	$login_msg = array();
+
 	//Check email
 	if(($user['activated_email']==0 && $GLOBALS['site_info']['require_email_activation']==1)){
 		$login_flag = false;
@@ -504,6 +533,11 @@ function verify_login($user){
 	if(($user['banned']==1)){
 		$login_flag = false;
 		array_push($login_msg, "Account has been banned.");
+	}
+	//Check unpubpished site permissions
+	if($GLOBALS['site_info']['published'] == 0 && !get_user_permission($user['id'], 'Website', 'unpublished_access')){
+		$login_flag = false;
+		array_push($login_msg, "Website is not accessible to you; it is Under Construction.");
 	}
 
 	return array($login_flag, $login_msg);
@@ -916,8 +950,10 @@ function nav($position, $pgselection){
         <?php }else{ ?>
                 <?php if($GLOBALS['site_info']['user_creation'] == 'approval' || $GLOBALS['site_info']['user_creation'] == 'any'){ ?><a href="<?php echo $GLOBALS['HOST']; ?>/register">Register</a> | <?php } ?><a href="<?php echo $GLOBALS['HOST']; ?>/login">Login</a>
         <?php }?>
+        	<br/><br/><?php echo $GLOBALS['site_info']['name']; ?><?php if($GLOBALS['site_info']['copyright_text']!=''){echo ' '.$GLOBALS['site_info']['copyright_text'];} ?>, Copyright © <?php echo date("Y"); ?>.
             </div>
         </ul>
+
 	<?php }
 	
 	if($position=="horiz"||$position=="vert"){

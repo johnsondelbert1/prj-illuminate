@@ -1,5 +1,5 @@
 <?php
-if($GLOBALS['site_info']['published']==0){
+if($GLOBALS['site_info']['published']==0&&!check_permission("Website","unpublished_access")){
 	redirect_to($GLOBALS['HOST']."/under_construction.php");
 }
 
@@ -52,7 +52,7 @@ if(isset($bg[2])){
     
     <title><?php echo $pgsettings['title']; ?></title>
     
-    <META NAME="description" CONTENT="">
+    <META NAME="description" CONTENT="<?php echo $GLOBALS['site_info']['site_description']; ?>">
     <META NAME="robot" CONTENT="index,follow">
     <META NAME="copyright" CONTENT="Source Code Property of Second Generation Design, Copyright © 2011-<?php echo date("Y"); ?>">
     <META NAME="author" CONTENT="2GD - Secondgenerationdesign.com">
@@ -253,8 +253,8 @@ if(isset($bg[2])){
 		/* End custom CSS */
 	</style>
     <!-- Start custom JS -->
-    <?php if($GLOBALS['site_info']['style_js_link_tags']!=""){
-		echo $GLOBALS['site_info']['style_js_link_tags'];
+    <?php if($GLOBALS['site_info']['custom_js']!=""){
+		echo $GLOBALS['site_info']['custom_js'];
 	}?>
     
     <!-- End custom JS -->
@@ -287,7 +287,7 @@ if(isset($bg[2])){
         	<?php if($logo!=false){ ?>
             	<div style="float:left; position:absolute;" id="logo">
                 	<?php if($GLOBALS['site_info']['logo_url']!=''){?>
-            		<a href="<?php echo $GLOBALS['site_info']['logo_url']; ?>"><img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $GLOBALS['site_info']['name']; ?> Logo" height="100" /></a>
+            		<a href="<?php echo $GLOBALS['HOST']; ?>"><img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $GLOBALS['site_info']['name']; ?> Logo" height="100" /></a>
                     <?php }else{ ?>
                     <img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" height="100" />
                     <?php } ?>
@@ -304,7 +304,7 @@ if(isset($bg[2])){
         </div>
         <?php } ?>
         <?php
-        if(!isset($pgsettings['horiz_menu_visible'])||$pgsettings['horiz_menu_visible'] == true){
+        if(!isset($page['horiz_menu_visible'])||$page['horiz_menu_visible'] == true){
         	$num_horiz_pages = nav("horiz", $pgsettings['pageselection']);
 		}
 		?>
@@ -322,7 +322,7 @@ if(isset($bg[2])){
             <div class="container">
                 <div class="row">
                     <?php
-                    if(!isset($pgsettings['vert_menu_visible'])||$pgsettings['vert_menu_visible'] == true){
+                    if(!isset($page['vert_menu_visible'])||$page['vert_menu_visible'] == true){
                         ?><?php
                             $num_vert_pages = nav("vert", $pgsettings['pageselection']);
                         ?><?php

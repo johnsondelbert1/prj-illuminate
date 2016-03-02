@@ -124,7 +124,7 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
 				<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
 					<?php 
 						if($listpage['lastedited']!="0000-00-00 00:00:00"){
-							$lasteditedtimestamp = strtotime($listpage['created']);
+							$lasteditedtimestamp = strtotime($listpage['lastedited']);
 							echo date("n/j/Y, g:i A", $lasteditedtimestamp);
 						}else{
 							echo "N/A";
@@ -201,7 +201,7 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
 					<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
 						<?php 
 							if($listpage['lastedited']!="0000-00-00 00:00:00"){
-								$lasteditedtimestamp = strtotime($listpage['created']);
+								$lasteditedtimestamp = strtotime($listpage['lastedited']);
 								echo date("n/j/Y, g:i A", $lasteditedtimestamp);
 							}else{
 								echo "N/A";
@@ -256,7 +256,6 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
 	require_once("includes/begin_cpanel.php");
 ?>
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript">
    <!-- jQuery for "Select All" checkboxes -->
     $(document).ready(function() {
@@ -295,12 +294,12 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
      });
 </script>
 <form method="post" action="page_list.php">
-<div id="sticker">
+<div style="margin-bottom: 20px;">
     <?php if(check_permission("Pages","add_pages")){ ?>
     	<a href="edit_page.php?action=newpage" class="green btn">New</a></li>
     <?php } ?>
     <?php if(check_permission("Pages","delete_pages")){ ?>
-    	<input name="delpages" type="submit" value="Delete" class="red btn" />
+    	<a class="modal-trigger red btn" href="#modal1">Delete</a>
     <?php } ?>
 </div>
 <h1>Horizontal Menu</h1>
@@ -309,6 +308,22 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
 <?php list_pages($listvertpagesquery, 'vert'); ?>
 <h1>Non-Menu</h1>
 <?php list_pages($listnomenupagesquery, 'none'); ?>
+
+<div id="modal1" class="modal">
+    <div class="modal-content">
+		<h4>Are you sure you want to delete?</h4>
+		<p>Once you delete these pages there will be no way to recover them!</p>
+    </div>
+    <div class="modal-footer">
+	    <div class="row right">
+		    <div class="col l12 s12">
+			    <a href="#!" class="modal-close waves-effect waves-blue btn blue ">Cancel</a>
+			    <input name="delpages" type="submit" value="Delete" class="red btn" />
+			    <!-- <a href="edit_page.php?action=delpage&page=<?php echo $_GET['page']; ?>" id="del_button" class="modal-close waves-effect waves-red btn red ">Delete</a> -->
+		    </div>
+	    </div>
+    </div>
+</div>
 </form>
 <br />
 

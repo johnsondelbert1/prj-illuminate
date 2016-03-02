@@ -215,13 +215,15 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 			}
 			
 		}elseif(isset($_GET['action'])&&$_GET['action']=="delpage"){
-			$query="DELETE FROM `pages` WHERE id={$_GET['page']}";
+			$query="SELECT * FROM `pages` WHERE `id`={$_GET['page']}";
+			$getpagequery=mysqli_query( $connection, $query);
+			confirm_query($getpagequery);
+			$page=mysqli_fetch_array($getpagequery);
+			$query="DELETE FROM `pages` WHERE `id`={$page['id']}";
 			$result = mysqli_query( $connection, $query);
-			
-			$query="SELECT * FROM `pages` ORDER BY `position` ASC LIMIT 1";
-			$result=mysqli_query( $connection, $query);
-			$firstpage=mysqli_fetch_array($result);
-			redirect_to("edit_page.php?action=edit&page=".$firstpage['id']);
+			if($result){
+				redirect_to('page_list?success='.urlencode("Deleted page ".$page["name"]."!"));
+			}
 		}	
 	}else{
 		$query="SELECT * FROM `pages` ORDER BY `position` ASC LIMIT 1";
@@ -372,14 +374,14 @@ if($_GET['action']=="edit"){
   	<?php if(check_permission("Pages","add_pages")){?>
         <input class="green btn" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "submit";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newpage";} ?>" value="Save" />
             <?php if(check_permission("Pages","delete_pages")&&$_GET['action']=="edit"){?>
-        <?php if(isset($_GET['page'])){?><a class="red btn" href="edit_page.php?action=delpage&&page=<?php echo $_GET['page']; ?>">Delete</a><?php } ?>
+        <?php if(isset($_GET['page'])){?><a class="modal-trigger red btn" href="#modal1">Delete</a><?php } ?>
     <?php } ?>
         <input class="grey btn" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "sandb";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newandb";} ?>" value="Save & Close" />
         <input class="grey btn" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "sandnewp";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newandnewp";} ?>" value="Save & New" />
 	<?php } ?>
     <a class="grey btn" href="page_list.php">Close</a>
     <?php if(isset($_GET['action'])&&$_GET['action']!="newpage"){ ?>
-            <td width="10%"><div class="input-field col s6"><a href="page_list_simple.php" onclick="window.open('page_list_simple.php', 'newwindow', 'width=700, height=500'); return false;">(View Pages)</a></div></td>
+            <td width="10%"><div class="input-field col s6"><a href="page_list_simple.php" onclick="window.open('page_list_simple.php', 'newwindow', 'width=700, height=500'); return false;">(List Page URLs)</a></div></td>
             <?php } ?>
     </td>
   </tr>
@@ -620,6 +622,29 @@ if($_GET['action']=="edit"){
             </div>
         </div>
 </form>
+<div id="modal1" class="modal">
+    <div class="modal-content">
+		<h4>Are you sure you want to delete?</h4>
+		<p>Once you delete this page there will be no way to recover it!</p>
+    </div>
+    <div class="modal-footer">
+	    <div class="row right">
+		    <div class="col l12 s12">
+			    <a href="#!" class="modal-close waves-effect waves-blue btn blue ">Cancel</a>
+			    <a href="edit_page.php?action=delpage&page=<?php echo $_GET['page']; ?>" id="del_button" class="modal-close waves-effect waves-red btn red ">Delete</a>
+		    </div>
+	    </div>
+    </div>
+</div>
+<script type="text/javascript">
+	var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
+
+	function changeTab(id){
+		TabbedPanels1.showPanel(id);
+		return false;
+	};
+	<?php if(isset($_GET['tab'])){?>changeTab(<?php echo $_GET['tab'];?>);<?php } ?>
+</script>
 <?php
 	require_once("includes/end_cpanel.php");
 ?>

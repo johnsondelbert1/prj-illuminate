@@ -13,6 +13,10 @@ if(!check_permission(array("Uploading;upload_files","Uploading;delete_files","Up
 	);
 	require_once("includes/begin_cpanel.php");
 ?>
-<iframe style="border:0; width:100%; height:600px; margin:-10px;" src="../filemanager/dialog.php?type=0&fldr="/>
+<object data="url" type=text/html>
+<embed src="../filemanager/dialog.php?type=0&fldr=" width="100%" height="600px">
+</embed>
+</object>
+
 
 <?php require_once("includes/end_cpanel.php"); ?>
