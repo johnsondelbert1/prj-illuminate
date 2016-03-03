@@ -86,12 +86,12 @@ if($GLOBALS['site_info']['user_creation'] == 'approval'){
     <!--<link type="text/css" rel="stylesheet" href="styles/materialize.css"  media="screen,projection"/>-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <style type="text/css">
-.contentwrap, .nav-wrapper {
-      padding-left: 240px;
+.contentwrap, .nav-wrapper , .brand-logo {
+      padding-left: 240px !important;
     }
 
     @media only screen and (max-width : 992px) {
-      .contentwrap, .nav-wrapper {
+      .contentwrap, .nav-wrapper, .brand-logo {
         padding-left: 0;
       }
     }

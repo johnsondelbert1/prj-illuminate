@@ -83,7 +83,7 @@ require_once("includes/begin_html.php");
 		
 		?>
         
-        <table width="100%" cellspacing="1" cellpadding="0" style="margin-bottom:10px;">
+        <table width="100%" cellspacing="1" cellpadding="0" style="margin-bottom:10px;" class="forum">
           <tr>
             <td>
             	<div style="min-height:150px;" class="forumbody">

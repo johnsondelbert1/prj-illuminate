@@ -319,7 +319,7 @@ if(isset($bg[2])){
 				slider($pgsettings['slider']);
 			}
 			?>
-            <div class="container">
+            <div class="">
                 <div class="row">
                     <?php
                     if(!isset($page['vert_menu_visible'])||$page['vert_menu_visible'] == true){
@@ -330,10 +330,10 @@ if(isset($bg[2])){
 						$num_vert_pages = 0;
 					}
                     ?>
-                  
+                 
                 	<div class="col <?php
 					if($num_vert_pages == 0){
-									echo 'l12';	
+									echo 'l10 offset-l1';	
 									}
 						else{
 									echo 'l9';	
