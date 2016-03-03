@@ -115,7 +115,7 @@ if(!check_permission("Forum","add_thread")&&(isset($_GET['action'])&&$_GET['acti
 	$forum=mysqli_fetch_array($result);
 	
 	if(isset($_GET['action'])&&$_GET['action']=="editpost"){
-		$query="SELECT * FROM `forum_posts` WHERE id={$_GET['msg']} AND poster='{$_SESSION['username']}'";
+		$query="SELECT * FROM `forum_posts` WHERE `id`={$_GET['msg']} AND `poster`='{$_SESSION['user_id']}'";
 		$messagequery=mysqli_query( $connection, $query); 
 		confirm_query($messagequery);
 		if(mysqli_num_rows($messagequery)!=0){

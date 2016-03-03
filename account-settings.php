@@ -155,6 +155,20 @@ $noval="--";
 		}
 	}
 
+	if(isset($_POST['save_forum_signature'])){
+		$forum_signature = strip_tags(mysqli_real_escape_string($connection, $_POST['forum_signature']),'<br><hr><b><i><u><sup><sup><strong><img><a><ul><ol><li><p><span>');
+		if(strlen($forum_signature)<=500){
+			$query="UPDATE `users` SET 
+					`forum_signature` = '{$forum_signature}' 
+					WHERE `id` = {$_SESSION['user_id']}";
+			$result=mysqli_query($connection, $query);
+			confirm_query($result);
+			$success="Your forum signature has been updated.";
+		}else{
+			$error='Cannot have more than 500 characters in your signature.';
+		}
+	}
+
 	if(isset($_POST['save_public_visibility'])){
 		$fields = array('email', 'last_logged_in');
 
@@ -201,8 +215,42 @@ $pgsettings = array(
 );
 require_once("includes/begin_html.php");
 ?>
-	<div class="col s12">
-		<h1>Account Settings</h1>
+<script type="text/javascript" src="tinymce/js/tinymce/tinymce.min.js"></script>
+<script type="text/javascript">
+	
+	tinymce.init({
+		selector: "#forum_signature",
+		theme: "modern",
+		skin: 'light',
+		width: '100%',
+		plugins: [
+			"advlist autolink lists link image charmap print preview anchor",
+			"searchreplace wordcount visualblocks visualchars code fullscreen",
+			"insertdatetime save directionality",
+			"emoticons template paste textcolor"
+		],
+		toolbar1: "insertfile undo redo | bold italic | bullist numlist outdent indent | link image",
+		image_advtab: true
+	});
+	
+  	var placeholder = 'This is a line \nthis should be a new line';
+	$('#analytics').attr('value', placeholder);
+	
+	$('#analytics').focus(function(){
+		if($(this).val() === placeholder){
+			$(this).attr('value', '');
+		}
+	});
+	
+	$('#analytics').blur(function(){
+		if($(this).val() ===''){
+			$(this).attr('value', placeholder);
+		}    
+	});
+
+</script>
+<div class="col s12">
+	<h1>Account Settings</h1>
 	</div>
 </div>
 
@@ -301,6 +349,19 @@ require_once("includes/begin_html.php");
 <?php
     }
 ?>
+
+<div class="card">
+<div class="row title">
+<div class="col s12"><h5>Forum Signature</h5></div>
+</div>
+<div class="container">
+	<form action="account-settings" method="post">
+		<textarea name="forum_signature" id="forum_signature" rows="5" cols="80" class="materialize-textarea" maxlength="500"><?php if(isset($forum_signature)){echo $forum_signature;}else{echo $user['forum_signature'];} ?></textarea>
+		<p>(Max 500 characters)</p><br/>
+		<input type="submit" name="save_forum_signature" value="Save" class="green btn"/><br/><br/>
+	</form>
+</div>
+</div>
 
 <div class="card">
 <div class="row title">
