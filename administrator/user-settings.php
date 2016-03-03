@@ -99,14 +99,14 @@ if(isset($_POST['submit'])){
 		foreach ($existingFields as $key => $value) {
 			//Verify maxchars
 			if($value['maxchar']!='' && intval($value['maxchar'])!=0){
-				if(intval($value['maxchar'])<=10000){
+				if(intval($value['maxchar'])<=100){
 					$maxchar = intval($value['maxchar']);
 				}else{
-					$maxchar = 10000;
-					$value['maxchar'] = 10000;
+					$maxchar = 100;
+					$value['maxchar'] = 100;
 				}
 			}else{
-				$maxchar = 10000;
+				$maxchar = 100;
 			}
 
 			$getNameQuery = "SELECT `name` FROM `custom_field_users_properties` WHERE `id` = ".$key;
@@ -153,14 +153,14 @@ if(isset($_POST['submit'])){
 		foreach ($newFields as $key => $value) {
 			//Verify maxchars
 			if($value['maxchar']!='' && intval($value['maxchar'])!=0){
-				if(intval($value['maxchar'])<=10000){
+				if(intval($value['maxchar'])<=100){
 					$maxchar = intval($value['maxchar']);
 				}else{
-					$maxchar = 10000;
-					$value['maxchar'] = 10000;
+					$maxchar = 100;
+					$value['maxchar'] = 100;
 				}
 			}else{
-				$maxchar = 10000;
+				$maxchar = 100;
 			}
 
 			$query="INSERT INTO `custom_field_users_properties` (`name`, `type`, `desc`, `placeholder`, `maxchar`, `validate`) VALUES (
@@ -254,7 +254,7 @@ span:hover{
 	}
 </script>
 <form method="post" action="user-settings">
-<table cellpadding="5" id="sticker">
+<table cellpadding="5">
   <tr>
     <td width="110px"><input name="submit" type="submit" class="btn green" value="Save" /></td>
   <td></td>

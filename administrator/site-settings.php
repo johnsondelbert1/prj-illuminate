@@ -250,7 +250,7 @@ $result_pages=mysqli_query($connection, $query);
 		plugins: [
 			"advlist autolink lists link image charmap print preview anchor",
 			"searchreplace wordcount visualblocks visualchars code fullscreen",
-			"insertdatetime media save directionality",
+			"insertdatetime save directionality",
 			"emoticons template paste textcolor"
 		],
 		toolbar1: "insertfile undo redo | bold italic | bullist numlist outdent indent | link image",
