@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <database>
   <firstrun>false</firstrun>
-  <server>localhost</server>
-  <username>root</username>
+  <server></server>
+  <username></username>
   <password/>
-  <name>prj_illuminate_trist</name>
+  <name></name>
 </database>

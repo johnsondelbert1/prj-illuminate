@@ -440,13 +440,13 @@ div.nav{
 	transition: all .2s ease-in-out;
 	width:100%;
 }
-
+/*
 #vert-menu li:hover > a {
 	-webkit-box-shadow: inset 0px 4px 0px 0px rgba(50, 50, 50, 0.75);
 	-moz-box-shadow:    inset 0px 4px 0px 0px rgba(50, 50, 50, 0.75);
 	box-shadow:         inset 0px 4px 0px 0px rgba(50, 50, 50, 0.75);
 }
-
+*/
 #vert-menu ul {
     margin:0;
     _margin: 0; /*IE6 only*/
@@ -1281,3 +1281,97 @@ span.galleryImage input[type=checkbox]:checked {
 	right:120px;
 	position:absolute !important;
 }
+
+/*forums*/
+.forum{
+	
+
+}
+.forum tr{
+	font-size:0.750em;
+	transition: all 200ms;
+	-webkit-transition: all 200ms; /* Safari */
+}
+.forum tr a{
+	font-size:1.125em;
+	text-decoration:none;
+	font-weight:bold;
+	-webkit-transition: all 200ms; /* Safari */
+}
+.forum tr td{
+	padding-left:15px;
+	padding-right:15px;
+	height:90px;
+	margin-bottom:10px;
+}
+.forummessage{
+	vertical-align:text-top;
+	border:inherit;
+}
+.forumsuser{
+}
+.forumsadmin{
+	background-color:#660000;
+	border-color:#900;
+}
+.forumsmod{
+	background-color:#006;
+	border-color:#099;
+}
+.forumsvip{
+	background-color: rgba(153, 102, 0, 0.8);
+	border-color:#FF0;
+}
+.userspost{
+	background-color: #e74c3c;
+	font-size:1.500em;
+	
+}
+div.userbar{
+	width:100%;
+	text-align:center;
+	background-color: #000;
+	font-family:Sans-Serif;
+	font-style: italic;
+	height:49px;
+}
+div.rank{
+	width:140px;
+	height:35px;
+	border-radius: 10px;
+	text-align:center;
+	font-size:1.500em;
+	padding-top:5px;
+	color:#0F0F0F;	
+}
+.forumtitle{
+	height:50px;
+	font-size:1.500em;
+	border-bottom:2px dashed;
+}
+/* buttons */
+
+	input[type=submit]{background-color:#426FC5;}
+	.red:hover {
+	  background: #c41411 !important;
+	  /*box-shadow: 0 3px 1px #237bb2;*/
+	}
+	.blue:hover {
+	  background: #3b50ce !important;
+	  /*box-shadow: 0 3px 1px #237bb2;*/
+	}
+	.green:hover {
+	  background: #056f00 !important;
+	  /*box-shadow: 0 3px 1px #237bb2;*/
+	}
+	input[type=submit]:hover {
+	  background: #3b50ce;
+	  /*box-shadow: 0 3px 1px #237bb2;*/
+	}
+
+.small
+{
+	height:30px !important;
+	line-height:30px !important;
+}
+/*  end */

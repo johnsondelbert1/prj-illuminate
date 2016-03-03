@@ -1207,7 +1207,7 @@ function slider($slider_id){
                         <!-- Jssor Slider Begin -->
                         <!-- You can move inline styles to css file or css block. -->
                         <div class="row">
-                        <div class="col l10 s12 offset-l1" style="padding:0 0 !important;">
+                        <div class="col l10 m12 s12 offset-l1" style="padding:0 0 !important;">
                         <div style="width:100%; margin-left:auto; margin-right:auto;">
                         <div id="sliderb_container" style="position: relative; width: 600px; height: 300px; overflow: hidden; margin-left:auto; margin-right:auto; margin-bottom:20px;">
                     
@@ -1322,10 +1322,10 @@ function slider($slider_id){
                                 .jssora05rdn { background-position: -310px -40px; }
                             </style>
                             <!-- Arrow Left -->
-                          <span u="arrowleft" class="jssora05l" style=" top: 123px; left: 8px;"><i class="large material-icons">keyboard_arrow_left</i>
+                          <span u="arrowleft" class="jssora05l" style=" top: 123px; left: 8px;"><i class="small material-icons">keyboard_arrow_left</i>
                             </span>
                             <!-- Arrow Right -->
-                            <span u="arrowright" class="jssora05r" style=" top: 123px; right: 8px"><i class="large material-icons">keyboard_arrow_right</i>
+                            <span u="arrowright" class="jssora05r" style=" top: 123px; right: 8px"><i class="small material-icons">keyboard_arrow_right</i>
                             </span>
                            
                             <!-- Trigger -->
