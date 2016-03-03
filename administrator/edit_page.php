@@ -368,7 +368,7 @@ if($_GET['action']=="edit"){
 </script>
 <form action="edit_page.php?<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "action=edit&&page=".$selpage['id'];}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "action=newpage";} ?>" method="post" name="editpage">
 
-<table cellpadding="0" id="sticker">
+<table cellpadding="0">
   <tr>
   <td>
   	<?php if(check_permission("Pages","add_pages")){?>

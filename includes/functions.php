@@ -188,6 +188,21 @@ $GLOBALS['color_styles'] = array(
 		"selector" => '',
 		"type" => '',
 	),
+	"forum_main" => array(
+		"disp_name" => 'Forum Main',
+		"selector" => '.forummain, .thread table:nth-child(even), .forum tr:nth-child(even)',
+		"type" => 'bg',
+	),
+	"forum_secondary" => array(
+		"disp_name" => 'Forum Secondary',
+		"selector" => '.forumtitle, .forumsec, .thread table:nth-child(odd), .forum tr:nth-child(odd)',
+		"type" => 'bg',
+	),
+	"forum_text" => array(
+		"disp_name" => 'Forum Text',
+		"selector" => '.forum',
+		"type" => 'text',
+	),
 );
 //Add new selectors to DB
 foreach ($GLOBALS['color_styles'] as $key => $val){
