@@ -71,7 +71,7 @@ require_once("includes/begin_html.php");
 <h1><?php echo $thread['name']; ?></h1><br>
 <a style="text-decoration:none;" href="<?php echo $GLOBALS['HOST'].'/page/'.$GLOBALS['forum_page']; ?>"><?php echo $GLOBALS['site_info']['name']; ?> Forums</a> &gt; <a style="text-decoration:none;" href="view_forum?forum=<?php echo $forum['id']; ?>"><?php echo $forum['name']; ?></a> &gt; <a style="text-decoration:none;" href="view_thread.php?thread=<?php echo $thread['id']; ?>"><?php echo $thread['name']; ?></a><br><br>
 <?php if(check_permission("Forum","reply_to_thread")&&$thread['locked']==0){?>
-	<a class="btn green" href="new_topic?forum=<?php echo urlencode($forum['id'])."&&thread=".urlencode($thread['id']); ?>&amp;action=newmessage">Reply</a><br/><br/>
+	<a class="btn green" href="new_topic?forum=<?php echo urlencode($forum['id'])."&&thread=".urlencode($thread['id']); ?>&amp;action=newmessage">Reply</a><br/><br/><div class="thread">
 <?php } 
 	echo_page($num_pages, $current_page, "view_thread?thread=".$_GET['thread']);?>
   <?php
@@ -94,7 +94,6 @@ require_once("includes/begin_html.php");
 		$custom_user_data=mysqli_fetch_array($dataquery);
 		
 		?>
-        
         <table width="100%" style="border: 1px solid; margin-bottom: 20px;" cellspacing="1" cellpadding="0">
           <tr>
             <td rowspan="3" style="width: 20%; height: 100%; border-right: 1px solid; vertical-align: text-top; padding: 5px;">
@@ -147,12 +146,11 @@ require_once("includes/begin_html.php");
           </tr>
 
         </table>
-        
 	<?php
 	$count++;
     }
 	echo_page($num_pages, $current_page, "view_thread?thread=".$_GET['thread']);
-  ?>
+  ?></div>
 <?php if(check_permission("Forum","reply_to_thread")&&$thread['locked']==0){?>
 	<a class="btn green" href="new_topic.php?forum=<?php echo urlencode($forum['id'])."&&thread=".urlencode($thread['id']); ?>&amp;&amp;action=newmessage">Reply</a><br><br>
 <?php } ?>
