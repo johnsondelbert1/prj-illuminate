@@ -273,6 +273,7 @@ $blank_permissions = array(
 		"create_rank" => array("value" => 0, "disp_name" => "Create Ranks", "description" => "Enables members of this rank to create ranks on the website."),
 		"edit_rank" => array("value" => 0, "disp_name" => "Edit Ranks", "description" => "Enables members of this rank to edit existing ranks on the website."),
 		"delete_rank" => array("value" => 0, "disp_name" => "Delete Ranks", "description" => "Enables members of this rank to delete ranks on the website."),
+		"view_private_data" => array("value" => 0, "disp_name" => "View Private Data", "description" => "Enables members of this rank view user data that is not publicly visible."),
 	),
 	"Uploading" => array(
 		"upload_files" => array("value" => 0, "disp_name" => "Upload Files", "description" => "Enables members of this rank to upload files to the website."),
@@ -391,9 +392,7 @@ function get_user_permission($u_id, $perm_group, $perm){
 	}
 }
 
-echo get_user_permission(54, 'Website', 'unpublished_access');
-
-function get_page_permission($visibleArr){
+function canView($visibleArr){
 	global $user_info;
 	$dispPage=false;
 	switch ($visibleArr[0]) {
@@ -991,7 +990,7 @@ function nav($position, $pgselection){
 				if($numpages!=0){
 				while($page=mysqli_fetch_array($result)){
 					if($page['issubpage']==0){ $lastmainpage=$page['id'];
-						if(get_page_permission(unserialize($page['visible']))){?>
+						if(canView(unserialize($page['visible']))){?>
 	                        <li style="min-width:<?php echo $buttonwidth; ?>%;"<?php if($pgselection=="true"){if(isset($_GET['page'])&&urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><a style="min-width:<?php echo $buttonwidth; ?>%;" href="<?php
 	                        	echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($page['name']);
 	                            ?>" <?php if($page['target']!="_self"){echo "target=\"".$page['target']."\"";} ?>><?php echo $page['name'];?></a><?php 
@@ -1005,7 +1004,7 @@ function nav($position, $pgselection){
 	                            if(mysqli_num_rows($subpgresult)!=0){?>
 	                                <ul style="min-width:100%;">
 	                                <?php while($subpage=mysqli_fetch_array($subpgresult)){
-	                                	if(get_page_permission(unserialize($subpage['visible']))){?>
+	                                	if(canView(unserialize($subpage['visible']))){?>
 		                                    <li style="width:100%;"<?php if($pgselection=="true"){if(isset($_GET['page'])&&urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>>
 		                                        <a href="<?php
 		                                        	echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($subpage['name']);?>"

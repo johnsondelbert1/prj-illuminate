@@ -102,7 +102,7 @@ if(!empty($editing_rank_perms)){
     <td>Name:<br/><input name="name" placeholder="Name" type="text" value="<?php echo $editing_rank['name']; ?>" maxlength="50" /></td>
   </tr>
   <tr>
-    <td>Color:<br/><input name="color" type="text" value="<?php echo $editing_rank['color'];?>" style="background-color:<?php echo $editing_rank['color'];?>" maxlength="7" class="color {hash:true, required:false}" /></td>
+    <td>Color:<br/><input name="color" type="text" value="<?php echo $editing_rank['color'];?>" style="background-color:<?php echo $editing_rank['color'];?>" maxlength="7" class="jscolor {hash:true, required:false}" /></td>
   </tr>
 </table>
 <?php if($editing_rank['editable']!=0){?>

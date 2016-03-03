@@ -387,7 +387,7 @@ if(($rows)!=0){
 			require_once("includes/begin_html.php");
 		}else{
 			if($page['published']==1){
-				if(get_page_permission(unserialize($page['visible']))){
+				if(canView(unserialize($page['visible']))){
 					print_page($page);
 				}else{
 					$pgsettings = array(

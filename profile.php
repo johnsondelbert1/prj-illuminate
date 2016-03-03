@@ -105,7 +105,7 @@ require_once("includes/begin_html.php"); ?>
   </tr>
   <tr>
     <td>Email:</td>
-    <td><strong><?php if(!in_array('email', $not_visible)){echo $user['email'];}else{echo $nv;}?></strong></td>
+    <td><strong><?php if(!in_array('email', $not_visible)||check_permission("Users","view_private_data")){echo $user['email'];}else{echo $nv;}?></strong></td>
   </tr>
   <tr>
     <td>Rank:</td>
@@ -134,14 +134,14 @@ require_once("includes/begin_html.php"); ?>
     		$query="SELECT * FROM `users_custom_fields` WHERE `uid` = ".$user['id'];
 			$cust_field_result=mysqli_query( $connection, $query);
 			$user_field = mysqli_fetch_array($cust_field_result, MYSQLI_ASSOC);?>
-			<td><strong><?php if(!in_array($field['id'], $not_visible)){echo $user_field[$field['name']];}else{echo $nv;}?></strong></td></tr>
+			<td><strong><?php if(!in_array($field['id'], $not_visible)||check_permission("Users","view_private_data")){echo $user_field[$field['name']];}else{echo $nv;}?></strong></td></tr>
 			<?php
     	}
     }
 	?>
   <tr>
     <td>Last Logged In:</td>
-    <td><strong><?php if(!in_array('last_logged_in', $not_visible)){if($user['last_logged_in']!="0000-00-00 00:00:00"){echo date("D, m/d/Y h:i A" ,strtotime($user['last_logged_in']));}else{echo "N/A";}}else{echo $nv;} ?></strong></td>
+    <td><strong><?php if(!in_array('last_logged_in', $not_visible)||check_permission("Users","view_private_data")){if($user['last_logged_in']!="0000-00-00 00:00:00"){echo date("D, m/d/Y h:i A" ,strtotime($user['last_logged_in']));}else{echo "N/A";}}else{echo $nv;} ?></strong></td>
   </tr>
 <!--   <tr>
   	<td>

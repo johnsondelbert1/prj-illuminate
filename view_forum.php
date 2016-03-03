@@ -48,7 +48,7 @@ require_once("includes/functions.php");
 	 }
  }
  
-    $query="SELECT id, name 
+    $query="SELECT * 
 		FROM  `forums` 
 		WHERE `id`={$_GET['forum']}";
 			
@@ -56,6 +56,10 @@ require_once("includes/functions.php");
 	confirm_query($result);
 	$forum=mysqli_fetch_array($result);
 	
+	if(!canView(unserialize($forum['visible']))){
+		redirect_to("page/".$GLOBALS['forum_page']."?error=".urlencode('You do not have access to that!'));
+	}
+
 	$query="SELECT * 
 		FROM  `forum_threads` 
 		WHERE `forumid`={$_GET['forum']}";
@@ -99,10 +103,11 @@ require_once("includes/begin_html.php");
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="forum">
   <tr>
   	<th class="forumtitle"></th>
-    <th class="forumtitle"  width="40%">Thread</th>
+    <th class="forumtitle" width="40%">Thread</th>
     <th class="forumtitle" width="25%">
     <th class="forumtitle" width="15%"></th>
     <th class="forumtitle" width="28%">Last Post</th>
+    <th class="forumtitle"></th>
     
 	<?php if(check_permission(array("Forum;pin_unpin_thread","Forum;lock_unlock_thread","Forum;delete_thread",))){?>
 		<td class="forumtitle" colspan="3">Thread Controls</td>
@@ -149,8 +154,8 @@ require_once("includes/begin_html.php");
 			
 			?>
 			<tr height="40" align="center">
-				<td><img src="images/<?php if($thread['locked']==0){echo "unlocked";}else{echo "locked";} ?>.png" width="16" height="16" alt="<?php if($thread['locked']==0){echo "Unlocked thread";}else{echo "Locked thread";} ?>"/><?php if($thread['pinned']==1){?> <img src="images/pinned.png"/> <?php } ?></td>
-				<td><a href="view_thread.php?thread=<?php echo urlencode($thread['id']);?>"><?php echo $thread['name']; ?></a></td>
+				<td><?php if($thread['pinned']==1){?><i class="material-icons" style="margin-right: 5px;">&#xE88F;</i><?php } ?></td>
+				<td><a href="view_thread.php?thread=<?php echo urlencode($thread['id']);?>"><strong><?php echo $thread['name']; ?></strong></a></td>
 				<td><?php echo $thread['creator']; ?><br /><?php echo date("m/d/Y h:i A" ,strtotime($thread['datestarted'])); ?></td>
 				<td><b><?php echo $messagecount."</b> Replies"; ?><br /><b><?php echo $thread['views']."</b> Views"; ?></td>
 				<td>By: <a href="<?php echo $GLOBALS['HOST'].'/profile/'.urlencode($messageposter['poster']); ?>"><?php echo $messageposter['poster']; ?></a><br /><?php echo date("m/d/Y h:i A" ,strtotime($thread['lastpostdate'])); ?></td>
@@ -172,6 +177,7 @@ require_once("includes/begin_html.php");
                     <?php 
                     }
                 } ?>
+                <td><?php if($thread['locked']==1){echo '<i class="small material-icons">&#xE899;</i>';} ?></td>
 			 </tr>
 			 
 			<?php
