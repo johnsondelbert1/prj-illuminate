@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <database>
   <firstrun>false</firstrun>
-  <server></server>
-  <username></username>
-  <password/>
-  <name></name>
+  <server>localhost</server>
+  <username>root</username>
+  <password></password>
+  <name>prj_illuminate_del</name>
 </database>

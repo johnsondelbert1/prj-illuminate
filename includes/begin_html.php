@@ -85,7 +85,6 @@ if(isset($bg[2])){
     <script type="text/javascript" src="<?php echo $GLOBALS['HOST']; ?>/prettyphoto/js/jquery.prettyPhoto.js" charset="utf-8"></script>
     <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/autosize.js"></script>
     <style type="text/css">
-
 		body{
 			<?php if($GLOBALS['site_layout']['use_bg_color']!=1){ ?>
 			background-color:#FFFFFF; !important;
@@ -107,9 +106,6 @@ if(isset($bg[2])){
 			<?php }else{ ?>
 			background-attachment:scroll !important;
 			<?php } ?>
-		}
-		.btn-floating{
-			z-index: 0;
 		}
 		<?php
 		//Custom Colors

@@ -35,7 +35,31 @@ nav .brand-logo {
 }
   .collapsible-header i {
     float: right !important;}
-
+.side-nav,.side-nav .collapsible-body{
+  background-color: #3f4649;
+}
+.side-nav a{
+  color: #fff !important;
+}
+.side-nav li{
+  padding-left: 2px;
+}
+.side-nav li.active{
+  background-color: #333;
+}
+ul.collapsible.collapsible-accordion{
+  background-color: #3f4649;
+  border-left: #fff solid 0px;
+  padding-left: 0px;
+}
+.side-nav li:hover{
+  background-color: #3f4649;
+  border-left: #fff solid 2px;
+  padding-left: 0px;
+}
+.side-nav a:hover{
+  background-color: #3f4649;
+}
  .side-nav span{
  	padding-right: 15px;
  	float:right;
@@ -48,3 +72,6 @@ nav .brand-logo {
    .collapsible-header i{
  	padding-right: 0px;
  }
+ .content{
+      z-index: 3;
+    }
