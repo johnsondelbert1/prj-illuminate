@@ -111,11 +111,6 @@ if(isset($_POST['newgal'])){
 ?>
 
 <?php
-$query="SELECT * FROM `galleries`";
-$result=mysqli_query( $connection, $query);
-?>
-
-<?php
 	$pgsettings = array(
 		"title" => "Gallery List",
 		"icon" => "icon-images"
@@ -165,6 +160,10 @@ $result=mysqli_query( $connection, $query);
             <?php } ?>
         </tr>
     <?php
+	$query="SELECT * FROM `galleries`";
+	$result=mysqli_query( $connection, $query);
+	confirm_query($result);
+	
     while($gallery=mysqli_fetch_array($result)){
 		//re-create deleted gallery folder
 		$dir = "../galleries/".$gallery['name']."/";

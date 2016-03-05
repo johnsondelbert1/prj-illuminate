@@ -40,7 +40,7 @@ if(!check_permission("Forum","add_thread")&&(isset($_GET['action'])&&$_GET['acti
 		}
 		$messagebody=strip_tags($_POST['content'], "<b><i><u><del><a><p><img><br><hr><ol><ul><li><sub><sup>");
 		$forumid=$_GET['forum'];
-		$creator=$_SESSION['username'];
+		$creator=$_SESSION['user_id'];
 		date_default_timezone_set($GLOBALS['site_info']['timezone']);
 		$date=date("Y/m/d H:i:s");
 			

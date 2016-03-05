@@ -81,7 +81,7 @@ require_once("../includes/functions.php");
         colorHex = $("#new_color_hex").val();
         //random number for unique ID
         randomNum = Math.floor(Math.random() * 9000) + 1000;
-        var $newCard = $("<div class='card'><input name='color_field[new"+randomNum+"]' id='new"+randomNum+"' type='text' value='"+colorHex+"' maxlength='7' class='jscolor {hash:true}' /><br><div class='card-color-body'><input name='color_name[new"+randomNum+"]' type='text' value='"+colorName+"' maxlength='32' /><br><ul id='new"+randomNum+"' class='connected list ui-sortable'></ul><button type='button' class='card-color-delete click-delete'>Delete</button></div></div>");
+        var $newCard = $("<div class='card masonry_card'><input name='color_field[new"+randomNum+"]' id='new"+randomNum+"' type='text' value='"+colorHex+"' maxlength='7' class='jscolor {hash:true}' /><br><div class='card-color-body'><input name='color_name[new"+randomNum+"]' type='text' value='"+colorName+"' maxlength='32' /><br><ul id='new"+randomNum+"' class='connected list ui-sortable'></ul><button type='button' class='card-color-delete click-delete'>Delete</button></div></div>");
         //Masonry
         $grid.append($newCard).masonry('appended', $newCard);
         //jscolor
@@ -110,12 +110,12 @@ require_once("../includes/functions.php");
 <button type="button" name="new_color" class="btn green click-new-color">Create new color</button>
 <br/>
 <form id="colorData">
-<section id="connected" style="overflow-y:auto;">
+<section id="connected" class="masonry" style="overflow-y:auto;">
 	<?php
 	$query="SELECT * FROM `style_colors`";
 	$result=mysqli_query( $connection, $query);
 	while($style_color=mysqli_fetch_array($result)){?>
-    	<div class="card">
+    	<div class="card masonry_card">
             <input name="color_field[<?php echo $style_color['cid']; ?>]" type="text" value="<?php echo $style_color['color_hex']; ?>" maxlength="7" class="jscolor {hash:true}" /><br>
             <div class="card-color-body">
                 <input name="color_name[<?php echo $style_color['cid']; ?>]" type="text" value="<?php echo $style_color['c_name']; ?>" maxlength="32" /><br>

@@ -68,22 +68,27 @@ $pgsettings = array(
 );
 require_once("includes/begin_html.php");
 ?>
-<h1><?php echo $thread['name']; ?></h1><br>
-<a style="text-decoration:none;" href="<?php echo $GLOBALS['HOST'].'/page/'.$GLOBALS['forum_page']; ?>"><?php echo $GLOBALS['site_info']['name']; ?> Forums</a> &gt; <a style="text-decoration:none;" href="view_forum?forum=<?php echo $forum['id']; ?>"><?php echo $forum['name']; ?></a> &gt; <a style="text-decoration:none;" href="view_thread.php?thread=<?php echo $thread['id']; ?>"><?php echo $thread['name']; ?></a><br><br>
+<h1><?php echo $thread['name']; ?></h1>
 <?php if(check_permission("Forum","reply_to_thread")&&$thread['locked']==0){?>
-	<a class="btn green" href="new_topic?forum=<?php echo urlencode($forum['id'])."&&thread=".urlencode($thread['id']); ?>&amp;action=newmessage">Reply</a><br/><br/><div class="thread">
-<?php } 
-	echo_page($num_pages, $current_page, "view_thread?thread=".$_GET['thread']);?>
+	<a class="btn green" href="new_topic?forum=<?php echo urlencode($forum['id'])."&&thread=".urlencode($thread['id']); ?>&amp;action=newmessage">Reply</a><br/><br/>
+<?php } ?>
+<nav>
+	<div class="forummain nav-wrapper">
+		<div class="col s12">
+			<a href="<?php echo $GLOBALS['HOST'].'/page/'.$GLOBALS['forum_page']; ?>" class="breadcrumb"><?php echo $GLOBALS['site_info']['name']; ?> Forums</a>
+			<a href="view_forum?forum=<?php echo $forum['id']; ?>" class="breadcrumb"><?php echo $forum['name']; ?></a>
+			<a href="view_thread.php?thread=<?php echo $thread['id']; ?>" class="breadcrumb"><?php echo $thread['name']; ?></a>
+		</div>
+	</div>
+</nav>
+  <?php
+	echo_page($num_pages, $current_page, "view_thread?thread=".$_GET['thread']);
+  ?>
+<div class="thread">
   <?php
   	$count=($current_page * 10)-9;
 	while($forummessage=mysqli_fetch_array($result_posts)){
-		$query="SELECT * 
-			FROM  `users` 
-			WHERE `id`={$forummessage['poster']}";
-				
-		$userquery=mysqli_query($connection, $query);
-		confirm_query($userquery);
-		$user=mysqli_fetch_array($userquery);
+		$user=get_user($forummessage['poster']);
 
 		$query="SELECT * 
 			FROM  `users_custom_fields` 
@@ -96,7 +101,7 @@ require_once("includes/begin_html.php");
 		?>
         <table width="100%" style="border: 1px solid; margin-bottom: 20px;" cellspacing="1" cellpadding="0">
           <tr>
-            <td rowspan="3" style="width: 20%; height: 100%; border-right: 1px solid; vertical-align: text-top; padding: 5px;">
+            <td rowspan="3" style="width: 20%; height: 100%; border-right: 1px solid; vertical-align: text-top; padding: 5px; position: relative;">
             	<?php
 					$query="SELECT `color` FROM `ranks` WHERE `id` = {$user['rank']}";
 					$color_result=mysqli_query( $connection, $query);
@@ -123,6 +128,11 @@ require_once("includes/begin_html.php");
 
 					}
                 ?>
+          		<div style="width: 100%; text-align: right; position:absolute; bottom: 0;">
+	                <?php
+	                    if(check_permission("Forum","edit_thread")&&$user['username']==$_SESSION['username']&&($thread['locked']==0)){?><a class="btn blue" style="margin-right: 10px; margin-bottom: 6px;" href="new_topic.php?msg=<?php echo $forummessage['id']; ?>&amp;&amp;forum=<?php echo $forum['id']; ?>&amp;&amp;thread=<?php echo $thread['id']; ?>&amp;&amp;action=editpost">Edit</a>
+	                <?php } ?>
+                </div>
              </td>
              <td style="height: 30px; border-bottom: 1px dashed; padding: 5px;">
              	<p style="float: left;">Posted: <?php echo date("m/d/Y h:i A" ,strtotime($forummessage['date']));?><?php if($forummessage['lasteditdate']!="0000-00-00 00:00:00"){echo ", Last Edit: ".date("m/d/Y h:i A" ,strtotime($forummessage['lasteditdate']));} ?></p><p style="float: right;" align="right"><b># <?php echo $count; ?></b></p>
@@ -135,13 +145,12 @@ require_once("includes/begin_html.php");
           </tr>
           <tr>
           	<td style="vertical-align: text-top; padding: 5px; position: relative; padding-bottom: 45px;">
+          		<?php if($user['forum_signature']!=''){ ?>
           		<div style="width: 75%; margin-left: -38%; left:50%; position:absolute; top: 0; border-top: 2px solid #000000;"></div>
-          		<?php echo $user['forum_signature']; ?>
-          		<div style="width: 100%; text-align: right; position:absolute; bottom: 0;">
-	                <?php
-	                    if(check_permission("Forum","edit_thread")&&$user['username']==$_SESSION['username']&&($thread['locked']==0)){?><a class="btn blue" style="margin-right: 10px; margin-bottom: 6px;" href="new_topic.php?msg=<?php echo $forummessage['id']; ?>&amp;&amp;forum=<?php echo $forum['id']; ?>&amp;&amp;thread=<?php echo $thread['id']; ?>&amp;&amp;action=editpost">Edit</a>
-	                <?php } ?>
-                </div>
+          		<div style="width: 90%; max-height: 150px; overflow: scroll; margin-left: auto; margin-right: auto;">
+          			<?php echo $user['forum_signature']; ?>
+          		</div>
+          		<?php } ?>
           	</td>
           </tr>
 
@@ -150,11 +159,20 @@ require_once("includes/begin_html.php");
 	$count++;
     }
 	echo_page($num_pages, $current_page, "view_thread?thread=".$_GET['thread']);
-  ?></div>
+  ?>
+  </div>
+	<nav style="margin-top: -20px;">
+		<div class="forummain nav-wrapper">
+			<div class="col s12">
+				<a href="<?php echo $GLOBALS['HOST'].'/page/'.$GLOBALS['forum_page']; ?>" class="breadcrumb"><?php echo $GLOBALS['site_info']['name']; ?> Forums</a>
+				<a href="view_forum?forum=<?php echo $forum['id']; ?>" class="breadcrumb"><?php echo $forum['name']; ?></a>
+				<a href="view_thread.php?thread=<?php echo $thread['id']; ?>" class="breadcrumb"><?php echo $thread['name']; ?></a>
+			</div>
+		</div>
+	</nav>
 <?php if(check_permission("Forum","reply_to_thread")&&$thread['locked']==0){?>
-	<a class="btn green" href="new_topic.php?forum=<?php echo urlencode($forum['id'])."&&thread=".urlencode($thread['id']); ?>&amp;&amp;action=newmessage">Reply</a><br><br>
+	<br/><a class="btn green" href="new_topic.php?forum=<?php echo urlencode($forum['id'])."&&thread=".urlencode($thread['id']); ?>&amp;&amp;action=newmessage">Reply</a><br><br>
 <?php } ?>
-<a style="text-decoration:none;" href="<?php echo $GLOBALS['HOST'].'/page/'.$GLOBALS['forum_page']; ?>"><?php echo $GLOBALS['site_info']['name']; ?> Forums</a> &gt; <a style="text-decoration:none;" href="view_forum.php?forum=<?php echo $forum['id']; ?>"><?php echo $forum['name']; ?></a> &gt; <a style="text-decoration:none;" href="view_thread.php?thread=<?php echo $thread['id']; ?>"><?php echo $thread['name']; ?></a><br /><br />
 <?php
 	require_once("includes/end_html.php");
 ?>
