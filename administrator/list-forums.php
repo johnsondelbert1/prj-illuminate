@@ -20,40 +20,44 @@ if(!check_permission("Forum","edit_forum")){
     $success='User data displayed on forums has been updated.';
   }
   if(isset($_POST['new'])){
-    $name = mysqli_real_escape_string($connection, $_POST['name']);
-    $description = mysqli_real_escape_string($connection, $_POST['description']);
-    //prep visibility POST array
-    if(isset($_POST['visible'])&&$_POST['visible']!=""){
-      if($_POST['visible'][0]!=""){
-        if(count($_POST['visible'])>1){
-          $visible=serialize(array($_POST['visible'][0]));
+    if(check_permission("Forum","add_delete_forum")){
+      $name = mysqli_real_escape_string($connection, $_POST['name']);
+      $description = mysqli_real_escape_string($connection, $_POST['description']);
+      //prep visibility POST array
+      if(isset($_POST['visible'])&&$_POST['visible']!=""){
+        if($_POST['visible'][0]!=""){
+          if(count($_POST['visible'])>1){
+            $visible=serialize(array($_POST['visible'][0]));
+          }else{
+            $visible=serialize($_POST['visible']);
+          }
         }else{
-          $visible=serialize($_POST['visible']);
+          if(count($_POST['visible'])>1){
+            $visible=$_POST['visible'];
+            array_shift($visible);
+            $visible=serialize($visible);
+          }else{
+            $visible=serialize(array('any'));
+          }
+          
         }
       }else{
-        if(count($_POST['visible'])>1){
-          $visible=$_POST['visible'];
-          array_shift($visible);
-          $visible=serialize($visible);
-        }else{
-          $visible=serialize(array('any'));
-        }
-        
+        $visible=serialize(array('any'));
+      }
+
+      if($name != ''){
+        $query="INSERT INTO `forums` (
+              `name`, `description`, `visible` 
+            ) VALUES (
+              '{$name}', '{$description}', '{$visible}')";
+        $result=mysqli_query( $connection, $query);
+        confirm_query($result);
+        $success="Forum created!";
+      }else{
+        $error='Name cannot be empty.';
       }
     }else{
-      $visible=serialize(array('any'));
-    }
-
-    if($name != ''){
-      $query="INSERT INTO `forums` (
-            `name`, `description`, `visible` 
-          ) VALUES (
-            '{$name}', '{$description}', '{$visible}')";
-      $result=mysqli_query( $connection, $query);
-      confirm_query($result);
-      $success="Forum created!";
-    }else{
-      $error='Name cannot be empty.';
+      $error='You don\'t have permission to do that.';
     }
 
   }
@@ -112,6 +116,7 @@ if(!check_permission("Forum","edit_forum")){
           });
      });
   </script>
+  <?php if(check_permission("Forum","add_delete_forum")){ ?>
   <h2>Add Forum</h2>
   <form method="post">
     <label for="name">Name</label><input name="name" id="name" type="text" value="" maxlength="128" style="width:400px;" /> 
@@ -138,6 +143,7 @@ if(!check_permission("Forum","edit_forum")){
     </div>
     <input name="new" type="submit" class="btn green" value="Add Forum">
   </form>
+  <?php } ?>
 <table class="forum" width="100%" cellspacing="0" cellpadding="0">
   <tr>
     <th class="forumtitle" colspan="2">Forum</th>

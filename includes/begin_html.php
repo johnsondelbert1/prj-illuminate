@@ -85,11 +85,6 @@ if(isset($bg[2])){
     <script type="text/javascript" src="<?php echo $GLOBALS['HOST']; ?>/prettyphoto/js/jquery.prettyPhoto.js" charset="utf-8"></script>
     <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/autosize.js"></script>
     <style type="text/css">
-    /*.forumtitle, tr.heading,td.heading, th.heading{
-			background-color:<?php echo $GLOBALS['site_layout']['sitebg_color']; ?> !important;
-			color:<?php echo $GLOBALS['site_layout']['text_color']; ?> !important;
-		}*/
-
 		body{
 			<?php if($GLOBALS['site_layout']['use_bg_color']!=1){ ?>
 			background-color:#FFFFFF; !important;

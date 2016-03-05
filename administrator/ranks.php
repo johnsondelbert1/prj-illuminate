@@ -50,10 +50,6 @@ if(isset($_POST['delrank'])){
 	}
 }
 
-//Gets rank properties
-$query="SELECT * FROM `ranks` ORDER BY `id` ASC";
-$result=mysqli_query( $connection, $query);
-confirm_query($result);
 ?>
 <?php
 	$pgsettings = array(
@@ -88,6 +84,12 @@ confirm_query($result);
     </table>
     </form><br />
 <?php } ?>
+<?php
+//Gets rank properties
+$query="SELECT * FROM `ranks` ORDER BY `id` ASC";
+$result=mysqli_query( $connection, $query);
+confirm_query($result);
+?>
 <h1>Rank List</h1>
 <div style="overflow-x:auto;">
     <form method="post" action="ranks.php">
@@ -106,6 +108,7 @@ confirm_query($result);
                         </th>
                     </tr>
                     <?php
+
                     while($rank=mysqli_fetch_array($result)){?>
                         <tr height="35">
                             <td>

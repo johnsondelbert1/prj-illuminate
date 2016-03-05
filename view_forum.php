@@ -167,9 +167,9 @@ require_once("includes/begin_html.php");
 			<tr height="40" align="center">
 				<td><?php if($thread['pinned']==1){?><i class="material-icons" style="margin-right: 5px;">&#xE88F;</i><?php } ?></td>
 				<td><a href="view_thread.php?thread=<?php echo urlencode($thread['id']);?>"><strong><?php echo $thread['name']; ?></strong></a></td>
-				<td><?php echo $thread['creator']; ?><br /><?php echo date("m/d/Y h:i A" ,strtotime($thread['datestarted'])); ?></td>
-				<td><b><?php echo $messagecount."</b> Replies"; ?><br /><b><?php echo $thread['views']."</b> Views"; ?></td>
-				<td>By: <a href="<?php echo $GLOBALS['HOST'].'/profile/'.urlencode($messageposter['poster']); ?>"><?php echo $messageposter['poster']; ?></a><br /><?php echo date("m/d/Y h:i A" ,strtotime($thread['lastpostdate'])); ?></td>
+				<td><a href="<?php echo $GLOBALS['HOST'].'/profile/'.urlencode(get_user($thread['creator'])['username']); ?>"><?php echo get_user($thread['creator'])['username']; ?></a><br /><?php echo date("m/d/Y h:i A" ,strtotime($thread['datestarted'])); ?></td>
+				<td><?php echo $messagecount."</b> Replies"; ?><br /><b><?php echo $thread['views']."</b> Views"; ?></td>
+				<td>By: <a href="<?php echo $GLOBALS['HOST'].'/profile/'.urlencode(get_user($messageposter['poster'])['username']); ?>"><?php echo get_user($messageposter['poster'])['username']; ?></a><br /><?php echo date("m/d/Y h:i A" ,strtotime($thread['lastpostdate'])); ?></td>
 				<?php if(check_permission("Forum","pin_unpin_thread")){?>
 					<?php if($thread['pinned']==0){?>
                         <td><a class="btn green" href="view_forum.php?action=pin&thread=<?php echo urlencode($thread['id']);?>&forum=<?php echo urlencode($forum['id']);?>">Pin</a></td>

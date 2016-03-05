@@ -196,6 +196,9 @@ if($GLOBALS['site_info']['user_creation'] == 'approval'){
 <ul id="slide-out" class="side-nav fixed">
 <div class="center logo"><a href="#" ><img src="images/logo.png"></a></div>
     <li><a href="index.php"><i class="material-icons">&#xE871;</i>Dashboard</a></li>
+    <?php if(check_permission("Users","approve_deny_new_users") && $GLOBALS['site_info']['user_creation'] == 'approval'){?>
+    <li><a href="approval-list">Approve/Deny<?php if($pending_users > 0){echo '<span class="badge">'.$pending_users.'</span>';} ?></a></li>
+    <?php } ?>
     <?php if(check_permission(array("Pages;add_pages","Pages;edit_pages","Pages;delete_pages"))){?>
       <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
@@ -255,9 +258,6 @@ if($GLOBALS['site_info']['user_creation'] == 'approval'){
               <ul>
                 <?php if(check_permission(array("Users;add_users","Users;delete_users"))){?>
                 <li><a href="accounts.php">Edit</a></li>
-                <?php } ?>
-                <?php if(check_permission("Users","approve_deny_new_users") && $GLOBALS['site_info']['user_creation'] == 'approval'){?>
-                <li><a href="approval-list">Approve/Deny</a></li>
                 <?php } ?>
                 <?php if(check_permission(array("Users;create_rank","Users;edit_rank","Users;delete_rank"))){?>
                 <li><a href="ranks.php">Permissions</a></li>
