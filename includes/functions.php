@@ -451,7 +451,12 @@ function randstring($length = 16) {
     }
     return $string;
 }
-
+function addpostcount($user_id){
+		global $connection;
+		$query="UPDATE `users` SET `forum_post_count` = `forum_post_count` + 1 WHERE `id`=".$user_id;
+		$result=mysqli_query($connection, $query);
+		confirm_query($result);
+}
 function del_acc($userid){
 	global $connection;
 	
