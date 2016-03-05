@@ -103,11 +103,20 @@ require_once("includes/begin_html.php");
           <tr>
             <td rowspan="3" style="width: 20%; height: 100%; border-right: 1px solid; vertical-align: text-top; padding: 5px; position: relative;">
             	<?php
-					$query="SELECT `color` FROM `ranks` WHERE `id` = {$user['rank']}";
-					$color_result=mysqli_query( $connection, $query);
-					$rank_color=mysqli_fetch_array($color_result);
+					$query="SELECT * FROM `ranks` WHERE `id` = {$user['rank']}";
+					$rank_data_result=mysqli_query( $connection, $query);
+					$rank_data=mysqli_fetch_array($rank_data_result);
             	?>
-                <a href="<?php echo $GLOBALS['HOST'].'/profile/'.urlencode($user['username']); ?>"><span style="color: <?php echo $rank_color['color']?>;"><b><?php echo $user['username']; ?></b></span></a><br/>
+            	<ul>
+                	<li>
+                		<a href="<?php echo $GLOBALS['HOST'].'/profile/'.urlencode($user['username']); ?>"><span style="color: <?php echo $rank_data['color']?>;"><b><?php echo $user['username']; ?></b></span></a>
+                	</li>
+                	<li>
+                		<?php echo $rank_data['name']; ?>
+                	</li>
+                	<li>
+                		Posts: <?php echo number_format($user['forum_post_count']); ?>
+                	</li>
                 <?php
 					if($GLOBALS['site_info']['forum_post_custom_user_data']!=''){
 						$displayed_data = unserialize($GLOBALS['site_info']['forum_post_custom_user_data']);
@@ -123,11 +132,12 @@ require_once("includes/begin_html.php");
 							$fieldquery=mysqli_query($connection, $query);
 							confirm_query($fieldquery);
 							$custom_user_field=mysqli_fetch_array($fieldquery);
-							echo $custom_user_field['name'].': '.$custom_user_data[$custom_user_field['name']].'<br/>';
+							echo '<li>'.$custom_user_field['name'].': '.$custom_user_data[$custom_user_field['name']].'</li>';
 						}
 
 					}
                 ?>
+                </ul>
           		<div style="width: 100%; text-align: right; position:absolute; bottom: 0;">
 	                <?php
 	                    if(check_permission("Forum","edit_thread")&&$user['username']==$_SESSION['username']&&($thread['locked']==0)){?><a class="btn blue" style="margin-right: 10px; margin-bottom: 6px;" href="new_topic.php?msg=<?php echo $forummessage['id']; ?>&amp;&amp;forum=<?php echo $forum['id']; ?>&amp;&amp;thread=<?php echo $thread['id']; ?>&amp;&amp;action=editpost">Edit</a>

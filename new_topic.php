@@ -11,29 +11,6 @@ if(!check_permission("Forum","add_thread")&&(isset($_GET['action'])&&$_GET['acti
 }
 ?>
 <?php
-	/*function addpostcount(){
-		global $connection;
-		$query="UPDATE `users` SET `forumpostcount` = `forumpostcount` + 1 WHERE `username`='{$_SESSION['username']}'";
-		$result=mysql_query($query,$connection);
-		confirm_query($result);
-		$query="SELECT username, forumpostcount FROM `users` WHERE `username`='{$_SESSION['username']}'";
-		$result=mysql_query($query,$connection);
-		confirm_query($result);
-		$count=mysql_fetch_array($result);
-		if($count==50){
-			$query="UPDATE `users` SET `credits` = `credits` + 50 WHERE `username`='{$_SESSION['username']}'";
-			$result=mysql_query($query,$connection);
-			confirm_query($result);
-		}elseif($count==200){
-			$query="UPDATE `users` SET `credits` = `credits` + 50 WHERE `username`='{$_SESSION['username']}'";
-			$result=mysql_query($query,$connection);
-			confirm_query($result);
-		}elseif($count==500){
-			$query="UPDATE `users` SET `credits` = `credits` + 100 WHERE `username`='{$_SESSION['username']}'";
-			$result=mysql_query($query,$connection);
-			confirm_query($result);
-		}
-	}*/
 	if(isset($_POST['newthread'])||isset($_POST['newmessage'])||isset($_POST['editpost'])){
 		if(isset($_POST['threadtitle'])){
 			$title=strip_tags($_POST['threadtitle']);
@@ -47,8 +24,8 @@ if(!check_permission("Forum","add_thread")&&(isset($_GET['action'])&&$_GET['acti
 		if(isset($_POST['newthread'])){
 			if(!empty($title)||!empty($content)){
 				//Insert new thread
-				$query="INSERT INTO forum_threads (
-						forumid, creator, name, lastpostdate, datestarted 
+				$query="INSERT INTO `forum_threads` (
+						`forumid`, `creator`, `name`, `lastpostdate`, `datestarted` 
 					) VALUES (
 						{$forumid}, '{$creator}', '{$title}', '{$date}', '{$date}')";
 				$insthread=mysqli_query( $connection, $query);
@@ -59,14 +36,14 @@ if(!check_permission("Forum","add_thread")&&(isset($_GET['action'])&&$_GET['acti
 					confirm_query($threadcount);
 					$newthreadid=mysqli_fetch_array($threadcount);
 				//Insert message into the thread
- 				$query="INSERT INTO forum_posts (
-						forumid, threadid, poster, date, message 
+ 				$query="INSERT INTO `forum_posts` (
+						`forumid`, `threadid`, `poster`, `date`, `message` 
 					) VALUES (
 						{$forumid}, {$newthreadid['id']}, '{$creator}', '{$date}', '{$messagebody}')";
 				$insmessage=mysqli_query( $connection, $query); 
 				confirm_query($insmessage);
 				//add post count
-				//addpostcount();
+				addpostcount($_SESSION['user_id']);
 				redirect_to($GLOBALS['HOST']."/view_forum.php?forum=".urlencode($_GET['forum']));
 			}else{
 				$error="Required field not filled!";
@@ -86,8 +63,8 @@ if(!check_permission("Forum","add_thread")&&(isset($_GET['action'])&&$_GET['acti
 		}elseif(isset($_POST['newmessage'])){
 			if(!empty($messagebody)){
 				//insert message
-				$query="INSERT INTO forum_posts (
-					forumid, threadid, poster, date, message 
+				$query="INSERT INTO `forum_posts` (
+					`forumid`, `threadid`, `poster`, `date`, `message` 
 				) VALUES (
 					{$forumid}, {$_GET['thread']}, '{$creator}', '{$date}', '{$messagebody}')";
 				$insmessage=mysqli_query( $connection, $query); 
@@ -97,7 +74,7 @@ if(!check_permission("Forum","add_thread")&&(isset($_GET['action'])&&$_GET['acti
 				$updatedate=mysqli_query( $connection, $query); 
 				confirm_query($updatedate);
 				//add post count
-				//addpostcount();
+				addpostcount($_SESSION['user_id']);
 				//redirect to posted thread
 				redirect_to($GLOBALS['HOST']."/view_thread.php?thread=".urlencode($_GET['thread'])."&&forum=".urlencode($_GET['forum']));
 			}else{
