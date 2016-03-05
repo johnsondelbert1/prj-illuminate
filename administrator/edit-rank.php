@@ -88,13 +88,12 @@ if(!empty($editing_rank_perms)){
      });
 </script>
 <form method="post" action="edit-rank.php?rank=<?php echo $_GET['rank']; ?>">
-<table cellpadding="5" id="sticker">
-  <tr>
-    <td width="110px"><input name="submit" type="submit" value="Update Rank" class="btn green"/></td>
-    <td width="110px"><a class="btn red" href="ranks.php">Cancel</a></td>
-  <td></td>
-  </tr>
-</table>
+<div class="row" id="sticker">
+    <div class="col l12 s12" id="mid">
+    <input name="submit" type="submit" value="Update Rank" class="btn green"/>
+    <a class="btn red" href="ranks.php">Cancel</a>
+    </div>
+ </div>
 
 <table width="100%" border="0" cellpadding="0" class="form">
   
@@ -106,11 +105,11 @@ if(!empty($editing_rank_perms)){
   </tr>
 </table>
 <?php if($editing_rank['editable']!=0){?>
-<div style="width:100%; overflow:hidden;">
+<div class="masonry" style="width:100%; overflow:hidden;">
 	<span style="font-size:14px;">
 		<?php
 		foreach($blank_permissions as $perm_group_key => $perm_group){?>
-			<div class="rank-block">
+			<div class="rank-block masonry_card">
 				<?php
 				if (is_array($perm_group)){?>
 					<?php echo "<p><b>".$perm_group_key."</b></p>"; ?>

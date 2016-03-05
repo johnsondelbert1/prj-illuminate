@@ -63,11 +63,6 @@ $GLOBALS['color_styles'] = array(
 		"selector" => '#content .custom',
 		"type" => 'text',
 	),
-	"content_link" => array(
-		"disp_name" => 'Content Link',
-		"selector" => '#content .custom a',
-		"type" => 'text',
-	),
 	"menu_bg" => array(
 		"disp_name" => 'Menu Background',
 		"selector" => '#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #vert-menu, #vert-menu li, #vert-menu ul li, .nav, .side-nav, .side-nav .collapsible-header, .side-nav li:hover, .side-nav li.active',
@@ -200,7 +195,7 @@ $GLOBALS['color_styles'] = array(
 	),
 	"forum_text" => array(
 		"disp_name" => 'Forum Text',
-		"selector" => '.forum',
+		"selector" => '.forum, .thread table, .forum td a',
 		"type" => 'text',
 	),
 );

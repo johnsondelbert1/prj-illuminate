@@ -91,15 +91,26 @@ require_once("includes/functions.php");
 require_once("includes/begin_html.php");
 ?>
 <h1><?php echo $forum['name']; ?></h1>
-<a style="text-decoration:none;" href="<?php echo $GLOBALS['HOST'].'/page/'.$GLOBALS['forum_page']; ?>"><?php echo $GLOBALS['site_info']['name']; ?> Forums</a> &gt; <a style="text-decoration:none;" href="view_forum.php?forum=<?php echo $forum['id']; ?>"><?php echo $forum['name']; ?></a>
+<div class="row">
 <?php if(check_permission("Forum","add_thread")){?>
 	<br /><br /><a class="green btn " href="new_topic.php?forum=<?php echo urlencode($forum['id']); ?>&amp;&amp;action=newthread">New</a>
 <?php }
 	
 	?>
-    <div class="row">
+	</div>
+	<div class="row">
+	<nav>
+    <div class=" forummain nav-wrapper">
+      <div class="col s12">
+        <a class="breadcrumb" href="<?php echo $GLOBALS['HOST'].'/page/'.$GLOBALS['forum_page']; ?>"><?php echo $GLOBALS['site_info']['name']; ?> Forums</a>
+        <a class="breadcrumb" href="view_forum.php?forum=<?php echo $forum['id']; ?>"><?php echo $forum['name']; ?></a>
+      </div>
+    </div>
+  </nav>
+    
+
 <?php echo_page($num_pages, $current_page, "view_forum.php?forum=".$_GET['forum']); ?>
-</div>
+
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="forum">
   <tr>
   	<th class="forumtitle"></th>
@@ -156,12 +167,12 @@ require_once("includes/begin_html.php");
 			<tr height="40" align="center">
 				<td><?php if($thread['pinned']==1){?><i class="material-icons" style="margin-right: 5px;">&#xE88F;</i><?php } ?></td>
 				<td><a href="view_thread.php?thread=<?php echo urlencode($thread['id']);?>"><strong><?php echo $thread['name']; ?></strong></a></td>
-				<td><?php echo $thread['creator']; ?><br /><?php echo date("m/d/Y h:i A" ,strtotime($thread['datestarted'])); ?></td>
-				<td><b><?php echo $messagecount."</b> Replies"; ?><br /><b><?php echo $thread['views']."</b> Views"; ?></td>
-				<td>By: <a href="<?php echo $GLOBALS['HOST'].'/profile/'.urlencode($messageposter['poster']); ?>"><?php echo $messageposter['poster']; ?></a><br /><?php echo date("m/d/Y h:i A" ,strtotime($thread['lastpostdate'])); ?></td>
+				<td><a href="<?php echo $GLOBALS['HOST'].'/profile/'.urlencode(get_user($thread['creator'])['username']); ?>"><?php echo get_user($thread['creator'])['username']; ?></a><br /><?php echo date("m/d/Y h:i A" ,strtotime($thread['datestarted'])); ?></td>
+				<td><?php echo $messagecount."</b> Replies"; ?><br /><b><?php echo $thread['views']."</b> Views"; ?></td>
+				<td>By: <a href="<?php echo $GLOBALS['HOST'].'/profile/'.urlencode(get_user($messageposter['poster'])['username']); ?>"><?php echo get_user($messageposter['poster'])['username']; ?></a><br /><?php echo date("m/d/Y h:i A" ,strtotime($thread['lastpostdate'])); ?></td>
 				<?php if(check_permission("Forum","pin_unpin_thread")){?>
 					<?php if($thread['pinned']==0){?>
-                        <td><a class="btn green" href="view_forum.php?action=pin&thread=<?php echo urlencode($thread['id']);?>&forum=<?php echo urlencode($forum['id']);?>"><span class="icon-pushpin" style="margin:5px;"></span>Pin</a></td>
+                        <td><a class="btn green" href="view_forum.php?action=pin&thread=<?php echo urlencode($thread['id']);?>&forum=<?php echo urlencode($forum['id']);?>">Pin</a></td>
                     <?php }else{?>
                         <td><a class="btn green" href="view_forum.php?action=unpin&thread=<?php echo urlencode($thread['id']);?>&forum=<?php echo urlencode($forum['id']);?>">Unpin</a></td>
                     <?php } ?>
@@ -193,6 +204,7 @@ require_once("includes/begin_html.php");
       </tr>
 <?php } ?>
 </table>
+</div>
 <div class="row">
 <?php echo_page($num_pages, $current_page, "view_forum.php?forum=".$_GET['forum']); ?>
 </div>

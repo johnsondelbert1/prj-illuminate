@@ -55,8 +55,8 @@ $(document).ready(function () {
   ?>
 <table class="forum" width="100%" cellspacing="0" cellpadding="0">
   <tr>
-    <th class="forumsec" colspan="2">Forum</th>
-    <th class="forumsec">Last thread posted</th>
+    <th class="forumtitle" colspan="2">Forum</th>
+    <th class="forumtitle">Last thread posted</th>
   </tr>
   <?php
 	

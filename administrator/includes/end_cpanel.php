@@ -34,9 +34,9 @@
                 $('.modal-trigger').leanModal();
 
                 //Masonry
-                $grid = $('#connected').masonry({
+                $grid = $('.masonry').masonry({
                     columnWidth: 10,
-                    itemSelector: ".card"
+                    itemSelector: ".masonry_card"
                 });
 
 				$('select').material_select();
@@ -75,7 +75,7 @@
 					var windowpos = $(window).scrollTop();
 					if (s.length && windowpos >= pos.top) {
 						s.addClass("stick");
-						$('.content').css("padding-top","58px");
+						$('.content').css("padding-top","0px");
 					} else {
 						s.removeClass("stick");
 						$('.content').css("padding-top","5px");

@@ -30,8 +30,8 @@ $galleryresult=mysqli_query($connection, $query);
               <p>Pages are the main way to add content to your website.</p>
             </div>
             <div class="card-action">
-              <a href="#">New</a>
-              <a href="#">Edit</a>
+              <a href="edit_page.php?action=newpage">New</a>
+              <a href="page_list.php">Edit</a>
             </div>
           </div></div>
            <div class="col s12 l4"><div class="card small blue-grey darken-1">
