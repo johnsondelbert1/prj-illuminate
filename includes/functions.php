@@ -200,7 +200,7 @@ $GLOBALS['color_styles'] = array(
 	),
 	"forum_text" => array(
 		"disp_name" => 'Forum Text',
-		"selector" => '.forum',
+		"selector" => '.forum, .thread table, .forum td a',
 		"type" => 'text',
 	),
 );

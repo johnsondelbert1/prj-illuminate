@@ -106,11 +106,11 @@ if(!empty($editing_rank_perms)){
   </tr>
 </table>
 <?php if($editing_rank['editable']!=0){?>
-<div style="width:100%; overflow:hidden;">
+<div class="masonry" style="width:100%; overflow:hidden;">
 	<span style="font-size:14px;">
 		<?php
 		foreach($blank_permissions as $perm_group_key => $perm_group){?>
-			<div class="rank-block">
+			<div class="rank-block masonry_card">
 				<?php
 				if (is_array($perm_group)){?>
 					<?php echo "<p><b>".$perm_group_key."</b></p>"; ?>
