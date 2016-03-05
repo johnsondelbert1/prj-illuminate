@@ -350,7 +350,7 @@ if(isset($_POST['upd_ranks'])){
       <tr>
         <th colspan="5"></th>
         <th><input class="blue btn" type="submit" name="upd_ranks" value="Change Ranks" /></th>
-        <th></th>
+        
         <?php if(check_permission("Users","delete_users")){?>
         	<th><input class="red btn" type="submit" name="deluser" value="Delete Accounts" /></th>
         <?php } ?>

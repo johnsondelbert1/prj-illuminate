@@ -75,7 +75,7 @@
 					var windowpos = $(window).scrollTop();
 					if (s.length && windowpos >= pos.top) {
 						s.addClass("stick");
-						$('.content').css("padding-top","58px");
+						$('.content').css("padding-top","0px");
 					} else {
 						s.removeClass("stick");
 						$('.content').css("padding-top","5px");

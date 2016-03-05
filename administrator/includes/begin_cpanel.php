@@ -96,6 +96,7 @@ if($GLOBALS['site_info']['user_creation'] == 'approval'){
       }
     }
     </style>
+
 </head>
 
 
@@ -193,6 +194,7 @@ if($GLOBALS['site_info']['user_creation'] == 'approval'){
 <nav>
         <a href="#" class="brand-logo center"><!--<span class="<?php echo $pgsettings['icon']; ?>"></span>-->   <?php echo $pgsettings['title']; ?></a>
 <ul id="slide-out" class="side-nav fixed">
+<div class="center logo"><a href="#" ><img src="images/logo.png"></a></div>
     <li><a href="index.php"><i class="material-icons">&#xE871;</i>Dashboard</a></li>
     <?php if(check_permission(array("Pages;add_pages","Pages;edit_pages","Pages;delete_pages"))){?>
       <li class="no-padding">
@@ -202,7 +204,7 @@ if($GLOBALS['site_info']['user_creation'] == 'approval'){
             <div class="collapsible-body">
               <ul>
                 <li><a href="page_list.php">Edit</a></li>
-                <li><a href="staff-list.php">Staff</a></li>
+                <!-- <li><a href="staff-list.php">Staff</a></li> -->
                 <li><a href="edit_page.php?action=newpage">New</a></li>
               </ul>
             </div>

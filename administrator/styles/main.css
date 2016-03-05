@@ -18,7 +18,7 @@ html, body {
 }
 body
 {
-	background-color:#333;
+	background-color:#ececec;
 	color:#333;
 	min-height:100%;
 }
@@ -59,11 +59,8 @@ div.wrap a
 */
 .contentwrap
 {
-	width:90%;
-	margin-left:auto;
-	margin-right:auto;
-	padding-bottom:80px;
-	margin-top:50px;
+
+	width:100%;
 }
 
 .title
@@ -84,14 +81,10 @@ div.content
 {
 	width:100%;
 	background-color:#ececec;
-	box-shadow:0px 2px 2px rgba(0, 0, 0, 0.3);
 	-webkit-border-radius:2px;
 	border-radius:2px;
-	margin-top:20px;
-	margin-bottom:10px;
 	padding:10px 10px 20px 10px;
-	overflow-x:auto;
-	overflow-y:hidden;
+
 
 }
 /*
@@ -152,18 +145,19 @@ div.banner
 	width:100%;
 	height:30px;
 	line-height:30px;
-	background-color:#333;
-	color:#FFFFFF;
-	margin-top:20px;
+	background-color:#ececec;
+	color:#333;
 	position:absolute;
   bottom: 0;
   left: 0;
 }
 
 #footer a{
-	color:#FFFFFF;	
+	color:#333;	
 }
-
+.logo{
+	height:168px;
+}
 /*Menu*/
 div.nav{
 	width:90%;
@@ -806,32 +800,25 @@ display: block;
 		}
 */
 #sticker {
-	width:90%;
 	background-color:#ececec;
 	transition:all 200ms;
 	-webkit-transition:all 200ms;
-	height:30px;
-	margin-bottom:15px;
-	padding-right:10px;
-	padding-left:10px;
 	}
-#sticker .btn {
-	float:left;
-	margin:2px;
-	height:26px;
-	line-height:26px;
-	padding:0 1rem;
-}
+
 .stick {
-	margin-right:auto;
 	z-index:3;
     position:fixed;
-    top:30px;
-	left:50%;
-	margin-left: -45%;
+    top:0px;
+    left:0px;
+    width:100%;
 	background-color:#333 !important;
 	box-shadow:0px 2px 2px rgba(0, 0, 0, 0.3);
 	padding:2px;
+	padding-left: 240px;
+	
+}
+.stick #mid{
+    width:90%;
 }
 hr {
   border-top: 1px dotted #f00;
