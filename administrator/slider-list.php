@@ -82,18 +82,16 @@ if(isset($_POST['new'])){
 ?>
 
 <?php
-$query="SELECT * FROM `slider_names`";
-$result=mysqli_query( $connection, $query);
-?>
-
-<?php
 	$pgsettings = array(
 		"title" => "Sliders",
 		"icon" => "icon-images"
 	);
 	require_once("includes/begin_cpanel.php");
 ?>
-
+<?php
+$query="SELECT * FROM `slider_names`";
+$result=mysqli_query( $connection, $query);
+?>
 <script type="text/javascript">
    <!-- jQuery for "Select All" checkboxes -->
     $(document).ready(function() {

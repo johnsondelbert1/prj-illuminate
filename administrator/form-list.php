@@ -58,16 +58,15 @@ if(isset($_POST['newform'])){
 ?>
 
 <?php
-$query="SELECT * FROM `forms`";
-$result=mysqli_query( $connection, $query);
-?>
-
-<?php
 	$pgsettings = array(
 		"title" => "Form List",
 		"icon" => "icon-pen"
 	);
 	require_once("includes/begin_cpanel.php");
+?>
+<?php
+$query="SELECT * FROM `forms`";
+$result=mysqli_query( $connection, $query);
 ?>
 <script type="text/javascript">
    <!-- jQuery for "Select All" checkboxes -->
