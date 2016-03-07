@@ -24,9 +24,9 @@ $galleryresult=mysqli_query($connection, $query);
 <br />
 </div>
  <div class="row">
+ <?php if(check_permission(array("Pages;add_pages","Pages;edit_pages","Pages;delete_pages"))){?>
       <div class="col s12 l4"><div class="card blue small darken-1">
-            <div class="card-content white-text">
-              <span class="card-title">Pages</span>
+            <div class="card-content white-text"><span class="card-title">Pages</span>
               <p>Pages are the main way to add content to your website.</p>
             </div>
             <div class="card-action">
@@ -34,28 +34,31 @@ $galleryresult=mysqli_query($connection, $query);
               <a href="page_list.php">Edit</a>
             </div>
           </div></div>
+          <?php } ?>
+          <?php if(check_permission(array("Galleries;add_gallery","Galleries;edit_gallery","Galleries;delete_gallery","Galleries;rename_gallery"))){?>
            <div class="col s12 l4"><div class="card small blue-grey darken-1">
             <div class="card-content white-text">
-              <span class="card-title">Card Title</span>
+              <span class="card-title">Gallery</span>
               <p>I am a very simple card. I am good at containing small bits of information.
               I am convenient because I require little markup to use effectively.</p>
             </div>
             <div class="card-action">
-              <a href="#">This is a link</a>
-              <a href="#">This is a link</a>
+              <a href="#">Edit</a>
             </div>
           </div></div>
+          <?php } ?>
+          <?php if(check_permission(array("Website;edit_site_settings","Website;upload_favicon_banner","Website;edit_google_analytics","Website;edit_socnet"))){?>
       <div class="col s1 l4"><div class="card small red darken-1">
             <div class="card-content white-text">
-              <span class="card-title">Card Title</span>
+              <span class="card-title">Settings</span>
               <p>I am a very simple card. I am good at containing small bits of information.
               I am convenient because I require little markup to use effectively.</p>
             </div>
             <div class="card-action">
-              <a href="#">This is a link</a>
-              <a href="#">This is a link</a>
+              <a href="#">Edit</a>
             </div>
           </div></div>
+          <?php } ?>
 </div>
 <!--<h2>Social Networks</h2>
 <br />

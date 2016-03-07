@@ -284,6 +284,7 @@ if($_GET['action']=="edit"){
 <script type="text/javascript">
 	tinymce.init({
 		selector: "textarea",
+		content_css : '../materialize/css/materialize.css',  // resolved to http://domain.mine/myLayout.css
 		theme: "modern",
 		skin: 'light',
 		width: '100%',
