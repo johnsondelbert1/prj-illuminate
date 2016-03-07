@@ -41,27 +41,19 @@ nav .brand-logo {
 .side-nav a{
   color: #fff !important;
 }
+.side-nav li:hover, .side-nav li.active{
+  background-color: #333;
+}
 .side-nav li{
-  padding-left: 2px;
+  padding: 0;
 }
 .side-nav li.active{
   background-color: #333;
 }
-ul.collapsible.collapsible-accordion{
-  background-color: #3f4649;
-  border-left: #fff solid 0px;
-  padding-left: 0px;
-}
-.side-nav li:hover{
-  background-color: #3f4649;
-  border-left: #fff solid 2px;
-  padding-left: 0px;
-}
-.side-nav a:hover{
-  background-color: #3f4649;
+.side-nav .collapsible-header, .side-nav .collapsible-body li a{
+  margin: 0;
 }
  .side-nav span{
- 	padding-right: 15px;
  	float:right;
  }
   .side-nav i{
@@ -74,4 +66,10 @@ ul.collapsible.collapsible-accordion{
  }
  .content{
       z-index: 3;
+    }
+    nav ul a span.badge{
+      line-height: inherit;
+      color:#fff;
+      right:0;
+      position:absolute;
     }

@@ -98,7 +98,7 @@ require_once("includes/begin_html.php"); ?>
 	</div>
 	<br/>
     <?php }?>
-<table width="100%" border="0" cellspacing="5" cellpadding="0" style="border-radius:5px; padding:5px; text-align:center;">
+<table border="0" cellspacing="5" cellpadding="0" style="border-radius:5px; padding:5px; text-align:center;">
   <tr>
     <td>Date Joined:</td>
     <td><strong><?php echo date("m/d/Y" ,strtotime($user['created'])); ?></strong></td>
