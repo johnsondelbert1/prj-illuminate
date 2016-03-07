@@ -112,7 +112,7 @@ require_once("includes/begin_html.php");
                 		<a href="<?php echo $GLOBALS['HOST'].'/profile/'.urlencode($user['username']); ?>"><span style="color: <?php echo $rank_data['color']?>;"><b><?php echo $user['username']; ?></b></span></a>
                 	</li>
                 	<li>
-                		<?php echo $rank_data['name']; ?>
+                		<b><?php echo $rank_data['name']; ?></b>
                 	</li>
                 	<li>
                 		Posts: <?php echo number_format($user['forum_post_count']); ?>
