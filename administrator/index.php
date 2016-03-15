@@ -39,11 +39,10 @@ $galleryresult=mysqli_query($connection, $query);
            <div class="col s12 l4"><div class="card small blue-grey darken-1">
             <div class="card-content white-text">
               <span class="card-title">Gallery</span>
-              <p>I am a very simple card. I am good at containing small bits of information.
-              I am convenient because I require little markup to use effectively.</p>
+              <p>Create new galleries and edit images.</p>
             </div>
             <div class="card-action">
-              <a href="#">Edit</a>
+              <a href="gallery-list.php">Edit</a>
             </div>
           </div></div>
           <?php } ?>
@@ -51,11 +50,10 @@ $galleryresult=mysqli_query($connection, $query);
       <div class="col s1 l4"><div class="card small red darken-1">
             <div class="card-content white-text">
               <span class="card-title">Settings</span>
-              <p>I am a very simple card. I am good at containing small bits of information.
-              I am convenient because I require little markup to use effectively.</p>
+              <p>Website Settings.</p>
             </div>
             <div class="card-action">
-              <a href="#">Edit</a>
+              <a href="site-settings.php">Edit</a>
             </div>
           </div></div>
           <?php } ?>
