@@ -72,11 +72,11 @@ function print_page($page){
 	                }
 	                ?>
 	                <div class="staffBlock" href="#staff<?php echo $i; ?>" rel="prettyPhoto[staff]">
-	                    <span><?php if($profile_pic != false){ ?><img src="<?php echo $dir.$item; ?>" width="120" height="120" /><?php }else{echo "[No Picture]";} ?></span>
+	                    <span><?php if($profile_pic != false){ ?><img src="<?php echo $GLOBALS['HOST'].'/'.$dir.$item; ?>" width="120" height="120" /><?php }else{echo "[No Picture]";} ?></span>
 	                    <span><?php echo $staff['name']; ?></span>
 	                </div>
 	                <div id="staff<?php echo $i; ?>" style="display:none;">
-	                	<span style="float:left; margin-right:10px; display:block; width:300px; height:auto; text-align:center; background-color:#C5C5C5; padding:10px;"><span style="line-height:300px; height:300px; display:block; padding-bottom:5px;"><?php if($profile_pic != false){ ?><img src="<?php echo $dir.$item; ?>" width="300" height="300" /><?php }else{echo "[No Picture]";} ?></span><span style="line-height:50px; height:50px; display:block;"><strong><?php echo $staff['name']; ?></strong></span></span>
+	                	<span style="float:left; margin-right:10px; display:block; width:300px; height:auto; text-align:center; background-color:#C5C5C5; padding:10px;"><span style="line-height:300px; height:300px; display:block; padding-bottom:5px;"><?php if($profile_pic != false){ ?><img src="<?php echo $GLOBALS['HOST'].'/'.$dir.$item; ?>" width="300" height="300" /><?php }else{echo "[No Picture]";} ?></span><span style="line-height:50px; height:50px; display:block;"><strong><?php echo $staff['name']; ?></strong></span></span>
 	                    <span style="float:left; display:block;"><?php if($staff['role']!=""){ ?><strong>Role: </strong><?php echo $staff['role']; ?><br><?php } ?>
 	                	<strong>Bio: </strong><?php if($staff['bio']!=""){echo $staff['bio'];}else{echo '[No bio]';} ?></span>
 	                </div>

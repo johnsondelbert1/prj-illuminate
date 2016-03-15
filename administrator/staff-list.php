@@ -71,12 +71,6 @@ if(isset($_POST['new'])){
 	}*/
 }
 ?>
-
-<?php
-$query="SELECT * FROM `staff` ORDER BY `order`";
-$result=mysqli_query( $connection, $query);
-?>
-
 <?php
 	$pgsettings = array(
 		"title" => "Staff Member List",
@@ -84,6 +78,11 @@ $result=mysqli_query( $connection, $query);
 	);
 	require_once("includes/begin_cpanel.php");
 ?>
+<?php
+$query="SELECT * FROM `staff` ORDER BY `order`";
+$result=mysqli_query( $connection, $query);
+?>
+
 <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>-->
 <script type="text/javascript">
    <!-- jQuery for "Select All" checkboxes -->
