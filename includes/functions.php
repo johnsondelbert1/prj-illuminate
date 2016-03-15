@@ -219,7 +219,7 @@ while($css_selector=mysqli_fetch_array($removeresult)){
 }
 
 //Ranks & permissions
-function get_rank_info(){
+function get_permissions(){
 	//gets permissions for logged in user
 	global $connection;
 	$query="SELECT `rank` FROM `users` WHERE `id` = {$_SESSION['user_id']}";
@@ -240,7 +240,23 @@ function get_rank_info(){
 	return $user_permissions;
 }
 
-//Ranks & permissions
+function get_rank_permissions($rank_id){
+	//gets permissions for specified rank
+	global $connection;
+	$query="SELECT * FROM `ranks` WHERE `id` = {$rank_id}";
+	$result=mysqli_query( $connection, $query);
+	if(mysqli_num_rows($result)!=0){
+		$permissions=mysqli_fetch_array($result);
+		if($permissions['permissions']!=""){
+			$rank_permissions = unserialize($permissions['permissions']);
+		}else{
+			$rank_permissions=array();
+		}
+	}else{
+		$rank_permissions = $blank_permissions;
+	}
+	return $rank_permissions;
+}
 
 function enable_all_perms($blank_permissions){
 	$filled_perms = $blank_permissions;
@@ -339,7 +355,7 @@ while($admin_rank=mysqli_fetch_array($result)){
 }
 
 if(logged_in()){
-	$permissions = array_replace_recursive($blank_permissions, get_rank_info());
+	$permissions = array_replace_recursive($blank_permissions, get_permissions());
 }else{
 	$permissions = "";
 }
@@ -374,6 +390,30 @@ function check_permission($perm_group, $perm = false){
 		}
 	}else{
 		return false;
+	}
+}
+
+function check_rank_permission($rank_id, $perm_group, $perm = false){
+	global $connection;
+	global $blank_permissions;
+	$permissions = array_replace_recursive($blank_permissions, get_rank_permissions($rank_id));
+
+	if (is_array($perm_group)&&$perm==false){
+		$return = false;
+		foreach ($perm_group as $permission){
+			$explode = explode(";", $permission);
+			if(isset($permissions[$explode[0]][$explode[1]]['value'])&&$permissions[$explode[0]][$explode[1]]['value']==1){
+				$return=true;
+			}
+			
+		}
+		return $return;
+	}else{
+		if(isset($permissions[$perm_group][$perm]['value'])&&$permissions[$perm_group][$perm]['value']==1){
+			return true;
+		}else{
+			return false;
+		}
 	}
 }
 

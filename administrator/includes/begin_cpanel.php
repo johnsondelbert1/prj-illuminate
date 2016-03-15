@@ -207,7 +207,7 @@ if($GLOBALS['site_info']['user_creation'] == 'approval'){
             <div class="collapsible-body">
               <ul>
                 <li><a href="page_list.php">Edit</a></li>
-                <!-- <li><a href="staff-list.php">Staff</a></li> -->
+                <li><a href="staff-list.php">Staff</a></li>
                 <li><a href="edit_page.php?action=newpage">New</a></li>
               </ul>
             </div>

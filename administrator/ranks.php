@@ -58,6 +58,39 @@ if(isset($_POST['delrank'])){
 	);
 	require_once("includes/begin_cpanel.php");
 ?>
+<style>
+table.rank-table td{
+    border:solid 1px #ccc;
+}
+table.rank-table{
+    width:auto;
+}
+table.rank-table th.rotate {
+  /* Something you can count on */
+  height: 140px;
+  white-space: nowrap;
+}
+
+table.rank-table th.rotate > div {
+  -ms-transform: 
+    /* Magic Numbers */
+    translate(25px, 51px)
+    /* 45 is really 360 - 45 */
+    rotate(315deg);
+  transform: 
+    /* Magic Numbers */
+    translate(25px, 51px)
+    /* 45 is really 360 - 45 */
+    rotate(315deg);
+  width: 30px;
+}
+
+table.rank-table th.rotate > div > span {
+  border-bottom: 1px solid #ccc;
+  /* padding: 5px 10px; */
+}
+</style>
+
 <script type="text/javascript">
    <!-- jQuery for "Select All" checkboxes -->
     $(document).ready(function() {
@@ -89,9 +122,100 @@ if(isset($_POST['delrank'])){
 $query="SELECT * FROM `ranks` ORDER BY `id` ASC";
 $result=mysqli_query( $connection, $query);
 confirm_query($result);
+$rank_count = mysqli_num_rows($result);
 ?>
 <h1>Rank List</h1>
-<div style="overflow-x:auto;">
+<?php
+$ranks_array = array();
+while($rank=mysqli_fetch_array($result)){
+    array_push($ranks_array, $rank);
+}
+?>
+<form method="post">
+<table class="rank-table">
+  <thead>
+    <tr>
+      <!-- First column header is not rotated -->
+      <th></th>
+      <!-- Following headers are rotated -->
+      <?php
+      foreach($ranks_array as $value){ ?>
+          <th class="rotate"><div><span><a href="edit-rank?rank=<?php echo urlencode($value['id']); ?>"><?php echo $value['name']; ?></a></span></div></th>
+        <?php
+      }
+      ?>
+    </tr> 
+  </thead>
+  <tbody>
+    <tr>
+      <th>Color</th>
+      <?php 
+      foreach($ranks_array as $value){ ?>
+      <td style="background-color:<?php echo $value['color']; ?>;"></td>
+    <?php
+      }
+      ?>
+    </tr>
+    <?php
+    foreach ($blank_permissions as $permgroup_name => $permgroup_perms) {?>
+    <tr>
+      <th></th>
+      <th colspan="<?php echo $rank_count; ?>"><?php echo $permgroup_name; ?></th>
+    </tr>
+    <?php
+        foreach ($permgroup_perms as $perm_name => $perm_data) {?>
+    <tr>
+      <th><?php echo $perm_data['disp_name']; ?></th>
+        <?php
+        foreach ($ranks_array as $value) {
+            $rank_permission = check_rank_permission($value['id'], $permgroup_name, $perm_name);
+            if($rank_permission === true){ ?>
+        <td><i class='material-icons green-text'>&#xE061;</i></td>
+        <?php }else{ ?>
+        <td><i class='material-icons red-text'>&#xE061;</i></td>
+        <?php
+            }
+        }
+        ?>
+      </tr>
+        <?php    
+        }
+        ?>
+    
+        <?php
+    }
+    ?>
+    <tr>
+      <th>Delete</th>
+      <?php
+      foreach($ranks_array as $value){ ?>
+          <th><input type="checkbox" name="ranks[]"<?php if($value['deletable']==0){echo ' disabled';} ?> value="<?php echo $value['id']; ?>" id="<?php echo $value['id']; ?>" /><label for="<?php echo $value['id']; ?>"></label></th>
+        <?php
+      }
+      ?>
+    </tr>
+    <tr>
+      <th></th>
+      <th colspan="<?php echo $rank_count; ?>"><a class="modal-trigger red btn" href="#modal1">Delete Ranks</a></th>
+    </tr>
+  </tbody>
+</table>
+<div id="modal1" class="modal">
+<div class="modal-content">
+      <h4>Are you sure you want to delete these ranks?</h4>
+      <p>Once you delete, there will be no way to recover it!</p>
+    </div>
+    <div class="modal-footer">
+    <div class="row right">
+    <div class="col l12 s12">
+    <a href="#!" class="modal-close waves-effect waves-blue btn blue ">Cancel</a>
+      <input class="red btn" type="submit" name="delrank" value="Delete Selected Ranks" />
+      </div>
+      </div>
+    </div>
+</div>
+</form>
+<!-- <div style="overflow-x:auto;">
     <form method="post" action="ranks.php">
     <table border="1" cellspacing="0" cellpadding="0" id="form" style="min-height:100px; background-color:#DDDDDD; width:100%;">
         <tr>
@@ -214,5 +338,5 @@ confirm_query($result);
         </tr>
     </table>
     </form>
-</div>
+</div> -->
 <?php require_once("includes/end_cpanel.php"); ?>
