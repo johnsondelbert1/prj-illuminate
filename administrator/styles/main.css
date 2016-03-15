@@ -147,9 +147,9 @@ div.banner
 	line-height:30px;
 	background-color:#ececec;
 	color:#333;
-	position:absolute;
-  bottom: 0;
-  left: 0;
+	/*position:absolute;*/
+	bottom: 0;
+	left: 0;
 }
 
 #footer a{
