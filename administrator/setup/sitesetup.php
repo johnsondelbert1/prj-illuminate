@@ -62,14 +62,14 @@ require_once('begin_html.php');
             <option value="<?php echo $timezone; ?>"<?php if(!isset($_POST['site_tz'])&&$timezone == "America/Los_Angeles"){echo 'selected';}elseif(isset($_POST['site_tz'])&&$_POST['site_tz'] == $timezone){echo 'selected';}?>><?php echo $timezone; ?></option>
             <?php } ?>
         </select><br>
-    Site Contact Phone<input name="contact_phone" type="text" value="<?php echo $site['contact_phone']; ?>" maxlength="16" style="width:400px;" />
-	Address<br/>
-	<label for="address_line1">Line 1</label><input name="address_line1" id="address_line1" type="text" value="<?php echo $site['address_line1']; ?>" maxlength="255" style="width:400px;" /><br/>
-	<label for="address_line2">Line 2</label><input name="address_line2" id="address_line2" type="text" value="<?php echo $site['address_line2']; ?>" maxlength="255" style="width:400px;" /><br/>
-	<label for="address_city">City</label><input name="address_city" id="address_city" type="text" value="<?php echo $site['address_city']; ?>" maxlength="255" style="width:250px;" />
-	<label for="address_stateregion">State / Region</label><input name="address_stateregion" id="address_stateregion" type="text" value="<?php echo $site['address_stateregion']; ?>" maxlength="255" style="width:115px;" /><br/>
-	<label for="address_zip">Zip</label><input name="address_zip" id="address_zip" type="text" value="<?php echo $site['address_zip']; ?>" maxlength="10" style="width:100px;" /><br/>
-	<label for="address_country">Country</label><input name="address_country" id="address_country" type="text" value="<?php echo $site['address_country']; ?>" maxlength="64" style="width:265px;" /><br/>
+    Site Contact Phone<input name="contact_phone" type="text" value="<?php if(isset($_POST['contact_phone'])){echo $_POST['contact_phone'];} ?>" maxlength="16" style="width:400px;" />
+	<h2>Address</h2><br/>
+	<label for="address_line1">Line 1</label><input name="address_line1" id="address_line1" type="text" value="<?php if(isset($_POST['address_line1'])){echo $_POST['address_line1'];} ?>" maxlength="255" style="width:400px;" /><br/>
+	<label for="address_line2">Line 2</label><input name="address_line2" id="address_line2" type="text" value="<?php if(isset($_POST['address_line2'])){echo $_POST['address_line2'];} ?>" maxlength="255" style="width:400px;" /><br/>
+	<label for="address_city">City</label><input name="address_city" id="address_city" type="text" value="<?php if(isset($_POST['address_city'])){echo $_POST['address_city'];} ?>" maxlength="255" style="width:250px;" />
+	<label for="address_stateregion">State / Region</label><input name="address_stateregion" id="address_stateregion" type="text" value="<?php if(isset($_POST['address_stateregion'])){echo $_POST['address_stateregion'];} ?>" maxlength="255" style="width:115px;" /><br/>
+	<label for="address_zip">Zip</label><input name="address_zip" id="address_zip" type="text" value="<?php if(isset($_POST['address_zip'])){echo $_POST['address_zip'];} ?>" maxlength="10" style="width:100px;" /><br/>
+	<label for="address_country">Country</label><input name="address_country" id="address_country" type="text" value="<?php if(isset($_POST['address_country'])){echo $_POST['address_country'];} ?>" maxlength="64" style="width:265px;" /><br/>
     <input type="submit" name="submit" value="Submit" />
 </form>
 </body>
