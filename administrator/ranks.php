@@ -277,8 +277,8 @@ while($rank=mysqli_fetch_array($result)){
                             confirm_query($result);
                             
                             //Image filename
-                            $yes = "check-green.png";
-                            $no = "x-red.png";
+                            $yes = "green-text'> &#xE5CA;";
+                            $no = "red-text'> &#xE033;";
                             
                             while($rank=mysqli_fetch_array($result)){
                                 $ranks_permissions=unserialize($rank['permissions']);
@@ -291,7 +291,7 @@ while($rank=mysqli_fetch_array($result)){
                                 <?php
                                 foreach(array_keys($blank_permissions) as $perm_group){
                                     foreach($blank_permissions[$perm_group] as $perm_key => $permission){?>
-                                        <td><img src="images/<?php if($ranks_permissions[$perm_group][$perm_key]['value']==1){echo $yes;}else{echo $no;} ?>" /></td>
+                                        <td><i class='material-icons <?php if($ranks_permissions[$perm_group][$perm_key]['value']==1){echo $yes;}else{echo $no;} ?></i></td>
                                     <?php
                                     }
                                 }?>
