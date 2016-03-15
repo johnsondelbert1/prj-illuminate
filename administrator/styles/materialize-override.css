@@ -59,10 +59,13 @@ nav .brand-logo {
   .side-nav i{
  	float:right;
  	line-height: 64px;
- 	padding-right: 15px;
+ 	/*padding-right: 15px;*/
  }
    .collapsible-header i{
- 	padding-right: 0px;
+ 	margin-right: 0;
+ }
+    .collapsible-header i.material-icons{
+  padding-right: 0px;
  }
  .content{
       z-index: 3;
@@ -72,4 +75,5 @@ nav .brand-logo {
       color:#fff;
       right:0;
       position:absolute;
+      padding-right: 15px;
     }

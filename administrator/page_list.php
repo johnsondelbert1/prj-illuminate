@@ -66,9 +66,9 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
             <th>
                 Order
             </th>
-            <th>
+            <!--<th>
                 Last Edited By
-            </th>
+            </th>-->
             <th>
                 Last Edited
             </th>
@@ -78,17 +78,17 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
             <th>
                 Hits
             </th>
-            
+            <!--
             <th>
                 ID
             </th>
-            
+            -->
             <th>
                 View
             </th>
             <th style="text-align:center;">
             <?php if(check_permission("Pages","delete_pages")){?>
-                <input type="checkbox" id="<?php echo $pagetype; ?>all" name="<?php echo $pagetype; ?>all">
+                <input type="checkbox" class="filled-in" id="<?php echo $pagetype; ?>all" name="<?php echo $pagetype; ?>all">
                 <label for="<?php echo $pagetype; ?>all"></label>
             <?php } ?>
             </th>
@@ -119,15 +119,13 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
 				<!-- Author -->
 				<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
 					<?php $user=get_user($listpage['editor']); if($user['username']!=""){echo $user['username'];}else{echo "N/A";} ?>
-				</td>
-				<!-- Date -->
-				<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
+					<br/>
 					<?php 
 						if($listpage['lastedited']!="0000-00-00 00:00:00"){
 							$lasteditedtimestamp = strtotime($listpage['lastedited']);
 							echo date("n/j/Y, g:i A", $lasteditedtimestamp);
 						}else{
-							echo "N/A";
+							echo "";
 						}
 					?>
 				</td>
@@ -135,9 +133,9 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
 				<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
 					<?php
 						if($listpage['published']==1){
-							echo "Yes";
+							echo "<i class='material-icons green-text'>&#xE061;</i>";
 						}else{
-							echo "No";
+							echo "<i class='material-icons red-text'>&#xE061;</i>";
 						}
 					?>
 				</td>
@@ -147,15 +145,17 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
 				</td>
 				
 				<!-- ID -->
+				<!--
 				<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
 					<?php echo $listpage['id']; ?>
 				</td>
+				-->
 				<!-- URL -->
 				<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
-					<a href="../index.php?page=<?php echo urlencode($listpage['id']);?>" onclick="window.open('<?php echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($listpage['name']);?>', 'newwindow', 'width=1017, height=500'); return false;">View<!--index.php?page=<?php echo urlencode($listpage['id']);?>--></a>
+					<a href="../index.php?page=<?php echo urlencode($listpage['id']);?>" onclick="window.open('<?php echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($listpage['name']);?>', 'newwindow', 'width=1017, height=500'); return false;"><i class="material-icons">&#xE8A0;</i><!--index.php?page=<?php echo urlencode($listpage['id']);?>--></a>
 				</td>
 				<?php if(check_permission("Pages","delete_pages")){?>
-				<td width="5%" style="text-align:center;" id="<?php echo $pagetype; ?>"><input type="checkbox" name="pages[]" id="<?php echo $pagetype.$listpage['id']; ?>" value="<?php echo $listpage['id']; ?>" /><label for="<?php echo $pagetype.$listpage['id']; ?>"></label></td>
+				<td width="5%" style="text-align:center;" id="<?php echo $pagetype; ?>"><input type="checkbox" class="filled-in" name="pages[]" id="<?php echo $pagetype.$listpage['id']; ?>" value="<?php echo $listpage['id']; ?>" /><label for="<?php echo $pagetype.$listpage['id']; ?>"></label></td>
 				<?php } ?>
 				<!-- Edited --><!--
 				<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
@@ -183,8 +183,8 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
 					<!-- Name -->
 					<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
 					<?php if(check_permission("Pages","edit_pages")){?>
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="font-size:16px;" href="edit_page.php?action=edit&amp;page=<?php echo urlencode($listpage['id'])?>"><?php echo $listpage['name']?></a><br />
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:10px;">Type: <?php echo $listpage['type']?></span>
+						<a style="font-size:16px;" href="edit_page.php?action=edit&amp;page=<?php echo urlencode($listpage['id'])?>"><?php echo $listpage['name']?></a><br />
+						<span style="font-size:10px;">Type: <?php echo $listpage['type']?></span>
 					<?php }else{ ?>
 						<?php echo $listpage['name']?><br /><span style="font-size:10px;">Type: <?php echo $listpage['type']?></span>
 					<?php } ?>
@@ -196,27 +196,25 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
 					<!-- Author -->
 					<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
 						<?php $user=get_user($listpage['creator']); if($user['username']!=""){echo $user['username'];}else{echo "N/A";} ?>
-					</td>
-					<!-- Date -->
-					<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
+						<br/>
 						<?php 
 							if($listpage['lastedited']!="0000-00-00 00:00:00"){
 								$lasteditedtimestamp = strtotime($listpage['lastedited']);
 								echo date("n/j/Y, g:i A", $lasteditedtimestamp);
 							}else{
-								echo "N/A";
+								echo "";
 							}
 						?>
 					</td>
 					<!-- Published -->
 					<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
 						<?php
-							if($listpage['published']==1){
-								echo "Yes";
-							}else{
-								echo "No";
-							}
-						?>
+if($listpage['published']==1){
+echo "<i class='material-icons green-text'>&#xE061;</i>";
+}else{
+echo "<i class='material-icons red-text'>&#xE061;</i>";
+}
+?>
 					</td>
 					<!-- Hits -->
 					<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
@@ -224,15 +222,17 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
 					</td>
 					
 					<!-- ID -->
+					<!--
 					<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
 						<?php echo $listpage['id']; ?>
 					</td>
+					-->
 					<!-- URL -->
 					<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
-						<a href="../index.php?page=<?php echo urlencode($listpage['id']);?>" onclick="window.open('../index.php?page=<?php echo urlencode($listpage['name']);?>', 'newwindow', 'width=1017, height=500'); return false;">View<!--index.php?page=<?php echo urlencode($listpage['id']);?>--></a>
+						<a href="../index.php?page=<?php echo urlencode($listpage['id']);?>" onclick="window.open('../index.php?page=<?php echo urlencode($listpage['name']);?>', 'newwindow', 'width=1017, height=500'); return false;"><i class="material-icons">&#xE8A0;</i><!--index.php?page=<?php echo urlencode($listpage['id']);?>--></a>
 					</td>
 					<?php if(check_permission("Pages","delete_pages")){?>
-					<td width="5%" style="text-align:center;" id="<?php echo $pagetype; ?>"><input type="checkbox" name="pages[]" id="<?php echo $pagetype.$listpage['id']; ?>" value="<?php echo $listpage['id']; ?>" /><label for="<?php echo $pagetype.$listpage['id']; ?>"></label></td>
+					<td width="5%" style="text-align:center;" id="<?php echo $pagetype; ?>"><input type="checkbox" class="filled-in" name="pages[]" id="<?php echo $pagetype.$listpage['id']; ?>" value="<?php echo $listpage['id']; ?>" /><label for="<?php echo $pagetype.$listpage['id']; ?>"></label></td>
 				<?php } ?>
 			<?php } ?>
 		<?php } ?>
