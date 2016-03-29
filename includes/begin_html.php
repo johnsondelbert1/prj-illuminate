@@ -176,64 +176,6 @@ if(isset($bg[2])){
 		:-ms-input-placeholder {  
 		   color: <?php echo get_color('input_placeholder'); ?>;  
 		}
-		/*#contentwrap{
-			background-color:<?php echo $GLOBALS['site_layout']['contentbg_color'] ?> !important;
-		}*/
-/*		.mobile, ul.side-nav, slide-out, .title, .jssorb01 div:hover, .jssorb01 .av:hover, jssora05l, jssora05r{
-			background-color: #FFFFFF;
-		}*/
-		/*.mobile, ul.side-nav, slide-out, .blogtitle{
-			background-color:<?php echo $GLOBALS['site_layout']['accent_color'] ?> !important;
-		}
-		.jssora05l .material-icons, .jssora05r .material-icons{
-			color:<?php echo $GLOBALS['site_layout']['menu_color'] ?> !important;
-		}
-		.mobile i{
-			color:<?php echo $GLOBALS['site_layout']['contentbg_color'] ?> !important;
-		}
-		#banner{
-			background-color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
-		}
-		#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #vert-menu ul li, .photo-link, .nav, .captionBlack, .card{
-			background-color:<?php echo $GLOBALS['site_layout']['menu_color'] ?> !important;
-			color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
-		}
-		#horiz-menu li:hover > a, #horiz-menu li:hover > ul, #horiz-menu ul a:hover, #vert-menu li:hover > a, #vert-menu li:hover > ul, #vert-menu ul a:hover,  .TabbedPanelsTab, .accent, .forum tr:hover, .forumsuser, ul.MenuBarHorizontal a:hover, ul.MenuBarHorizontal a:focus, .forumfooter, ul.side-nav li{
-			background-color:<?php echo $GLOBALS['site_layout']['accent_color'] ?> !important;
-			color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
-		}
-		*html #horiz-menu li a:hover, #vert-menu li a:hover { /* IE6 only 
-			color: <?php echo $GLOBALS['site_layout']['text_color'] ?>;
-		}
-		#content a, #footer a, #horiz-menu a, #horiz-menu ul a, #vert-menu a, #vert-menu ul a, .blogtitle a, .forum tr a:hover{
-			color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
-		}
-		.photo-link:hover{
-			background-color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
-		}
-		/*#content, .forum tr, .forumbody, #footerwrap, .blog{
-			background-color:<?php echo $GLOBALS['site_layout']['contentbg_color'] ?> !important;
-			color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
-		}
-		.forum tr a{
-			color:<?php echo $GLOBALS['site_layout']['contentbg_color'] ?> !important;
-		}
-		.forumtitle{
-			border-bottom:2px <?php echo $GLOBALS['site_layout']['text_color'] ?> dashed;
-		}
-		.icon{
-			color:<?php echo $GLOBALS['site_layout']['menu_color'] ?> ;
-		}
-		 ::-webkit-scrollbar-thumb{
-			/*background-color:<?php echo $GLOBALS['site_layout']['accent_color'] ?> !important;
-			color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
-		}
-		::selection {
-			background: <?php echo $GLOBALS['site_layout']['accent_color'] ?>; /* WebKit/Blink Browsers 
-			}
-		::-moz-selection {
-			background: <?php echo $GLOBALS['site_layout']['accent_color'] ?>; /* WebKit/Blink Browsers 
-			}*/
 		#banner{
 			<?php if(count($banner)==3){?>background-image:url(images/banner/<?php echo $banner[2];?>);<?php } ?>
 			
@@ -248,7 +190,6 @@ if(isset($bg[2])){
     <?php if($GLOBALS['site_info']['custom_js']!=""){
 		echo $GLOBALS['site_info']['custom_js'];
 	}?>
-    
     <!-- End custom JS -->
 </head>
 
@@ -303,7 +244,7 @@ if(isset($bg[2])){
         <div id="contentwrap">
         
 			<?php if(isset($pgsettings['banner'])&&$pgsettings['banner'] == 1){ ?>
-    		<?php if($banner!=false){ ?><div class="row"><div class="col l10 s12 offset-l1" style="padding:0 0 !important;"><img src="<?php echo $GLOBALS['HOST']; ?>/images/banner/<?php echo $banner; ?>" width="100%" style="background-color:#C9C9C9;" /></div></div><?php } ?>
+    		<?php if($banner!=false){ ?><div class="row"><div class="col l10 s12 offset-l1" style="padding:0 0 !important;"><img src="<?php echo $GLOBALS['HOST']; ?>/images/banner/<?php echo $banner; ?>" width="100%" /></div></div><?php } ?>
 			<?php
 			}
 			?>

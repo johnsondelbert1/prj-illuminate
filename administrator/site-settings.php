@@ -169,21 +169,21 @@ if(isset($_POST['uploadbanner'])){
 		if ($item == '.' || $item == '..') continue;
 		unlink($output_dir_banner.DIRECTORY_SEPARATOR.$item);
 	}
-	$message = upload($_FILES, $output_dir_banner, 2097152, array('.jpeg','.jpg','.gif','.png','.JPEG','.JPG','.GIF','.PNG','.ico','.ICO'));
+	$message = upload($_FILES, $output_dir_banner, 2097152, array('.jpeg','.jpg','.gif','.png','.ico','.svg','.JPEG','.JPG','.GIF','.PNG','.ICO','.SVG'));
 }
 if(isset($_POST['uploadbg'])){
 	foreach (scandir($output_dir_bg) as $item) {
 		if ($item == '.' || $item == '..') continue;
 		unlink($output_dir_bg.DIRECTORY_SEPARATOR.$item);
 	}
-	$message = upload($_FILES, $output_dir_bg, 4194304, array('.jpeg','.jpg','.gif','.png','.JPEG','.JPG','.GIF','.PNG','.ico','.ICO'));
+	$message = upload($_FILES, $output_dir_bg, 4194304, array('.jpeg','.jpg','.gif','.png','.ico','.svg','.JPEG','.JPG','.GIF','.PNG','.ICO','.SVG'));
 }
 if(isset($_POST['uploadlogo'])){
 	foreach (scandir($output_dir_logo) as $item) {
 		if ($item == '.' || $item == '..') continue;
 		unlink($output_dir_logo.DIRECTORY_SEPARATOR.$item);
 	}
-	$message = upload($_FILES, $output_dir_logo, 2097152, array('.jpeg','.jpg','.gif','.png','.JPEG','.JPG','.GIF','.PNG','.ico','.ICO'));
+	$message = upload($_FILES, $output_dir_logo, 2097152, array('.jpeg','.jpg','.gif','.png','.ico','.svg','.JPEG','.JPG','.GIF','.PNG','.ICO','.SVG'));
 }
 if(isset($_POST['chng_logo_url'])){
 	$logo_url = strip_tags(mysqli_real_escape_string($connection, $_POST['logo_url']));
@@ -198,7 +198,7 @@ if(isset($_POST['uploadfavicon'])){
 		if ($item == '.' || $item == '..') continue;
 		unlink($output_dir_icon.DIRECTORY_SEPARATOR.$item);
 	}
-	$message = upload($_FILES, $output_dir_icon, 128000, array('.jpeg','.jpg','.gif','.png','.JPEG','.JPG','.GIF','.PNG','.ico','.ICO'));
+	$message = upload($_FILES, $output_dir_icon, 128000, array('.jpeg','.jpg','.gif','.png','.ico','.svg','.JPEG','.JPG','.GIF','.PNG','.ICO','.SVG'));
 }
 if(isset($_POST['chngganalytics'])){
 	if(check_permission("Website","edit_google_analytics")){
