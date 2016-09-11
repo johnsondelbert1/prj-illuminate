@@ -25,6 +25,17 @@
         </div>
     </div>
     <!-- Website designed by Second Gen Design -->
+<script type="text/javascript">
+$(document).on("scroll", function() {
+
+    if($(document).scrollTop()>25) {
+        $("div.nav").removeClass("large").addClass("small");
+    } else {
+        $("div.nav").removeClass("small").addClass("large");
+    }
+    
+});
+</script>
     <script type="text/javascript">
     <?php
     //Display messages
