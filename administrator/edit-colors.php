@@ -110,7 +110,7 @@ require_once("../includes/functions.php");
 <button type="button" name="new_color" class="btn green click-new-color">Create new color</button>
 <br/>
 <form id="colorData">
-<section id="connected" class="masonry" style="overflow-y:auto;">
+<section id="connected" class="masonry WebsiteThemeSort" style="overflow-y:auto;">
 	<?php
 	$query="SELECT * FROM `style_colors`";
 	$result=mysqli_query( $connection, $query);

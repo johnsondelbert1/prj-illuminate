@@ -302,6 +302,21 @@ if($_GET['action']=="edit"){
 		templates: [
 			{title: '2 Column Table', content: '<table style="width: 100%;" border="2" width="1798"><tbody><tr><td style="text-align: center;">Column 1</td><td style="text-align: center;">Column 2</td></tr></tbody></table>'},
 		],
+        theme_advanced_fonts : "Andale Mono=andale mono,times;"+
+                "Arial=arial,helvetica,sans-serif;"+
+                "Arial Black=arial black,avant garde;"+
+                "Book Antiqua=book antiqua,palatino;"+
+                "Comic Sans MS=comic sans ms,sans-serif;"+
+                "Courier New=courier new,courier;"+
+                "Georgia=georgia,palatino;"+
+                "Helvetica=helvetica;"+
+                "Impact=impact,chicago;"+
+                "Symbol=symbol;"+
+                "Tahoma=tahoma,arial,helvetica,sans-serif;"+
+                "Terminal=terminal,monaco;"+
+                "Times New Roman=times new roman,times;"+
+                "Trebuchet MS=trebuchet ms,geneva;"+
+                "Verdana=verdana,geneva;",
 		external_filemanager_path:"../filemanager/",
    filemanager_title:"Responsive Filemanager" ,
    external_plugins: { "filemanager" : "/filemanager/plugin.min.js"}
@@ -500,14 +515,17 @@ $('fixed-action-btn').on("touchstart", function (e) {
                             <select name="pgdocfolder">
                             <option value="">(None)</option>
                             <?php
-                            $dirs = array_filter(glob('../uploads/*'), 'is_dir');
-                            foreach($dirs as $dir){
-								$dir = substr($dir."/", 11);
-                            ?>
-                                <option value="<?php echo $dir; ?>"<?php if (isset($selpage['doc_folder'])&&$dir == $selpage['doc_folder']){echo ' selected="selected"';} ?>><?php echo $dir; ?></option>
-                            <?php 
-                            
-                            } ?>
+                            $dirs = array_filter(glob('../'.USER_DIR.'uploads/*'), 'is_dir');
+							$path = '../'.USER_DIR.'uploads/';
+							$results = scandir($path);
+
+							foreach ($results as $result) {
+							    if ($result === '.' or $result === '..') continue;
+
+							    if (is_dir($path . '/' . $result)) {?>
+							        <option value="<?php echo $result; ?>"<?php if (isset($selpage['doc_folder'])&&$result == $selpage['doc_folder']){echo ' selected="selected"';} ?>><?php echo $result; ?></option>
+							   <?php }
+							}?>
                             </select>
                         </td>
                       </tr>
@@ -608,7 +626,7 @@ $('fixed-action-btn').on("touchstart", function (e) {
                 <div id="gallery">
                 <h1 style="margin:0;">Included Galleries</h1><br>
 					<?php
-                        $query="SELECT * FROM `galleries` ORDER BY `id` ASC";
+                        $query="SELECT * FROM `galleries` WHERE `type` = 'page' ORDER BY `id` ASC";
                         $galleryquery=mysqli_query( $connection, $query);
                         confirm_query($galleryquery);?>
                         <div id="gall">

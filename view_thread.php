@@ -131,8 +131,10 @@ require_once("includes/begin_html.php");
 									
 							$fieldquery=mysqli_query($connection, $query);
 							confirm_query($fieldquery);
-							$custom_user_field=mysqli_fetch_array($fieldquery);
-							echo '<li>'.$custom_user_field['name'].': '.$custom_user_data[$custom_user_field['name']].'</li>';
+							if(mysqli_num_rows($fieldquery) == 1){
+								$custom_user_field=mysqli_fetch_array($fieldquery);
+								echo '<li>'.$custom_user_field['name'].': '.$custom_user_data[$custom_user_field['name']].'</li>';
+							}
 						}
 
 					}

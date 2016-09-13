@@ -2,6 +2,11 @@
 require_once("session.php");
 require_once("globals.php");
 
+//Check PHP version
+if (version_compare(phpversion(), '5.5.0', '<')) {
+    header("Location: {$GLOBALS['HOST']}/outdated_php");
+}
+
 //global DB variables
 
 //Site Info
@@ -44,7 +49,7 @@ $pg=mysqli_fetch_array($result);
 $GLOBALS['forum_page'] = $pg['name'];
 
 //Folders to be re-created if missing
-$folders = array('images/banner/', 'images/bg/', 'images/favicon/', 'images/logo/', 'blog_galleries/', 'galleries/');
+$folders = array(USER_DIR, USER_DIR.'site-img/banner/', USER_DIR.'site-img/bg/', USER_DIR.'site-img/favicon/', USER_DIR.'site-img/logo/', USER_DIR.'blog-galleries/', USER_DIR.'site-galleries/');
 
 //Site color styling
 $GLOBALS['color_styles'] = array(
@@ -598,7 +603,7 @@ function verify_login($user){
 }
 
 function order_doc_files($dir){
-	$dirfiles = scandir("uploads/".$dir);
+	$dirfiles = scandir(USER_DIR."uploads/".$dir);
 	if($dirfiles!=false){
 		$dirfiles = array_diff($dirfiles, array('.', '..'));
 		$chronfiles = array();
@@ -623,7 +628,7 @@ function order_doc_files($dir){
 			foreach($chronfiles as $filename => $filedate){
 				$filedate = date('F d, Y', $filedate);
 				?>
-				<li><a href="<?php echo $GLOBALS['HOST']; ?>/uploads/<?php echo $dir.'/'.$filename; ?>" target="_blank"><?php echo $filedate; ?></a></li>
+				<li><a href="<?php echo USER_DIR_URL; ?>uploads/<?php echo $dir.'/'.$filename; ?>" target="_blank"><?php echo $filedate; ?></a></li>
 			<?php
 			}
 			?></ul><?php
@@ -633,7 +638,7 @@ function order_doc_files($dir){
 			?><ul><?php
 			foreach($nonchronfiles as $file){
 				?>
-				<li><a href="<?php echo $GLOBALS['HOST']; ?>/uploads/<?php echo $dir.'/'.$file; ?>" target="_blank"><?php echo $file; ?></a></li>
+				<li><a href="<?php echo USER_DIR_URL; ?>uploads/<?php echo $dir.'/'.$file; ?>" target="_blank"><?php echo $file; ?></a></li>
 			<?php
 			}
 			?></ul><?php
@@ -641,44 +646,159 @@ function order_doc_files($dir){
 	}
 }
 
-function gallery($images_dir, $thumbs_dir, $thumbs_width, $thumbs_height, $gallname = "gall", $num_images = false){
+function gallery($galleryID, $gallname = "gall", $num_items = false){
+	global $connection;
+
+	$query="SELECT * FROM `galleries` WHERE id={$galleryID}";
+	$result=mysqli_query( $connection, $query);
+	$galleryData=mysqli_fetch_array($result);
+
+	$images_dir = USER_DIR.$galleryData['dir'].$galleryData['name']."/gallery/";
+	$thumbs_dir = USER_DIR.$galleryData['dir'].$galleryData['name']."/gallery-thumbs/";
+
+	//Add/Delete DB items based on files in galley folder
+	CheckGalleryFiles($galleryID);
+
 	?>
-<div align="center" style="text-align:center; width:100%; padding:4px; margin-bottom:10px;">
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#gallery-<?php echo $gallname; ?>").lightGallery({
+		    loadYoutubeThumbnail: true,
+		    youtubeThumbSize: 'default',
+		    loadVimeoThumbnail: true,
+		    vimeoThumbSize: 'thumbnail_medium',
+        	subHtmlSelectorRelative: true,
+        	thumbnail: false,
+        	selector: '#gallery-<?php echo $gallname; ?> > div.masonry_item > a'
+        }); 
+    });
+</script>
+<div class="masonry" id="gallery-<?php echo $gallname; ?>">
     <?php
     /** generate photo gallery **/
-	if (file_exists($images_dir)&&file_exists($thumbs_dir)){
-		$image_files = get_files($images_dir);
-		$count = 0;
-		if(count($image_files)) {
-			$index = 0;
-			foreach($image_files as $index=>$file) {
-				if($count === $num_images){
-					break;
-				}
-				$count++;
-				$index++;
-				$thumbnail_image = $thumbs_dir.$file;
-				if(!file_exists($thumbnail_image)) {
-					$extension = get_file_extension($thumbnail_image);
-					$extension = strtolower($extension);
-					if($extension) {
-						make_thumb($images_dir.$file,$thumbnail_image,$thumbs_width,$thumbs_height,$extension);
+    $query="SELECT * FROM  `site_gallery_items` WHERE  `gallery_id` = {$galleryID} ORDER BY `position` ASC";
+	$result=mysqli_query( $connection, $query);
+
+    if(mysqli_num_rows($result) != 0) {
+    	//counter for lmiting displayed items
+    	$i=1;
+    	while($item = mysqli_fetch_array($result)){
+
+    		//Break while loop if counter goes over number items
+    		if($num_items !== false){
+    			if ($i > $num_items){
+    				break;
+    			}
+    		}
+    		switch ($item['type']) {
+    			case 'image':
+					$thumbnail_image = $thumbs_dir.$item['name'];
+					if(!file_exists($thumbnail_image)) {
+						$extension = get_file_extension($thumbnail_image);
+						$extension = strtolower($extension);
+						if($extension) {
+							make_thumb($images_dir.$item['name'],$thumbnail_image,$galleryData['thumb_width'],$galleryData['thumb_height'],$extension,$galleryData['thumb_scale_type']);
+						}
+					}?>
+					<div class="masonry_item">
+						<a href="<?php echo $GLOBALS['HOST']; ?>/<?php echo $images_dir.$item['name']; ?>" data-sub-html="<?php echo $item['description']; ?>" class="photo-link">
+							<img src="<?php echo $GLOBALS['HOST']; ?>/<?php echo $thumbnail_image;?>" />
+						</a>
+					</div>
+					<?php
+    				break;
+
+    			case 'embed':
+    				if($item['url'] != ''){
+						?>
+						<div class="masonry_item">
+							<a href="<?php echo $item['url']; ?>" data-sub-html="<?php echo $item['description']; ?>" class="photo-link">
+								<div class="embedThumb" style="background-image:url(<?php echo getEmbedThumb($item['url']); ?>);width:<?php echo $galleryData['thumb_width']; ?>px;height:<?php echo $galleryData['thumb_height']; ?>px;">
+									<img src="../images/icon-play32.png" />
+								</div>
+							</a>
+						</div>
+						<?php
 					}
-				}?>
-				<a href="<?php echo $GLOBALS['HOST']; ?>/<?php echo $images_dir.$file; ?>" rel="prettyPhoto[<?php echo $gallname; ?>]" title="<?php echo $file; ?>" class="photo-link"><img src="<?php echo $GLOBALS['HOST']; ?>/<?php echo $thumbnail_image;?>" style="width:<?php echo $thumbs_width; ?>px; height:<?php echo $thumbs_height; ?>px;" /></a>
-			<?php
+    				break;
+
+    			default:
+    				# code...
+    				break;
+    			}
+    			//Increase item limit counter by 1
+    			$i++;
             }
-			?><div class="clear"></div><?php
-		}else{?>
-			
-		<?php
 		}
-	}else{?>
-	<?php
-    }
 	?>
 </div>
 <?php
+}
+
+function CheckGalleryFiles($gallID, $cpanel = false){
+	global $connection;
+	global $date;
+
+	$query="SELECT * FROM `galleries` WHERE `id` = ".$gallID;
+	$result=mysqli_query( $connection, $query);
+	
+	if(mysqli_num_rows($result)==1){
+		$gallery=mysqli_fetch_array($result);
+
+		$images_dir = "";
+		$thumbs_dir = "";
+
+		if($cpanel == true){
+			$images_dir = "../";
+			$thumbs_dir = "../";
+		}
+
+		$images_dir .= USER_DIR.$gallery['dir'].$gallery['name']."/gallery/";
+		$thumbs_dir .= USER_DIR.$gallery['dir'].$gallery['name']."/gallery-thumbs/";
+
+		//Get image data in gallery dir
+		$image_files = get_files($images_dir);
+		
+		//Get gallery images from DB and put image data into array
+		$query="SELECT `name` FROM  `site_gallery_items` WHERE  `gallery_id` = {$gallID} AND `type` = 'image'";
+		$result=mysqli_query($connection, $query);
+		$numImages = mysqli_num_rows($result);
+		$galleryImage = array();
+		
+		while ($galleryImagesResult=mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+			array_push($galleryImage, $galleryImagesResult);
+		}
+
+		$galleryImageNames = array();
+		foreach ($galleryImage as $key => $value) {
+			array_push($galleryImageNames, $value['name']);
+		}
+
+		//Add new images to DB
+		if(count($image_files)) {
+			$index = 0;
+			
+			foreach($image_files as $index=>$file) {
+				$index++;
+		        if(!in_array($file, $galleryImageNames)){
+		        	$numImagesAdd = $numImages + 1;
+					$query="INSERT INTO `site_gallery_items` (`name`,`gallery_id`,`position`,`date_added`) VALUES ('{$file}',{$gallID},{$numImagesAdd},'{$date}')";
+					$result=mysqli_query($connection, $query);
+					confirm_query($result);
+					$numImages++;
+		        }
+		    }
+		}
+
+		//Remove deleted images from DB
+		foreach ($galleryImageNames as $key => $value) {
+			if(!in_array($value, $image_files)){
+				$query="DELETE FROM `site_gallery_items` WHERE `name` = '{$value}' AND `gallery_id` = {$gallID} AND `type` = 'image'";
+				$result=mysqli_query( $connection, $query);
+				confirm_query($result);
+			}
+		}
+	}
 }
 
 function upload($files, $directory ,$maxfilesize, $allowed_file_types = false){
@@ -789,7 +909,8 @@ var uploader = new plupload.Uploader({
 	runtimes : 'html5,flash,silverlight,html4',
 	browse_button : 'pickfiles', // you can pass in id...
 	container: document.getElementById('container'), // ... or DOM Element itself
-	url : '<?php if($cpanel == true){echo "../";} ?>upload.php?dir=<?php if($cpanel==true){echo urlencode(substr($output_dir, 3));}else{echo urlencode($output_dir);} ?>',
+	url : '../upload.php?dir=<?php if($cpanel==true){echo urlencode(substr($output_dir, 3));}else{echo urlencode($output_dir);} ?>',
+	chunk_size: '1mb',
 	flash_swf_url : '<?php if($cpanel == true){echo "../";} ?>jscripts/Moxie.swf',
 	silverlight_xap_url : '<?php if($cpanel == true){echo "../";} ?>jscripts/Moxie.xap',
 	
@@ -862,7 +983,7 @@ function nav_button($page){
 
 function nav($position, $pgselection){
 	global $connection;
-	$logo = scandir("images/logo/");
+	$logo = scandir(USER_DIR."site-img/logo/");
 	if(isset($logo[2])){
 		$logo = $logo[2];
 	}else{
@@ -874,7 +995,7 @@ function nav($position, $pgselection){
             <!--<div style="height:auto; width:100%;" class="mobile-logo">
             <?php if($logo!=false){ ?>
                 <?php if($GLOBALS['site_info']['logo_url']!=''){?>
-                <a href="<?php echo $GLOBALS['site_info']['logo_url']; ?>"><img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $GLOBALS['site_info']['name']; ?> Logo" width="240" /></a>
+                <a href="<?php echo $GLOBALS['site_info']['logo_url']; ?>"><img src="<?php echo USER_DIR_URL; ?>site-img/logo/<?php echo $logo; ?>" alt="<?php echo $GLOBALS['site_info']['name']; ?> Logo" width="240" /></a>
                 <?php }else{ ?>
                 <img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" width="240" />
             <?php } 
@@ -1296,7 +1417,7 @@ function slider($slider_id){
 									if(mysqli_num_rows($result)!=0){
 										while($slide=mysqli_fetch_array($result)){?>
                                             <div>
-                                                <img u=image src="<?php echo $GLOBALS['HOST']; ?>/images/slider/<?php echo $slider['name'].'/'.$slide['img_name']; ?>" />
+                                                <img u=image src="<?php echo USER_DIR_URL; ?>site-sliders/<?php echo $slider['name'].'/'.$slide['img_name']; ?>" />
                                                 <!--<div u="thumb" style="background-color:rgba(0, 0, 0, 0.4); line-height:35px; padding-left:10px; margin-top:60px;"><?php if($slide['url']!=''){?><a href="<?php echo $slide['url'];?>"<?php if($slide['new_tab']==1){ echo 'target="_blank"'; } ?>><?php echo $slide['caption'];?></a><?php }else{echo $slide['caption'];} ?></div>-->
                                                 <?php if($slide['caption']!=''){ ?>
                                                 <div u=caption t="*" class="captionBlack"  style="position:absolute; left:20px; top: 30px; width:300px; height:30px; font-weight:bold;">
@@ -1403,31 +1524,62 @@ function slider($slider_id){
 }
 
 /* function:  generates thumbnail */
-function make_thumb($src,$dest,$desired_width,$desired_height,$extention) {
-  /* read the source image */
-  if($extention=="jpg" || $extention=="jpeg"){
-  	$source_image = imagecreatefromjpeg($src);
-  }elseif($extention=="gif"){
-  	$source_image = imagecreatefromgif($src);
-  }elseif($extention=="png"){
-  	$source_image = imagecreatefrompng($src);
-  }
-  $width = imagesx($source_image);
-  $height = imagesy($source_image);
-  /* find the "desired height" of this thumbnail, relative to the desired width  */
-  $desired_height = $desired_height;
-  /* create a new, "virtual" image */
-  $virtual_image = imagecreatetruecolor($desired_width,$desired_height);
-  /* copy source image at a resized size */
-  imagecopyresampled($virtual_image,$source_image,0,0,0,0,$desired_width,$desired_height,$width,$height);
-  /* create the physical thumbnail image to its destination */
-  if($extention=="jpg" || $extention=="jpeg"){
-  	imagejpeg($virtual_image,$dest);
-  }elseif($extention=="gif"){
-  	imagegif($virtual_image,$dest);
-  }elseif($extention=="png"){
-  	imagepng($virtual_image,$dest);
-  }
+function make_thumb($src,$dest,$desired_width,$desired_height,$resizeType = 'static') {
+	//Get file extension
+	$extention = basename(substr(strrchr($src,'.'),1));
+	/* read the source image */
+	if($extention=="jpg" || $extention=="jpeg"){
+		$source_image = imagecreatefromjpeg($src);
+	}elseif($extention=="gif"){
+		$source_image = imagecreatefromgif($src);
+	}elseif($extention=="png"){
+		$source_image = imagecreatefrompng($src);
+	}else{
+		return "Bad Extension";
+	}
+	$width = imagesx($source_image);
+	$height = imagesy($source_image);
+
+	/* copy source image at a resized size */
+	switch ($resizeType) {
+		case 'fixed':
+			$targetWidth = $desired_width;
+		$targetHeight = $desired_height;
+			break;
+		case 'scale_height':
+			$ratio = round($width / $height ,2);
+			$targetWidth = $desired_height * $ratio;
+			$targetHeight = $desired_height;
+			break;
+
+		case 'scale_width':
+			$ratio = round($width / $height ,2);
+			$targetHeight = $desired_width / $ratio;
+			$targetWidth = $desired_width;
+			break;
+
+		default:
+			$targetWidth = $desired_width;
+			$targetHeight = $desired_height;
+			break;
+	}
+	/* create a new, "virtual" image */
+	$virtual_image = imagecreatetruecolor($targetWidth,$targetHeight);
+
+	//Transparency
+	if($extention=="gif"||$extention=="png"){
+		imagealphablending( $virtual_image, false );
+		imagesavealpha( $virtual_image, true );
+	}
+	imagecopyresampled($virtual_image,$source_image,0,0,0,0,$targetWidth,$targetHeight,$width,$height);
+	/* create the physical thumbnail image to its destination */
+	if($extention=="jpg" || $extention=="jpeg"){
+		imagejpeg($virtual_image,$dest);
+	}elseif($extention=="gif"){
+		imagegif($virtual_image,$dest);
+	}elseif($extention=="png"){
+		imagepng($virtual_image,$dest);
+	}
 }
 
 /* function:  returns files from dir */
@@ -1448,5 +1600,54 @@ function get_files($images_dir,$exts = array('jpg','jpeg','gif','png','JPG','JPE
 /* function:  returns a file's extension */
 function get_file_extension($file_name) {
   return substr(strrchr($file_name,'.'),1);
+}
+function in_array_recursive($needle, $haystack, $strict = false) {
+    foreach ($haystack as $item) {
+        if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_recursive($needle, $item, $strict))) {
+            return true;
+        }
+    }
+
+    return false;
+}
+function getEmbedThumb($url){
+	if($host = parse_url($url, PHP_URL_HOST)){
+		if(strpos($host, 'youtube.com') !== FAlSE){
+		    // regular links
+			if (preg_match('/(?<=v\=)([\w\d-_]+)/', $url, $matches)){
+				return '//img.youtube.com/vi/'.$matches[0].'/default.jpg';
+			
+			// ajax hash tag links
+			}elseif(preg_match('§([\d\w-_]+)$§i', $url, $matches)){
+				return '//img.youtube.com/vi/'.$matches[0].'/default.jpg';
+			}else{
+				return '../images/video-thumb.png';
+			}
+		}elseif(strpos($host, 'vimeo.com') !== FALSE){
+			$link = str_replace('//vimeo.com/', '//vimeo.com/api/v2/video/', $url) . '.php';
+			$html_returned = unserialize(file_get_contents($link));
+			return $html_returned[0]['thumbnail_medium'];
+		}else{
+			return '../images/video-thumb.png';
+		}
+	}else{
+		return '../images/video-thumb.png';
+	}
+}
+function rrmdir($src) {
+    $dir = opendir($src);
+    while(false !== ( $file = readdir($dir)) ) {
+        if (( $file != '.' ) && ( $file != '..' )) {
+            $full = $src . '/' . $file;
+            if ( is_dir($full) ) {
+                rrmdir($full);
+            }
+            else {
+                unlink($full);
+            }
+        }
+    }
+    closedir($dir);
+    rmdir($src);
 }
 ?>

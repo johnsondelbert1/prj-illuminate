@@ -3,10 +3,10 @@ require_once("../includes/functions.php");
 ?>
 <?php
 
-$output_dir_banner = "../images/banner/";
-$output_dir_bg = "../images/bg/";
-$output_dir_logo = "../images/logo/";
-$output_dir_icon = "../images/favicon/";
+$output_dir_banner = "../".USER_DIR."site-img/banner/";
+$output_dir_bg = "../".USER_DIR."site-img/bg/";
+$output_dir_logo = "../".USER_DIR."site-img/logo/";
+$output_dir_icon = "../".USER_DIR."site-img/favicon/";
 
 if(isset($_GET['delete'])){
 	if($_GET['delete']=='banner'){
@@ -45,6 +45,11 @@ if(isset($_POST['chng_info'])){
 		}else{
 			$published = 0;
 		}
+		if(isset($_POST['homepage'])){
+			$homepage = $_POST['homepage'];
+		}else{
+			$homepage = 0;
+		}
 		$site_name = mysqli_real_escape_string($connection, $_POST['site_name']);
 		$copyright_text = mysqli_real_escape_string($connection, $_POST['copyright_text']);
 		$metadata = strip_tags(mysqli_real_escape_string($connection, $_POST['metadata']), "<meta>");
@@ -65,7 +70,7 @@ if(isset($_POST['chng_info'])){
 					`name` = '{$site_name}', `contact_email` = '{$_POST['email']}', `address_line1` = '{$address_line1}', `address_line2` = '{$address_line2}', `address_city` = '{$address_city}', 
 					`address_stateregion` = '{$address_stateregion}', `address_zip` = '{$address_zip}', `address_country` = '{$address_country}', `contact_phone` = '{$contact_phone}', 
 					`timezone` = '{$_POST['tz']}', `published` = {$published}, `copyright_text` = '{$copyright_text}', `default_rank` = {$_POST['rank']}, `site_description` = '{$site_description}', 
-					`homepage` = {$_POST['homepage']}, `meta_tags` = '{$metadata}', `footer_content` = '{$footer_content}'";
+					`homepage` = {$homepage}, `meta_tags` = '{$metadata}', `footer_content` = '{$footer_content}'";
 				$result=mysqli_query($connection, $query);
 				confirm_query($result);
 				$success = "Site Info has been updated!";
@@ -169,21 +174,21 @@ if(isset($_POST['uploadbanner'])){
 		if ($item == '.' || $item == '..') continue;
 		unlink($output_dir_banner.DIRECTORY_SEPARATOR.$item);
 	}
-	$message = upload($_FILES, $output_dir_banner, 2097152, array('.jpeg','.jpg','.gif','.png','.JPEG','.JPG','.GIF','.PNG','.ico','.ICO'));
+	$message = upload($_FILES, $output_dir_banner, 2097152, array('.jpeg','.jpg','.gif','.png','.ico','.svg','.JPEG','.JPG','.GIF','.PNG','.ICO','.SVG'));
 }
 if(isset($_POST['uploadbg'])){
 	foreach (scandir($output_dir_bg) as $item) {
 		if ($item == '.' || $item == '..') continue;
 		unlink($output_dir_bg.DIRECTORY_SEPARATOR.$item);
 	}
-	$message = upload($_FILES, $output_dir_bg, 4194304, array('.jpeg','.jpg','.gif','.png','.JPEG','.JPG','.GIF','.PNG','.ico','.ICO'));
+	$message = upload($_FILES, $output_dir_bg, 4194304, array('.jpeg','.jpg','.gif','.png','.ico','.svg','.JPEG','.JPG','.GIF','.PNG','.ICO','.SVG'));
 }
 if(isset($_POST['uploadlogo'])){
 	foreach (scandir($output_dir_logo) as $item) {
 		if ($item == '.' || $item == '..') continue;
 		unlink($output_dir_logo.DIRECTORY_SEPARATOR.$item);
 	}
-	$message = upload($_FILES, $output_dir_logo, 2097152, array('.jpeg','.jpg','.gif','.png','.JPEG','.JPG','.GIF','.PNG','.ico','.ICO'));
+	$message = upload($_FILES, $output_dir_logo, 2097152, array('.jpeg','.jpg','.gif','.png','.ico','.svg','.JPEG','.JPG','.GIF','.PNG','.ICO','.SVG'));
 }
 if(isset($_POST['chng_logo_url'])){
 	$logo_url = strip_tags(mysqli_real_escape_string($connection, $_POST['logo_url']));
@@ -198,7 +203,7 @@ if(isset($_POST['uploadfavicon'])){
 		if ($item == '.' || $item == '..') continue;
 		unlink($output_dir_icon.DIRECTORY_SEPARATOR.$item);
 	}
-	$message = upload($_FILES, $output_dir_icon, 128000, array('.jpeg','.jpg','.gif','.png','.JPEG','.JPG','.GIF','.PNG','.ico','.ICO'));
+	$message = upload($_FILES, $output_dir_icon, 128000, array('.jpeg','.jpg','.gif','.png','.ico','.svg','.JPEG','.JPG','.GIF','.PNG','.ICO','.SVG'));
 }
 if(isset($_POST['chngganalytics'])){
 	if(check_permission("Website","edit_google_analytics")){
@@ -239,8 +244,8 @@ $result_pages=mysqli_query($connection, $query);
 	);
 	require_once("includes/begin_cpanel.php");
 ?>
-	<script type="text/javascript" src="../tinymce/js/tinymce/tinymce.min.js"></script>
-	<script type="text/javascript">
+<script type="text/javascript" src="../tinymce/js/tinymce/tinymce.min.js"></script>
+<script type="text/javascript">
 	
 	tinymce.init({
 		selector: "#foot_content",
@@ -415,34 +420,34 @@ $result_pages=mysqli_query($connection, $query);
 	<h2>Upload Banner</h2>
 	<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
 	<input type="file" name="file" id="file" accept="image/*" /><br>
-    *Recommended image size is 1510 pixels high by 400 pixels wide. Max filesize 2MB.
+    *Recommended image size is 1510 pixels high by 800 pixels wide. Max filesize 2MB.
 	<input name="uploadbanner" type="submit" class="btn green" value="Upload selected banner" />
-	</form><br>
-	<?php
+</form><br>
+<?php
 	if($banner != false){
-		?><img src="../images/banner/<?php echo $banner; ?>" width="500" /><?php
+		?><img src="../<?php echo USER_DIR; ?>site-img/banner/<?php echo $banner; ?>" width="500" /><?php
 	}else{?>
 		<div style="font-size:20px; width:500px; height:200px; border:5px dashed #B1B1B1; text-align:center; line-height:200px; vertical-align:middle; margin-left:auto; margin-right:auto;">There is currently no banner image.</div>
     <?php
 	}
-		?>
-	<br><br>
-	<a href="site-settings.php?tab=2&delete=banner">[Delete Banner]</a><br><br>
-	<h2>Upload Background Image</h2>
-	<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
+?>
+<br><br>
+<a href="site-settings.php?tab=2&delete=banner">[Delete Banner]</a><br><br>
+<h2>Upload Background Image</h2>
+<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
 	<input type="file" name="file" id="file" accept="image/*" /><br>
     Max filesize 4MB.
 	<input name="uploadbg" type="submit" class="btn green" value="Upload selected background" />
-	</form><br>
-	<?php
+</form><br>
+<?php
 	if($bg != false){
-		?><img src="../images/bg/<?php echo $bg; ?>" width="500" /><br><br><?php
+		?><img src="../<?php echo USER_DIR; ?>site-img/bg/<?php echo $bg; ?>" width="500" /><br><br><?php
 	}else{?>
 		<div style="font-size:20px; width:500px; height:200px; border:5px dashed #B1B1B1; text-align:center; line-height:200px; vertical-align:middle; margin-left:auto; margin-right:auto;">There is currently no background image.</div>
     <?php
 	}
-	?>
-	<form method="post" action="site-settings?tab=2">
+?>
+<form method="post" action="site-settings?tab=2">
 	<h3>Background Repeat</h3>
 	<select name="bg_repeat">
     	<option value="repeat"<?php if($layout['bg_repeat']=='repeat'){echo " selected";} ?>>Tile</option>
@@ -472,37 +477,37 @@ $result_pages=mysqli_query($connection, $query);
     <h3>Use background color</h3>
     <input name="use_bg_color" type="checkbox"<?php if($layout['use_bg_color']==1){echo " checked";} ?> id="use_bg_color" /><label for="use_bg_color"></label><br/><br/>
     <input name="bg_submit" type="submit" class="btn green" value="Save background settings" />
-	</form>
-	<br/><br/>
-	<a href="site-settings?tab=2&delete=bg">[Delete Background]</a>
-	<br><br/><br/><h2>Upload Logo</h2>
-	<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
+</form>
+<br/><br/>
+<a href="site-settings?tab=2&delete=bg">[Delete Background]</a>
+<br><br/><br/><h2>Upload Logo</h2>
+<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
 	<input type="file" name="file" id="file" accept="image/*" /><br>
     *Recommended image size is 100 pixels high and maximum 600 pixels wide. Max filesize 2MB.
 	<input name="uploadlogo" type="submit" class="btn green" value="Upload selected logo" />
-	</form><br/>
-	<?php
+</form><br/>
+<?php
 	if($logo != false){
-		?><img src="../images/logo/<?php echo $logo; ?>" height="150" /><?php
+		?><img src="../<?php echo USER_DIR; ?>site-img/logo/<?php echo $logo; ?>" height="150" /><?php
 	}else{?>
 		<div style="font-size:20px; width:350px; height:100px; border:5px dashed #B1B1B1; text-align:center; line-height:100px; vertical-align:middle; margin-left:auto; margin-right:auto;">There is currently no logo image.</div>
     <?php
 	}
-	?>
-	<br><br>
-	<a href="site-settings?tab=2&delete=logo">[Delete Logo]</a>
-	<!-- <form method="post" action="site-settings.php?tab=2">
+?>
+<br><br>
+<a href="site-settings?tab=2&delete=logo">[Delete Logo]</a>
+<!-- <form method="post" action="site-settings.php?tab=2">
     <h2>Logo URL</h2>
     <input name="logo_url" type="text" value="<?php echo $site['logo_url']; ?>" maxlength="256" placeholder="http://" style="width:300px;" /><input name="chng_logo_url" type="submit" class="btn green" value="Change Logo URL" />
-	</form><br><br> -->
-	<br><h2>Upload Favicon</h2>
-	<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
+</form><br><br> -->
+<br><h2>Upload Favicon</h2>
+<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
 	<input type="file" name="file" id="file" accept="image/*" />
 	<input name="uploadfavicon" type="submit" class="btn green" value="Upload selected favicon (128KB max)" />
-	</form><br/>
-	<?php
+</form><br/>
+<?php
 	if($favicon != false){
-		?><img src="../images/favicon/<?php echo $favicon; ?>" /><?php
+		?><img src="../<?php echo USER_DIR; ?>site-img/favicon/<?php echo $favicon; ?>" /><?php
 	}else{?>
 		<div style="font-size:20px; width:32px; height:32px; border:2px dashed #B1B1B1; text-align:center; vertical-align:middle;"></div>
     <?php

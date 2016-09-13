@@ -15,7 +15,7 @@ require("globals.php");
 	$compare_result = version_compare($db_compatability,  $dbversion['version']);
 	$protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://';
 	if(isset($dbversion['version'])){
-		if($compare_result != 0){
+		if($compare_result != 0 && !(isset($redirect_mismatch) && $redirect_mismatch == false)){
 			header("Location: {$GLOBALS['HOST']}/db_mismatch.php");
 		}
 	}else{

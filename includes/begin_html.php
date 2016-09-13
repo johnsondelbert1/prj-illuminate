@@ -20,25 +20,25 @@ foreach ($folders as $folder){
 	}
 }
 
-$banner = scandir("images/banner/");
+$banner = scandir(USER_DIR."site-img/banner/");
 if(isset($banner[2])){
 	$banner = $banner[2];
 }else{
 	$banner = false;
 }
-$favicon = scandir("images/favicon/");
+$favicon = scandir(USER_DIR."site-img/favicon/");
 if(isset($favicon[2])){
 	$favicon = $favicon[2];
 }else{
 	$favicon = false;
 }
-$logo = scandir("images/logo/");
+$logo = scandir(USER_DIR."site-img/logo/");
 if(isset($logo[2])){
 	$logo = $logo[2];
 }else{
 	$logo = false;
 }
-$bg = scandir("images/bg/");
+$bg = scandir(USER_DIR."site-img/bg/");
 if(isset($bg[2])){
 	$bg = $bg[2];
 }else{
@@ -73,16 +73,19 @@ if(isset($bg[2])){
     <link href="<?php echo $GLOBALS['HOST']; ?>/materialize/css/materialize.min.css" rel="stylesheet" type="text/css" media="screen,projection"/>
     <link href="<?php echo $GLOBALS['HOST']; ?>/styles/materialize-override.css" rel="stylesheet" type="text/css" media="screen,projection"/>
     <link href="<?php echo $GLOBALS['HOST']; ?>/administrator/styles/fonts.css" rel="stylesheet" type="text/css" />
-    <?php if($favicon!=false){ ?><link rel="shortcut icon" href="<?php echo $GLOBALS['HOST']; ?>/images/favicon/<?php echo $favicon; ?>" /><?php } ?>
+    <?php if($favicon!=false){ ?><link rel="shortcut icon" href="<?php echo USER_DIR_URL; ?>site-img/favicon/<?php echo $favicon; ?>" /><?php } ?>
+    <link href="<?php echo $GLOBALS['HOST']; ?>/styles/lightgallery.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo $GLOBALS['HOST']; ?>/styles/main.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo $GLOBALS['HOST']; ?>/styles/animate.css" rel="stylesheet" type="text/css" />
     <!-- <link href="<?php echo $GLOBALS['HOST']; ?>/styles/materialize.css" rel="stylesheet" type="text/css" media="screen,projection"/> -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="<?php echo $GLOBALS['HOST']; ?>/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css" media="screen" charset="utf-8" />
-    <!-- <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/SpryTabbedPanels.js" type="text/javascript"></script> -->
+    <!-- <link href="<?php echo $GLOBALS['HOST']; ?>/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css" media="screen" charset="utf-8" /> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
+    <script src="<?php echo $GLOBALS['HOST']; ?>/js/lightgallery.js" type="text/javascript"></script>
+    <script src="<?php echo $GLOBALS['HOST']; ?>/js/lg-video.min.js" type="text/javascript"></script>
+    <script src="<?php echo $GLOBALS['HOST']; ?>/js/lg-thumbnail.min.js" type="text/javascript"></script>
+    <script src="<?php echo $GLOBALS['HOST']; ?>/js/lg-autoplay.min.js" type="text/javascript"></script>
     <script src="<?php echo $GLOBALS['HOST']; ?>/materialize/js/materialize.min.js"></script>
-    <script type="text/javascript" src="<?php echo $GLOBALS['HOST']; ?>/prettyphoto/js/jquery.prettyPhoto.js" charset="utf-8"></script>
     <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/autosize.js"></script>
     <style type="text/css">
 		body{
@@ -90,7 +93,7 @@ if(isset($bg[2])){
 			background-color:#FFFFFF; !important;
 			<?php }
 			if($bg!=false){?>
-			background-image:url(/images/bg/<?php echo $bg; ?>);
+			background-image:url(<?php echo USER_DIR_URL.'site-img/bg/'.$bg; ?>);
 			<?php }
 			if($GLOBALS['site_layout']['bg_repeat']!=''){ ?>
 			background-repeat:<?php echo $GLOBALS['site_layout']['bg_repeat'] ?> !important;
@@ -290,9 +293,9 @@ if(isset($bg[2])){
         	<?php if($logo!=false){ ?>
             	<div style="float:left; position:absolute;" id="logo">
                 	<?php if($GLOBALS['site_info']['logo_url']!=''){?>
-            		<a href="<?php echo $GLOBALS['HOST']; ?>"><img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $GLOBALS['site_info']['name']; ?> Logo" height="100" /></a>
+            		<a href="<?php echo $GLOBALS['HOST']; ?>"><img src="<?php echo USER_DIR_URL; ?>site-img/logo/<?php echo $logo; ?>" alt="<?php echo $GLOBALS['site_info']['name']; ?> Logo" height="100" /></a>
                     <?php }else{ ?>
-                    <img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" height="100" />
+                    <img src="<?php echo $GLOBALS['HOST'].'/'.USER_DIR; ?>site-img/logo/<?php echo $logo; ?>" height="100" />
                     <?php } ?>
                 </div>
 			<?php } ?>
@@ -314,7 +317,7 @@ if(isset($bg[2])){
         <div id="contentwrap">
         
 			<?php if(isset($pgsettings['banner'])&&$pgsettings['banner'] == 1){ ?>
-    		<?php if($banner!=false){ ?><div class="row"><div class="col l12 s12" style="padding:0 0 !important;"><img src="<?php echo $GLOBALS['HOST']; ?>/images/banner/<?php echo $banner; ?>" width="100%" style="background-color:#C9C9C9;" /></div></div><?php } ?>
+    		<?php if($banner!=false){ ?><div class="row"><div class="col l12 s12" style="padding:0 0 !important;"><img src="<?php echo USER_DIR_URL; ?>site-img/banner/<?php echo $banner; ?>" width="100%" /></div></div><?php } ?>
 			<?php
 			}
 			?>

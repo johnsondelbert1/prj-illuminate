@@ -24,6 +24,11 @@
             </div>
         </div>
     </div>
+    <!-- Illuminate CMS by Second Gen Design -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.1/masonry.pkgd.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <!-- Drag and drop touch screens -->
+    <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/jquery.ui.touch-punch.min.js"></script>
     <!-- Website designed by Second Gen Design -->
 <script type="text/javascript">
 $(document).on("scroll", function() {
@@ -58,10 +63,10 @@ $(document).on("scroll", function() {
     ?>
     <?php
     if(isset($message)&&!is_array($message)){
-        echo "Materialize.toast('".$message."', 8000, 'yellow');";
+        echo "Materialize.toast('".$message."', 8000, 'yellow black-text');";
     }elseif(isset($message)&&is_array($message)&&!empty($message)){
         foreach ($message as $value) {
-            echo "Materialize.toast('".$value."', 8000, 'yellow');";
+            echo "Materialize.toast('".$value."', 8000, 'yellow black-text');";
         }
     } 
     ?>
@@ -69,7 +74,7 @@ $(document).on("scroll", function() {
     </script>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function(){
-            $("a[rel^='prettyPhoto']").prettyPhoto();
+            /*$("a[rel^='prettyPhoto']").prettyPhoto();*/
 
             autosize(document.querySelectorAll('textarea'));
 
@@ -77,12 +82,32 @@ $(document).on("scroll", function() {
             $('.modal-trigger').leanModal();
 
             $('.tooltipped').tooltip({delay: 50});
+
+            //Masonry
+/*            $('.masonry').masonry({
+                rowHeight: 150,
+                itemSelector: ".masonry_item"
+            });*/
         });
     </script>
-        <!--Import jQuery before materialize.js-->
-      <!--<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>-->
+
+    <!--JQuery UI-->
+    <script>
+        $(function() {
+            $('.sortable').sortable();
+            $('.handles').sortable({
+                handle: 'span'
+            });
+            $('.connected').sortable({
+                connectWith: '.connected'
+            });
+            $('.exclude').sortable({
+                items: ':not(.disabled)'
+            });
+        });
+    </script>
       
-       <script type="text/javascript">
+    <script type="text/javascript">
     //custom JS code
 	
 	// Initialize collapse button
