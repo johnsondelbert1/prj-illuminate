@@ -239,8 +239,8 @@ $result_pages=mysqli_query($connection, $query);
 	);
 	require_once("includes/begin_cpanel.php");
 ?>
-<script type="text/javascript" src="../tinymce/js/tinymce/tinymce.min.js"></script>
-<script type="text/javascript">
+	<script type="text/javascript" src="../tinymce/js/tinymce/tinymce.min.js"></script>
+	<script type="text/javascript">
 	
 	tinymce.init({
 		selector: "#foot_content",
@@ -275,33 +275,34 @@ $result_pages=mysqli_query($connection, $query);
 		}    
 	});
 
-</script>
-<div id="TabbedPanels1" class="TabbedPanels">
-            <ul class="TabbedPanelsTabGroup">
+	</script>
+	<div class="card">
+	<div class="row">
+    <div class="col s12">
+            <ul class="tabs" id="settings">
             	<?php if(check_permission("Website","edit_site_settings")){ ?>
-                	<li class="TabbedPanelsTab" tabindex="0">Settings</li>
+                	<li class="tab"><a href="#set">Settings</a></li>
                 <?php } ?>
                 <?php if(check_permission("Website","edit_site_colors")){ ?>
-                <li class="TabbedPanelsTab" tabindex="0">Custom CSS/JS</li>
+                <li class="tab"><a href="#css">Custom CSS/JS</a></li>
                 <?php } ?>
                 <?php if(check_permission("Website","upload_favicon_banner")){ ?>
-                <li class="TabbedPanelsTab" tabindex="0">Imagery</li>
+                <li class="tab"><a href="#img">Imagery</a></li>
                 <?php } ?>
                 <?php if(check_permission("Website","edit_socnet")){ ?>
-                <li class="TabbedPanelsTab" tabindex="0">Social Networks</li>
+                <li class="tab"><a href="#soc">Social Networks</a></li>
                 <?php } ?>
                 <?php if(check_permission("Website","edit_google_analytics")){ ?>
-                <li class="TabbedPanelsTab" tabindex="0">Google Analytics</li>
+                <li class="tab"><a href="#any">Google Analytics</a></li>
                 <?php } ?>
-                <li class="TabbedPanelsTab" tabindex="0">About</li>
+                <li class="tab"><a href="#about">About</a></li>
             </ul>
-            <div class="TabbedPanelsContentGroup">
-                
-<?php if(check_permission("Website","edit_site_settings")){ ?>
-<div class="TabbedPanelsContent">
-<h1 style="margin:-4px -4px 5px -4px; padding:5px;">Site Data</h1>
-<form method="post" action="site-settings.php?tab=0">
-<table width="75%" border="0"  style="margin-left:auto; margin-right:auto;">
+</div>
+	<?php if(check_permission("Website","edit_site_settings")){ ?>
+<div class="col s12" id="set">
+	<h1>Site Data</h1>
+	<form method="post" action="site-settings.php?tab=0">
+	<table width="75%" border="0"  style="margin-left:auto; margin-right:auto;">
   <tr>
     <td>
         <h2>Site Name</h2>
@@ -387,61 +388,61 @@ $result_pages=mysqli_query($connection, $query);
   <tr>
   	<td colspan="2"><input name="chng_info" type="submit" class="btn green" value="Change Website Info" /></td>
   </tr>
-</table>
-</form>
-</div>           
-<?php } ?>
-<?php if(check_permission("Website","edit_site_colors")){ ?>
-<div class="TabbedPanelsContent">
-<h1 style="margin:-4px -4px 5px -4px; padding:5px;">Custom CSS/JS</h1>
-<div class="row">
-<div class="input-field col s12">
-	<form method="post" action="site-settings?tab=1">
-		<h2>Custom CSS</h2>
-		<textarea class="materialize-textarea" name="custom_css" id="custom_css" rows="15" cols="80"><?php echo $layout['custom_css']; ?></textarea>
-		<h2>Custom Javascript</h2>
-	    <textarea class="materialize-textarea" name="custom_js" id="custom_js" rows="15" cols="80"><?php echo $site['custom_js']; ?></textarea><br>
-		<input name="cust_css_js" type="submit" class="btn green" value="Save Custom CSS/JS" />
+	</table>
 	</form>
-</div>
-</div>
-</form>
-</div>
-<?php } ?>             
-<?php if(check_permission("Website","upload_favicon_banner")){ ?>
-<div class="TabbedPanelsContent">
-<h1 style="margin:-4px -4px 5px -4px; padding:5px;">Website Imagery</h1><br>
-<h2>Upload Banner</h2>
-<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
+	</div>           
+	<?php } ?>
+	<?php if(check_permission("Website","edit_site_colors")){ ?>
+<div class="col s12" id="css">
+	<h1>Custom CSS/JS</h1>
+	<div class="row">
+	<div class="input-field col s12">
+		<form method="post" action="site-settings?tab=1">
+			<h2>Custom CSS</h2>
+			<textarea class="materialize-textarea" name="custom_css" id="custom_css" rows="15" cols="80"><?php echo $layout['custom_css']; ?></textarea>
+			<h2>Custom Javascript</h2>
+		    <textarea class="materialize-textarea" name="custom_js" id="custom_js" rows="15" cols="80"><?php echo $site['custom_js']; ?></textarea><br>
+			<input name="cust_css_js" type="submit" class="btn green" value="Save Custom CSS/JS" />
+		</form>
+	</div>
+	</div>
+	</form>
+	</div>
+	<?php } ?>             
+	<?php if(check_permission("Website","upload_favicon_banner")){ ?>
+<div class="col s12" id="img">
+	<h1>Website Imagery</h1><br>
+	<h2>Upload Banner</h2>
+	<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
 	<input type="file" name="file" id="file" accept="image/*" /><br>
-    *Recommended image size is 1510 pixels high by 800 pixels wide. Max filesize 2MB.
+    *Recommended image size is 1510 pixels high by 400 pixels wide. Max filesize 2MB.
 	<input name="uploadbanner" type="submit" class="btn green" value="Upload selected banner" />
-</form><br>
-<?php
+	</form><br>
+	<?php
 	if($banner != false){
 		?><img src="../images/banner/<?php echo $banner; ?>" width="500" /><?php
 	}else{?>
 		<div style="font-size:20px; width:500px; height:200px; border:5px dashed #B1B1B1; text-align:center; line-height:200px; vertical-align:middle; margin-left:auto; margin-right:auto;">There is currently no banner image.</div>
     <?php
 	}
-?>
-<br><br>
-<a href="site-settings.php?tab=2&delete=banner">[Delete Banner]</a><br><br>
-<h2>Upload Background Image</h2>
-<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
+		?>
+	<br><br>
+	<a href="site-settings.php?tab=2&delete=banner">[Delete Banner]</a><br><br>
+	<h2>Upload Background Image</h2>
+	<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
 	<input type="file" name="file" id="file" accept="image/*" /><br>
     Max filesize 4MB.
 	<input name="uploadbg" type="submit" class="btn green" value="Upload selected background" />
-</form><br>
-<?php
+	</form><br>
+	<?php
 	if($bg != false){
 		?><img src="../images/bg/<?php echo $bg; ?>" width="500" /><br><br><?php
 	}else{?>
 		<div style="font-size:20px; width:500px; height:200px; border:5px dashed #B1B1B1; text-align:center; line-height:200px; vertical-align:middle; margin-left:auto; margin-right:auto;">There is currently no background image.</div>
     <?php
 	}
-?>
-<form method="post" action="site-settings?tab=2">
+	?>
+	<form method="post" action="site-settings?tab=2">
 	<h3>Background Repeat</h3>
 	<select name="bg_repeat">
     	<option value="repeat"<?php if($layout['bg_repeat']=='repeat'){echo " selected";} ?>>Tile</option>
@@ -471,63 +472,70 @@ $result_pages=mysqli_query($connection, $query);
     <h3>Use background color</h3>
     <input name="use_bg_color" type="checkbox"<?php if($layout['use_bg_color']==1){echo " checked";} ?> id="use_bg_color" /><label for="use_bg_color"></label><br/><br/>
     <input name="bg_submit" type="submit" class="btn green" value="Save background settings" />
-</form>
-<br/><br/>
-<a href="site-settings?tab=2&delete=bg">[Delete Background]</a>
-<br><br/><br/><h2>Upload Logo</h2>
-<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
+	</form>
+	<br/><br/>
+	<a href="site-settings?tab=2&delete=bg">[Delete Background]</a>
+	<br><br/><br/><h2>Upload Logo</h2>
+	<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
 	<input type="file" name="file" id="file" accept="image/*" /><br>
     *Recommended image size is 100 pixels high and maximum 600 pixels wide. Max filesize 2MB.
 	<input name="uploadlogo" type="submit" class="btn green" value="Upload selected logo" />
-</form><br/>
-<?php
+	</form><br/>
+	<?php
 	if($logo != false){
 		?><img src="../images/logo/<?php echo $logo; ?>" height="150" /><?php
 	}else{?>
 		<div style="font-size:20px; width:350px; height:100px; border:5px dashed #B1B1B1; text-align:center; line-height:100px; vertical-align:middle; margin-left:auto; margin-right:auto;">There is currently no logo image.</div>
     <?php
 	}
-?>
-<br><br>
-<a href="site-settings?tab=2&delete=logo">[Delete Logo]</a>
-<!-- <form method="post" action="site-settings.php?tab=2">
+	?>
+	<br><br>
+	<a href="site-settings?tab=2&delete=logo">[Delete Logo]</a>
+	<!-- <form method="post" action="site-settings.php?tab=2">
     <h2>Logo URL</h2>
     <input name="logo_url" type="text" value="<?php echo $site['logo_url']; ?>" maxlength="256" placeholder="http://" style="width:300px;" /><input name="chng_logo_url" type="submit" class="btn green" value="Change Logo URL" />
-</form><br><br> -->
-<br><h2>Upload Favicon</h2>
-<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
+	</form><br><br> -->
+	<br><h2>Upload Favicon</h2>
+	<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
 	<input type="file" name="file" id="file" accept="image/*" />
 	<input name="uploadfavicon" type="submit" class="btn green" value="Upload selected favicon (128KB max)" />
-</form><br/>
-<?php
+	</form><br/>
+	<?php
 	if($favicon != false){
 		?><img src="../images/favicon/<?php echo $favicon; ?>" /><?php
 	}else{?>
 		<div style="font-size:20px; width:32px; height:32px; border:2px dashed #B1B1B1; text-align:center; vertical-align:middle;"></div>
     <?php
 	}
-?><br/>
-<a href="site-settings?tab=2&delete=favicon">[Delete Favicon]</a>
-</div>
-<?php } ?>    
-<?php if(check_permission("Website","edit_socnet")){ ?>
-<div class="TabbedPanelsContent">
-<h1 style="margin:-4px -4px 5px -4px; padding:5px;">Social Networks</h1>
-<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=3">
+	?><br/>
+	<a href="site-settings?tab=2&delete=favicon">[Delete Favicon]</a>
+	</div>
+	<?php } ?>    
+	<?php if(check_permission("Website","edit_socnet")){ ?>
+<div class="col s12" id="soc">
+	<h1>Social Networks</h1>
+	<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=3">
 	<?php 
 	$i = 0;
 	foreach($GLOBALS['soc_networks'] as $network){ ?>
-    	<input type="text" maxlength="256" style="width:400px;" id="<?php echo $GLOBALS['soc_networks_names'][$i]; ?>" placeholder="http://" value="<?php echo $GLOBALS['site_info'][$network.'_url']; ?>" name="<?php echo $network; ?>_url" /><label for="<?php echo $GLOBALS['soc_networks_names'][$i]; ?>>"><input name="<?php echo $network; ?>_enabled" id="<?php echo $network; ?>_enabled" type="checkbox"<?php if($GLOBALS['site_info'][$network.'_enabled']){echo  "checked";} ?> /><label for="<?php echo $network; ?>_enabled">Enabled</label><br><br>
+    	<label for="<?php echo $GLOBALS['soc_networks_names'][$i]; ?>" id="<?php echo $GLOBALS['soc_networks_names'][$i]; ?>"><span class="icon icon-<?php echo $GLOBALS['soc_networks_icons'][array_search($network, $GLOBALS['soc_networks'])]; ?>"></span></label>
+    	<input type="text" maxlength="256" style="width:400px;" id="<?php echo $GLOBALS['soc_networks_names'][$i]; ?>" placeholder="http://" value="<?php echo $GLOBALS['site_info'][$network.'_url']; ?>" name="<?php echo $network; ?>_url" /><span class="switch" id="<?php echo $GLOBALS['soc_networks_names'][$i]; ?>">
+    <label>
+      Off<input name="<?php echo $network; ?>_enabled" id="<?php echo $network; ?>_enabled" type="checkbox"<?php if($GLOBALS['site_info'][$network.'_enabled']){echo  "checked";} ?> /><span class="lever"></span>
+      On
+    </label>
+  </span>
+   <!--<label for="<?php echo $network; ?>_enabled">Enabled</label>--><br><br>
     <?php 
 		$i++;
 	} ?>
     <input name="socialnet" type="submit" value="Save" class="green btn" /><br><br>
-</form>
-</div>
-<?php } ?>             
-  <?php if(check_permission("Website","edit_google_analytics")){ ?>
-  <div class="TabbedPanelsContent">
-  <h1 style="margin:-4px -4px 5px -4px; padding:5px;">Google Analytics</h1>
+	</form>
+	</div>
+	<?php } ?>             
+  	<?php if(check_permission("Website","edit_google_analytics")){ ?>
+<div class="col s12" id="any">
+  <h1>Google Analytics</h1>
   <form method="post" action="site-settings.php?tab=4">
     <input name="analyticsenabled" id="analyticsenabled" type="checkbox"<?php if($site['g_analytics_enabled']){echo  "checked";} ?> /><label for="analyticsenabled">Enabled</label><br>
   	Google Analytics Code:<br>
@@ -536,9 +544,9 @@ $result_pages=mysqli_query($connection, $query);
   </form>
   </div>
   <?php } ?>
-  <div class="TabbedPanelsContent">
+<div class="col s12" id="about">
       <div style="width:100%; text-align:center;">
-          <h1 style="margin:-4px -4px 5px -4px; padding:5px;">About IlluminateCMS</h1><br>
+          <h1>About IlluminateCMS</h1><br>
             <img src="images/logo.png" alt="Logo" /><br><br>
             <h3>IlluminateCMS</h3>
             by<br>
@@ -547,14 +555,6 @@ $result_pages=mysqli_query($connection, $query);
             Database Version: <?php echo $GLOBALS['site_info']['version']; ?><br><br>
             (Backwards compatable to database version <?php echo $db_compatability; ?>)
       </div>
-  </div>
-<script type="text/javascript">
-	var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
-
-	function changeTab(id){
-		TabbedPanels1.showPanel(id);
-		return false;
-	};
-	<?php if(isset($_GET['tab'])){?>changeTab(<?php echo $_GET['tab'];?>);<?php } ?>
-</script>
+</div>
+</div>
 <?php require_once("includes/end_cpanel.php"); ?>
