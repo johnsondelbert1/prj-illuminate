@@ -280,33 +280,34 @@ $result_pages=mysqli_query($connection, $query);
 		}    
 	});
 
-</script>
-<div id="TabbedPanels1" class="TabbedPanels">
-            <ul class="TabbedPanelsTabGroup">
+	</script>
+	<div class="card">
+	<div class="row">
+    <div class="col s12">
+            <ul class="tabs" id="settings">
             	<?php if(check_permission("Website","edit_site_settings")){ ?>
-                	<li class="TabbedPanelsTab" tabindex="0">Settings</li>
+                	<li class="tab"><a href="#set">Settings</a></li>
                 <?php } ?>
                 <?php if(check_permission("Website","edit_site_colors")){ ?>
-                <li class="TabbedPanelsTab" tabindex="0">Custom CSS/JS</li>
+                <li class="tab"><a href="#css">Custom CSS/JS</a></li>
                 <?php } ?>
                 <?php if(check_permission("Website","upload_favicon_banner")){ ?>
-                <li class="TabbedPanelsTab" tabindex="0">Imagery</li>
+                <li class="tab"><a href="#img">Imagery</a></li>
                 <?php } ?>
                 <?php if(check_permission("Website","edit_socnet")){ ?>
-                <li class="TabbedPanelsTab" tabindex="0">Social Networks</li>
+                <li class="tab"><a href="#soc">Social Networks</a></li>
                 <?php } ?>
                 <?php if(check_permission("Website","edit_google_analytics")){ ?>
-                <li class="TabbedPanelsTab" tabindex="0">Google Analytics</li>
+                <li class="tab"><a href="#any">Google Analytics</a></li>
                 <?php } ?>
-                <li class="TabbedPanelsTab" tabindex="0">About</li>
+                <li class="tab"><a href="#about">About</a></li>
             </ul>
-            <div class="TabbedPanelsContentGroup">
-                
-<?php if(check_permission("Website","edit_site_settings")){ ?>
-<div class="TabbedPanelsContent">
-<h1 style="margin:-4px -4px 5px -4px; padding:5px;">Site Data</h1>
-<form method="post" action="site-settings.php?tab=0">
-<table width="75%" border="0"  style="margin-left:auto; margin-right:auto;">
+</div>
+	<?php if(check_permission("Website","edit_site_settings")){ ?>
+<div class="col s12" id="set">
+	<h1>Site Data</h1>
+	<form method="post" action="site-settings.php?tab=0">
+	<table width="75%" border="0"  style="margin-left:auto; margin-right:auto;">
   <tr>
     <td>
         <h2>Site Name</h2>
@@ -392,32 +393,32 @@ $result_pages=mysqli_query($connection, $query);
   <tr>
   	<td colspan="2"><input name="chng_info" type="submit" class="btn green" value="Change Website Info" /></td>
   </tr>
-</table>
-</form>
-</div>           
-<?php } ?>
-<?php if(check_permission("Website","edit_site_colors")){ ?>
-<div class="TabbedPanelsContent">
-<h1 style="margin:-4px -4px 5px -4px; padding:5px;">Custom CSS/JS</h1>
-<div class="row">
-<div class="input-field col s12">
-	<form method="post" action="site-settings?tab=1">
-		<h2>Custom CSS</h2>
-		<textarea class="materialize-textarea" name="custom_css" id="custom_css" rows="15" cols="80"><?php echo $layout['custom_css']; ?></textarea>
-		<h2>Custom Javascript</h2>
-	    <textarea class="materialize-textarea" name="custom_js" id="custom_js" rows="15" cols="80"><?php echo $site['custom_js']; ?></textarea><br>
-		<input name="cust_css_js" type="submit" class="btn green" value="Save Custom CSS/JS" />
+	</table>
 	</form>
-</div>
-</div>
-</form>
-</div>
-<?php } ?>             
-<?php if(check_permission("Website","upload_favicon_banner")){ ?>
-<div class="TabbedPanelsContent">
-<h1 style="margin:-4px -4px 5px -4px; padding:5px;">Website Imagery</h1><br>
-<h2>Upload Banner</h2>
-<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
+	</div>           
+	<?php } ?>
+	<?php if(check_permission("Website","edit_site_colors")){ ?>
+<div class="col s12" id="css">
+	<h1>Custom CSS/JS</h1>
+	<div class="row">
+	<div class="input-field col s12">
+		<form method="post" action="site-settings?tab=1">
+			<h2>Custom CSS</h2>
+			<textarea class="materialize-textarea" name="custom_css" id="custom_css" rows="15" cols="80"><?php echo $layout['custom_css']; ?></textarea>
+			<h2>Custom Javascript</h2>
+		    <textarea class="materialize-textarea" name="custom_js" id="custom_js" rows="15" cols="80"><?php echo $site['custom_js']; ?></textarea><br>
+			<input name="cust_css_js" type="submit" class="btn green" value="Save Custom CSS/JS" />
+		</form>
+	</div>
+	</div>
+	</form>
+	</div>
+	<?php } ?>             
+	<?php if(check_permission("Website","upload_favicon_banner")){ ?>
+<div class="col s12" id="img">
+	<h1>Website Imagery</h1><br>
+	<h2>Upload Banner</h2>
+	<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=2">
 	<input type="file" name="file" id="file" accept="image/*" /><br>
     *Recommended image size is 1510 pixels high by 800 pixels wide. Max filesize 2MB.
 	<input name="uploadbanner" type="submit" class="btn green" value="Upload selected banner" />
@@ -511,28 +512,35 @@ $result_pages=mysqli_query($connection, $query);
 		<div style="font-size:20px; width:32px; height:32px; border:2px dashed #B1B1B1; text-align:center; vertical-align:middle;"></div>
     <?php
 	}
-?><br/>
-<a href="site-settings?tab=2&delete=favicon">[Delete Favicon]</a>
-</div>
-<?php } ?>    
-<?php if(check_permission("Website","edit_socnet")){ ?>
-<div class="TabbedPanelsContent">
-<h1 style="margin:-4px -4px 5px -4px; padding:5px;">Social Networks</h1>
-<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=3">
+	?><br/>
+	<a href="site-settings?tab=2&delete=favicon">[Delete Favicon]</a>
+	</div>
+	<?php } ?>    
+	<?php if(check_permission("Website","edit_socnet")){ ?>
+<div class="col s12" id="soc">
+	<h1>Social Networks</h1>
+	<form method="post" enctype="multipart/form-data" action="site-settings.php?tab=3">
 	<?php 
 	$i = 0;
 	foreach($GLOBALS['soc_networks'] as $network){ ?>
-    	<input type="text" maxlength="256" style="width:400px;" id="<?php echo $GLOBALS['soc_networks_names'][$i]; ?>" placeholder="http://" value="<?php echo $GLOBALS['site_info'][$network.'_url']; ?>" name="<?php echo $network; ?>_url" /><label for="<?php echo $GLOBALS['soc_networks_names'][$i]; ?>>"><input name="<?php echo $network; ?>_enabled" id="<?php echo $network; ?>_enabled" type="checkbox"<?php if($GLOBALS['site_info'][$network.'_enabled']){echo  "checked";} ?> /><label for="<?php echo $network; ?>_enabled">Enabled</label><br><br>
+    	<label for="<?php echo $GLOBALS['soc_networks_names'][$i]; ?>" id="<?php echo $GLOBALS['soc_networks_names'][$i]; ?>"><span class="icon icon-<?php echo $GLOBALS['soc_networks_icons'][array_search($network, $GLOBALS['soc_networks'])]; ?>"></span></label>
+    	<input type="text" maxlength="256" style="width:400px;" id="<?php echo $GLOBALS['soc_networks_names'][$i]; ?>" placeholder="http://" value="<?php echo $GLOBALS['site_info'][$network.'_url']; ?>" name="<?php echo $network; ?>_url" /><span class="switch" id="<?php echo $GLOBALS['soc_networks_names'][$i]; ?>">
+    <label>
+      Off<input name="<?php echo $network; ?>_enabled" id="<?php echo $network; ?>_enabled" type="checkbox"<?php if($GLOBALS['site_info'][$network.'_enabled']){echo  "checked";} ?> /><span class="lever"></span>
+      On
+    </label>
+  </span>
+   <!--<label for="<?php echo $network; ?>_enabled">Enabled</label>--><br><br>
     <?php 
 		$i++;
 	} ?>
     <input name="socialnet" type="submit" value="Save" class="green btn" /><br><br>
-</form>
-</div>
-<?php } ?>             
-  <?php if(check_permission("Website","edit_google_analytics")){ ?>
-  <div class="TabbedPanelsContent">
-  <h1 style="margin:-4px -4px 5px -4px; padding:5px;">Google Analytics</h1>
+	</form>
+	</div>
+	<?php } ?>             
+  	<?php if(check_permission("Website","edit_google_analytics")){ ?>
+<div class="col s12" id="any">
+  <h1>Google Analytics</h1>
   <form method="post" action="site-settings.php?tab=4">
     <input name="analyticsenabled" id="analyticsenabled" type="checkbox"<?php if($site['g_analytics_enabled']){echo  "checked";} ?> /><label for="analyticsenabled">Enabled</label><br>
   	Google Analytics Code:<br>
@@ -541,9 +549,9 @@ $result_pages=mysqli_query($connection, $query);
   </form>
   </div>
   <?php } ?>
-  <div class="TabbedPanelsContent">
+<div class="col s12" id="about">
       <div style="width:100%; text-align:center;">
-          <h1 style="margin:-4px -4px 5px -4px; padding:5px;">About IlluminateCMS</h1><br>
+          <h1>About IlluminateCMS</h1><br>
             <img src="images/logo.png" alt="Logo" /><br><br>
             <h3>IlluminateCMS</h3>
             by<br>
@@ -552,14 +560,6 @@ $result_pages=mysqli_query($connection, $query);
             Database Version: <?php echo $GLOBALS['site_info']['version']; ?><br><br>
             (Backwards compatable to database version <?php echo $db_compatability; ?>)
       </div>
-  </div>
-<script type="text/javascript">
-	var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
-
-	function changeTab(id){
-		TabbedPanels1.showPanel(id);
-		return false;
-	};
-	<?php if(isset($_GET['tab'])){?>changeTab(<?php echo $_GET['tab'];?>);<?php } ?>
-</script>
+</div>
+</div>
 <?php require_once("includes/end_cpanel.php"); ?>

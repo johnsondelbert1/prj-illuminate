@@ -68,15 +68,19 @@ nav .brand-logo {
   padding-right: 0px;
  }
  .content{
-      z-index: 3;
+z-index: 3;
 }
 nav ul a span.badge{
-  line-height: inherit;
-  color:#fff;
-  right:0;
-  position:absolute;
-  padding-right: 15px;
+line-height: inherit;
+color:#fff;
+right:0;
+position:absolute;
+padding-right: 15px;
 }
+/*.tabs{
+background-color:#E74C3C;
+color:#fff;
+}*/
 .modal-open{
   position: relative;
 }

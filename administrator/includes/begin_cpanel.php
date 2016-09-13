@@ -92,7 +92,7 @@ if($GLOBALS['site_info']['user_creation'] == 'approval'){
 
     @media only screen and (max-width : 992px) {
       .contentwrap, .nav-wrapper, .brand-logo {
-        padding-left: 0;
+        padding-left: 0 !important;
       }
     }
     </style>

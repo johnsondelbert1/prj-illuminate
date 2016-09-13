@@ -29,6 +29,18 @@
     <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <!-- Drag and drop touch screens -->
     <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/jquery.ui.touch-punch.min.js"></script>
+    <!-- Website designed by Second Gen Design -->
+<script type="text/javascript">
+$(document).on("scroll", function() {
+
+    if($(document).scrollTop()>25) {
+        $("div.nav").removeClass("large").addClass("small");
+    } else {
+        $("div.nav").removeClass("small").addClass("large");
+    }
+    
+});
+</script>
     <script type="text/javascript">
     <?php
     //Display messages

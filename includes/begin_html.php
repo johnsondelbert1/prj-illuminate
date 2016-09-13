@@ -70,7 +70,7 @@ if(isset($bg[2])){
 	}?>
     <!-- End custom meta tags -->
 
-    <link href="<?php echo $GLOBALS['HOST']; ?>/materialize/css/materialize.css" rel="stylesheet" type="text/css" media="screen,projection"/>
+    <link href="<?php echo $GLOBALS['HOST']; ?>/materialize/css/materialize.min.css" rel="stylesheet" type="text/css" media="screen,projection"/>
     <link href="<?php echo $GLOBALS['HOST']; ?>/styles/materialize-override.css" rel="stylesheet" type="text/css" media="screen,projection"/>
     <link href="<?php echo $GLOBALS['HOST']; ?>/administrator/styles/fonts.css" rel="stylesheet" type="text/css" />
     <?php if($favicon!=false){ ?><link rel="shortcut icon" href="<?php echo USER_DIR_URL; ?>site-img/favicon/<?php echo $favicon; ?>" /><?php } ?>
@@ -80,15 +80,12 @@ if(isset($bg[2])){
     <!-- <link href="<?php echo $GLOBALS['HOST']; ?>/styles/materialize.css" rel="stylesheet" type="text/css" media="screen,projection"/> -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- <link href="<?php echo $GLOBALS['HOST']; ?>/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css" media="screen" charset="utf-8" /> -->
-    
-    <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/SpryTabbedPanels.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
     <script src="<?php echo $GLOBALS['HOST']; ?>/js/lightgallery.js" type="text/javascript"></script>
     <script src="<?php echo $GLOBALS['HOST']; ?>/js/lg-video.min.js" type="text/javascript"></script>
     <script src="<?php echo $GLOBALS['HOST']; ?>/js/lg-thumbnail.min.js" type="text/javascript"></script>
     <script src="<?php echo $GLOBALS['HOST']; ?>/js/lg-autoplay.min.js" type="text/javascript"></script>
-    <script src="<?php echo $GLOBALS['HOST']; ?>/materialize/js/materialize.js"></script>
-    <!-- <script type="text/javascript" src="<?php echo $GLOBALS['HOST']; ?>/prettyphoto/js/jquery.prettyPhoto.js" charset="utf-8"></script> -->
+    <script src="<?php echo $GLOBALS['HOST']; ?>/materialize/js/materialize.min.js"></script>
     <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/autosize.js"></script>
     <style type="text/css">
 		body{
@@ -182,6 +179,64 @@ if(isset($bg[2])){
 		:-ms-input-placeholder {  
 		   color: <?php echo get_color('input_placeholder'); ?>;  
 		}
+		/*#contentwrap{
+			background-color:<?php echo $GLOBALS['site_layout']['contentbg_color'] ?> !important;
+		}*/
+/*		.mobile, ul.side-nav, slide-out, .title, .jssorb01 div:hover, .jssorb01 .av:hover, jssora05l, jssora05r{
+			background-color: #FFFFFF;
+		}*/
+		/*.mobile, ul.side-nav, slide-out, .blogtitle{
+			background-color:<?php echo $GLOBALS['site_layout']['accent_color'] ?> !important;
+		}
+		.jssora05l .material-icons, .jssora05r .material-icons{
+			color:<?php echo $GLOBALS['site_layout']['menu_color'] ?> !important;
+		}
+		.mobile i{
+			color:<?php echo $GLOBALS['site_layout']['contentbg_color'] ?> !important;
+		}
+		#banner{
+			background-color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
+		}
+		#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #vert-menu ul li, .photo-link, .nav, .captionBlack, .card{
+			background-color:<?php echo $GLOBALS['site_layout']['menu_color'] ?> !important;
+			color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
+		}
+		#horiz-menu li:hover > a, #horiz-menu li:hover > ul, #horiz-menu ul a:hover, #vert-menu li:hover > a, #vert-menu li:hover > ul, #vert-menu ul a:hover,  .TabbedPanelsTab, .accent, .forum tr:hover, .forumsuser, ul.MenuBarHorizontal a:hover, ul.MenuBarHorizontal a:focus, .forumfooter, ul.side-nav li{
+			background-color:<?php echo $GLOBALS['site_layout']['accent_color'] ?> !important;
+			color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
+		}
+		*html #horiz-menu li a:hover, #vert-menu li a:hover { /* IE6 only 
+			color: <?php echo $GLOBALS['site_layout']['text_color'] ?>;
+		}
+		#content a, #footer a, #horiz-menu a, #horiz-menu ul a, #vert-menu a, #vert-menu ul a, .blogtitle a, .forum tr a:hover{
+			color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
+		}
+		.photo-link:hover{
+			background-color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
+		}
+		/*#content, .forum tr, .forumbody, #footerwrap, .blog{
+			background-color:<?php echo $GLOBALS['site_layout']['contentbg_color'] ?> !important;
+			color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
+		}
+		.forum tr a{
+			color:<?php echo $GLOBALS['site_layout']['contentbg_color'] ?> !important;
+		}
+		.forumtitle{
+			border-bottom:2px <?php echo $GLOBALS['site_layout']['text_color'] ?> dashed;
+		}
+		.icon{
+			color:<?php echo $GLOBALS['site_layout']['menu_color'] ?> ;
+		}
+		 ::-webkit-scrollbar-thumb{
+			/*background-color:<?php echo $GLOBALS['site_layout']['accent_color'] ?> !important;
+			color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
+		}
+		::selection {
+			background: <?php echo $GLOBALS['site_layout']['accent_color'] ?>; /* WebKit/Blink Browsers 
+			}
+		::-moz-selection {
+			background: <?php echo $GLOBALS['site_layout']['accent_color'] ?>; /* WebKit/Blink Browsers 
+			}*/
 		#banner{
 			<?php if(count($banner)==3){?>background-image:url(images/banner/<?php echo $banner[2];?>);<?php } ?>
 			
@@ -196,7 +251,10 @@ if(isset($bg[2])){
     <?php if($GLOBALS['site_info']['custom_js']!=""){
 		echo $GLOBALS['site_info']['custom_js'];
 	}?>
+    
     <!-- End custom JS -->
+    								
+				
 </head>
 
 
@@ -212,17 +270,26 @@ if(isset($bg[2])){
     	<?php nav("mobile", $pgsettings['pageselection']); ?>
         <div class="mobile">
             <a href="#" data-activates="slide-out" class="button-collapse" style="color:#6C6C6C;"><i class="mdi-navigation-menu"></i></a>
-            <div style="float:right; font-size:32px; padding:10px;">
+            
+            <?php if($logo!=false){ ?>
+                <?php if($GLOBALS['site_info']['logo_url']!=''){?>
+                <a href="<?php echo $GLOBALS['HOST']; ?>" class="brand-logo"><img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $GLOBALS['site_info']['name']; ?> Logo" /></a>
+                <?php }else{ ?>
+                <img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" />
+            <?php } 
+            } ?>
+
+            <!--<div style="float:right; font-size:32px; padding:10px;">
 				<?php
                     foreach($GLOBALS['enabled_soc_networks'] as $network){?>
                         <a href="<?php echo $GLOBALS['site_info'][$network.'_url']; ?>" style="text-decoration:none;" target="_blank"><span class="icon icon-<?php echo $GLOBALS['soc_networks_icons'][array_search($network, $GLOBALS['soc_networks'])]; ?>"></span></a>
                     <?php 
                     }
                 ?>
-            </div>
+            </div> -->
         </div>
-    	<?php if($logo!=false||!empty($GLOBALS['enabled_soc_networks'])){ ?>
-    	<div class="header"><span style="font-size:47px; margin-left:15px;" class="icon icon-facebook2 headericon"></span>
+    	<!-- <?php if($logo!=false||!empty($GLOBALS['enabled_soc_networks'])){ ?>
+    	 <div class="header"><span style="font-size:47px; margin-left:15px;" class="icon icon-facebook2 headericon"></span>
         	<?php if($logo!=false){ ?>
             	<div style="float:left; position:absolute;" id="logo">
                 	<?php if($GLOBALS['site_info']['logo_url']!=''){?>
@@ -241,7 +308,7 @@ if(isset($bg[2])){
 				?>
             </div>
         </div>
-        <?php } ?>
+        <?php } ?> -->
         <?php
         if(!isset($page['horiz_menu_visible'])||$page['horiz_menu_visible'] == true){
         	$num_horiz_pages = nav("horiz", $pgsettings['pageselection']);
@@ -250,7 +317,7 @@ if(isset($bg[2])){
         <div id="contentwrap">
         
 			<?php if(isset($pgsettings['banner'])&&$pgsettings['banner'] == 1){ ?>
-    		<?php if($banner!=false){ ?><div class="row"><div class="col l10 s12 offset-l1" style="padding:0 0 !important;"><img src="<?php echo USER_DIR_URL; ?>site-img/banner/<?php echo $banner; ?>" width="100%" /></div></div><?php } ?>
+    		<?php if($banner!=false){ ?><div class="row"><div class="col l12 s12" style="padding:0 0 !important;"><img src="<?php echo USER_DIR_URL; ?>site-img/banner/<?php echo $banner; ?>" width="100%" /></div></div><?php } ?>
 			<?php
 			}
 			?>
@@ -272,10 +339,10 @@ if(isset($bg[2])){
                  
                 	<div class="col <?php
 					if($num_vert_pages == 0){
-									echo 'l10 offset-l1';	
+									echo 'l12';	
 									}
 						else{
-									echo 'l9';	
+									echo 'l10';	
 									}
 					 ?> s12" >
                     <div id="content">

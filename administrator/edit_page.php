@@ -281,22 +281,23 @@ if($_GET['action']=="edit"){
 	require_once("includes/begin_cpanel.php");
 ?>
 <script type="text/javascript" src="../tinymce/js/tinymce/tinymce.min.js"></script>
+ <!-- <script>tinymce.init({ selector:'textarea' });</script>-->
 <script type="text/javascript">
 	tinymce.init({
-		selector: "textarea",
-		content_css : 'margin: 10px; background-color: #000000; padding: 3px',  // resolved to http://domain.mine/myLayout.css
+		selector: 'textarea',
 		theme: "modern",
-		skin: 'light',
+		content_css : '../materialize/css/materialize.css',  // resolved to http://domain.mine/myLayout.css
 		width: '100%',
+		statusbar: false,
 		plugins: [
-			"advlist autolink lists link image charmap print preview hr anchor pagebreak",
-			"searchreplace wordcount visualblocks visualchars code fullscreen",
-			"insertdatetime media nonbreaking save table contextmenu directionality",
-			"emoticons template paste textcolor responsivefilemanager"
-		],
-		toolbar1: "insertfile undo redo | fontsizeselect fontselect styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | responsivefilemanager",
-		toolbar2: "print preview media | forecolor backcolor",
-		contextmenu: "link image inserttable | tableproperties cell row column deletetable",
+    'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+    'searchreplace wordcount visualblocks visualchars code fullscreen',
+    'insertdatetime media nonbreaking save table contextmenu directionality',
+    'emoticons template paste textcolor colorpicker textpattern imagetools responsivefilemanager autoresize'
+  ],
+		toolbar1: 'insertfile undo redo | fontsizeselect fontselect styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | responsivefilemanager filemanager code',
+		toolbar2: 'print preview media | forecolor backcolor',
+		contextmenu: 'link image inserttable | tableproperties cell row column deletetable',
 		image_advtab: true,
 		templates: [
 			{title: '2 Column Table', content: '<table style="width: 100%;" border="2" width="1798"><tbody><tr><td style="text-align: center;">Column 1</td><td style="text-align: center;">Column 2</td></tr></tbody></table>'},
@@ -317,8 +318,8 @@ if($_GET['action']=="edit"){
                 "Trebuchet MS=trebuchet ms,geneva;"+
                 "Verdana=verdana,geneva;",
 		external_filemanager_path:"../filemanager/",
-		filemanager_title:"Link to File" ,
-		external_plugins: { "filemanager" : "plugins/responsivefilemanager/plugin.min.js"}
+   filemanager_title:"Responsive Filemanager" ,
+   external_plugins: { "filemanager" : "/filemanager/plugin.min.js"}
 	});
 	
 	function disable(select){
@@ -366,12 +367,63 @@ if($_GET['action']=="edit"){
         	}
         });
 	 });
+	var mywindow = $(window);
+var mypos = mywindow.scrollTop();
+var up = false;
+var newscroll;
+mywindow.scroll(function () {
+    newscroll = mywindow.scrollTop();
+    if (newscroll > mypos && !up) {
+        $('.btn-floating').stop().fadeOut();
+        up = !up;
+        console.log(up);
+    } else if(newscroll < mypos && up) {
+        $('.btn-floating').stop().fadeIn();
+        up = !up;
+    }
+    mypos = newscroll;
+});
+$(document).ready(function() {
+
+	// On button click runs addPerson function
+	$("#addNewActor").click(function() {
+		addPerson();
+	});
+
+});
+$('fixed-action-btn').on("touchstart", function (e) {
+    "use strict"; //satisfy the code inspectors
+    var link = $(this); //preselect the link
+    if (link.hasClass('active')) {
+        return true;
+    } else {
+        link.addClass("active");
+        $('fixed-action-btn').not(this).removeClass("active");
+        e.preventDefault();
+        return false; //extra, and to make sure the function has consistent return points
+    }
+});
 </script>
 <form action="edit_page.php?<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "action=edit&&page=".$selpage['id'];}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "action=newpage";} ?>" method="post" name="editpage">
 
 <table cellpadding="0">
   <tr>
   <td>
+
+<div class="fixed-action-btn" style="bottom: 23px; right: 23px;">
+	<div>
+		<button class="btn-floating btn-large green" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "submit";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newpage";} ?>" type="submit" id="addNewActor"><i class="large material-icons">&#xE161</i></button>
+
+	</div>
+    <ul>
+      <li><a class="btn red"><i class="material-icons">insert_chart</i></a></li>
+      <li><a class="btn yellow darken-1"><i class="material-icons">format_quote</i></a></li>
+      <li><a class="btn green"><i class="material-icons">publish</i></a></li>
+      <li><a class="btn blue"><i class="material-icons">attach_file</i></a></li>
+    </ul>
+  </div>
+
+
   	<?php if(check_permission("Pages","add_pages")){?>
         <input class="green btn" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "submit";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newpage";} ?>" value="Save" />
             <?php if(check_permission("Pages","delete_pages")&&$_GET['action']=="edit"){?>
@@ -396,25 +448,25 @@ if($_GET['action']=="edit"){
             <label for="title">Title</label>
             </div>
             </td>
-            <?php if(isset($_GET['action'])&&$_GET['action']!="newpage"){ ?>
+            <?php /* if(isset($_GET['action'])&&$_GET['action']!="newpage"){ ?>
             <td width="40%"><label for="title">Page URL</label><div class="input-field col s6"><a href="<?php echo $GLOBALS['HOST'].'/page/'.urlencode($selpage['name']); ?>" onclick="window.open('<?php echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($selpage['name']);?>', 'newwindow', 'width=1017, height=500'); return false;"><?php echo $GLOBALS['HOST'].'/page/'.urlencode($selpage['name']); ?></a></div>
             </td>
-            <?php } ?>
+            <?php } */?>
             <td align="left">
     	<input id="pub" type="checkbox" name="published" <?php if((isset($_GET['page'])&&$selpage['published']==1)||$_GET['action']=="newpage"){echo "checked ";} ?>/>
         <label for="pub">Published</label>
     </td>
 </tr>
 </table>
-<div id="TabbedPanels1" class="TabbedPanels">
-            <ul class="TabbedPanelsTabGroup">
-                <li class="TabbedPanelsTab" tabindex="0">Content</li>
-                <li class="TabbedPanelsTab" tabindex="0">Properties</li>
-                <li class="TabbedPanelsTab" tabindex="0">Galleries</li>
-                <li class="TabbedPanelsTab" tabindex="0">Forms</li>
+<div class="card-panel" id="content-card">
+            <ul class="tabs">
+                <li class="tab col s3"><a href="#cont">Content</a></li>
+                <li class="tab col s3"><a href="#prop">Properties</a></li>
+                <li class="tab col s3"><a href="#gallery">Galleries</a></li>
+                <li class="tab col s3"><a href="#forms">Forms</a></li>
             </ul>
-            <div class="TabbedPanelsContentGroup">
-            <div class="TabbedPanelsContent">
+            <div>
+            <div id="cont">
             
             <tr>
   	<td colspan="5">
@@ -422,7 +474,7 @@ if($_GET['action']=="edit"){
     </td>
   </tr>
             </div>
-                <div class="TabbedPanelsContent">
+                <div id="prop">
                     <h1 style="margin:0;">Page Properties</h1><br>
                     <table width="100%" border="5" cellspacing="5" cellpadding="5" class="editpageform">
                     <tr><!--
@@ -571,7 +623,7 @@ if($_GET['action']=="edit"){
                       </tr>
                     </table>
                 </div>
-                <div class="TabbedPanelsContent">
+                <div id="gallery">
                 <h1 style="margin:0;">Included Galleries</h1><br>
 					<?php
                         $query="SELECT * FROM `galleries` WHERE `type` = 'page' ORDER BY `id` ASC";
@@ -597,7 +649,7 @@ if($_GET['action']=="edit"){
                     	</ul>
                     </div>
                 </div>
-                <div class="TabbedPanelsContent">
+                <div id="forms">
                 <h1 style="margin:0;">Included Forms</h1><br>
 					<?php
                         $query="SELECT * FROM `forms` ORDER BY `id` ASC";

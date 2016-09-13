@@ -65,15 +65,30 @@ function print_page($page){
 	                    $profile_pic = $item;
 	                }
 	                ?>
-	                <div class="staffBlock" href="#staff<?php echo $i; ?>" rel="prettyPhoto[staff]">
-	                    <span><?php if($profile_pic != false){ ?><img src="<?php echo $GLOBALS['HOST'].'/'.$dir.$item; ?>" width="120" height="120" /><?php }else{echo "[No Picture]";} ?></span>
+	                <div class="staff ">
+	                <div class="card">
+    <div class="card-image waves-effect waves-block waves-light">
+      <?php if($profile_pic != false){ ?><img class="activator" src="<?php echo $GLOBALS['HOST'].'/'.$dir.$item; ?>" width="120" height="auto" /><?php }else{echo "[No Picture]";} ?>
+    </div>
+    <div class="card-content">
+      <span class="card-title activator grey-text text-darken-4"><?php echo $staff['name']; ?><i class="material-icons right">more_vert</i></span>
+      <p><a href="#">This is a link</a></p>
+    </div>
+    <div class="card-reveal">
+      <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
+      <p>Here is some more information about this product that is only revealed once clicked on.</p>
+    </div>
+  </div>
+  </div>
+	                <!--<div class="staffBlock" href="#staff<?php echo $i; ?>" rel="prettyPhoto[staff]">
+	                    <span><?php if($profile_pic != false){ ?><img src="<?php echo $GLOBALS['HOST'].'/'.$dir.$item; ?>" width="120" height="auto" /><?php }else{echo "[No Picture]";} ?></span>
 	                    <span><?php echo $staff['name']; ?></span>
 	                </div>
 	                <div id="staff<?php echo $i; ?>" style="display:none;">
-	                	<span style="float:left; margin-right:10px; display:block; width:300px; height:auto; text-align:center; background-color:#C5C5C5; padding:10px;"><span style="line-height:300px; height:300px; display:block; padding-bottom:5px;"><?php if($profile_pic != false){ ?><img src="<?php echo $GLOBALS['HOST'].'/'.$dir.$item; ?>" width="300" height="300" /><?php }else{echo "[No Picture]";} ?></span><span style="line-height:50px; height:50px; display:block;"><strong><?php echo $staff['name']; ?></strong></span></span>
+	                	<span style="float:left; margin-right:10px; display:block; width:300px; height:auto; text-align:center; background-color:#C5C5C5; padding:10px;"><span style="line-height:300px; height:300px; display:block; padding-bottom:5px;"><?php if($profile_pic != false){ ?><img src="<?php echo $GLOBALS['HOST'].'/'.$dir.$item; ?>" width="300" height="auto" /><?php }else{echo "[No Picture]";} ?></span><span style="line-height:50px; height:50px; display:block;"><strong><?php echo $staff['name']; ?></strong></span></span>
 	                    <span style="float:left; display:block;"><?php if($staff['role']!=""){ ?><strong>Role: </strong><?php echo $staff['role']; ?><br><?php } ?>
 	                	<strong>Bio: </strong><?php if($staff['bio']!=""){echo $staff['bio'];}else{echo '[No bio]';} ?></span>
-	                </div>
+	                </div> -->
 	        <?php
 			$i++;
 	            }?>

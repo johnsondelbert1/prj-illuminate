@@ -23,7 +23,7 @@ $GLOBALS['site_layout']=mysqli_fetch_array($result);
 
 //Social Networks
 $GLOBALS['soc_networks'] = array('facebook','googleplus','twitter','instagram','linkedin');
-$GLOBALS['soc_networks_names'] = array('Facebook','Google +','Twitter','Instagram','LinkedIn');
+$GLOBALS['soc_networks_names'] = array('Facebook','GooglePlus','Twitter','Instagram','LinkedIn');
 $GLOBALS['soc_networks_icons'] = array('facebook2','googleplus3','twitter2','instagram','linkedin');
 $GLOBALS['enabled_soc_networks'] = array();
 foreach($GLOBALS['soc_networks'] as $network){
@@ -992,7 +992,7 @@ function nav($position, $pgselection){
 
 	if($position=="mobile"){?>
         <ul id="slide-out" class="side-nav">
-            <div style="height:71px; width:100%;" class="mobile-logo">
+            <!--<div style="height:auto; width:100%;" class="mobile-logo">
             <?php if($logo!=false){ ?>
                 <?php if($GLOBALS['site_info']['logo_url']!=''){?>
                 <a href="<?php echo $GLOBALS['site_info']['logo_url']; ?>"><img src="<?php echo USER_DIR_URL; ?>site-img/logo/<?php echo $logo; ?>" alt="<?php echo $GLOBALS['site_info']['name']; ?> Logo" width="240" /></a>
@@ -1000,7 +1000,7 @@ function nav($position, $pgselection){
                 <img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" width="240" />
             <?php } 
             } ?>
-        </div>
+        </div>-->
     <?php
 		$query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 OR `vert_menu` = 1 AND `issubpage` = 0 AND `published` = 1 ORDER BY `position` ASC";
 		$result=mysqli_query( $connection, $query);
@@ -1142,10 +1142,19 @@ function nav($position, $pgselection){
 			$numpages=mysqli_num_rows($result);
 			
 			if($position=="horiz"&&$numpages!=0){ ?>
-				<div class="nav">
+				<div class="nav large">
+				<?php if($logo!=false){ ?>
+            	<div style="float:left; position:absolute;" id="logo">
+                	<?php if($GLOBALS['site_info']['logo_url']!=''){?>
+            		<a href="<?php echo $GLOBALS['HOST']; ?>"><img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $GLOBALS['site_info']['name']; ?> Logo" /></a>
+                    <?php }else{ ?>
+                    <img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" />
+                    <?php } ?>
+                </div>
+			<?php } ?>
 					<ul id="horiz-menu">
 			<?php }elseif($position=="vert"&&$numpages!=0){ ?>
-				<div class=" col l3 card" style="padding:0 !important;" id="vert-td"><div style="width:100%;">
+				<div class=" col l2 card" style="padding:0 !important;" id="vert-td"><div style="width:100%;">
 					<ul  id="vert-menu">
 			<?php }
 				//$buttonwidth = $numpages;
