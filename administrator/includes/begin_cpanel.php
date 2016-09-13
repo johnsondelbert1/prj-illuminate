@@ -18,29 +18,29 @@ foreach ($folders as $folder){
 	}
 }
 
-$banner = scandir("../images/banner/");
+$banner = scandir("../".USER_DIR."site-img/banner/");
 if(isset($banner[2])){
-	$banner = $banner[2];
+    $banner = $banner[2];
 }else{
-	$banner = false;
+    $banner = false;
 }
-$favicon = scandir("../images/favicon/");
+$favicon = scandir("../".USER_DIR."site-img/favicon/");
 if(isset($favicon[2])){
-	$favicon = $favicon[2];
+    $favicon = $favicon[2];
 }else{
-	$favicon = false;
+    $favicon = false;
 }
-$logo = scandir("../images/logo/");
+$logo = scandir("../".USER_DIR."site-img/logo/");
 if(isset($logo[2])){
-	$logo = $logo[2];
+    $logo = $logo[2];
 }else{
-	$logo = false;
+    $logo = false;
 }
-$bg = scandir("../images/bg/");
+$bg = scandir("../".USER_DIR."site-img/bg/");
 if(isset($bg[2])){
-	$bg = $bg[2];
+    $bg = $bg[2];
 }else{
-	$bg = false;
+    $bg = false;
 }
 
 //Number of pending users for approval
@@ -303,7 +303,3 @@ if($GLOBALS['site_info']['user_creation'] == 'approval'){
             
             <!--<script src="jscripts/jquery.sortable.js"></script>-->
             <!--<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>-->
-            <script type="text/javascript">
-            	 <!-- jQuery Sticky Menu -->
-
-			</script>

@@ -11,20 +11,27 @@ if(isset($_POST['newgal'])){
 		if (strpbrk($_POST['galname'], "\\/?%*:|\"<>") === FALSE) {
 			if($galname=mysql_prep($_POST['galname'])!=""){
 				$galname=mysql_prep($_POST['galname']);
-				$query="INSERT INTO `galleries` (
-					`name`
-				) VALUES (
-					'{$galname}')";
+				$query="SELECT * FROM `galleries` WHERE `type` = 'page' AND `name` = '{$galname}'";
 				$result=mysqli_query($connection, $query);
 				confirm_query($result);
-				$query="SELECT * FROM `galleries` WHERE `name` = '{$_POST['galname']}'";
-				$result=mysqli_query( $connection, $query);
-				confirm_query($result);
-				$gallid=mysqli_fetch_array($result);
-				mkdir("../galleries/".$gallid['name']);
-				mkdir("../galleries/".$gallid['name']."/gallery");
-				mkdir("../galleries/".$gallid['name']."/gallery-thumbs");
-				$success="Gallery \"{$_POST['galname']}\" added!";
+				if(mysqli_num_rows($result) == 0){
+					$query="INSERT INTO `galleries` (
+						`name`, `date_created`, `creator`, `type`, `dir`
+					) VALUES (
+						'{$galname}','{$date}',{$_SESSION['user_id']}, 'page', 'site-galleries/')";
+					$result=mysqli_query($connection, $query);
+					confirm_query($result);
+					$query="SELECT * FROM `galleries` WHERE `name` = '{$_POST['galname']}'";
+					$result=mysqli_query( $connection, $query);
+					confirm_query($result);
+					$gallid=mysqli_fetch_array($result);
+					mkdir("../".USER_DIR.$gallery['dir'].$gallid['name']);
+					mkdir("../".USER_DIR.$gallery['dir'].$gallid['name']."/gallery");
+					mkdir("../".USER_DIR.$gallery['dir'].$gallid['name']."/gallery-thumbs");
+					$success="Gallery \"{$_POST['galname']}\" added!";
+				}else{
+					$error="A gallery by this name already exists.";
+				}
 			}else{
 				$error="Gallery name cannot be blank.";
 			}
@@ -44,22 +51,26 @@ if(isset($_POST['newgal'])){
 			$gall = mysqli_fetch_array($result);
 			
 			// Specify the target directory and add forward slash
-			$dir = "../galleries/".$gall['name']."/gallery/"; 
+			$dir = "../".USER_DIR.$gall['dir'].$gall['name']."/gallery/"; 
 			foreach (scandir($dir) as $item) {
 				if ($item == '.' || $item == '..') continue;
 				unlink($dir.DIRECTORY_SEPARATOR.$item);
 			}
 			rmdir($dir);
-			$dir = "../galleries/".$gall['name']."/gallery-thumbs/"; 
+			$dir = "../".USER_DIR.$gall['dir'].$gall['name']."/gallery-thumbs/"; 
 			foreach (scandir($dir) as $item) {
 				if ($item == '.' || $item == '..') continue;
 				unlink($dir.DIRECTORY_SEPARATOR.$item);
 			}
 			rmdir($dir);
-			$dir = "../galleries/".$gall['name']."/"; 
+			$dir = "../".USER_DIR.$gall['dir'].$gall['name']."/"; 
 			rmdir($dir);
 			
 			$query="DELETE FROM `galleries` WHERE `id` = {$gallid}";
+			$result=mysqli_query( $connection, $query);
+			confirm_query($result);
+
+			$query="DELETE FROM `site_gallery_items` WHERE `gallery_id` = {$gallid}";
 			$result=mysqli_query( $connection, $query);
 			confirm_query($result);
 			
@@ -74,7 +85,7 @@ if(isset($_POST['newgal'])){
 					}
 					$pagegalleries = serialize($pagegalleries);
 					
-					$query = "UPDATE `pages` SET `galleries`='{$pagegalleries}' WHERE id = {$page['id']}";
+					$query = "UPDATE `pages` SET `galleries`='{$pagegalleries}' WHERE `id` = {$page['id']}";
 					$result = mysqli_query( $connection, $query);
 				}
 			}
@@ -90,7 +101,7 @@ if(isset($_POST['newgal'])){
 					}
 					$subgalleries = serialize($subgalleries);
 					
-					$query = "UPDATE `pages` SET `galleries`='{$subgalleries}' WHERE id = {$subgallery['id']}";
+					$query = "UPDATE `pages` SET `galleries`='{$subgalleries}' WHERE `id` = {$subgallery['id']}";
 					$result = mysqli_query( $connection, $query);
 				}
 			}
@@ -144,13 +155,13 @@ if(isset($_POST['newgal'])){
     <table width="90%" style="text-align:left;" class="list" border="0" cellspacing="0" id="form">
         <tr>
             <th>
-                ID
-            </th>
-            <th>
                 Name
             </th>
             <th>
-                Photos
+            	Date Created
+            </th>
+            <th>
+                Items
             </th>
             <?php if(check_permission("Galleries","delete_gallery")){?>
             <th style="text-align:center;">
@@ -160,13 +171,15 @@ if(isset($_POST['newgal'])){
             <?php } ?>
         </tr>
     <?php
-	$query="SELECT * FROM `galleries`";
+	$query="SELECT * FROM `galleries` WHERE `type` = 'page'";
 	$result=mysqli_query( $connection, $query);
 	confirm_query($result);
 	
     while($gallery=mysqli_fetch_array($result)){
+		$query="SELECT * FROM `site_gallery_items` WHERE `gallery_id` = ".$gallery['id'];
+		$gallItemsResult=mysqli_query( $connection, $query);
 		//re-create deleted gallery folder
-		$dir = "../galleries/".$gallery['name']."/";
+		$dir = "../".USER_DIR.$gallery['dir'].$gallery['name']."/";
 		if(!file_exists($dir)){
 			mkdir($dir);
 			mkdir($dir."gallery/");
@@ -175,23 +188,20 @@ if(isset($_POST['newgal'])){
 		?>
     
         <tr>
-            <td><?php echo $gallery['id']; ?></td>
             <td><a href="edit_gallery.php?gallid=<?php echo urlencode($gallery['id']); ?>"><?php echo $gallery['name']; ?></a></td>
             <td>
+				<?php 
+					if($gallery['date_created']!="0000-00-00 00:00:00"){
+						$timestamp = strtotime($gallery['date_created']);
+						echo date("n/j/Y", $timestamp);
+					}else{
+						echo "N/A";
+					}
+				?>
+            </td>
+            <td>
             <?php
-			    $i = 0; 
-				$dir = "../galleries/".$gallery['name']."/gallery/";
-				$files = glob($dir . '*.{jpg,gif,png,jpeg,JPG,GIF,PNG,JPEG}', GLOB_BRACE);
-				
-				if ( $files !== false )
-				{
-					$filecount = count( $files );
-					echo $filecount;
-				}
-				else
-				{
-					echo 0;
-				}
+			    echo mysqli_num_rows($gallItemsResult);
 			?>
             </td>
             <?php if(check_permission("Galleries","delete_gallery")){?>

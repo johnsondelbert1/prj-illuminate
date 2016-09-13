@@ -69,11 +69,14 @@ nav .brand-logo {
  }
  .content{
       z-index: 3;
-    }
-    nav ul a span.badge{
-      line-height: inherit;
-      color:#fff;
-      right:0;
-      position:absolute;
-      padding-right: 15px;
-    }
+}
+nav ul a span.badge{
+  line-height: inherit;
+  color:#fff;
+  right:0;
+  position:absolute;
+  padding-right: 15px;
+}
+.modal-open{
+  position: relative;
+}

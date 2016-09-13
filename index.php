@@ -49,12 +49,6 @@ function print_page($page){
 			$staffquery="SELECT * FROM `staff` ORDER BY `order`";
 			$staffresult=mysqli_query( $connection, $staffquery);
 			require_once("includes/begin_html.php");?>
-
-	        <script type="text/javascript" charset="utf-8">
-				$(document).ready(function(){
-				  $("div[rel^='prettyPhoto']").prettyPhoto();
-				});
-	        </script>
 	        
 			<h2><?php echo $page["name"]; ?></h2>
 	        
@@ -65,7 +59,7 @@ function print_page($page){
 				$i=0;
 	            while($staff=mysqli_fetch_array($staffresult)){
 	                $profile_pic = false;
-	                $dir = "images/staff/".$staff['id']."/";
+	                $dir = USER_DIR."staff/".$staff['id']."/";
 	                foreach (scandir($dir) as $item) {
 	                    if ($item == '.' || $item == '..' || $item == 'Thumbs.db') continue;
 	                    $profile_pic = $item;
@@ -195,12 +189,6 @@ function print_page($page){
 			
 			require_once("includes/begin_html.php");?>
 			
-	        <script type="text/javascript" charset="utf-8">
-				$(document).ready(function(){
-				  $("a[rel^='prettyPhoto']").prettyPhoto();
-				});
-	        </script>
-			
 	        <?php
 			echo $page['content'];
 			
@@ -290,7 +278,7 @@ function print_page($page){
 						  <ul class="TabbedPanelsTabGroup">
 							<?php
 							foreach($pagegalleries as $gallery){
-								$query="SELECT * FROM `galleries` WHERE id={$gallery}";
+								$query="SELECT * FROM `galleries` WHERE `id`={$gallery}";
 								$result=mysqli_query( $connection, $query);
 								$pagegallery=mysqli_fetch_array($result);
 								?>
@@ -301,25 +289,24 @@ function print_page($page){
 						  </ul>
 						  <div class="TabbedPanelsContentGroup">
 						  <?php
-						  $gallcount = 0;
 						  foreach($pagegalleries as $gallery){
-								$query="SELECT * FROM `galleries` WHERE id={$gallery}";
+								$query="SELECT * FROM `galleries` WHERE `id`={$gallery}";
 								$result=mysqli_query( $connection, $query);
 								$pagegallery=mysqli_fetch_array($result); 
 						  ?>
 							<div class="TabbedPanelsContent">
 							<?php
-								gallery("galleries/".$pagegallery['name']."/gallery/", "galleries/".$pagegallery['name']."/gallery-thumbs/", 200, 200, $gallcount);
+								gallery($gallery, $gallery['id']);
 								if($pagegallery['subgalleries']!=""){
 									$subgalleries = unserialize($pagegallery['subgalleries']);
 									foreach($subgalleries as $subgalleryid){
-										$query="SELECT * FROM `galleries` WHERE id={$subgalleryid}";
+										$query="SELECT * FROM `galleries` WHERE `id`={$subgalleryid}";
 										$result=mysqli_query( $connection, $query);
 										$subgallery=mysqli_fetch_array($result);
 										?>
 										<h2><?php echo $subgallery['name'] ?></h2>
 										<?php
-										gallery("galleries/".$subgallery['name']."/gallery/", "galleries/".$subgallery['name']."/gallery-thumbs/", 200, 200, $gallcount);
+										gallery($subgalleryid, $subgallery['id']);
 									}
 									
 								}
@@ -327,29 +314,28 @@ function print_page($page){
 								?>
 							</div>
 						<?php
-							$gallcount++;
 						  }
 						  ?>
 								</div>
 							</div>
 						  <?php
 					}else{
-						$query="SELECT * FROM `galleries` WHERE id={$pagegalleries[0]}";
+						$query="SELECT * FROM `galleries` WHERE `id`={$pagegalleries[0]}";
 						$result=mysqli_query( $connection, $query);
 						$onegallery=mysqli_fetch_array($result);?>
 						<h2><?php echo $onegallery['name'] ?></h2>
 						<?php
-						gallery("galleries/".$onegallery['name']."/gallery/", "galleries/".$onegallery['name']."/gallery-thumbs/", 200, 200, 'gall');
+						gallery($pagegalleries[0], $onegallery['id']);
 						if($onegallery['subgalleries']!=""){
 							$subgalleries = unserialize($onegallery['subgalleries']);
 							foreach($subgalleries as $subgalleryid){
-								$query="SELECT * FROM `galleries` WHERE id={$subgalleryid}";
+								$query="SELECT * FROM `galleries` WHERE `id`={$subgalleryid}";
 								$result=mysqli_query( $connection, $query);
 								$subgallery=mysqli_fetch_array($result);
 								?>
 								<h2><?php echo $subgallery['name'] ?></h2>
 								<?php
-								gallery("galleries/".$subgallery['name']."/gallery/", "galleries/".$subgallery['name']."/gallery-thumbs/", 200, 200, 'gall');
+								gallery($subgalleryid, $subgallery['id']);
 							}
 							
 						}

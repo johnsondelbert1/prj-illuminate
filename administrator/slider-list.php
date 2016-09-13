@@ -31,7 +31,7 @@ if(isset($_POST['new'])){
 					confirm_query($result);
 					
 					$id=mysqli_fetch_array($result);
-					mkdir("../images/slider/".$id['name']);
+					mkdir("../".USER_DIR."site-sliders/".$id['name']);
 					$success="Slider \"{$_POST['name']}\" added!";
 				}
 			}else{
@@ -55,7 +55,7 @@ if(isset($_POST['new'])){
 			$slider = mysqli_fetch_array($result);
 			
 			// Specify the target directory and add forward slash
-			$dir = "../images/slider/".$slider['name']."/"; 
+			$dir = "../".USER_DIR."site-sliders/".$slider['name']."/"; 
 			foreach (scandir($dir) as $item) {
 				if ($item == '.' || $item == '..') continue;
 				unlink($dir.DIRECTORY_SEPARATOR.$item);
@@ -145,7 +145,7 @@ $result=mysqli_query( $connection, $query);
             <td>
             <?php
 			    $i = 0; 
-				$dir = "../images/slider/".$slider['name']."/";
+				$dir = "../".USER_DIR."site-sliders/".$slider['name']."/";
 				if ($handle = opendir($dir)) {
 					while (($file = readdir($handle)) !== false){
 						if (!in_array($file, array('.', '..')) && !is_dir($dir.$file)) 

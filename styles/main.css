@@ -42,6 +42,21 @@ and (max-device-width : 1023px) {
 		visibility: visible;
 		cursor: pointer;
 	}
+	span.galleryImage div.galleryEditBtn, span.galleryImage div.galleryItemDrag{
+		visibility: visible;
+		right: 0;
+	}
+
+	span.galleryImage input[type=checkbox],
+	span.galleryImage input[type=checkbox]:checked {
+	    top: 5%;
+	    left: 5%;
+	    opacity: 1;
+	    height:40%;
+	    width:40%;
+	    visibility: visible;
+	    -webkit-transition: all 0.3s ease-in-out;
+	}
 	/*html, body{
 font-size: 1em;
 }*/
@@ -75,21 +90,36 @@ and (orientation : portrait) {
 @media only screen 
 and (min-width : 1024px) {
 /* Styles */
-.mobile{
+	.mobile{
+			display:none!important;
+			
+		}
+
+	.headericon{
 		display:none!important;
-		
+	}
+	.blog-comments li:hover span.del-blog-comment{
+		visibility: visible;
+	}
+	span.del-blog-comment{
+		visibility: hidden;
+		cursor: pointer;
+	}
+	span.galleryImage:hover div.galleryEditBtn, span.galleryImage:hover div.galleryItemDrag{
+		visibility: visible;
+		right:0;
 	}
 
-.headericon{
-	display:none!important;
-}
-.blog-comments li:hover span.del-blog-comment{
-	visibility: visible;
-}
-span.del-blog-comment{
-	visibility: hidden;
-	cursor: pointer;
-}
+	span.galleryImage:hover input[type=checkbox],
+	span.galleryImage input[type=checkbox]:checked {
+	    top: 5%;
+	    left: 5%;
+	    opacity: 1;
+	    height:40%;
+	    width:40%;
+	    visibility: visible;
+	    -webkit-transition: all 0.3s ease-in-out;
+	}
 }
 /* Large screens ----------- */
 @media only screen 
@@ -882,7 +912,7 @@ ul{
 	clear:both;
 }
 .photo-link{
-    margin:10px;
+    margin:2px;
     display:block;
     width:auto;
     float:left;
@@ -930,6 +960,52 @@ span:hover.tooltips span {
   margin-top: -12px;
   margin-left: 10px;
   z-index: 999;
+}
+
+span.galleryImage {
+    display: inline-block;
+    position: relative;
+    border: 0px solid #f90;
+    overflow: hidden;
+}
+
+div.galleryEditBtn{
+	height: 30px;
+	width: 30px;
+	position: absolute;
+	float: left;
+	bottom: 0;
+	right: -32px;
+	border-top-left-radius: 5px;
+	background-color: #FFFFFF;
+	color: #0091C7;
+	font-size: 20px;
+	visibility: hidden;
+	-webkit-transition: all 0.3s ease-in-out;
+}
+
+div.galleryItemDrag{
+	height: 32px;
+	width: 32px;
+	position: absolute;
+	float: left;
+	top: 0;
+	right: -32px;
+	border-bottom-left-radius: 5px;
+	background: url(../images/icon-drag24.png) no-repeat center center #FFFFFF;
+	color: #0091C7;
+	font-size: 20px;
+	cursor: move;
+	visibility: hidden;
+	-webkit-transition: all 0.3s ease-in-out;
+}
+
+span.galleryImage input[type=checkbox] {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    opacity: 0;
+    -webkit-transition: all 0.5s ease-in-out;
 }
 
 input.button{
@@ -1270,6 +1346,33 @@ span.galleryImage input[type=checkbox]:checked {
     -webkit-transition: all 0.5s ease-in-out;
 }
 
+.GallerySort li.ui-sortable-placeholder {
+	border: 1px dashed #666;
+	border-radius: 3px;
+	background-color: #BBBBBB;
+	width: 152px;
+	height: 152px;
+	float: left;
+    visibility: visible !important;
+}
+
+div.embedThumb{
+	background-size: 100% 100%;
+	position: relative;
+}
+
+div.embedThumb img{
+    max-height: 100%;  
+    max-width: 100%; 
+    width: auto;
+    height: auto;
+    position: absolute;  
+    top: 0;  
+    bottom: 0;  
+    left: 0;  
+    right: 0;  
+    margin: auto;
+}
 /*  end */
 .waves-effect.waves-blue .waves-ripple {
      /* The alpha value allows the text and background color
@@ -1376,3 +1479,6 @@ div.rank{
 	line-height:30px !important;
 }
 /*  end */
+.lg-backdrop{
+	background-color: rgba(0,0,0,0.8);
+}

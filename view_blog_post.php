@@ -117,7 +117,7 @@ function delComment(postId){
 	?>
     <table width="200" border="0">
   <tr>
-    <td><?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="btn red" href="page/<?php echo $GLOBALS['blog_page']; ?>?delpost=<?php echo $post['id']; ?>">Delete</a><?php } ?></td>
+    <td><?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="btn red" href="page/<?php echo $GLOBALS['blog_page']; ?>&delpost=<?php echo $post['id']; ?>">Delete</a><?php } ?></td>
     <td><?php if(check_permission("Blog","edit_blog")||(isset($_SESSION['user_id'])&&$post['poster']==$_SESSION['user_id'])){?><a class="btn blue" href="edit_blog_post?post=<?php echo $post['id'] ?>">Edit</a><?php } ?></td>
     <td><a class="btn blue" href="<?php echo $GLOBALS['HOST']."/page/".urlencode($page_properties['name']);?>">Back</a></td>
   </tr>
@@ -153,6 +153,19 @@ function delComment(postId){
                     <td class="blogbody" valign="top">
                         <?php echo $post['content'];?>
                     </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <?php
+                        $i = 0;
+                        $files = glob(USER_DIR."blog-galleries/".$post['id']."/gallery/" . "*");
+                        if ($files){
+                            $i = count($files);
+                        }
+                        if($i>0){gallery($post['gallery_id']);}
+                        ?>
+                    </td>
+                </tr>
                 <?php if($post['comments_allowed'] == 1){?>
                 <tr>
                     <td>

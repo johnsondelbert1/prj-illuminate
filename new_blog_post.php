@@ -8,6 +8,7 @@ if(!check_permission("Blog","post_blog")){
 }
 if(isset($_POST['submit'])){
 	if($_POST['title']!=""){
+		//Sanitize form data
 		$content=strip_tags(nl2br(mysqli_real_escape_string($connection, $_POST['content'])), "<b><a><p><img><br><hr><ul><ol><li><sup><sub><video><source>");
 		$title=strip_tags(mysqli_real_escape_string($connection, $_POST['title']));
 		date_default_timezone_set($GLOBALS['site_info']['timezone']);
@@ -19,18 +20,35 @@ if(isset($_POST['submit'])){
 			$allowComments = 0;
 		}
 		
+		//New blog into DB
 		$query="INSERT INTO `blog` (
-					`datecreated`, `poster`, `title`, `content`, `comments_allowed` 
+					`datecreated`, `poster`, `title`, `content`, `comments_allowed`
 				) VALUES (
 					'{$date}', '{$_SESSION['user_id']}', '{$title}', '{$content}', {$allowComments})";
 		$result=mysqli_query( $connection, $query);
 		confirm_query($result);
 		
 		$lastid=mysqli_insert_id($connection);
+
+		//New gallery for blog into DB
+		$query="INSERT INTO `galleries` (
+			`name`, `date_created`, `creator`, `type`, `dir`
+		) VALUES (
+			'{$lastid}','{$date}',{$_SESSION['user_id']}, 'blog', 'blog-galleries/')";
+		$result=mysqli_query($connection, $query);
+		confirm_query($result);
+
+		$newGalleryID=mysqli_insert_id($connection);
+
+		//Update blog with new gallery ID
+		$query = "UPDATE `blog` SET `gallery_id` = {$newGalleryID} WHERE `id` = {$lastid}";
+		$result=mysqli_query($connection, $query);
+		confirm_query($result);
 		
-		mkdir("blog_galleries/".$lastid);
-		mkdir("blog_galleries/".$lastid."/gallery");
-		mkdir("blog_galleries/".$lastid."/gallery-thumbs");
+		//Make folders for gallery
+		mkdir(USER_DIR."blog_galleries/".$lastid);
+		mkdir(USER_DIR."blog_galleries/".$lastid."/gallery");
+		mkdir(USER_DIR."blog_galleries/".$lastid."/gallery-thumbs");
 		
 		redirect_to($GLOBALS['HOST']."/edit_blog_post?post=".$lastid."&success=".urlencode("Blog posted!"));
 	}else{

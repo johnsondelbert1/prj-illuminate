@@ -24,7 +24,7 @@
 		<script type="text/javascript" src="../materialize/js/materialize.js"></script>
         <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <!-- Drag and drop touch screens -->
-        <script src="jscripts/jquery.ui.touch-punch.js"></script>
+        <script src="jscripts/jquery.ui.touch-punch.min.js"></script>
         <!-- Auto layout cards -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.1/masonry.pkgd.js"></script>
 		<script type="text/javascript">
@@ -40,6 +40,7 @@
                 });
 
 				$('select').material_select();
+                $('.tooltipped').tooltip({delay: 50});
                 //Display messages
                 <?php
                 if(isset($error)&&!is_array($error)){

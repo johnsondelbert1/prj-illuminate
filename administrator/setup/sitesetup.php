@@ -24,6 +24,8 @@ if(isset($_POST['submit'])){
 	if($_POST['site-name']!=""){
 		if(filter_var($_POST['site-email'], FILTER_VALIDATE_EMAIL)) {
 
+			$site_name = mysqli_real_escape_string($connection, $_POST['site_name']);
+			$site_email = mysqli_real_escape_string($connection, $_POST['site_email']);
 			$address_line1 = mysqli_real_escape_string($connection, $_POST['address_line1']);
 			$address_line2 = mysqli_real_escape_string($connection, $_POST['address_line2']);
 			$address_city = mysqli_real_escape_string($connection, $_POST['address_city']);
@@ -33,7 +35,7 @@ if(isset($_POST['submit'])){
 			$contact_phone = mysqli_real_escape_string($connection, $_POST['contact_phone']);
 
 			$query="UPDATE `site_info` SET 
-				`name` = '{$_POST['site-name']}', `contact_email` = '{$_POST['site-email']}', `address_line1` = '{$address_line1}', `address_line2` = '{$address_line2}', `address_city` = '{$address_city}', 
+				`name` = '{$site_name}', `contact_email` = '{$site_email}', `address_line1` = '{$address_line1}', `address_line2` = '{$address_line2}', `address_city` = '{$address_city}', 
 					`address_stateregion` = '{$address_stateregion}', `address_zip` = '{$address_zip}', `address_country` = '{$address_country}', `contact_phone` = '{$contact_phone}', `timezone` = '{$_POST['site-tz']}'";
 			$result=mysqli_query($connection, $query);
 			
@@ -54,8 +56,8 @@ $pgtitle = 'Step 3 of 3: Site Setup';
 require_once('begin_html.php');
 ?>
 <form method="post">
-	Site Name <input type="text" name="site-name" value="<?php if(isset($_POST['site-name'])){echo $_POST['site-name'];}?>" /><br>
-    Site Contact Email <input type="text" name="site-email" value="<?php if(isset($_POST['site-email'])){echo $_POST['site-email'];}?>" /><br>
+	Site Name <input type="text" name="site_name" value="<?php if(isset($_POST['site-name'])){echo $_POST['site-name'];}?>" /><br>
+    Site Contact Email <input type="text" name="site_email" value="<?php if(isset($_POST['site-email'])){echo $_POST['site-email'];}?>" /><br>
     Website Timezone
         <select name="site-tz">
 			<?php foreach(DateTimeZone::listIdentifiers(DateTimeZone::ALL) as $timezone){ ?>

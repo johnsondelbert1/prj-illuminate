@@ -3,10 +3,10 @@ require_once("../includes/functions.php");
 ?>
 <?php
 
-$output_dir_banner = "../images/banner/";
-$output_dir_bg = "../images/bg/";
-$output_dir_logo = "../images/logo/";
-$output_dir_icon = "../images/favicon/";
+$output_dir_banner = "../".USER_DIR."site-img/banner/";
+$output_dir_bg = "../".USER_DIR."site-img/bg/";
+$output_dir_logo = "../".USER_DIR."site-img/logo/";
+$output_dir_icon = "../".USER_DIR."site-img/favicon/";
 
 if(isset($_GET['delete'])){
 	if($_GET['delete']=='banner'){
@@ -45,6 +45,11 @@ if(isset($_POST['chng_info'])){
 		}else{
 			$published = 0;
 		}
+		if(isset($_POST['homepage'])){
+			$homepage = $_POST['homepage'];
+		}else{
+			$homepage = 0;
+		}
 		$site_name = mysqli_real_escape_string($connection, $_POST['site_name']);
 		$copyright_text = mysqli_real_escape_string($connection, $_POST['copyright_text']);
 		$metadata = strip_tags(mysqli_real_escape_string($connection, $_POST['metadata']), "<meta>");
@@ -65,7 +70,7 @@ if(isset($_POST['chng_info'])){
 					`name` = '{$site_name}', `contact_email` = '{$_POST['email']}', `address_line1` = '{$address_line1}', `address_line2` = '{$address_line2}', `address_city` = '{$address_city}', 
 					`address_stateregion` = '{$address_stateregion}', `address_zip` = '{$address_zip}', `address_country` = '{$address_country}', `contact_phone` = '{$contact_phone}', 
 					`timezone` = '{$_POST['tz']}', `published` = {$published}, `copyright_text` = '{$copyright_text}', `default_rank` = {$_POST['rank']}, `site_description` = '{$site_description}', 
-					`homepage` = {$_POST['homepage']}, `meta_tags` = '{$metadata}', `footer_content` = '{$footer_content}'";
+					`homepage` = {$homepage}, `meta_tags` = '{$metadata}', `footer_content` = '{$footer_content}'";
 				$result=mysqli_query($connection, $query);
 				confirm_query($result);
 				$success = "Site Info has been updated!";
@@ -419,7 +424,7 @@ $result_pages=mysqli_query($connection, $query);
 </form><br>
 <?php
 	if($banner != false){
-		?><img src="../images/banner/<?php echo $banner; ?>" width="500" /><?php
+		?><img src="../<?php echo USER_DIR; ?>site-img/banner/<?php echo $banner; ?>" width="500" /><?php
 	}else{?>
 		<div style="font-size:20px; width:500px; height:200px; border:5px dashed #B1B1B1; text-align:center; line-height:200px; vertical-align:middle; margin-left:auto; margin-right:auto;">There is currently no banner image.</div>
     <?php
@@ -435,7 +440,7 @@ $result_pages=mysqli_query($connection, $query);
 </form><br>
 <?php
 	if($bg != false){
-		?><img src="../images/bg/<?php echo $bg; ?>" width="500" /><br><br><?php
+		?><img src="../<?php echo USER_DIR; ?>site-img/bg/<?php echo $bg; ?>" width="500" /><br><br><?php
 	}else{?>
 		<div style="font-size:20px; width:500px; height:200px; border:5px dashed #B1B1B1; text-align:center; line-height:200px; vertical-align:middle; margin-left:auto; margin-right:auto;">There is currently no background image.</div>
     <?php
@@ -482,7 +487,7 @@ $result_pages=mysqli_query($connection, $query);
 </form><br/>
 <?php
 	if($logo != false){
-		?><img src="../images/logo/<?php echo $logo; ?>" height="150" /><?php
+		?><img src="../<?php echo USER_DIR; ?>site-img/logo/<?php echo $logo; ?>" height="150" /><?php
 	}else{?>
 		<div style="font-size:20px; width:350px; height:100px; border:5px dashed #B1B1B1; text-align:center; line-height:100px; vertical-align:middle; margin-left:auto; margin-right:auto;">There is currently no logo image.</div>
     <?php
@@ -501,7 +506,7 @@ $result_pages=mysqli_query($connection, $query);
 </form><br/>
 <?php
 	if($favicon != false){
-		?><img src="../images/favicon/<?php echo $favicon; ?>" /><?php
+		?><img src="../<?php echo USER_DIR; ?>site-img/favicon/<?php echo $favicon; ?>" /><?php
 	}else{?>
 		<div style="font-size:20px; width:32px; height:32px; border:2px dashed #B1B1B1; text-align:center; vertical-align:middle;"></div>
     <?php

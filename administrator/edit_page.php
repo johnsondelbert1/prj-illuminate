@@ -284,7 +284,7 @@ if($_GET['action']=="edit"){
 <script type="text/javascript">
 	tinymce.init({
 		selector: "textarea",
-		content_css : '../materialize/css/materialize.css',  // resolved to http://domain.mine/myLayout.css
+		content_css : 'margin: 10px; background-color: #000000; padding: 3px',  // resolved to http://domain.mine/myLayout.css
 		theme: "modern",
 		skin: 'light',
 		width: '100%',
@@ -463,14 +463,17 @@ if($_GET['action']=="edit"){
                             <select name="pgdocfolder">
                             <option value="">(None)</option>
                             <?php
-                            $dirs = array_filter(glob('../uploads/*'), 'is_dir');
-                            foreach($dirs as $dir){
-								$dir = substr($dir."/", 11);
-                            ?>
-                                <option value="<?php echo $dir; ?>"<?php if (isset($selpage['doc_folder'])&&$dir == $selpage['doc_folder']){echo ' selected="selected"';} ?>><?php echo $dir; ?></option>
-                            <?php 
-                            
-                            } ?>
+                            $dirs = array_filter(glob('../'.USER_DIR.'uploads/*'), 'is_dir');
+							$path = '../'.USER_DIR.'uploads/';
+							$results = scandir($path);
+
+							foreach ($results as $result) {
+							    if ($result === '.' or $result === '..') continue;
+
+							    if (is_dir($path . '/' . $result)) {?>
+							        <option value="<?php echo $result; ?>"<?php if (isset($selpage['doc_folder'])&&$result == $selpage['doc_folder']){echo ' selected="selected"';} ?>><?php echo $result; ?></option>
+							   <?php }
+							}?>
                             </select>
                         </td>
                       </tr>
@@ -571,7 +574,7 @@ if($_GET['action']=="edit"){
                 <div class="TabbedPanelsContent">
                 <h1 style="margin:0;">Included Galleries</h1><br>
 					<?php
-                        $query="SELECT * FROM `galleries` ORDER BY `id` ASC";
+                        $query="SELECT * FROM `galleries` WHERE `type` = 'page' ORDER BY `id` ASC";
                         $galleryquery=mysqli_query( $connection, $query);
                         confirm_query($galleryquery);?>
                         <div id="gall">

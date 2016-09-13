@@ -10,31 +10,48 @@ if(isset($_GET['delpost'])&&$_GET['delpost']!=''){
 		confirm_query($result);
 		if(mysqli_num_rows($result)!=0){
 			$galleryid=mysqli_fetch_array($result);
-			
+
+			//Get blog gallery name for folder deletion
+			$query="SELECT `name` FROM `galleries` WHERE `id` = {$galleryid['gallery_id']}";
+			$result=mysqli_query($connection, $query);
+			confirm_query($result);
+			$gallname = mysqli_fetch_array($result);
+			$gallname = $gallname['name'];
+
+			//Delete gallery from DB
+			$query="DELETE FROM `galleries` WHERE `id` = {$galleryid['gallery_id']}";
+			$result=mysqli_query($connection, $query);
+			confirm_query($result);
+
+			//Delete gallery items from DB
+			$query="DELETE FROM `site_gallery_items` WHERE `gallery_id` = {$galleryid['gallery_id']}";
+			$result=mysqli_query($connection, $query);
+			confirm_query($result);
+
 			//Delete blog post
 			$query="DELETE FROM `blog` WHERE `id` = {$_GET['delpost']}";
 			$result=mysqli_query($connection, $query);
 			confirm_query($result);
 			
-			//Delete comments for that posts
+			//Delete comments for that blog
 			$query="DELETE FROM `blog_comments` WHERE `blog_id` = {$_GET['delpost']}";
 			$result=mysqli_query($connection, $query);
 			confirm_query($result);
 
 			//Specify the target directory and add forward slash
-			$dir = "blog_galleries/".$galleryid['id']."/gallery/";
+			$dir = USER_DIR."blog-galleries/".$gallname."/gallery/";
 			foreach (scandir($dir) as $item) {
 				if ($item == '.' || $item == '..') continue;
 				unlink($dir.DIRECTORY_SEPARATOR.$item);
 			}
 			rmdir($dir);
-			$dir = "blog_galleries/".$galleryid['id']."/gallery-thumbs/";
+			$dir = USER_DIR."blog-galleries/".$gallname."/gallery-thumbs/";
 			foreach (scandir($dir) as $item) {
 				if ($item == '.' || $item == '..') continue;
 				unlink($dir.DIRECTORY_SEPARATOR.$item);
 			}
 			rmdir($dir);
-			$dir = "blog_galleries/".$galleryid['id']."/";
+			$dir = USER_DIR."blog-galleries/".$gallname."/";
 			rmdir($dir);
 			
 			$success="Blog post deleted!";
@@ -47,6 +64,17 @@ if(isset($_GET['delpost'])&&$_GET['delpost']!=''){
 }
 if(isset($_GET['pg'])&&$_GET['pg']<=0){
 	//redirect_to($GLOBALS['HOST']."/blog?page=1");
+}
+
+$flag = TRUE;
+foreach(get_included_files() as $index => $string) {
+    if (strpos($string, 'index.php') !== FALSE){
+        $flag = FALSE;
+        break;
+    }
+}
+if($flag === TRUE){
+	redirect_to($GLOBALS['HOST'].'/page/'.$GLOBALS['blog_page']);
 }
 
 $query="SELECT * FROM `blog`";
@@ -172,6 +200,7 @@ if (mysqli_num_rows($result)!=0){
     </div>
     
     <?php
+    //counter to separate galleries from each other
     $gall_num = 0;
 
     //Default limit number blog comments
@@ -183,14 +212,14 @@ if (mysqli_num_rows($result)!=0){
 		$userdata=mysqli_fetch_array($userresult);
 		$createdtimestamp = strtotime($post['datecreated']);
 		$lasteditedtimestamp = strtotime($post['datecreated']);
-		if(!file_exists("blog_galleries/".$post['id'])){
-			mkdir("blog_galleries/".$post['id']);
+		if(!file_exists(USER_DIR."blog-galleries/".$post['id'])){
+			mkdir(USER_DIR."blog-galleries/".$post['id']);
 		}
-		if(!file_exists("blog_galleries/".$post['id']."/gallery/")){
-			mkdir("blog_galleries/".$post['id']."/gallery/");
+		if(!file_exists(USER_DIR."blog-galleries/".$post['id']."/gallery/")){
+			mkdir(USER_DIR."blog-galleries/".$post['id']."/gallery/");
 		}
-		if(!file_exists("blog_galleries/".$post['id']."/gallery-thumbs/")){
-			mkdir("blog_galleries/".$post['id']."/gallery-thumbs/");
+		if(!file_exists(USER_DIR."blog-galleries/".$post['id']."/gallery-thumbs/")){
+			mkdir(USER_DIR."blog-galleries/".$post['id']."/gallery-thumbs/");
 		}
 		?>
 		<table width="100%" height="100%" class="blog card">
@@ -266,11 +295,11 @@ if (mysqli_num_rows($result)!=0){
 							<td colspan="2">
 								<?php
 								$i = 0;
-								$files = glob("blog_galleries/".$post['id']."/gallery/" . "*");
+								$files = glob(USER_DIR."blog-galleries/".$post['id']."/gallery/" . "*");
 								if ($files){
 									$i = count($files);
 								}
-								if($i>0){gallery("blog_galleries/".$post['id']."/gallery/", "blog_galleries/".$post['id']."/gallery-thumbs/", 100, 100, $gall_num, 6);}
+								if($i>0){gallery($post['gallery_id'], $gall_num, 7);}
 								$gall_num++;?>
 							</td>
 						</tr>
@@ -285,7 +314,10 @@ if (mysqli_num_rows($result)!=0){
 									</div>
 									<?php if(check_permission("Blog","post_comment")){?>
 									<br />
-									<textarea id="blog-comment-<?php echo $post['id'];?>" maxlength="1000" rows="1" placeholder="Write a comment..." style="width:300px; height:30px; resize:none; border-bottom:1px solid; margin-right:5px;" /></textarea><a onclick="sendComment(<?php echo $post['id'];?>)" id="comment-sendbtn-<?php echo $post['id'];?>" class="btn-floating green" ><i class="material-icons">send</i></a>
+									<div>
+										<textarea id="blog-comment-<?php echo $post['id'];?>" maxlength="1000" rows="1" placeholder="Write a comment..." style="width:300px; height:30px; resize:none; border-bottom:1px solid; margin-right:5px; float:left;" /></textarea>
+										<a onclick="sendComment(<?php echo $post['id'];?>)" id="comment-sendbtn-<?php echo $post['id'];?>" class="btn-floating green" style="float:left; margin-top:8px; margin-bottom:8px;"><i class="material-icons">send</i></a>
+									</div>
 									<?php } ?>
 								</div>
 							</td>

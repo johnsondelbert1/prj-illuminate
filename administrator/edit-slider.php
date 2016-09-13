@@ -36,14 +36,14 @@ if(isset($_POST['save'])){
 }
 
 if(isset($_POST['upload'])){
-	$message = upload($_FILES, "../images/slider/".$slider['name']."/", 2097152, array('.jpeg','.jpg','.gif','.png'));
+	$message = upload($_FILES, "../".USER_DIR."site-sliders/".$slider['name']."/", 2097152, array('.jpeg','.jpg','.gif','.png'));
 }
 if(isset($_POST['submit'])){
 	if (strpbrk($_POST['name'], "\\/?%*:|\"<>") === FALSE) {
 		
 		$name=mysql_prep($_POST['name']);
 	
-		if(rename("../images/slider/".$slider['name'], "../images/slider/".$slider['name']."/".$_POST['name'])){
+		if(rename("../".USER_DIR."site-sliders/".$slider['name'], "../".USER_DIR."site-sliders/".$slider['name']."/".$_POST['name'])){
 			$query="UPDATE `slider_names` SET 
 				`name` = '{$name}' 
 				WHERE `id` = {$_GET['slider']}";
@@ -69,7 +69,7 @@ if(isset($_POST['del'])){
 			
 			if(mysqli_num_rows($result)!=0){
 				// Specify the target directory and add forward slash
-				$file = "../images/slider/".$slider['name']."/".$slide['img_name'];
+				$file = "../".USER_DIR."site-sliders/".$slider['name']."/".$slide['img_name'];
 				if(file_exists($file)){
 					unlink($file);
 					$success="Slide was deleted!";
@@ -95,7 +95,7 @@ if(isset($_POST['del'])){
 ?>
 
 <?php
-$dir = '../images/slider/'.$slider['name'].'/';
+$dir = '../'.USER_DIR.'site-sliders/'.$slider['name'].'/';
 
 $query="SELECT * FROM `slider_images` WHERE `slider_id` = ".$slider['id'];
 $result=mysqli_query( $connection, $query);
@@ -209,7 +209,7 @@ Name: <input name="name" type="text" value="<?php echo $slider['name']; ?>" maxl
 			?>
 			<tr style="height:125px;">
             	<td><input type="hidden" name="slide_id[<?php echo $slide['id']; ?>]" value="<?php echo $slide['id']; ?>" /><input type="text" name="slide_order[<?php echo $slide['id']; ?>]" value="<?php echo $slide['order']; ?>" maxlength="3" style="width:30px;"/></td>
-				<td><img src="../images/slider/<?php echo $slider['name'].'/'.$slide['img_name'] ?>" width="320" height="180" /></td>
+				<td><img src="../<?php echo USER_DIR; ?>site-sliders/<?php echo $slider['name'].'/'.$slide['img_name']; ?>" width="320" height="180" /></td>
                 <!--<td><?php echo $slide['img_name'] ?></td>-->
                 <td><input type="text" name="slide_cap[<?php echo $slide['id']; ?>]" maxlength="512" value="<?php echo htmlspecialchars($slide['caption']); ?>" /></td>
                 <td><input type="text" name="slide_url[<?php echo $slide['id']; ?>]" maxlength="512" style="width:300px;" value="<?php echo htmlspecialchars($slide['url']); ?>" /></td>
