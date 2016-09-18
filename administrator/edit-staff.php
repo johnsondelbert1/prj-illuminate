@@ -21,13 +21,13 @@ if(isset($_POST['submit'])){
 }
 
 if(isset($_POST['upload'])){
-	$dir = "../images/staff/".$_GET['id'];
+	$dir = "../".USER_DIR."staff/".$_GET['id'];
 	foreach (scandir($dir) as $item) {
 		if ($item == '.' || $item == '..' || $item == 'Thumbs.db') continue;
 		unlink($dir.DIRECTORY_SEPARATOR.$item);
 	}
 	
-	$message = upload($_FILES, "../images/staff/".$_GET['id']."/", 2097152, array('.jpeg','.jpg','.gif','.png'));
+	$message = upload($_FILES, "../".USER_DIR."staff/".$_GET['id']."/", 2097152, array('.jpeg','.jpg','.gif','.png'));
 
 	foreach (scandir($dir) as $item) {
 		if ($item == '.' || $item == '..' || $item == 'Thumbs.db') continue;

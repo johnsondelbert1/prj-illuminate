@@ -40,7 +40,7 @@ if(isset($_GET['blogid'])){
 			<?php while ($blog_comment = mysqli_fetch_array($result)) {
 				$poster = get_user($blog_comment['poster_id']);?>
 			<li>
-				<b><a href="profile.php?user=<?php echo urlencode($poster['username']); ?>"><?php echo $poster['username']; ?></a>, <?php echo date("g:i A", strtotime($blog_comment['date_posted'])). ' on '.date("M jS 'y", strtotime($blog_comment['date_posted'])); ?></b><?php if(check_permission("Blog","delete_any_comment")||(isset($user_info)&&$blog_comment['poster_id']==$user_info['id'])){ ?><span style="float:right;" class="del-blog-comment" id="del-comment-<?php echo $blog_comment['bc_id']; ?>" onclick="delComment(<?php echo $blog_comment['bc_id']; ?>);"><img src="<?php echo $GLOBALS['HOST']; ?>/../images/icon-delete.png" width="16" alt="Delete Comment"></span><?php } ?><br>
+				<b><a href="<?php echo $GLOBALS['HOST'];?>/../profile.php?user=<?php echo urlencode($poster['username']); ?>"><?php echo $poster['username']; ?></a>, <?php echo date("g:i A", strtotime($blog_comment['date_posted'])). ' on '.date("M jS 'y", strtotime($blog_comment['date_posted'])); ?></b><?php if(check_permission("Blog","delete_any_comment")||(isset($user_info)&&$blog_comment['poster_id']==$user_info['id'])){ ?><span style="float:right;" class="del-blog-comment" id="del-comment-<?php echo $blog_comment['bc_id']; ?>" onclick="delComment(<?php echo $blog_comment['bc_id']; ?>);"><img src="<?php echo $GLOBALS['HOST']; ?>/../images/icon-delete.png" width="16" alt="Delete Comment"></span><?php } ?><br>
 				<?php echo nl2br($blog_comment['content']); ?>
 			</li>
 			<?php
