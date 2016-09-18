@@ -14,6 +14,10 @@ if(strpos($_SERVER['SCRIPT_NAME'], '/administrator')===FALSE){
 
 //global variables
 $GLOBALS['HOST'] = $protocol.$_SERVER['HTTP_HOST'].$serv_port.$path;
-$site_version = '1.7.1';
-$db_compatability = '1.5.1';
+$site_version = '1.8';
+$db_compatability = '1.6';
+
+//global constants
+define('USER_DIR','user-data/');
+define('USER_DIR_URL',$GLOBALS['HOST'].'/'.USER_DIR);
 ?>

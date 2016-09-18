@@ -30,9 +30,12 @@
 input[type=text], input[type=url], input[type=tel], input[type=number], input[type=color], input[type=email], input[type=password]{
 	width: auto;
 }
+input[type="checkbox"]:not(:checked), [type="checkbox"]:checked{
+	visibility: initial;
+}
 .btn-floating{
-			z-index: 0;
-		}
+	z-index: 0;
+}
 /*table{
 	width: auto;
 }*/

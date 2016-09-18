@@ -29,7 +29,7 @@ if(isset($_POST['new'])){
 			confirm_query($result);
 			$id=mysqli_fetch_array($result);
 			
-			mkdir("../images/staff/".$id['id']."/");
+			mkdir("../".USER_DIR."staff/".$id['id']."/");
 			$success="Staff Member \"{$newname}\" added!";
 		}else{
 			$error="Staff member name cannot be blank.";
@@ -50,7 +50,7 @@ if(isset($_POST['new'])){
 			confirm_query($result);
 			
 			// Specify the target directory and add forward slash
-			$dir = "../images/staff/".$id; 
+			$dir = "../".USER_DIR."staff/".$id; 
 			foreach (scandir($dir) as $item) {
 				if ($item == '.' || $item == '..') continue;
 				unlink($dir.DIRECTORY_SEPARATOR.$item);
@@ -133,7 +133,7 @@ $result=mysqli_query( $connection, $query);
 	if(mysqli_num_rows($result)!=0){
 		while($staff=mysqli_fetch_array($result)){
 			$profile_pic = false;
-			$dir = "../images/staff/".$staff['id']."/";
+			$dir = "../".USER_DIR."staff/".$staff['id']."/";
 			if(!file_exists($dir)){
 				mkdir($dir);
 			}

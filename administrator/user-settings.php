@@ -197,6 +197,16 @@ if(isset($_POST['submit'])){
 			`user_creation` = '{$_POST['new_user']}', `require_email_activation` = {$email_activate}
 			WHERE `id` = 1";
 		if($result=mysqli_query($connection, $query)){
+			if($_POST['new_user']!='approval'){
+				$query="UPDATE `users` SET 
+					`approved_admin` = 1 WHERE `approved_admin` = 0";
+				mysqli_query($connection, $query);
+			}
+			if($email_activate == 0){
+				$query="UPDATE `users` SET 
+					`activated_email` = 1, `activation_code` = '' WHERE `activated_email` = 0";
+				mysqli_query($connection, $query);
+			}
 			$success = "Custom User Fields has been updated!";
 		}else{
 			$error = "SQL Error has occurred. Contact Administrator.".mysqli_error($connection);
