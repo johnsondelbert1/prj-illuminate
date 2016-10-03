@@ -73,7 +73,6 @@ if($GLOBALS['site_info']['user_creation'] == 'approval'){
     <link rel="shortcut icon" href="images/logo16.png" />
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>-->
     <script type="text/javascript" src="../jscolor/jscolor.js"></script>
-    <script src="jscripts/SpryTabbedPanels.js" type="text/javascript"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     
     <link href="../materialize/css/materialize.css" rel="stylesheet" type="text/css" media="screen,projection"/>
@@ -194,7 +193,6 @@ if($GLOBALS['site_info']['user_creation'] == 'approval'){
 <nav>
         <a href="#" class="brand-logo center"><!--<span class="<?php echo $pgsettings['icon']; ?>"></span>-->   <?php echo $pgsettings['title']; ?></a>
 <ul id="slide-out" class="side-nav fixed">
-<div class="center logo"><a href="#" ><img src="images/logo.png"></a></div>
     <li><a href="index.php"><i class="material-icons">&#xE871;</i>Dashboard</a></li>
     <?php if(check_permission("Users","approve_deny_new_users") && $GLOBALS['site_info']['user_creation'] == 'approval'){?>
     <li><a href="approval-list">Approve/Deny<?php if($pending_users > 0){echo '<span class="red new badge">'.$pending_users.'</span>';} ?></a></li>

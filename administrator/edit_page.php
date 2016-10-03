@@ -692,15 +692,6 @@ $('fixed-action-btn').on("touchstart", function (e) {
 	    </div>
     </div>
 </div>
-<script type="text/javascript">
-	var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
-
-	function changeTab(id){
-		TabbedPanels1.showPanel(id);
-		return false;
-	};
-	<?php if(isset($_GET['tab'])){?>changeTab(<?php echo $_GET['tab'];?>);<?php } ?>
-</script>
 <?php
 	require_once("includes/end_cpanel.php");
 ?>

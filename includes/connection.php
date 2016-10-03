@@ -11,7 +11,12 @@ require("globals.php");
 	}
 	$query="SELECT * FROM `site_info` WHERE `id` = 1";
 	$result=mysqli_query( $connection, $query);
-	$dbversion=mysqli_fetch_array($result);
+	$result=mysqli_query( $connection, $query);
+	if(mysqli_num_rows($result) == 1){
+		$dbversion=mysqli_fetch_array($result);
+	}else{
+		header("Location: setup/setuplogin.php");
+	}
 	$compare_result = version_compare($db_compatability,  $dbversion['version']);
 	$protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://';
 	if(isset($dbversion['version'])){

@@ -135,6 +135,12 @@ $noval="--";
 			}
 		}
 		if (empty($err_array)){
+			$query="SELECT * FROM `users_custom_fields` WHERE `uid` = {$_SESSION['user_id']}";
+			$result=mysqli_query($connection, $query);
+			if(mysqli_num_rows($result) != 1){
+				$query="INSERT INTO `users_custom_fields` (`uid`) VALUES ({$_SESSION['user_id']})";
+				$result=mysqli_query($connection, $query);
+			}
 			$query="UPDATE `users_custom_fields` SET ";
 			$num_fields = count($_POST['fields']);
 			$i = 1;
@@ -327,6 +333,10 @@ require_once("includes/begin_html.php");
     	while ($field = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
     		$query="SELECT * FROM `users_custom_fields` WHERE `uid` = ".$_SESSION['user_id'];
 			$cust_field_result=mysqli_query( $connection, $query);
+			if(mysqli_num_rows($cust_field_result) != 1){
+				$query="INSERT INTO `users_custom_fields` (`uid`) VALUES ({$_SESSION['user_id']})";
+				mysqli_query($connection, $query);
+			}
 			$cust_user_data = mysqli_fetch_array($cust_field_result, MYSQLI_ASSOC);
     		?>
     <div class="col s12 l3"><?php echo $field['name']; ?>:</div>

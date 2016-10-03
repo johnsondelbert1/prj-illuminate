@@ -20,9 +20,8 @@
     <script src="jscripts/drop/bootstrap.min.js"></script>
     <script src="jscripts/drop/bootstrap-select.js"></script>
     <script src="jscripts/drop/application.js"></script>-->
-
-		<script type="text/javascript" src="../materialize/js/materialize.js"></script>
         <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		<script type="text/javascript" src="../materialize/js/materialize.js"></script>
         <!-- Drag and drop touch screens -->
         <script src="jscripts/jquery.ui.touch-punch.min.js"></script>
         <!-- Auto layout cards -->
@@ -41,6 +40,10 @@
 
 				$('select').material_select();
                 $('.tooltipped').tooltip({delay: 50});
+
+                //Materialize Tabs
+                $('ul.tabs').tabs();
+                
                 //Display messages
                 <?php
                 if(isset($error)&&!is_array($error)){

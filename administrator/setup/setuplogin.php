@@ -106,7 +106,7 @@ if(isset($_SESSION['username'])){
 
 
 try{
-	mysqli_connect($dbconnection->server,  $dbconnection->username,  $dbconnection->password, $dbconnection->name);
+	$testConnect = @mysqli_connect($dbconnection->server,  $dbconnection->username,  $dbconnection->password, $dbconnection->name);
 	
 	if($dbconnection->server==""||$dbconnection->username==""||$dbconnection->name==""){
 		if($dbconnection->firstrun=="false"){
@@ -116,15 +116,22 @@ try{
 		if($dbconnection->firstrun=="true"){
 			//header("Location: sitesetup.php");
 		}else{
-			$_SESSION=array();
-			
-			if(isset($_COOKIE[session_name()])){
-				unset($_SESSION['username']);
-				unset($_SESSION['password']);
+			$query="SELECT 1 from `site_info` LIMIT 1";
+			$result=mysqli_query( $testConnect, $query);
+			if($result !== false){
+				$_SESSION=array();
+				
+				if(isset($_COOKIE[session_name()])){
+					unset($_SESSION['username']);
+					unset($_SESSION['password']);
+				}
+				
+				session_destroy();
+				header("Location: ../index.php");
+			}else{
+				$message="<h3 class=\"error\">Database data missing. Re-run site setup here.</h3>";
 			}
 			
-			session_destroy();			
-			header("Location: ../index.php");
 		}
 	}
 }catch (ErrorException $e){
