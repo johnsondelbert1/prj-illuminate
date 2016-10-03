@@ -1145,10 +1145,8 @@ function nav($position, $pgselection){
 				<div class="nav large">
 				<?php if($logo!=false){ ?>
             	<div style="float:left; position:absolute;" id="logo">
-                	<?php if($GLOBALS['site_info']['logo_url']!=''){?>
-            		<a href="<?php echo $GLOBALS['HOST']; ?>"><img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $GLOBALS['site_info']['name']; ?> Logo" /></a>
-                    <?php }else{ ?>
-                    <img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" />
+                	<?php if($logo!= false){?>
+            		<a href="<?php echo $GLOBALS['HOST']; ?>"><img src="<?php echo USER_DIR_URL."site-img/logo/".$logo ?>" alt="<?php echo $GLOBALS['site_info']['name']; ?> Logo" /></a>
                     <?php } ?>
                 </div>
 			<?php } ?>

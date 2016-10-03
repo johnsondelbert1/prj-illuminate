@@ -96,7 +96,7 @@ if (isset($_POST['submit'])){
 			$new_user = mysqli_insert_id($connection);
 			
 			//Insert custom fields
-			if($num_cust_fields >= 1){
+			if($num_cust_fields == 1){
 				$custom_field_names = array();
 				$custom_field_post = array();
 				$query="SELECT * FROM `custom_field_users_properties`";
