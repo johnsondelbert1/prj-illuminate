@@ -210,7 +210,16 @@ function print_page($page){
 			if($page['doc_folder']!=""){
 				order_doc_files($page['doc_folder']);
 			}
-			
+
+			//Calendars
+			if($page['calendars']!=""){
+				$pageCalendars=unserialize($page['calendars']);
+				foreach($pageCalendars as $pgCalendar){
+					getCalendar($pgCalendar);
+				}
+			}
+
+			//Forms
 			if($page['forms']!=""){
 				$pageforms=unserialize($page['forms']);
 				foreach($pageforms as $pg_form){
@@ -311,7 +320,7 @@ function print_page($page){
 						  ?>
 							<div class="TabbedPanelsContent">
 							<?php
-								gallery($gallery, $gallery['id']);
+								gallery($gallery, $gallery);
 								if($pagegallery['subgalleries']!=""){
 									$subgalleries = unserialize($pagegallery['subgalleries']);
 									foreach($subgalleries as $subgalleryid){

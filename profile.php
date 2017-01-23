@@ -1,6 +1,9 @@
 <?php
 require_once("includes/session.php");
 require_once("includes/functions.php");
+if($site_info['user_profiles_visible_loggedin']){
+	confirm_logged_in();
+}
 ?>
 <?php
 //Check to make sure user is set in URL
@@ -61,6 +64,11 @@ if($found_user == 1){
 			$error="You do not have sufficient permissions to ban this user.";
 		}
 	}
+
+	//get the rank data for the user
+	$query="SELECT * FROM `ranks` WHERE `id` = {$user['rank']}";
+	$rank_data_result=mysqli_query( $connection, $query);
+	$rank_data=mysqli_fetch_array($rank_data_result);
 ?>
 <?php
 $pgsettings = array(
@@ -84,6 +92,13 @@ require_once("includes/begin_html.php"); ?>
 			window.location = "<?php echo urlencode($user['username']); ?>&action=unban";
 		}
 	}
+    $(document).ready(function() {
+        $("#profile-picture").lightGallery({
+        	subHtmlSelectorRelative: true,
+        	thumbnail: false,
+        	selector: '#profile-picture > a'
+        }); 
+    });
 	</script>
 
 	<h1><?php echo $user['username']."'s Profile"; ?></h1>
@@ -99,6 +114,25 @@ require_once("includes/begin_html.php"); ?>
 	<br/>
     <?php }?>
 <table border="0" cellspacing="5" cellpadding="0" style="border-radius:5px; padding:5px; text-align:center;">
+  <?php if($site_info['user_profile_pictures']){ ?>
+  <tr>
+    <td colspan="2">
+    	<div id="profile-picture" style="background-color:<?php echo $rank_data['color']; ?>;">
+    	<?php 
+    		$profile_dir = USER_DIR."user-assets/".$user['id']."/profile/";
+    		$profile_pic = scandir($profile_dir);
+    		if(isset($profile_pic[2])){
+    	?>
+	    	<a href="<?php echo $GLOBALS['HOST']; ?>/<?php echo $profile_dir.$profile_pic[2]; ?>" data-sub-html="<?php echo $user['username']; ?>">
+				<img src="<?php echo get_user_profile_pic($user['id']); ?>" />
+			</a>
+		<?php }else{ ?>
+			<img src="<?php echo get_user_profile_pic($user['id']); ?>" />
+		<?php } ?>
+		</div>
+	</td>
+  </tr>
+  <?php } ?>
   <tr>
     <td>Date Joined:</td>
     <td><strong><?php echo date("m/d/Y" ,strtotime($user['created'])); ?></strong></td>
@@ -110,15 +144,7 @@ require_once("includes/begin_html.php"); ?>
   <tr>
     <td>Rank:</td>
     <td>
-    	<strong>
-    	<?php
-		$query="SELECT * FROM `ranks`
-				WHERE `id`='{$user['rank']}'";
-		$result=mysqli_query($connection, $query);
-		$rank_name = mysqli_fetch_array($result);
-    	echo $rank_name['name'];
-    	?>
-    	</strong>
+    	<strong><?php echo $rank_data['name'];?></strong>
     </td>
   </tr>
 	<?php

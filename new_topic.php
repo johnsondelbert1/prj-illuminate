@@ -13,9 +13,9 @@ if(!check_permission("Forum","add_thread")&&(isset($_GET['action'])&&$_GET['acti
 <?php
 	if(isset($_POST['newthread'])||isset($_POST['newmessage'])||isset($_POST['editpost'])){
 		if(isset($_POST['threadtitle'])){
-			$title=strip_tags($_POST['threadtitle']);
+			$title=mysqli_real_escape_string($connection, strip_tags($_POST['threadtitle']));
 		}
-		$messagebody=strip_tags($_POST['content'], "<b><i><u><del><a><p><img><br><hr><ol><ul><li><sub><sup>");
+		$messagebody=mysqli_real_escape_string($connection, strip_tags($_POST['content'], "<b><i><u><del><a><p><img><br><hr><ol><ul><li><sub><sup>"));
 		$forumid=$_GET['forum'];
 		$creator=$_SESSION['user_id'];
 		date_default_timezone_set($GLOBALS['site_info']['timezone']);
@@ -31,20 +31,21 @@ if(!check_permission("Forum","add_thread")&&(isset($_GET['action'])&&$_GET['acti
 				$insthread=mysqli_query( $connection, $query);
 				confirm_query($insthread);
 				//get new thread ID
-					$query="SELECT * FROM `forum_threads` ORDER BY `id` DESC";
-					$threadcount=mysqli_query( $connection, $query);
-					confirm_query($threadcount);
-					$newthreadid=mysqli_fetch_array($threadcount);
+				$newthreadid=mysqli_insert_id($connection);
 				//Insert message into the thread
  				$query="INSERT INTO `forum_posts` (
 						`forumid`, `threadid`, `poster`, `date`, `message` 
 					) VALUES (
-						{$forumid}, {$newthreadid['id']}, '{$creator}', '{$date}', '{$messagebody}')";
+						{$forumid}, {$newthreadid}, '{$creator}', '{$date}', '{$messagebody}')";
 				$insmessage=mysqli_query( $connection, $query); 
 				confirm_query($insmessage);
 				//add post count
 				addpostcount($_SESSION['user_id']);
-				redirect_to($GLOBALS['HOST']."/view_forum.php?forum=".urlencode($_GET['forum']));
+
+				//Send notifications to subbed users, Linux only atm
+				notify_users('forum', $forumid, $user_info['id']);
+				
+				redirect_to($GLOBALS['HOST']."/view_forum.php?forum=".urlencode($_GET['forum'])."&success=".urlencode('New thread successfully posted'));
 			}else{
 				$error="Required field not filled!";
 			}
@@ -75,6 +76,10 @@ if(!check_permission("Forum","add_thread")&&(isset($_GET['action'])&&$_GET['acti
 				confirm_query($updatedate);
 				//add post count
 				addpostcount($_SESSION['user_id']);
+
+				//Send notifications to subbed users, Linux only atm
+				notify_users('thread', $_GET['thread'], $user_info['id']);
+
 				//redirect to posted thread
 				redirect_to($GLOBALS['HOST']."/view_thread.php?thread=".urlencode($_GET['thread'])."&&forum=".urlencode($_GET['forum']));
 			}else{
