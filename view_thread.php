@@ -110,6 +110,10 @@ require_once("includes/begin_html.php");
             	<ul>
                 	<li>
                 		<a href="<?php echo $GLOBALS['HOST'].'/profile/'.urlencode($user['username']); ?>"><span style="color: <?php echo $rank_data['color']?>;"><b><?php echo $user['username']; ?></b></span></a>
+                		<?php if($site_info['user_profile_pictures']){ ?>
+                		<br />
+                		<a href="<?php echo $GLOBALS['HOST'].'/profile/'.urlencode($user['username']); ?>"><img src="<?php echo get_user_profile_pic($user['id']); ?>" height="100" width="100"></a>
+                		<?php } ?>
                 	</li>
                 	<li>
                 		<b><?php echo $rank_data['name']; ?></b>

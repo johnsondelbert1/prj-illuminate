@@ -87,50 +87,62 @@ if (isset($_POST['submit'])){
 		if (mysqli_num_rows($result)==1){
 			$error="An account with this username or email already exists!";
 		}else{
+			$clearsubs = serialize(array('blog' => array(), 'forum' => array(), 'thread' => array()));
 			//Insert default fields
 			$query="INSERT INTO `users` (
-						`username`, `created`, `email`, `hashed_pass`, `rank`, `created_via`, `old_pass`
+						`username`, `created`, `email`, `hashed_pass`, `rank`, `created_via`, `old_pass`, `subscriptions`
 					) VALUES (
-						'{$user}', '{$GLOBALS['date']}', '{$email}', '{$hashed_pass}', {$post_rank}, 'Administrator', 0)";
+						'{$user}', '{$GLOBALS['date']}', '{$email}', '{$hashed_pass}', {$post_rank}, 'Administrator', 0, '{$clearsubs}')";
 			$def_result=mysqli_query($connection, $query);
+			confirm_query($def_result);
 			$new_user = mysqli_insert_id($connection);
 			
-			//Insert custom fields
-			if($num_cust_fields == 1){
-				$custom_field_names = array();
-				$custom_field_post = array();
-				$query="SELECT * FROM `custom_field_users_properties`";
-				$cust_fields_result=mysqli_query( $connection, $query);
-				while ($field = mysqli_fetch_array($cust_fields_result, MYSQLI_ASSOC)) {
-					array_push($custom_field_names, '`'.$field['name'].'`');
-					array_push($custom_field_post, "'".$_POST[$field['name']]."'");
-				}
-				$query="INSERT INTO `users_custom_fields` (`uid`, ".implode(', ', $custom_field_names).") VALUES ({$new_user}, ".implode(', ', $custom_field_post).")";
-				$cust_result=mysqli_query($connection, $query);
-			}else{
-				//If no custom fields
-				$query="INSERT INTO `users_custom_fields` (`uid`) VALUES ({$new_user})";
-				$cust_result=mysqli_query($connection, $query);
-			}
+			if($def_result){
+				//Insert custom fields
+				if($num_cust_fields == 1){
+					$custom_field_names = array();
+					$custom_field_post = array();
+					$query="SELECT * FROM `custom_field_users_properties`";
+					$cust_fields_result=mysqli_query( $connection, $query);
+					while ($field = mysqli_fetch_array($cust_fields_result, MYSQLI_ASSOC)) {
+						array_push($custom_field_names, '`'.$field['name'].'`');
+						array_push($custom_field_post, "'".$_POST[$field['name']]."'");
+					}
+					$query="INSERT INTO `users_custom_fields` (`uid`, ".implode(', ', $custom_field_names).") VALUES ({$new_user}, ".implode(', ', $custom_field_post).")";
+					$cust_result=mysqli_query($connection, $query);
+					confirm_query($cust_result);
+				}else{
+					//If no custom fields
+					$query="INSERT INTO `users_custom_fields` (`uid`) VALUES ({$new_user})";
 
-			if($def_result && $cust_result){
-				
-				$success="Account was created successfully for ".$_POST['username']."!";
-/*
-				$to = $email;
-				$subject = "Account activation code";
-				$message = "Activate your account: http://minecraft.secondgenerationdesign.com/activate.php?code=".$verifcode." You must be logged in already on the same browser for the activation to take place.";
-				$headers = "From:StormForge@minecraft.secondgenerationdesign.com".PHP_EOL;
-				
-				mail ( $to , $subject , $message , $headers );
-				
-				$to = "johnsondelbert1@gmail.com";
-				$subject = "User has Registered";
-				$message = $user." has registered on the website. http://stormforgemc.com/user_list.php";
-				$headers = "From:StormForge@minecraft.secondgenerationdesign.com".PHP_EOL;
-				
-				mail ( $to , $subject , $message , $headers );
-				*/
+					$cust_result=mysqli_query($connection, $query);
+					confirm_query($cust_result);
+				}
+
+				if($cust_result){
+					//If all is good create user profile folders
+					mkdir('../'.USER_DIR.'user-assets/'.$new_user);
+					mkdir('../'.USER_DIR.'user-assets/'.$new_user.'/profile');
+					
+					$success="Account was created successfully for ".$_POST['username']."!";
+	/*
+					$to = $email;
+					$subject = "Account activation code";
+					$message = "Activate your account: http://minecraft.secondgenerationdesign.com/activate.php?code=".$verifcode." You must be logged in already on the same browser for the activation to take place.";
+					$headers = "From:StormForge@minecraft.secondgenerationdesign.com".PHP_EOL;
+					
+					mail ( $to , $subject , $message , $headers );
+					
+					$to = "johnsondelbert1@gmail.com";
+					$subject = "User has Registered";
+					$message = $user." has registered on the website. http://stormforgemc.com/user_list.php";
+					$headers = "From:StormForge@minecraft.secondgenerationdesign.com".PHP_EOL;
+					
+					mail ( $to , $subject , $message , $headers );
+					*/
+				}else{
+					$error="Account was not created. ".mysqli_error($connection);
+				}
 			}else{
 				$error="Account was not created. ".mysqli_error($connection);
 			}
@@ -149,7 +161,7 @@ if(isset($_POST['deluser'])){
 		if(!empty($_POST['accounts'])){
 			foreach($_POST['accounts'] as $account){
 				if(del_acc($account)==true){
-					$success="Accounts were deleted!";
+					$success="Account(s) were deleted!";
 				}else{
 					$error="Cannot delete only webmaster account left.";
 				}

@@ -16,11 +16,19 @@ if($GLOBALS['site_info']['version'] == '1.5.1' && $site_version == '1.8'){
 	foreach($sql_query as $sql){
 		mysqli_query($connection, $sql) or die('error in query'.mysqli_error($connection).$sql);
 	}
+	$query="SELECT * FROM `users`";
+	$result = mysqli_query( $connection, $query);
+
+	//put default in newly added users column
+	if(mysqli_num_rows($result)!=0){
+		while($user=mysqli_fetch_array($result)){
+			$query = "UPDATE `users` SET `subscriptions` = 'a:3:{s:4:\"blog\";a:0:{}s:5:\"forum\";a:0:{}s:6:\"thread\";a:0:{}}' WHERE `id` = {$user['id']}";
+			mysqli_query($connection, $query);
+		}
+	}
 	echo '<h3>...Done</h3>';
 
 	//Create and move existing data to user folder
-
-
 	echo '<h1>Building User Data Folder</h1>';
 	if(!file_exists('../../'.USER_DIR)){
 		mkdir('../../'.USER_DIR);
@@ -64,6 +72,20 @@ if($GLOBALS['site_info']['version'] == '1.5.1' && $site_version == '1.8'){
 	echo 'Move thumbs<br/>';
 	rename('../../uploads', '../../'.USER_DIR.'uploads');
 	echo 'Move uploads<br/>';
+	echo 'Create user profile dir<br/>';
+	mkdir('../../'.USER_DIR.'user-assets');	
+	echo 'Add folders for each user<br/>';
+	//Add folders for each user for profile pictures
+	$query="SELECT * FROM `users`";
+	$result=mysqli_query( $connection, $query);
+	confirm_query($result);
+	
+    while($user=mysqli_fetch_array($result)){
+    	mkdir('../../'.USER_DIR.'user-assets/'.$user["id"]);
+    	mkdir('../../'.USER_DIR.'user-assets/'.$user["id"].'/profile');
+    	echo 'user '.$user["id"].'<br/>';
+    }
+
 	echo '<h3>...Done</h3>';
 
 	//Add galleries for each existing blog post

@@ -446,7 +446,8 @@ while($subgallery=mysqli_fetch_array($subgalleryquery)){
 		<h4>Edit Image</h4>
 		<img id="editorImage" height="200" src="" />
 		<br/>
-		<div id="button-rotate-clockwise" class="waves-effect waves-blue btn blue tooltipped" style="margin:10px;" data-position="bottom" data-delay="50" data-tooltip="I am tooltip"><i class="material-icons">rotate_right</i></div><div id="button-rotate-counterclockwise" class="waves-effect waves-blue btn blue" style="margin:10px;"><i class="material-icons">rotate_left</i></div>
+		<div id="button-rotate-clockwise" class="waves-effect waves-blue btn blue tooltipped" style="margin:10px;" data-position="bottom" data-delay="50" data-tooltip="Rotate Clockwise"><i class="material-icons">rotate_right</i></div>
+		<div id="button-rotate-counterclockwise" class="waves-effect waves-blue btn blue tooltipped" style="margin:10px;" data-position="bottom" data-delay="50" data-tooltip="Rotate Counterclockwise"><i class="material-icons">rotate_left</i></div>
 		<br/><br/>
 		<p>Brief description: <input id="editorDescription" type="text" value="desc" style="width:300px;" /></p>
 		<input id="editorItemID" type="hidden" value="" />

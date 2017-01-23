@@ -70,11 +70,12 @@ $(document).on("scroll", function() {
         }
     } 
     ?>
-    	var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
     </script>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function(){
-            /*$("a[rel^='prettyPhoto']").prettyPhoto();*/
+            if($("#TabbedPanels1").length){
+                var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
+            }
 
             autosize(document.querySelectorAll('textarea'));
 
@@ -83,11 +84,156 @@ $(document).on("scroll", function() {
 
             $('.tooltipped').tooltip({delay: 50});
 
+            //AJAX for updating email subscription
+            $(".update-check-subscription").change(function(e){
+                var act;
+                if(this.checked){
+                    act = 'sub';
+                }else{
+                    act = 'unsub';
+                }
+                var subData = this.getAttribute('id').split('_');
+                var subType = subData[1];
+                var subId = subData[2];
+                $.post("<?php echo $GLOBALS['HOST']; ?>/ajax_processing/update_subscription.php",
+                {
+                    action: act,
+                    type: subType,
+                    id: subId,
+                },
+                function(data, status){
+                    if(status == 'success'){
+                        if(data == 'success'){
+                            Materialize.toast('Subscription updated!', 8000, 'green');
+                        }else{
+                            Materialize.toast('An error has occured.'+data, 8000, 'red');
+                        }
+                    }else{
+                        Materialize.toast('An error has occured. Try again later.', 8000, 'red');
+                    }
+                });
+            });
             //Masonry
 /*            $('.masonry').masonry({
                 rowHeight: 150,
                 itemSelector: ".masonry_item"
             });*/
+        });
+
+        //Calendar Operation JS
+        function getCalendar(target_div,calendar_id,year,month){
+            $.ajax({
+                type:'POST',
+                url:'<?php echo $GLOBALS['HOST'];?>/ajax_processing/calendar_functions.php',
+                data:'func=getcalendar&id='+calendar_id+'&year='+year+'&month='+month,
+                success:function(html){
+                    $('#'+target_div).html(html);
+                }
+            });
+        }
+        
+        function getEvents(calID, date){
+            $.ajax({
+                type:'POST',
+                url:'<?php echo $GLOBALS['HOST'];?>/ajax_processing/calendar_functions.php',
+                data:'func=getEvents&id='+calID+'&date='+date,
+                success:function(html){
+                    $('#modalViewEvents-'+calID+' .event_list').html(html);
+                    $("#modalViewEvents-"+calID).openModal();
+                }
+            });
+        }
+        //For Add Event
+        function addEvent(calID,date){
+            $('#modalAddEvent-'+calID+' .cal-event-date').val(date);
+            $('#modalAddEvent-'+calID+' .cal-eventDateView').html(date);
+            $("#modalAddEvent-"+calID).openModal();
+        }
+        $(document).ready(function(){
+            $(document).on('click', '.date-cell-viewevent', function(){
+                date = $(this).parent().attr('date');
+                calID = $(this).parent().attr('name');
+                getEvents(calID,date);
+            });
+            $(document).on('change', '.month_dropdown',function(){
+                calID = $(this).attr('id').split('-');
+                calID = calID[2];
+                getCalendar('calendar_div_'+calID,calID,$('#calendar_div_'+calID+' .year_dropdown').val(),$('#calendar_div_'+calID+' .month_dropdown').val());
+            });
+            $(document).on('change', '.year_dropdown',function(){
+                calID = $(this).attr('id').split('-');
+                calID = calID[2];
+                getCalendar('calendar_div_'+calID,calID,$('#calendar_div_'+calID+' .year_dropdown').val(),$('#calendar_div_'+calID+' .month_dropdown').val());
+            });
+            $(document).on('click', '.cal-delete-event',function(){
+                elementID = $(this).attr('id').split('-');
+                calID = elementID[1];
+                eventID = elementID[2];
+                $.ajax({
+                    type:'POST',
+                    url:'<?php echo $GLOBALS['HOST'];?>/ajax_processing/calendar_functions.php',
+                    data:'func=deleteEvent&id='+eventID,
+                    success:function(html){
+                        //refresh event list in modal
+                        $('#modalViewEvents-'+calID+' .event_list').html(html);
+                        //refresh calendar in background
+                        getCalendar('calendar_div_'+calID,calID,$('#calendar_div_'+calID+' .year_dropdown').val(),$('#calendar_div_'+calID+' .month_dropdown').val());
+                        Materialize.toast('Event has been deleted.', 8000, 'green');
+                    }
+                });
+            });
+/*            $('.cal-edit-btn').on('click', function(){
+                $("#modalAddEvent-"+calID).openModal();
+            });*/
+            $('.date_cell').mouseleave(function(){
+                $(".date_popup_wrap").fadeOut();        
+            });
+            $(document).click(function(){
+                //$('.event_list').slideUp('slow');
+            });
+            $('.cal-addEventBtn').on('click',function(){
+                calID = $(this).attr('id').split('-');
+                calID = calID[2];
+                var date = $('#modalAddEvent-'+calID+' .cal-event-date').val();
+                var title = $('#modalAddEvent-'+calID+' .cal-event-title').val();
+                var location = $('#modalAddEvent-'+calID+' .cal-event-location').val();
+                var startTime = $('#modalAddEvent-'+calID+' .cal-event-timeStart').val();
+                var endTime = $('#modalAddEvent-'+calID+' .cal-event-timeEnd').val();
+                var recurrence = $('#modalAddEvent-'+calID+' .cal-event-recurrence').val();
+
+                $.post('<?php echo $GLOBALS['HOST'];?>/ajax_processing/calendar_functions.php',
+                {
+                    func: 'addEvent',
+                    id: calID,
+                    date: date,
+                    title: title,
+                    location: location,
+                    startTime: startTime,
+                    endTime: endTime,
+                    recurrence: recurrence
+                },
+                function(msg ,status){
+                    if(status == 'success'){
+                        if(msg == 'ok'){
+                            var dateSplit = date.split("-");
+
+                            //reset form
+                            $('#modalAddEvent-'+calID+' .cal-event-title').val('');
+                            $('#modalAddEvent-'+calID+' .cal-event-location').val('');
+                            $('#modalAddEvent-'+calID+' .cal-event-timeStart').val($('#modalAddEvent-'+calID+' .cal-event-timeStart option:first').val());
+                            $('#modalAddEvent-'+calID+' .cal-event-timeEnd').val($('#modalAddEvent-'+calID+' .cal-event-timeEnd option:first').val());
+                            $('#modalAddEvent-'+calID+' .cal-event-recurrence').val($('#modalAddEvent-'+calID+' .cal-event-recurrence option:first').val());
+
+                            getCalendar('calendar_div_'+calID,calID,dateSplit[0],dateSplit[1]);
+                            Materialize.toast('Event "'+title+'" Created Successfully.', 8000, 'green');
+                        }else{
+                            Materialize.toast('Some problem occurred, please try again. '+msg, 8000, 'red');
+                        }
+                    }else{
+                        Materialize.toast('Some problem occurred, please try again. '+msg, 8000, 'red');
+                    }
+                });
+            });
         });
     </script>
 

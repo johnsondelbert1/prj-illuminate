@@ -61,6 +61,11 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 				}else{
 					$forms="";
 				}
+				if(isset($_POST['calendars'])&&$_POST['calendars']!=""){
+					$calendars=serialize($_POST['calendars']);
+				}else{
+					$calendars="";
+				}
 				//prep visibility POST array
 				if(isset($_POST['visible'])&&$_POST['visible']!=""){
 					if($_POST['visible'][0]!=""){
@@ -109,7 +114,7 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 				}
 				
 				$query = "UPDATE `pages` SET `content` = '{$content}', `name`='{$name}', `position`={$position}, `published`='{$published}', 
-				`issubpage`={$issub}, `parent`={$subpg}, `galleries`='{$galleries}', `doc_folder`='{$_POST['pgdocfolder']}', `forms`='{$forms}', `visible`='{$visible}', `type`='{$_POST['pgtype']}', `target`='{$_POST['target']}', 
+				`issubpage`={$issub}, `parent`={$subpg}, `galleries`='{$galleries}', `doc_folder`='{$_POST['pgdocfolder']}', `forms`='{$forms}', `calendars`='{$calendars}', `visible`='{$visible}', `type`='{$_POST['pgtype']}', `target`='{$_POST['target']}', 
 				`banner`={$banner}, `slider`={$_POST['slider']}, `url`='{$url}', `lastedited`='{$date}', `editor`={$_SESSION['user_id']}, `horiz_menu`={$horiz_menu}, `vert_menu`={$vert_menu}, 
 				`horiz_menu_visible`={$horiz_menu_visible}, `vert_menu_visible`={$vert_menu_visible} WHERE id = {$id}";
 				
@@ -122,7 +127,7 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 				}
 				
 				if(isset($_POST['sandb'])){
-					redirect_to("page_list.php");
+					redirect_to("page_list.php?success=".urlencode('Page "'.$name.'" successfully updated.'));
 				}elseif(isset($_POST['sandnewp'])){
 					redirect_to("edit_page.php?action=newpage");
 				}
@@ -165,6 +170,11 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 				}else{
 					$forms="";
 				}
+				if(isset($_POST['calendars'])&&$_POST['calendars']!=""){
+					$calendars=serialize($_POST['calendars']);
+				}else{
+					$calendars="";
+				}
 				//prep visibility POST array
 				if(isset($_POST['visible'])&&$_POST['visible']!=""){
 					if($_POST['visible'][0]!=""){
@@ -192,9 +202,9 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 				
 				if($_POST['name']!=""){
 					$query="INSERT INTO `pages` 
-					(`name`, `content`, `position`, `issubpage`, `parent`, `published`, `galleries`, `doc_folder`, `forms`, `visible`, `type`, `target`, `banner`, `slider`, `url`, `created`, `creator`, `horiz_menu`, `vert_menu`, `horiz_menu_visible`, `vert_menu_visible`) 
+					(`name`, `content`, `position`, `issubpage`, `parent`, `published`, `galleries`, `doc_folder`, `forms`, `calendars`, `visible`, `type`, `target`, `banner`, `slider`, `url`, `created`, `creator`, `horiz_menu`, `vert_menu`, `horiz_menu_visible`, `vert_menu_visible`) 
 					VALUES 
-					('{$name}', '{$content}', '{$position}', '{$issub}', '{$subpg}', {$published}, '{$galleries}', '{$_POST['pgdocfolder']}', '{$forms}', '{$visible}', '{$_POST['pgtype']}', '{$_POST['target']}', {$banner}, {$_POST['slider']}, '{$url}', '{$date}', {$_SESSION['user_id']}, {$horiz_menu}, {$vert_menu}, {$horiz_menu_visible}, {$vert_menu_visible})";
+					('{$name}', '{$content}', '{$position}', '{$issub}', '{$subpg}', {$published}, '{$galleries}', '{$_POST['pgdocfolder']}', '{$forms}', '{$calendars}', '{$visible}', '{$_POST['pgtype']}', '{$_POST['target']}', {$banner}, {$_POST['slider']}, '{$url}', '{$date}', {$_SESSION['user_id']}, {$horiz_menu}, {$vert_menu}, {$horiz_menu_visible}, {$vert_menu_visible})";
 					$result = mysqli_query( $connection, $query);
 					confirm_query($result);
 					if(isset($_POST['newpage'])){
@@ -203,7 +213,7 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 						$editedpage=mysqli_fetch_array($result);
 						redirect_to("edit_page.php?action=edit&page=".$editedpage['id']);
 					}elseif(isset($_POST['newandb'])){
-						redirect_to("page_list.php");
+						redirect_to("page_list.php?success=".urlencode('Page "'.$name.'" successfully created.'));
 					}elseif(isset($_POST['newandnewp'])){
 						redirect_to("edit_page.php?action=newpage");
 					}
@@ -340,7 +350,7 @@ if($_GET['action']=="edit"){
 		var $gallall = 'gallall';
         $('input[id="'+$gallall+'"]').change(function() {
 			var $all_check_status = $('input[id="'+$gallall+'"]').is(':checked');
-             $("#gall label").each(function(index, element) {
+             $("#page-edit-gall label").each(function(index, element) {
 				var $target = $(this).attr("for");
 				if($all_check_status!=$('input[id="'+$target+'"]').is(':checked')){
                 	$(this).trigger('click');
@@ -351,7 +361,18 @@ if($_GET['action']=="edit"){
 		var $formall = 'formall';
         $('input[id="'+$formall+'"]').change(function() {
 			var $all_check_status = $('input[id="'+$formall+'"]').is(':checked');
-             $("#form label").each(function(index, element) {
+             $("#page-edit-form label").each(function(index, element) {
+				var $target = $(this).attr("for");
+				if($all_check_status!=$('input[id="'+$target+'"]').is(':checked')){
+                	$(this).trigger('click');
+				}
+            });
+        });
+
+		var $calall = 'calall';
+        $('input[id="'+$calall+'"]').change(function() {
+			var $all_check_status = $('input[id="'+$calall+'"]').is(':checked');
+             $("#page-edit-calendars label").each(function(index, element) {
 				var $target = $(this).attr("for");
 				if($all_check_status!=$('input[id="'+$target+'"]').is(':checked')){
                 	$(this).trigger('click');
@@ -462,18 +483,12 @@ $('fixed-action-btn').on("touchstart", function (e) {
             <ul class="tabs">
                 <li class="tab col s3"><a href="#cont">Content</a></li>
                 <li class="tab col s3"><a href="#prop">Properties</a></li>
-                <li class="tab col s3"><a href="#gallery">Galleries</a></li>
-                <li class="tab col s3"><a href="#forms">Forms</a></li>
+                <li class="tab col s3"><a href="#otheritems">Other Items</a></li>
             </ul>
             <div>
             <div id="cont">
-            
-            <tr>
-  	<td colspan="5">
-    	<textarea name="content" id="content" class="text" style="width:860px; height:500px;" ><?php if(isset($_GET['page'])){echo $selpage['content'];} ?></textarea>
-    </td>
-  </tr>
-            </div>
+    			<textarea name="content" id="content" class="text" style="width:860px; height:500px;" ><?php if(isset($_GET['page'])){echo $selpage['content'];} ?></textarea>
+			</div>
                 <div id="prop">
                     <h1 style="margin:0;">Page Properties</h1><br>
                     <table width="100%" border="5" cellspacing="5" cellpadding="5" class="editpageform">
@@ -623,13 +638,13 @@ $('fixed-action-btn').on("touchstart", function (e) {
                       </tr>
                     </table>
                 </div>
-                <div id="gallery">
-                <h1 style="margin:0;">Included Galleries</h1><br>
+                <div id="otheritems">
+                <h2 style="margin:0;">Included Galleries</h2><br>
 					<?php
                         $query="SELECT * FROM `galleries` WHERE `type` = 'page' ORDER BY `id` ASC";
                         $galleryquery=mysqli_query( $connection, $query);
                         confirm_query($galleryquery);?>
-                        <div id="gall">
+                        <div id="page-edit-gall">
                           <ul>
                             	<li><input type="checkbox" id="gallall"><label for="gallall"><strong>Select all</strong></label></li>
                         <?php
@@ -645,17 +660,14 @@ $('fixed-action-btn').on("touchstart", function (e) {
                             }
                             
                             ?>
-                            <li><input type="checkbox" name="galleries[]" id="<?php echo $gallery['id']; ?>" value="<?php echo $gallery['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="<?php echo $gallery['id']; ?>"><?php echo $gallery['name']; ?></label></li> <?php } ?>
-                    	</ul>
-                    </div>
-                </div>
-                <div id="forms">
-                <h1 style="margin:0;">Included Forms</h1><br>
+                            <li><input type="checkbox" name="galleries[]" id="<?php echo $gallery['id']; ?>" value="<?php echo $gallery['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="<?php echo $gallery['id']; ?>"><?php echo $gallery['name']; ?></label></li><?php } ?>
+                    	</ul></div><br/>
+                    	<h2 style="margin:0;">Included Forms</h2><br>
 					<?php
                         $query="SELECT * FROM `forms` ORDER BY `id` ASC";
                         $formquery=mysqli_query( $connection, $query);
                         confirm_query($formquery);
-                        ?><div id="form">
+                        ?><div id="page-edit-form">
                         	<ul>
                             	<li><input type="checkbox" id="formall"><label for="formall"><strong>Select all</strong></label></li>
                         <?php
@@ -673,8 +685,33 @@ $('fixed-action-btn').on("touchstart", function (e) {
                             ?>
                             <li><input type="checkbox" name="forms[]" id="form<?php echo $form['id']; ?>" value="<?php echo $form['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="form<?php echo $form['id']; ?>"><?php echo $form['name']; ?></label></li>
                             <?php } 
-                    ?></ul></div>
-</div>
+                    ?></ul></div><br/>
+                    	<h2 style="margin:0;">Included Calendars</h2><br>
+					<?php
+                        $query="SELECT * FROM `calendars` ORDER BY `id` ASC";
+                        $calendarResult=mysqli_query( $connection, $query);
+                        confirm_query($calendarResult);
+                        ?><div id="page-edit-calendars">
+                        	<ul>
+                            	<li><input type="checkbox" id="calall"><label for="calall"><strong>Select all</strong></label></li>
+                        <?php
+                        while($calendar=mysqli_fetch_array($calendarResult)){
+                            $checked = false;
+                            if(isset($selpage['calendars'])&&$selpage['calendars']!=""){
+                                $pageCalendars=unserialize($selpage['calendars']);
+                                foreach($pageCalendars as $pageCalendarId){
+                                    if($pageCalendarId == $calendar['id']){
+                                        $checked = true;
+                                    }
+                                }
+                            }
+                            
+                            ?>
+                            <li><input type="checkbox" name="calendars[]" id="calendar<?php echo $calendar['id']; ?>" value="<?php echo $calendar['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="calendar<?php echo $calendar['id']; ?>"><?php echo $calendar['name']; ?></label></li>
+                            <?php } 
+                    ?></ul>
+                    </div>
+                </div>
             </div>
         </div>
 </form>

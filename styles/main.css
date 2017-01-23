@@ -16,10 +16,9 @@ height:100%;
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen 
 and (max-device-width : 1023px) {
-
 	.nav, #vert-td{
-	min-height:159px;
-	display:none!important;
+		min-height:159px;
+		display:none!important;
 	}
 
 	#logo, #socnet, #login-status{
@@ -31,7 +30,13 @@ and (max-device-width : 1023px) {
 	}
 
 	.header{
-	height:auto !important;
+		height:auto !important;
+	}
+
+	.blog-profile-pic{
+		visibility: hidden;
+		height: 0;
+		width: 0;
 	}
 
 	#contentwrap{
@@ -57,33 +62,16 @@ and (max-device-width : 1023px) {
 	    visibility: visible;
 	    -webkit-transition: all 0.3s ease-in-out;
 	}
-	/*html, body{
-font-size: 1em;
-}*/
-	
-/* Styles */
-}
-/* iPads (portrait and landscape) ----------- */
-@media only screen 
-and (min-device-width : 768px) 
-and (max-device-width : 1024px) {
-/* Styles */
-}
 
-/* iPads (landscape) ----------- */
-@media only screen 
-and (min-device-width : 768px) 
-and (max-device-width : 1024px) 
-and (orientation : landscape) {
-/* Styles */
-}
-
-/* iPads (portrait) ----------- */
-@media only screen 
-and (min-device-width : 768px) 
-and (max-device-width : 1024px) 
-and (orientation : portrait) {
-/* Styles */
+	.calendar_section .calendar_section{ width:219px;}
+	.calendar_section .calendar_section_top ul li{ width:30px; font-size:11px;}
+	.calendar_section .calendar_section_bot ul li{ width:30px;}
+	.calendar_section .calendar_section_bot{ width:217px;}
+	.calendar_section .calendar_section_bot ul li{ height:50px;}
+	li.date_cell div.cal-edit-btn{
+		visibility: visible;
+		right:0;
+	}
 }
 
 /* Desktops and laptops ----------- */
@@ -91,10 +79,8 @@ and (orientation : portrait) {
 and (min-width : 1024px) {
 /* Styles */
 	.mobile{
-			display:none!important;
-			
-		}
-
+		display:none!important;
+	}
 	.headericon{
 		display:none!important;
 	}
@@ -120,12 +106,44 @@ and (min-width : 1024px) {
 	    visibility: visible;
 	    -webkit-transition: all 0.3s ease-in-out;
 	}
+	.calendar_section .calendar_section{ width:530px;}
+	.calendar_section .calendar_section_top ul li{ width:74px;}
+	.calendar_section .calendar_section_bot ul li{ width:74px;}
+	.calendar_section .calendar_section_bot{ width:525px;}
+	.calendar_section .calendar_section_bot ul li{ height:50px;}
+	.date_cell:hover div.cal-edit-btn{
+			visibility: visible !important;
+			right:0 !important;
+	}
 }
 /* Large screens ----------- */
 @media only screen 
 and (min-width : 1824px) {
 }
+/* Styles */
+}
+/* iPads (portrait and landscape) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) {
+/* Styles */
+}
 
+/* iPads (landscape) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : landscape) {
+/* Styles */
+}
+
+/* iPads (portrait) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : portrait) {
+/* Styles */
+}
 /* Mobile Menu Styles */
 
 .side-nav hr{
@@ -339,10 +357,7 @@ img.a{
 
 /* Transitions */
 
-.nav,
-a,
-img,
-li {
+.nav, .nav a, .nav img, .nav li {
 	transition: .7s all;
 	-moz-transition: .7s all;
 	-webkit-transition: .7s all;
@@ -357,6 +372,9 @@ li {
 	height:auto;
 	position:fixed;
 	background-color:#FFFFFF;
+	-webkit-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.75);
+	box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.75);
 	z-index:100;
 }
 .icon{
@@ -641,243 +659,6 @@ li {
 }
 /* End Vert Nav Menu */
 
-/* SpryTabbedPanels.css - version 0.6 - Spry Pre-Release 1.6.1 */
-
-/* Copyright (c) 2006. Adobe Systems Incorporated. All rights reserved. */
-
-/* Horizontal Tabbed Panels
- *
- * The default style for a TabbedPanels widget places all tab buttons
- * (left aligned) above the content panel.
- */
-
-/* This is the selector for the main TabbedPanels container. For our
- * default style, this container does not contribute anything visually,
- * but it is floated left to make sure that any floating or clearing done
- * with any of its child elements are contained completely within the
- * TabbedPanels container, to minimize any impact or undesireable
- * interaction with other floated elements on the page that may be used
- * for layout.
- *
- * If you want to constrain the width of the TabbedPanels widget, set a
- * width on the TabbedPanels container. By default, the TabbedPanels widget
- * expands horizontally to fill up available space.
- *
- * The name of the class ("TabbedPanels") used in this selector is not
- * necessary to make the widget function. You can use any class name you
- * want to style the TabbedPanels container.
- */
-.TabbedPanels {
-	overflow: hidden;
-	margin: 0px;
-	padding: 0px;
-	clear: none;
-	width: 100%; /* IE Hack to force proper layout when preceded by a paragraph. (hasLayout Bug)*/
-}
-
-/* This is the selector for the TabGroup. The TabGroup container houses
- * all of the tab buttons for each tabbed panel in the widget. This container
- * does not contribute anything visually to the look of the widget for our
- * default style.
- *
- * The name of the class ("TabbedPanelsTabGroup") used in this selector is not
- * necessary to make the widget function. You can use any class name you
- * want to style the TabGroup container.
- */
-.TabbedPanelsTabGroup {
-	margin: 0px;
-	padding: 0px;
-}
-
-/* This is the selector for the TabbedPanelsTab. This container houses
- * the title for the panel. This is also the tab "button" that the user clicks
- * on to activate the corresponding content panel so that it appears on top
- * of the other tabbed panels contained in the widget.
- *
- * For our default style, each tab is positioned relatively 1 pixel down from
- * where it wold normally render. This allows each tab to overlap the content
- * panel that renders below it. Each tab is rendered with a 1 pixel bottom
- * border that has a color that matches the top border of the current content
- * panel. This gives the appearance that the tab is being drawn behind the
- * content panel.
- *
- * The name of the class ("TabbedPanelsTab") used in this selector is not
- * necessary to make the widget function. You can use any class name you want
- * to style this tab container.
- */
-.TabbedPanelsTab {
-	position: relative;
-	float: left;
-	padding: 6px 10px 6px 10px;
-	margin: 0px 5px 0px 0px;
-	font: 0.75em 'Roboto';
-	background-color: #333;
-	color:#ccc;
-	list-style: none;
-	-moz-user-select: none;
-	-khtml-user-select: none;
-	cursor: pointer;
-	outline: none;
-}
-
-/* This selector is an example of how to change the appearnce of a tab button
- * container as the mouse enters it. The class "TabbedPanelsTabHover" is
- * programatically added and removed from the tab element as the mouse enters
- * and exits the container.
- */
-.TabbedPanelsTabHover {
-	background-color: #CCC;
-}
-
-/* This selector is an example of how to change the appearance of a tab button
- * container after the user has clicked on it to activate a content panel.
- * The class "TabbedPanelsTabSelected" is programatically added and removed
- * from the tab element as the user clicks on the tab button containers in
- * the widget.
- *
- * As mentioned above, for our default style, tab buttons are positioned
- * 1 pixel down from where it would normally render. When the tab button is
- * selected, we change its bottom border to match the background color of the
- * content panel so that it looks like the tab is part of the content panel.
- */
-.TabbedPanelsTabSelected {
-}
-
-/* This selector is an example of how to make a link inside of a tab button
- * look like normal text. Users may want to use links inside of a tab button
- * so that when it gets focus, the text *inside* the tab button gets a focus
- * ring around it, instead of the focus ring around the entire tab.
- */
-.TabbedPanelsTab a {
-	color: black;
-	text-decoration: none;
-}
-
-/* This is the selector for the ContentGroup. The ContentGroup container houses
- * all of the content panels for each tabbed panel in the widget. For our
- * default style, this container provides the background color and borders that
- * surround the content.
- *
- * The name of the class ("TabbedPanelsContentGroup") used in this selector is
- * not necessary to make the widget function. You can use any class name you
- * want to style the ContentGroup container.
- */
-.TabbedPanelsContentGroup {
-	clear: both;
-	background-color: #EEE;
-}
-
-/* This is the selector for the Content panel. The Content panel holds the
- * content for a single tabbed panel. For our default style, this container
- * provides some padding, so that the content is not pushed up against the
- * widget borders.
- *
- * The name of the class ("TabbedPanelsContent") used in this selector is
- * not necessary to make the widget function. You can use any class name you
- * want to style the Content container.
- */
-.TabbedPanelsContent {
-	overflow: hidden;
-	padding: 4px;
-}
-
-/* This selector is an example of how to change the appearnce of the currently
- * active container panel. The class "TabbedPanelsContentVisible" is
- * programatically added and removed from the content element as the panel
- * is activated/deactivated.
- */
-.TabbedPanelsContentVisible {
-}
-
-/* Vertical Tabbed Panels
- *
- * The following rules override some of the default rules above so that the
- * TabbedPanels widget renders with its tab buttons along the left side of
- * the currently active content panel.
- *
- * With the rules defined below, the only change that will have to be made
- * to switch a horizontal tabbed panels widget to a vertical tabbed panels
- * widget, is to use the "VTabbedPanels" class on the top-level widget
- * container element, instead of "TabbedPanels".
- */
-
-.VTabbedPanels {
-	overflow: hidden;
-	zoom: 1;
-}
-
-/* This selector floats the TabGroup so that the tab buttons it contains
- * render to the left of the active content panel. A border is drawn around
- * the group container to make it look like a list container.
- */
-.VTabbedPanels .TabbedPanelsTabGroup {
-	float: left;
-	width: 10em;
-	height: 20em;
-	background-color: #EEE;
-	position: relative;
-	border-top: solid 1px #999999;
-	border-right: solid 1px #999999;
-	border-left: solid 1px #CCC;
-	border-bottom: solid 1px #CCC;
-}
-
-/* This selector disables the float property that is placed on each tab button
- * by the default TabbedPanelsTab selector rule above. It also draws a bottom
- * border for the tab. The tab button will get its left and right border from
- * the TabGroup, and its top border from the TabGroup or tab button above it.
- */
-.VTabbedPanels .TabbedPanelsTab {
-	float: none;
-	margin: 0px;
-	border-top: none;
-	border-left: none;
-	border-right: none;
-}
-
-/* This selector disables the float property that is placed on each tab button
- * by the default TabbedPanelsTab selector rule above. It also draws a bottom
- * border for the tab. The tab button will get its left and right border from
- * the TabGroup, and its top border from the TabGroup or tab button above it.
- */
-.VTabbedPanels .TabbedPanelsTabSelected {
-	background-color: #EEE;
-	border-bottom: solid 1px #999999;
-}
-
-/* This selector floats the content panels for the widget so that they
- * render to the right of the tabbed buttons.
- */
-.VTabbedPanels .TabbedPanelsContentGroup {
-	clear: none;
-	float: left;
-	padding: 0px;
-	width: 30em;
-	height: 20em;
-}
-
-/* Styles for Printing */
-@media print {
-.TabbedPanels {
-	overflow: visible !important;
-}
-.TabbedPanelsContentGroup {
-	display: block !important;
-	overflow: visible !important;
-	height: auto !important;
-}
-.TabbedPanelsContent {
-	overflow: visible !important;
-	display: block !important;
-	clear:both !important;
-}
-.TabbedPanelsTab {
-	 overflow: visible !important;
-	 display: block !important;
-	 clear:both !important;
-}
-}
-/* End SpryTabbedPanels */
 option{
 	background-color:#666666;
 	border:2px solid #222222;
@@ -948,6 +729,14 @@ div.profile{
 	-moz-box-shadow:    inset 0 0 10px #000000;
 	-webkit-box-shadow: inset 0 0 10px #000000;
 	box-shadow:         inset 0 0 10px #000000;
+}
+div#profile-picture{
+	margin-left: auto;
+	margin-right: auto;
+	height: 100px;
+	width: 100px;
+	padding: 10px;
+	border-radius: 5px;
 }
 div.staffBlock{
 	margin:10px;
@@ -1572,4 +1361,112 @@ div.rank{
 	width:180px !important;}
 .staff .card-reveal {
 	padding:0 !important;
+}
+/*Calendar*/
+.none{ display:none;}
+.dropdown{color: #FFFFFF;font-size:17px;}
+.calendar_section{ width:700px; margin:30px auto 0;}
+.calendar_section h2{ background-color:#efefef; color:#444444; font-size:17px; text-align:center; line-height:40px;}
+.calendar_section h2 a{ color:#F58220; float:none;}
+.calendar_section .calendar_section_top{ width:100%; float:left; margin-top:20px;}
+.calendar_section .calendar_section_top ul{padding:0; list-style-type:none;}
+.calendar_section .calendar_section_top ul li{ float:left; display:block; width:99px; border-right:1px solid #fff;  text-align:center; font-size:14px; min-height:0; background-color:#fff; box-shadow:none; margin:0; padding:0;}
+.calendar_section .calendar_section_bot{ width:100%; margin-top:20px; float:left; border-left:1px solid #ccc; border-bottom:1px solid #ccc;}
+.calendar_section .calendar_section_bot ul{ margin:0; padding:0; list-style-type:none;}
+.calendar_section .calendar_section_bot ul li{ float:left; width:99px; height:80px; text-align:center; border-top:1px solid #ccc; border-right:1px solid #ccc; min-height:0; background:#FFF; box-shadow:none; margin:0; padding:0; position:relative;}
+.calendar_section .calendar_section_bot ul li span.day-number{ margin-top:3px; float:left; margin-left:7px; text-align:center; font-weight: bold;}
+.calendar_section .calendar_section_bot ul li p.cell-event-item{margin-left: 3px; float:left; text-align:left; text-overflow: clip; white-space: nowrap; font-size: 12px;}
+
+.grey{ background-color:#DDDDDD !important;}
+.light_sky{ background-color:#B9FFFF !important;}
+
+/*========== Hover Popup ===============*/
+.date_cell { cursor: pointer; cursor: hand; overflow: hidden;}
+.date_cell:hover { background: #DDDDDD !important; }
+
+.date-cell-viewevent{
+	width: 100%;
+	height: 100%;
+}
+.date_popup_wrap {
+	position: absolute;
+	width: 143px;
+	height: 115px;
+	z-index: 9999;
+	top: -115px;
+	left:-55px;
+	background: transparent url(../images/add-new-event.png) no-repeat top left;
+	color: #666 !important;
+}
+.events_window {
+	overflow: hidden;
+	overflow-y: auto;
+	width: 133px;
+	height: 115px;
+	margin-top: 28px;
+	margin-left: 25px;
+}
+.event_wrap {
+	margin-bottom: 10px; padding-bottom: 10px;
+	border-bottom: solid 1px #E4E4E7;
+	font-size: 12px;
+	padding: 3px;
+}
+.event_list {
+	text-align: left;
+	padding: 3px;
+}
+.event_list li{
+	list-style-type: disc;
+	border-bottom: 2px dashed #000000;
+}
+.event_list ul ul{
+	margin-left: 1em;
+}
+.event_list ul ul li{
+	list-style-type: square;
+	border-bottom: none;
+}
+.event_list h2{
+	text-align: center;
+	padding: 3px;
+}
+.cal-delete-event{
+	float:right;
+	top:0;
+	color: #039BE5;
+	cursor: pointer;
+}
+.cal-delete-event:hover{
+	text-decoration: underline;
+}
+.date_window {
+	margin-top:20px;
+	margin-bottom: 2px;
+	padding: 5px;
+	font-size: 16px;
+	margin-left:9px;
+	margin-right:14px
+}
+.popup_event {
+	margin-bottom: 2px;
+	padding: 2px;
+	font-size: 16px;
+	width:100%;
+}
+.popup_event a {color: #000000 !important;}
+.packeg_box a {color: #F58220;float: right;}
+div.cal-edit-btn{
+	height: 30px;
+	width: 30px;
+	position: absolute;
+	float: left;
+	bottom: 0;
+	right: -32px;
+	border-top-left-radius: 5px;
+	background-color: #FFFFFF;
+	color: #0091C7;
+	font-size: 20px;
+	visibility: hidden;
+	-webkit-transition: all 0.2s ease-in-out;
 }

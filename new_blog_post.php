@@ -46,9 +46,12 @@ if(isset($_POST['submit'])){
 		confirm_query($result);
 		
 		//Make folders for gallery
-		mkdir(USER_DIR."blog_galleries/".$lastid);
-		mkdir(USER_DIR."blog_galleries/".$lastid."/gallery");
-		mkdir(USER_DIR."blog_galleries/".$lastid."/gallery-thumbs");
+		mkdir(USER_DIR."blog-galleries/".$lastid);
+		mkdir(USER_DIR."blog-galleries/".$lastid."/gallery");
+		mkdir(USER_DIR."blog-galleries/".$lastid."/gallery-thumbs");
+
+		//Send notifications to subbed users, Linux only atm
+		notify_users('blog', 1, $user_info['id']);
 		
 		redirect_to($GLOBALS['HOST']."/edit_blog_post?post=".$lastid."&success=".urlencode("Blog posted!"));
 	}else{

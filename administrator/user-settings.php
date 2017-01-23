@@ -192,16 +192,20 @@ if(isset($_POST['submit'])){
 		}
 
 		$email_activate = (isset($_POST['email_activate']))? 1 : 0;
+		$user_profile_pictures = (isset($_POST['user_profile_pictures']))? 1 : 0;
+		$user_profiles_visible_loggedin = (isset($_POST['user_profiles_visible_loggedin']))? 1 : 0;
 
 		$query="UPDATE `site_info` SET 
-			`user_creation` = '{$_POST['new_user']}', `require_email_activation` = {$email_activate}
+			`user_creation` = '{$_POST['new_user']}', `require_email_activation` = {$email_activate}, `user_profile_pictures` = {$user_profile_pictures}, `user_profiles_visible_loggedin` = {$user_profiles_visible_loggedin}
 			WHERE `id` = 1";
 		if($result=mysqli_query($connection, $query)){
+			//Set unapproved users to approved
 			if($_POST['new_user']!='approval'){
 				$query="UPDATE `users` SET 
 					`approved_admin` = 1 WHERE `approved_admin` = 0";
 				mysqli_query($connection, $query);
 			}
+			//Turn off pending email activations
 			if($email_activate == 0){
 				$query="UPDATE `users` SET 
 					`activated_email` = 1, `activation_code` = '' WHERE `activated_email` = 0";
@@ -275,7 +279,11 @@ span:hover{
 <input name="new_user" type="radio" value="approval" id="approval"<?php if($user_settings['user_creation']=='approval'){echo ' checked';} ?> /><label for="approval">Approval</label><br/>
 <input name="new_user" type="radio" value="any" id="any"<?php if($user_settings['user_creation']=='any'){echo ' checked';} ?> /><label for="any">Any</label><br/>
 <h2>Require Email Activation</h2>
-<input name="email_activate" type="checkbox" <?php if($user_settings['require_email_activation']){echo ' checked';} ?> id="email" /><label for="email"></label><br/>
+<input name="email_activate" type="checkbox" <?php if($user_settings['require_email_activation']){echo ' checked';} ?> id="email" /><label for="email"></label>
+<h2>Enable User Profile Pictures</h2>
+<input name="user_profile_pictures" type="checkbox" <?php if($user_settings['user_profile_pictures']){echo ' checked';} ?> id="user_profile_pictures" /><label for="user_profile_pictures"></label>
+<h2>User Profiles Visible to Logged In Only</h2>
+<input name="user_profiles_visible_loggedin" type="checkbox" <?php if($user_settings['user_profiles_visible_loggedin']){echo ' checked';} ?> id="user_profiles_visible_loggedin" /><label for="user_profiles_visible_loggedin"></label>
 <table width="100%" border="0" cellspacing="10" style="text-align:center;" id="fieldtable">
 	<tr>
 		<td><h2>Custom User Fields</h2></td>

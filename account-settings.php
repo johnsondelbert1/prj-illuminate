@@ -48,6 +48,30 @@ $noval="--";
 			$error="Required field left blank.";
 		}
 	}
+	if(isset($_POST['uploadprofile'])){
+		if($site_info['user_profile_pictures'] == 1){
+			$output_dir = USER_DIR.'user-assets/'.$_SESSION['user_id'].'/profile/';
+			foreach (scandir($output_dir) as $item) {
+				if ($item == '.' || $item == '..') continue;
+				unlink($output_dir.DIRECTORY_SEPARATOR.$item);
+			}
+			$newFileName = randstring();
+			$message = upload($_FILES, $output_dir, 8388608, array('.jpeg','.jpg','.gif','.png','.JPEG','.JPG','.GIF','.PNG'), $newFileName);
+			$extension = substr($_FILES["file"]["name"], strripos($_FILES["file"]["name"], '.')); // Get extension of uploaded file for use in making thumbnail
+
+			if(strpos($message, ' successfully.')){
+				make_thumb($output_dir.$newFileName.$extension, $output_dir.$newFileName."_thumb".$extension, 100, 100, 'fixed');
+			}
+		}
+	}
+	if(isset($_GET['deleteprofilepic'])&&$_GET['deleteprofilepic'] == 'true'){
+		$img_dir = USER_DIR.'user-assets/'.$_SESSION['user_id'].'/profile/';
+		foreach (scandir($img_dir) as $item) {
+			if ($item == '.' || $item == '..') continue;
+			unlink($img_dir.DIRECTORY_SEPARATOR.$item);
+		}
+		$success='Deleted Profile Picture';
+	}
 	if(isset($_POST['chnguser'])){
 		$newuser=$_POST['newuser'];
 		if($newuser != "--"){
@@ -73,6 +97,7 @@ $noval="--";
 			$error="\"--\" not allowed.";
 		}
 	}
+
 	if(isset($_POST['chngemail'])){
 		$newemail=$_POST['newemail'];
 		if(filter_var($newemail,FILTER_VALIDATE_EMAIL)){
@@ -89,6 +114,16 @@ $noval="--";
 		}else{
 			$error="Invalid Email.";
 		}
+	}
+
+	if(isset($_POST['clearsubs'])){
+		$clearsubs = serialize(array('blog' => array(), 'forum' => array(), 'thread' => array()));
+		$query="UPDATE `users` SET 
+				`subscriptions` = '{$clearsubs}' 
+				WHERE `id` = {$_SESSION['user_id']}";
+		$result=mysqli_query($connection, $query);
+		confirm_query($result);
+		$success="Your subscriptions have been cleared";
 	}
 
 	if(isset($_POST['save_other_data'])){
@@ -216,10 +251,18 @@ $pgsettings = array(
 	"title" => "Account Settings",
 	"pageselection" => false,
 	"nav" => true,
-	"banner" => 1,
+	"banner" => 0,
 	"use_google_analytics" => 1,
 );
 require_once("includes/begin_html.php");
+
+//Gets whether the user has a profile picture set or not
+$existing_profile_pic = scandir(USER_DIR.'user-assets/'.$_SESSION['user_id'].'/profile/');
+if(isset($existing_profile_pic[2])){
+	$existing_profile_pic = true;
+}else{
+	$existing_profile_pic = false;
+}
 ?>
 <script type="text/javascript" src="tinymce/js/tinymce/tinymce.min.js"></script>
 <script type="text/javascript">
@@ -238,20 +281,71 @@ require_once("includes/begin_html.php");
 		toolbar1: "insertfile undo redo | bold italic | bullist numlist outdent indent | link image",
 		image_advtab: true
 	});
+
+	var cropper;
 	
-  	var placeholder = 'This is a line \nthis should be a new line';
-	$('#analytics').attr('value', placeholder);
-	
-	$('#analytics').focus(function(){
-		if($(this).val() === placeholder){
-			$(this).attr('value', '');
-		}
-	});
-	
-	$('#analytics').blur(function(){
-		if($(this).val() ===''){
-			$(this).attr('value', placeholder);
-		}    
+	<?php
+	if(isset($message) && strpos($message, ' successfully.')){ ?>
+	    $(document).ready(function(){
+	    	$('#modalThumb').openModal({
+	    		ready: function(modal, trigger){
+					cropper = $('#profilethumb').cropper({
+						aspectRatio: 1 / 1,
+						viewMode: 2,
+						movable: false,
+						zoomable: false,
+						scalable: false,
+						autoCropArea: 0.8,
+						minCropBoxWidth: 100,
+						minCropBoxHeight: 100,
+						strict: false,
+					});
+	    		}
+	    	});
+	    });
+	<?php } ?>
+	$(document).ready(function () {
+		$('.thumbmodal-trigger').leanModal({
+    		ready: function(modal, trigger){
+				cropper = $('#profilethumb').cropper({
+					aspectRatio: 1 / 1,
+					viewMode: 2,
+					movable: false,
+					zoomable: false,
+					scalable: false,
+					autoCropArea: 0.8,
+					minCropBoxWidth: 100,
+					minCropBoxHeight: 100,
+					strict: false,
+				});
+    		}
+		});
+
+		//AJAX for updating thumbnail
+		$("#update-button-image").on("click", function(){
+			$('#update-button-image').html('<img src="<?php echo $GLOBALS['HOST']; ?>/images/ajax-load.gif" style="margin-top:10px;padding-left:11px;padding-right:11px;"/>');
+			var cropData = cropper.cropper('getData', true);
+		    $.post("<?php echo $GLOBALS['HOST']; ?>/ajax_processing/profile_thumb.php",
+		    {
+		        off_x: cropData['x'],
+		        off_y: cropData['y'],
+		        width: cropData['width'],
+		        height: cropData['height'],
+		    },
+		    function(data, status){
+		        if(status == 'success'){
+		        	if(data == 'success'){
+		        		Materialize.toast('Successfully updated profile thumbnail', 8000, 'green');
+		        		$('#currentThumb').attr("src", $('#currentThumb').attr("src") + "?r="+new Date().getTime());
+		        	}else{
+		        		Materialize.toast('An error with the image has occured. '+ data, 8000, 'red');
+		        	}
+		        }else{
+		        	Materialize.toast('An error has occured. Try again later.', 8000, 'red');
+		        }
+		        $('#update-button-image').html('Update');
+		    });
+		});
 	});
 
 </script>
@@ -285,6 +379,24 @@ require_once("includes/begin_html.php");
 </div>
 </div>
 
+<?php if($site_info['user_profile_pictures'] == 1){?>
+
+<div class="card">
+<div class="row title">
+<div class="col s12"><h5>Profile Picture</h5></div>
+</div>
+<div class="container">
+<form action="account-settings" method="post" enctype="multipart/form-data">
+<div class="row">
+    <div class="col s9">Choose picture (Max 8MB):<input type="file" name="file" id="file" accept="image/*" /></div>
+    <div class="col s3"><img id="currentThumb" src="<?php echo get_user_profile_pic($_SESSION['user_id']); ?>" alt="Profile Picture" /><?php if($existing_profile_pic){ ?><br/><a class="thumbmodal-trigger" href="#modalThumb">[Edit Thumbnail]</a><br/><a href="<?php echo $GLOBALS['HOST'].'/account-settings?deleteprofilepic=true' ?>">[Delete Picture]</a><?php } ?></div>
+    <div class="col s9"><input type="submit" name="uploadprofile" value="Upload" class="green btn"/></div>
+  </div>
+</form>
+</div>
+</div>
+<?php } ?>
+
 <div class="card">
 <div class="row title">
 <div class="col s12"><h5>Change Username</h5></div>
@@ -310,6 +422,19 @@ require_once("includes/begin_html.php");
     <div class="col s12 l3">New Email:</div>
     <div class="col s12 l9"><input type="text" name="newemail" class="text" maxlength="128"/></div>
     <div class="col offset-s6 s6 l3"><input type="submit" name="chngemail" value="Save" class="green btn"/></div>
+</div>
+</form>
+</div>
+</div>
+
+<div class="card">
+<div class="row title">
+<div class="col s12"><h5>Subscriptions</h5></div>
+</div>
+<div class="container">
+<form action="account-settings" method="post">
+<div class="row">
+    <div class="col offset-s6 s6 l3"><input type="submit" name="clearsubs" value="Delete All Subscriptions" class="green btn"/></div>
 </div>
 </form>
 </div>
@@ -410,7 +535,33 @@ require_once("includes/begin_html.php");
 </div>
 </form>
 </div>
-
+<?php if($existing_profile_pic && $site_info['user_profile_pictures']){
+	$profile_dir = USER_DIR."user-assets/".$_SESSION['user_id']."/profile/";
+	if(file_exists($profile_dir)){
+		$profile_pic = scandir($profile_dir);
+		if(isset($profile_pic[2])){
+		    $profile_pic = $profile_pic[2];
+		}
+	}
+	?>
+<!-- Image editor popup -->
+<div id="modalThumb" class="modal">
+	<div class="modal-content" style="text-align:center;">
+		<h4>Edit Thumbnail</h4>
+		<div style="width: 100%; max-height: 500px;">
+			<img id="profilethumb" width="400" style="max-width:100%;" src="<?php echo USER_DIR_URL.'user-assets/'.$_SESSION['user_id'].'/profile/'.$profile_pic; ?>" />
+		</div>
+	</div>
+	<div class="modal-footer">
+		<div class="row right">
+			<div class="col l12 s12">
+				<a href="#!" class="modal-close waves-effect waves-red btn red" style="margin:10px;">Cancel</a>
+				<a href="#!" id="update-button-image" class="modal-close waves-effect waves-green btn green" style="margin:10px;">Update</a>
+			</div>
+		</div>
+	</div>
+</div>
+<?php } ?>
 <?php
 	require_once("includes/end_html.php");
 ?>

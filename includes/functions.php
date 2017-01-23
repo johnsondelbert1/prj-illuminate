@@ -1,6 +1,10 @@
 <?php
 require_once("session.php");
 require_once("globals.php");
+//calendar
+if(file_exists('ajax_processing/calendar_functions.php')){
+	include_once('ajax_processing/calendar_functions.php');
+}
 
 //Check PHP version
 if (version_compare(phpversion(), '5.5.0', '<')) {
@@ -333,6 +337,11 @@ $blank_permissions = array(
 		"edit_form" => array("value" => 0, "disp_name" => "Edit Forms", "description" => "Enables members of this rank to edit existing forms."),
 		"delete_form" => array("value" => 0, "disp_name" => "Delete Forms", "description" => "Enables members of this rank to delete forms."),
 	),
+	"Calendars" => array(
+		"add_delete_calendar" => array("value" => 0, "disp_name" => "Add & Delete Calendars", "description" => "Enables members of this rank to add and delete calendars."),
+		"add_event" => array("value" => 0, "disp_name" => "Add Events", "description" => "Enables members of this rank to add calendar events."),
+		"delete_event" => array("value" => 0, "disp_name" => "Delete Events", "description" => "Enables members of this rank to delete calendar events."),
+	),
 	"Website" => array(
 		"cpanel_access" => array("value" => 0, "disp_name" => "CPanel Access", "description" => "Enables members of this rank to access the admin CPanel."),
 		"unpublished_access" => array("value" => 0, "disp_name" => "Unpublished Access", "description" => "Enables members of this rank to access the website when Unpublished."),
@@ -447,30 +456,35 @@ function get_user_permission($u_id, $perm_group, $perm){
 	}
 }
 
+function sanitizeString($str){
+	global $connection;
+	return mysqli_real_escape_string($connection, htmlspecialchars($str));
+}
+
 function canView($visibleArr){
 	global $user_info;
-	$dispPage=false;
+	$isVisible=false;
 	switch ($visibleArr[0]) {
 		case 'any':
-			$dispPage=true;
+			$isVisible=true;
 			break;
 		case 'loggedin':
 			if(logged_in()){
-				$dispPage=true;
+				$isVisible=true;
 			}
 			break;
 		case 'loggedout':
 			if(!logged_in()){
-				$dispPage=true;
+				$isVisible=true;
 			}
 			break;
 		default:
 			if(in_array($user_info['rank'], $visibleArr)){
-				$dispPage=true;
+				$isVisible=true;
 			}
 			break;
 	}
-	return $dispPage;
+	return $isVisible;
 }
 
 function get_color($color){
@@ -486,6 +500,20 @@ function get_user($id){
 	$query="SELECT * FROM `users` WHERE `id` = {$id}";
 	$result=mysqli_query( $connection, $query);
 	return $user_info=mysqli_fetch_array($result);
+}
+
+function get_user_profile_pic($id){
+	$profile_dir = USER_DIR."user-assets/".$id."/profile/";
+	if(file_exists($profile_dir)){
+		$profile_pic = scandir($profile_dir);
+		if(isset($profile_pic[3])){
+		    return $GLOBALS['HOST'].'/'.$profile_dir.$profile_pic[3];
+		}else{
+		    return $GLOBALS['HOST'].'/'."images/profile_default_100.png";
+		}
+	}else{
+		return $GLOBALS['HOST'].'/'."images/profile_default_100.png";
+	}
 }
 
 function randstring($length = 16) {
@@ -520,6 +548,9 @@ function del_acc($userid){
 				WHERE `uid` =  '{$userid}'";
 		$result=mysqli_query($connection, $query);
 		confirm_query($result);
+
+		rrmdir('../'.USER_DIR.'user-assets/'.$userid);
+
 		return true;
 	}else{
 		return false;
@@ -600,6 +631,15 @@ function verify_login($user){
 	}
 
 	return array($login_flag, $login_msg);
+}
+
+function echo_subscription_checkbox($type, $id){
+	if(logged_in()){
+		global $user_info;
+		$subscriptions = unserialize($user_info['subscriptions']);
+		$checked = (in_array($id, $subscriptions[$type])) ? true : false;
+		?><input type="checkbox" class="update-check-subscription" id="sub_<?php echo $type.'_'.$id?>" name="upd_subscription[]"<?php if($checked){echo ' checked';} ?> /><label for="sub_<?php echo $type.'_'.$id?>"></label><?php
+	}
 }
 
 function order_doc_files($dir){
@@ -801,15 +841,19 @@ function CheckGalleryFiles($gallID, $cpanel = false){
 	}
 }
 
-function upload($files, $directory ,$maxfilesize, $allowed_file_types = false){
+function upload($files, $directory ,$maxfilesize, $allowed_file_types = false, $new_file_name = ""){
 	$filename = $files["file"]["name"];
-	$file_basename = substr($filename, 0, strripos($filename, '.')); // get file extention
-	$file_ext = substr($filename, strripos($filename, '.')); // get file name
+	$file_basename = substr($filename, 0, strripos($filename, '.')); // get file name
+	$file_ext = substr($filename, strripos($filename, '.')); // get file extention
 	$filesize = $files["file"]["size"];
  
 	if (!empty($file_basename)) {
  		// rename file
-		$newfilename = str_replace(" ", "_", $files["file"]["name"]);
+ 		if($new_file_name == ""){
+			$newfilename = str_replace(" ", "_", $files["file"]["name"]);
+		}else{
+			$newfilename = $new_file_name.$file_ext;
+		}
 		if (((is_array($allowed_file_types)&&in_array($file_ext,$allowed_file_types))||$allowed_file_types == false)) {
 			if ($filesize < $maxfilesize) {	
 				if (file_exists($directory . $newfilename)) {		
@@ -817,9 +861,9 @@ function upload($files, $directory ,$maxfilesize, $allowed_file_types = false){
 					$message = "You have already uploaded this file.</h2>";			
 				} else {		
 					if(move_uploaded_file($files["file"]["tmp_name"], $directory.$newfilename)){
-						$message = "\"".$newfilename."\" was uploaded successfully.";
+						$message = "\"".$filename."\" was uploaded successfully.";
 					}else{
-						$message = "\"".$newfilename."\" was not uploaded successfully.";
+						$message = "\"".$filename."\" was not uploaded successfully.";
 					}
 				}
 			}else{
@@ -979,6 +1023,60 @@ function nav_button($page){
 	echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($page['name']);
 	?>" <?php if($page['target']!="_self"){echo 'target="'.$page['target'].'"';} ?>><?php echo $page['name'];?></a>
 <?php
+}
+
+function notify_users($subType,$subId,$poster){
+	global $connection;
+
+	$mailList = array();
+
+	$query = "SELECT * FROM `users`";
+	$result = mysqli_query($connection, $query);
+	confirm_query($result);
+	while ($userData = mysqli_fetch_array($result)) {
+		$subscriptions = unserialize($userData['subscriptions']);
+		if(in_array($subId, $subscriptions[$subType])&&$userData['id']!=$poster){
+			array_push($mailList, $userData['email']);
+		}
+	}
+
+	if(count($mailList) > 0){
+		//$to = implode(',', $mailList);
+
+		$headers  = 'MIME-Version: 1.0' . "\r\n";
+		$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+		$headers .= "From: no-reply@".$_SERVER['HTTP_HOST'].PHP_EOL;
+
+		switch ($subType) {
+			case 'blog':
+				$subject = 'New Blog Post at '.$GLOBALS['site_info']['name'];
+				$email_message = 'A new post has been made in the blog!<br />';
+				$email_message .= 'View the post here: <a href="'.$GLOBALS['HOST'].'/page/'.$GLOBALS['blog_page'].'">'.$GLOBALS['HOST'].'/page/'.$GLOBALS['blog_page'].'</a>';
+				break;
+			
+			case 'forum':
+				$subject = 'New Forum Post at '.$GLOBALS['site_info']['name'];
+				$email_message = 'A new post has been made in a forum you\'ve subscribed!<br />';
+				$email_message .= 'View the post here: <a href="'.$GLOBALS['HOST'].'/view_forum?forum='.$subId.'">'.$GLOBALS['HOST'].'/view_forum?forum='.$subId.'</a>';
+				break;
+			
+			case 'thread':
+				$subject = 'New Thread Post at '.$GLOBALS['site_info']['name'];
+				$email_message = 'A new post has been made in a forum thread you\'ve subscribed to!<br />';
+				$email_message .= 'View the post here: <a href="'.$GLOBALS['HOST'].'/view_thread?thread='.$subId.'">'.$GLOBALS['HOST'].'/view_thread?thread='.$subId.'</a>';
+				break;
+
+			default:
+				//nothing
+				break;
+		}
+		foreach ($mailList as $email) {
+			mail($email, $subject, $email_message, $headers);
+		}
+	}
+/*		if (substr(php_uname(), 0, 7) != "Windows"){
+			exec(PHP_BINARY.' '.realpath('ajax_processing/notify_users.php').' blog '.$lastid." ".$user_info['id']." > /dev/null 2>&1");
+		}*/
 }
 
 function nav($position, $pgselection){
@@ -1522,18 +1620,17 @@ function slider($slider_id){
 }
 
 /* function:  generates thumbnail */
-function make_thumb($src,$dest,$desired_width,$desired_height,$resizeType = 'static') {
+function make_thumb($src,$dest,$desired_width,$desired_height,$resizeType = 'fixed') {
+	ini_set ('gd.jpeg_ignore_warning', 1);
 	//Get file extension
-	$extention = basename(substr(strrchr($src,'.'),1));
+	$extention = basename(substr(strrchr(strtolower($src),'.'),1));
 	/* read the source image */
-	if($extention=="jpg" || $extention=="jpeg"){
-		$source_image = imagecreatefromjpeg($src);
-	}elseif($extention=="gif"){
-		$source_image = imagecreatefromgif($src);
-	}elseif($extention=="png"){
-		$source_image = imagecreatefrompng($src);
-	}else{
-		return "Bad Extension";
+	switch ($extention) {
+		case 'jpg': $source_image = imagecreatefromjpeg($src); break;
+		case 'jpeg': $source_image = imagecreatefromjpeg($src); break;
+		case 'gif': $source_image = imagecreatefromgif($src); break;
+		case 'png': $source_image = imagecreatefrompng($src); break;
+		default: return "Unsupported Image Type"; break;
 	}
 	$width = imagesx($source_image);
 	$height = imagesy($source_image);
@@ -1542,7 +1639,7 @@ function make_thumb($src,$dest,$desired_width,$desired_height,$resizeType = 'sta
 	switch ($resizeType) {
 		case 'fixed':
 			$targetWidth = $desired_width;
-		$targetHeight = $desired_height;
+			$targetHeight = $desired_height;
 			break;
 		case 'scale_height':
 			$ratio = round($width / $height ,2);
@@ -1571,12 +1668,11 @@ function make_thumb($src,$dest,$desired_width,$desired_height,$resizeType = 'sta
 	}
 	imagecopyresampled($virtual_image,$source_image,0,0,0,0,$targetWidth,$targetHeight,$width,$height);
 	/* create the physical thumbnail image to its destination */
-	if($extention=="jpg" || $extention=="jpeg"){
-		imagejpeg($virtual_image,$dest);
-	}elseif($extention=="gif"){
-		imagegif($virtual_image,$dest);
-	}elseif($extention=="png"){
-		imagepng($virtual_image,$dest);
+	switch ($extention) {
+		case 'jpg': imagejpeg($virtual_image,$dest); break;
+		case 'jpeg': imagejpeg($virtual_image,$dest); break;
+		case 'gif': imagegif($virtual_image,$dest); break;
+		case 'png': imagepng($virtual_image,$dest); break;
 	}
 }
 
