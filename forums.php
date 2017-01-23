@@ -57,6 +57,9 @@ $(document).ready(function () {
   <tr>
     <th class="forumtitle" colspan="2">Forum</th>
     <th class="forumtitle">Last thread posted</th>
+    <?php if (logged_in()){?>
+    <th class="forumtitle">Subscribed</th>
+    <?php } ?>
   </tr>
   <?php
 	
@@ -82,10 +85,11 @@ $(document).ready(function () {
 				$messagedate=mysqli_fetch_array($messagequery);
 				$messagecount=mysqli_num_rows($messagequery);?>
                 <tr>
-                	<td><a href="../view_forum.php?forum=<?php echo urlencode($forum['id']);?>"><?php echo $forum['name'];?></a><br /><?php echo $forum['description'];?></td>
+                	<td><a href="../view_forum?forum=<?php echo urlencode($forum['id']);?>"><?php echo $forum['name'];?></a><br /><?php echo $forum['description'];?></td>
                     <td><b><?php echo $threadcount; ?></b> Topics<br />
                     <b><?php echo $messagecount; ?></b> Replies</td>
                     <td><?php if($threadcount != 0){echo date("m/d/Y h:i A" ,strtotime($messagedate['date']));}else{echo "N/A";} ?></td>
+                    <?php if (logged_in()){?><td><?php echo_subscription_checkbox('forum', $forum['id']); ?></td><?php } ?>
                 </tr>
 				<?php
 			}

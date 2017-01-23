@@ -25,9 +25,9 @@ if(isset($_POST['newgal'])){
 					$result=mysqli_query( $connection, $query);
 					confirm_query($result);
 					$gallid=mysqli_fetch_array($result);
-					mkdir("../".USER_DIR.$gallery['dir'].$gallid['name']);
-					mkdir("../".USER_DIR.$gallery['dir'].$gallid['name']."/gallery");
-					mkdir("../".USER_DIR.$gallery['dir'].$gallid['name']."/gallery-thumbs");
+					mkdir("../".USER_DIR.$gallid['dir'].$gallid['name']);
+					mkdir("../".USER_DIR.$gallid['dir'].$gallid['name']."/gallery");
+					mkdir("../".USER_DIR.$gallid['dir'].$gallid['name']."/gallery-thumbs");
 					$success="Gallery \"{$_POST['galname']}\" added!";
 				}else{
 					$error="A gallery by this name already exists.";

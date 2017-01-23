@@ -1,0 +1,4 @@
+<Files "notify_users.php">
+Order Allow,Deny
+Deny from all
+</Files>

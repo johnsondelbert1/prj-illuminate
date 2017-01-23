@@ -45,7 +45,7 @@ if(isset($bg[2])){
 	$bg = false;
 }
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -61,8 +61,8 @@ if(isset($bg[2])){
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="theme-color" content="<?php echo get_color('android_tab'); ?>">
 
-      <!--Let browser know website is optimized for mobile-->
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
     
     <!-- Start custom meta tags -->
     <?php if($GLOBALS['site_info']['meta_tags']!=""){
@@ -77,16 +77,21 @@ if(isset($bg[2])){
     <link href="<?php echo $GLOBALS['HOST']; ?>/styles/lightgallery.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo $GLOBALS['HOST']; ?>/styles/main.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo $GLOBALS['HOST']; ?>/styles/animate.css" rel="stylesheet" type="text/css" />
-    <!-- <link href="<?php echo $GLOBALS['HOST']; ?>/styles/materialize.css" rel="stylesheet" type="text/css" media="screen,projection"/> -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- <link href="<?php echo $GLOBALS['HOST']; ?>/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css" media="screen" charset="utf-8" /> -->
+    <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['HOST']; ?>/lib/cropper-master/dist/cropper.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['HOST']; ?>/SpryAssets/SpryTabbedPanels.css" />
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
     <script src="<?php echo $GLOBALS['HOST']; ?>/js/lightgallery.js" type="text/javascript"></script>
     <script src="<?php echo $GLOBALS['HOST']; ?>/js/lg-video.min.js" type="text/javascript"></script>
     <script src="<?php echo $GLOBALS['HOST']; ?>/js/lg-thumbnail.min.js" type="text/javascript"></script>
     <script src="<?php echo $GLOBALS['HOST']; ?>/js/lg-autoplay.min.js" type="text/javascript"></script>
     <script src="<?php echo $GLOBALS['HOST']; ?>/materialize/js/materialize.min.js"></script>
+	<script src="<?php echo $GLOBALS['HOST']; ?>/lib/cropper-master/dist/cropper.min.js" type="text/javascript"></script>
     <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/autosize.js"></script>
+    <script src="<?php echo $GLOBALS['HOST']; ?>/SpryAssets/SpryTabbedPanels.js"></script>
+
+
     <style type="text/css">
 		body{
 			<?php if($GLOBALS['site_layout']['use_bg_color']!=1){ ?>
@@ -179,64 +184,6 @@ if(isset($bg[2])){
 		:-ms-input-placeholder {  
 		   color: <?php echo get_color('input_placeholder'); ?>;  
 		}
-		/*#contentwrap{
-			background-color:<?php echo $GLOBALS['site_layout']['contentbg_color'] ?> !important;
-		}*/
-/*		.mobile, ul.side-nav, slide-out, .title, .jssorb01 div:hover, .jssorb01 .av:hover, jssora05l, jssora05r{
-			background-color: #FFFFFF;
-		}*/
-		/*.mobile, ul.side-nav, slide-out, .blogtitle{
-			background-color:<?php echo $GLOBALS['site_layout']['accent_color'] ?> !important;
-		}
-		.jssora05l .material-icons, .jssora05r .material-icons{
-			color:<?php echo $GLOBALS['site_layout']['menu_color'] ?> !important;
-		}
-		.mobile i{
-			color:<?php echo $GLOBALS['site_layout']['contentbg_color'] ?> !important;
-		}
-		#banner{
-			background-color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
-		}
-		#horiz-menu, #horiz-menu ul, #horiz-menu ul li, #vert-menu ul li, .photo-link, .nav, .captionBlack, .card{
-			background-color:<?php echo $GLOBALS['site_layout']['menu_color'] ?> !important;
-			color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
-		}
-		#horiz-menu li:hover > a, #horiz-menu li:hover > ul, #horiz-menu ul a:hover, #vert-menu li:hover > a, #vert-menu li:hover > ul, #vert-menu ul a:hover,  .TabbedPanelsTab, .accent, .forum tr:hover, .forumsuser, ul.MenuBarHorizontal a:hover, ul.MenuBarHorizontal a:focus, .forumfooter, ul.side-nav li{
-			background-color:<?php echo $GLOBALS['site_layout']['accent_color'] ?> !important;
-			color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
-		}
-		*html #horiz-menu li a:hover, #vert-menu li a:hover { /* IE6 only 
-			color: <?php echo $GLOBALS['site_layout']['text_color'] ?>;
-		}
-		#content a, #footer a, #horiz-menu a, #horiz-menu ul a, #vert-menu a, #vert-menu ul a, .blogtitle a, .forum tr a:hover{
-			color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
-		}
-		.photo-link:hover{
-			background-color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
-		}
-		/*#content, .forum tr, .forumbody, #footerwrap, .blog{
-			background-color:<?php echo $GLOBALS['site_layout']['contentbg_color'] ?> !important;
-			color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
-		}
-		.forum tr a{
-			color:<?php echo $GLOBALS['site_layout']['contentbg_color'] ?> !important;
-		}
-		.forumtitle{
-			border-bottom:2px <?php echo $GLOBALS['site_layout']['text_color'] ?> dashed;
-		}
-		.icon{
-			color:<?php echo $GLOBALS['site_layout']['menu_color'] ?> ;
-		}
-		 ::-webkit-scrollbar-thumb{
-			/*background-color:<?php echo $GLOBALS['site_layout']['accent_color'] ?> !important;
-			color:<?php echo $GLOBALS['site_layout']['text_color'] ?> !important;
-		}
-		::selection {
-			background: <?php echo $GLOBALS['site_layout']['accent_color'] ?>; /* WebKit/Blink Browsers 
-			}
-		::-moz-selection {
-			background: <?php echo $GLOBALS['site_layout']['accent_color'] ?>; /* WebKit/Blink Browsers 
-			}*/
 		#banner{
 			<?php if(count($banner)==3){?>background-image:url(images/banner/<?php echo $banner[2];?>);<?php } ?>
 			
@@ -273,9 +220,9 @@ if(isset($bg[2])){
             
             <?php if($logo!=false){ ?>
                 <?php if($GLOBALS['site_info']['logo_url']!=''){?>
-                <a href="<?php echo $GLOBALS['HOST']; ?>" class="brand-logo"><img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $GLOBALS['site_info']['name']; ?> Logo" /></a>
+                <a href="<?php echo $GLOBALS['HOST']; ?>" class="brand-logo"><img src="<?php echo USER_DIR_URL; ?>site-img/logo/<?php echo $logo; ?>" alt="<?php echo $GLOBALS['site_info']['name']; ?> Logo" /></a>
                 <?php }else{ ?>
-                <img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" />
+                <img src="<?php echo USER_DIR_URL; ?>site-img/logo/<?php echo $logo; ?>" />
             <?php } 
             } ?>
 

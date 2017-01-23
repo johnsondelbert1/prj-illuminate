@@ -1,3 +1,6 @@
+.card {
+	padding-bottom: 5px;
+}
 .card a{
 	overflow: visible;
 }
@@ -35,6 +38,9 @@ input[type="checkbox"]:not(:checked), [type="checkbox"]:checked{
 }
 .btn-floating{
 	z-index: 0;
+}
+.modal .modal-footer{
+	padding: 0;
 }
 /*table{
 	width: auto;

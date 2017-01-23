@@ -236,13 +236,16 @@ if($GLOBALS['site_info']['user_creation'] == 'approval'){
       </li>
     <?php } ?>
     <?php if(check_permission(array("Forms;create_form","Forms;edit_form","Forms;delete_form"))){?>
-    <li><a href="form-list.php"><span class="icon-pen"></span>Forms</a></li>
+    <li><a href="form-list.php"><span class="icon-pen" style="font-size: 1.5rem;"></span>Forms</a></li>
     <?php } ?>
     <?php if(check_permission(array("Uploading;upload_files","Uploading;delete_files","Uploading;create_folders","Uploading;rename_folders","Uploading;delete_folders"))){?>
     <li><a href="upload-files.php"><i class="material-icons">&#xE2C6;</i>Upload</a></li>
     <?php } ?>
     <?php if(check_permission(array("Forum;add_delete_forum","Forum;edit_forum"))){?>
     <li><a href="list-forums"><i class="material-icons">&#xE0BF;</i>Forums</a></li>
+    <?php } ?>
+    <?php if(check_permission(array("Calendars;add_delete_calendar","Calendars;add_event","Calendars;delete_event"))){?>
+    <li><a href="list-calendars"><i class="material-icons">today</i>Calendars</a></li>
     <?php } ?>
     <?php if(check_permission("Website","edit_site_colors")){ ?>
     <li><a href="edit-colors">Theme<i class="material-icons">&#xE40A;</i></a></li>
@@ -261,7 +264,7 @@ if($GLOBALS['site_info']['user_creation'] == 'approval'){
                 <li><a href="ranks.php">Permissions</a></li>
                 <?php } ?>
                 <?php if(check_permission("Website","edit_site_colors")){ ?>
-                <li><a href="user-settings">Settings</a></li>
+                <li><a href="user-settings">User Settings</a></li>
                 <?php } ?>
               </ul>
             </div>

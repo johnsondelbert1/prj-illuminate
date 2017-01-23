@@ -151,6 +151,9 @@ function delComment(postId){
                 </tr>
                 <tr>
                     <td class="blogbody" valign="top">
+                        <?php if($GLOBALS['site_info']['user_profile_pictures']){ ?>
+                            <a href="<?php echo $GLOBALS['HOST'].'/profile/'.urlencode($userdata['username']); ?>" style="float: left; margin: 0px 10px 10px 0px;"><img src="<?php echo get_user_profile_pic($userdata['id']); ?>"></a>
+                        <?php } ?>
                         <?php echo $post['content'];?>
                     </td>
                 </tr>

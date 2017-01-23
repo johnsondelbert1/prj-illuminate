@@ -22,13 +22,15 @@ if(isset($_COOKIE['rememberme'])&&!isset($_SESSION['user_id'])){
 	}
 }
 
-function logged_in() {
-	return isset($_SESSION['user_id']);
+if(!function_exists('logged_in')){
+	function logged_in() {
+		return isset($_SESSION['user_id']);
+	}
 }
 
 function confirm_logged_in($pageadmin = true) {
 	if (!logged_in()){
-		redirect_to("login.php");
+		redirect_to($GLOBALS['HOST']."/login?error=".urlencode('You must be logged in to view this'));
 	}
 }
 ?>

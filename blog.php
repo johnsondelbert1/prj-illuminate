@@ -105,8 +105,8 @@ $(document).ready(function () {
 	});
 });
 function sendComment(postId){
-	$('#comment-sendbtn-'+postId).html('<img src="../images/ajax-load.gif" style="margin-left:10px; margin-top:10px;"/>');
-    $.post("../ajax_processing/post_blog_comment.php",
+	$('#comment-sendbtn-'+postId).html('<img src="<?php echo $GLOBALS['HOST'];?>/images/ajax-load.gif" style="margin-left:10px; margin-top:10px;"/>');
+    $.post("<?php echo $GLOBALS['HOST'];?>/ajax_processing/post_blog_comment.php",
     {
         commentData: $('#blog-comment-'+postId).val(),
         blogId: postId,
@@ -148,7 +148,7 @@ function sendComment(postId){
     });
 }
 function viewMore(postId, numComments){
-	    $.get("../ajax_processing/get_blog_comments.php?blogid="+postId+"&commlimit="+numComments, function(data, status){
+	    $.get("<?php echo $GLOBALS['HOST'];?>/ajax_processing/get_blog_comments.php?blogid="+postId+"&commlimit="+numComments, function(data, status){
 	    	if(status == 'success'){
 	    		$('#comment-wrap-'+postId).html(data);
 	    	}else{
@@ -157,7 +157,7 @@ function viewMore(postId, numComments){
 	    });
 	}
 function delComment(postId){
-	    $.post("../ajax_processing/delete_blog_comment.php",
+	    $.post("<?php echo $GLOBALS['HOST'];?>/ajax_processing/delete_blog_comment.php",
 	    {
 	    	id: postId,
 	    },
@@ -182,7 +182,12 @@ function delComment(postId){
 	}
 </script>
 <h1><?php echo $page['name']; ?></h1>
+<?php if (logged_in()){?>
+<div style="float: right;">
+Subscribe <?php echo_subscription_checkbox('blog', 1); ?>
+</div>
 <?php
+}
 if (mysqli_num_rows($result)!=0){
   	if(check_permission("Blog","post_blog")){?>
 		<a class="btn-floating green" href="../new_blog_post"><i class="material-icons">add</i></a>
@@ -272,22 +277,27 @@ if (mysqli_num_rows($result)!=0){
 												?>
 										</div>
                                     <div class="col s4">
-                                    <i class="mdi-action-face-unlock"></i> &nbsp;<a href="<?php echo $GLOBALS['HOST'].'/profile/'.urlencode($userdata['username']); ?>"><b><?php echo $userdata['username']; ?></b></a>
+                                    	<img src="<?php echo get_user_profile_pic($userdata['id']); ?>" alt="<?php echo $userdata['username']; ?>" style="margin-top: 3px; width:18px; height: 18px;" />&nbsp;
+                                    	<a href="<?php echo $GLOBALS['HOST'].'/profile/'.urlencode($userdata['username']); ?>"><b><?php echo $userdata['username']; ?></b></a>
                                     </div>
 							</div>
                             </div>
 						</tr>
 						<tr>
 							<td class="blogbody" valign="top">
+								<?php if($GLOBALS['site_info']['user_profile_pictures']){ ?>
+									<a href="<?php echo $GLOBALS['HOST'].'/profile/'.urlencode($userdata['username']); ?>" class="blog-profile-pic" style="float: left; margin: 0px 10px 10px 0px;"><img src="<?php echo get_user_profile_pic($userdata['id']); ?>"></a>
+								<?php } ?>
 								<?php 	$content = $post['content'];
 										if (strlen($content) > 1200) {
 											// truncate string
 											$stringCut = substr($content, 0, 600);
 										
 											// make sure it ends in a word so assassinate doesn't become ass...
-											$content = substr($stringCut, 0, strrpos($stringCut, ' ')).'... <a class="waves-effect waves-blue btn-flat" href="'.$GLOBALS['HOST'].'/view_blog_post.php?post='.$post['id'].'">Read More</a>'; 
+											$content = substr($stringCut, 0, strrpos($stringCut, ' ')).'... <a class="waves-effect waves-blue btn-flat" href="'.$GLOBALS['HOST'].'/view_blog_post?post='.$post['id'].'">Read More</a>'; 
 										}
 										echo $content;
+										//echo print_r(unserialize($userdata['subscriptions']));
 								?>
 							</td>
 						  </tr>

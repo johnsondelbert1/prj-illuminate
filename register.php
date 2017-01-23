@@ -89,11 +89,12 @@ if (isset($_POST['submit'])){
 		if (mysqli_num_rows($result)==1){
 			$error="An account with this username or email already exists!";
 		}else{
+			$clearsubs = serialize(array('blog' => array(), 'forum' => array(), 'thread' => array()));
 			//Insert default fields
 			$query="INSERT INTO `users` (
-						`username`, `created`, `email`, `hashed_pass`, `rank`, `created_via`, `old_pass`
+						`username`, `created`, `email`, `hashed_pass`, `rank`, `created_via`, `old_pass`, `subscriptions`
 					) VALUES (
-						'{$user}', '{$GLOBALS['date']}', '{$email}', '{$hashed_pass}', {$GLOBALS['site_info']['default_rank']}, 'Registration', 0)";
+						'{$user}', '{$GLOBALS['date']}', '{$email}', '{$hashed_pass}', {$GLOBALS['site_info']['default_rank']}, 'Registration', 0, '{$clearsubs}')";
 			$def_result=mysqli_query($connection, $query);
 			if($def_result){
 				$success=array("Account was created successfully for ".$_POST['username']."!");
@@ -162,6 +163,10 @@ if (isset($_POST['submit'])){
 				$error="Account was not created. ".mysqli_error($connection);
 			}
 		}
+
+		mkdir(USER_DIR.'user-assets/'.$new_user);
+		mkdir(USER_DIR.'user-assets/'.$new_user.'/profile');
+
 	}else{
 		$error="Errors in the Registration form.";
 	}

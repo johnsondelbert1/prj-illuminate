@@ -22,7 +22,7 @@ if(isset($_POST['commentData'])){
 					$commentBody = mysqli_fetch_array($result);
 					?>
 					<li>
-						<b><a href="profile.php?user=<?php echo urlencode($user_info['username']); ?>"><?php echo $user_info['username']; ?></a>, <?php echo date("g:i A", strtotime($date)). ' on '.date("M jS 'y", strtotime($date)); ?></b><span style="float:right;" class="del-blog-comment" id="del-comment-<?php echo $last_inserted_comment; ?>" onclick="delComment(<?php echo $last_inserted_comment; ?>);"><img src="<?php echo $GLOBALS['HOST']; ?>/../images/icon-delete.png" width="16" alt="Delete Comment"></span>
+						<b><a href="<?php echo $GLOBALS['HOST']; ?>/../profile/<?php echo urlencode($user_info['username']); ?>"><?php echo $user_info['username']; ?></a>, <?php echo date("g:i A", strtotime($date)). ' on '.date("M jS 'y", strtotime($date)); ?></b><span style="float:right;" class="del-blog-comment" id="del-comment-<?php echo $last_inserted_comment; ?>" onclick="delComment(<?php echo $last_inserted_comment; ?>);"><img src="<?php echo $GLOBALS['HOST']; ?>/../images/icon-delete.png" width="16" alt="Delete Comment"></span>
 						<br />
 						<?php
 						echo $commentBody['content']; ?>
