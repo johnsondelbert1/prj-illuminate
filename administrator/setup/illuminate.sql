@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `blog` (
   `comments_allowed` tinyint(1) NOT NULL DEFAULT '1',
   `gallery_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=82 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `blog_comments` (
   `bc_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `blog_comments` (
   `date_edited` datetime NOT NULL,
   PRIMARY KEY (`bc_id`),
   UNIQUE KEY `id` (`bc_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=124 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `calendars` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `calendars` (
   `creator` int(11) NOT NULL,
   `visibility` varchar(1024) NOT NULL DEFAULT 'a:1:{i:0;s:3:"any";}',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `calendar_events` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `calendar_events` (
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1=Active, 0=Block',
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=107 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `css_selectors` (
   `sid` int(11) NOT NULL AUTO_INCREMENT,
@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `forms` (
   `field_maxchars` text NOT NULL,
   `field_validators` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `forums` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `forums` (
   `description` text NOT NULL,
   `visible` varchar(1024) NOT NULL DEFAULT 'a:1:{i:0;s:3:"any";}',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=26 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `forum_posts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `forum_posts` (
   `lasteditdate` datetime NOT NULL,
   `message` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=120 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `forum_threads` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -166,7 +166,7 @@ CREATE TABLE IF NOT EXISTS `forum_threads` (
   `datestarted` datetime NOT NULL,
   `views` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=58 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `galleries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -180,7 +180,7 @@ CREATE TABLE IF NOT EXISTS `galleries` (
   `type` varchar(64) NOT NULL DEFAULT 'page',
   `dir` varchar(128) NOT NULL DEFAULT 'site-galleries/',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=59 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `pages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -213,7 +213,7 @@ CREATE TABLE IF NOT EXISTS `pages` (
   `vert_menu_visible` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=115 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `ranks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -226,7 +226,7 @@ CREATE TABLE IF NOT EXISTS `ranks` (
   `admin_rank` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 INSERT INTO `ranks` (`id`, `name`, `created`, `permissions`, `color`, `deletable`, `editable`, `admin_rank`) VALUES
 (1, 'Web Master', '2014-05-22 22:30:20', 'a:10:{s:5:"Pages";a:3:{s:9:"add_pages";a:3:{s:5:"value";i:1;s:9:"disp_name";s:3:"Add";s:11:"description";s:61:"Enables members of this rank to add a new page to the website";}s:10:"edit_pages";a:3:{s:5:"value";i:1;s:9:"disp_name";s:4:"Edit";s:11:"description";s:111:"Enables members of this rank to edit existing pages on the website, edit the staff, and edit the slider banner.";}s:12:"delete_pages";a:3:{s:5:"value";i:1;s:9:"disp_name";s:6:"Delete";s:11:"description";s:59:"Enables members of this rank to delete pages on the website";}}s:4:"Blog";a:5:{s:9:"post_blog";a:3:{s:5:"value";i:1;s:9:"disp_name";s:4:"Post";s:11:"description";s:44:"Enables members of this rank to post a blog.";}s:9:"edit_blog";a:3:{s:5:"value";i:1;s:9:"disp_name";s:4:"Edit";s:11:"description";s:53:"Enables members of this rank to edit existing bl0ogs.";}s:11:"delete_blog";a:3:{s:5:"value";i:1;s:9:"disp_name";s:6:"Delete";s:11:"description";s:39:"Enables members of this rank to delete.";}s:12:"post_comment";a:3:{s:5:"value";i:1;s:9:"disp_name";s:13:"Post Comments";s:11:"description";s:61:"Enables members of this rank to post comments on a blog post.";}s:18:"delete_any_comment";a:3:{s:5:"value";i:1;s:9:"disp_name";s:18:"Delete Any Comment";s:11:"description";s:66:"Enables members of this rank to delete any comment on a blog post.";}}s:5:"Forum";a:8:{s:16:"add_delete_forum";a:3:{s:5:"value";i:1;s:9:"disp_name";s:19:"Add & Delete Forums";s:11:"description";s:54:"Enables members of this rank to add and delete forums.";}s:10:"edit_forum";a:3:{s:5:"value";i:1;s:9:"disp_name";s:10:"Edit Forum";s:11:"description";s:68:"Enables members of this rank to edit a forum''s name and description.";}s:10:"add_thread";a:3:{s:5:"value";i:1;s:9:"disp_name";s:11:"Post Thread";s:11:"description";s:60:"Enables members of this rank to post a thread in the forums.";}s:15:"reply_to_thread";a:3:{s:5:"value";i:1;s:9:"disp_name";s:15:"Reply to Thread";s:11:"description";s:64:"Enables members of this rank to reply to a thread in the forums.";}s:11:"edit_thread";a:3:{s:5:"value";i:1;s:9:"disp_name";s:9:"Edit Post";s:11:"description";s:66:"Enables members of this rank to edit their own post in the forums.";}s:16:"pin_unpin_thread";a:3:{s:5:"value";i:1;s:9:"disp_name";s:18:"Pin & Unpin Thread";s:11:"description";s:54:"Enables members of this rank to pin and unpin threads.";}s:18:"lock_unlock_thread";a:3:{s:5:"value";i:1;s:9:"disp_name";s:20:"Lock & Unlock Thread";s:11:"description";s:56:"Enables members of this rank to lock and unlock threads.";}s:13:"delete_thread";a:3:{s:5:"value";i:1;s:9:"disp_name";s:13:"Delete Thread";s:11:"description";s:63:"Enables members of this rank to delete threads from the forums.";}}s:5:"Users";a:8:{s:9:"add_users";a:3:{s:5:"value";i:1;s:9:"disp_name";s:9:"Add Users";s:11:"description";s:87:"Enables members of this rank to add users to the website and change those users'' ranks.";}s:12:"delete_users";a:3:{s:5:"value";i:1;s:9:"disp_name";s:12:"Delete Users";s:11:"description";s:62:"Enables members of this rank to delete users from the website.";}s:22:"approve_deny_new_users";a:3:{s:5:"value";i:1;s:9:"disp_name";s:22:"Approve/Deny New Users";s:11:"description";s:58:"Enables members of this rank to approve or deny new users.";}s:9:"ban_users";a:3:{s:5:"value";i:1;s:9:"disp_name";s:9:"Ban Users";s:11:"description";s:72:"Enables members of this rank to ban users from logging into the website.";}s:11:"create_rank";a:3:{s:5:"value";i:1;s:9:"disp_name";s:12:"Create Ranks";s:11:"description";s:60:"Enables members of this rank to create ranks on the website.";}s:9:"edit_rank";a:3:{s:5:"value";i:1;s:9:"disp_name";s:10:"Edit Ranks";s:11:"description";s:67:"Enables members of this rank to edit existing ranks on the website.";}s:11:"delete_rank";a:3:{s:5:"value";i:1;s:9:"disp_name";s:12:"Delete Ranks";s:11:"description";s:60:"Enables members of this rank to delete ranks on the website.";}s:17:"view_private_data";a:3:{s:5:"value";i:1;s:9:"disp_name";s:17:"View Private Data";s:11:"description";s:73:"Enables members of this rank view user data that is not publicly visible.";}}s:9:"Uploading";a:8:{s:12:"upload_files";a:3:{s:5:"value";i:1;s:9:"disp_name";s:12:"Upload Files";s:11:"description";s:60:"Enables members of this rank to upload files to the website.";}s:12:"delete_files";a:3:{s:5:"value";i:1;s:9:"disp_name";s:12:"Delete Files";s:11:"description";s:62:"Enables members of this rank to delete files from the website.";}s:12:"rename_files";a:3:{s:5:"value";i:1;s:9:"disp_name";s:12:"Rename Files";s:11:"description";s:69:"Enables members of this rank to rename uploaded files on the website.";}s:12:"create_files";a:3:{s:5:"value";i:1;s:9:"disp_name";s:12:"Create Files";s:11:"description";s:64:"Enables members of this rank to create new files on the website.";}s:10:"edit_files";a:3:{s:5:"value";i:1;s:9:"disp_name";s:10:"Edit Files";s:11:"description";s:58:"Enables members of this rank to edit files on the website.";}s:14:"create_folders";a:3:{s:5:"value";i:1;s:9:"disp_name";s:14:"Create Folders";s:11:"description";s:62:"Enables members of this rank to create folers to put files in.";}s:14:"rename_folders";a:3:{s:5:"value";i:1;s:9:"disp_name";s:14:"Rename Folders";s:11:"description";s:47:"Enables members of this rank to rename folders.";}s:14:"delete_folders";a:3:{s:5:"value";i:1;s:9:"disp_name";s:14:"Delete Folders";s:11:"description";s:47:"Enables members of this rank to delete folders.";}}s:9:"Galleries";a:4:{s:11:"add_gallery";a:3:{s:5:"value";i:1;s:9:"disp_name";s:13:"Add Galleries";s:11:"description";s:61:"Enables members of this rank to add galleries to the website.";}s:12:"edit_gallery";a:3:{s:5:"value";i:1;s:9:"disp_name";s:14:"Edit Galleries";s:11:"description";s:56:"Enables members of this rank to edit existing galleries.";}s:14:"delete_gallery";a:3:{s:5:"value";i:1;s:9:"disp_name";s:16:"Delete Galleries";s:11:"description";s:66:"Enables members of this rank to delete galleries from the website.";}s:14:"rename_gallery";a:3:{s:5:"value";i:1;s:9:"disp_name";s:16:"Rename Galleries";s:11:"description";s:49:"Enables members of this rank to rename galleries.";}}s:7:"Sliders";a:4:{s:10:"add_slider";a:3:{s:5:"value";i:1;s:9:"disp_name";s:10:"Add Slider";s:11:"description";s:59:"Enables members of this rank to add sliders to the website.";}s:11:"edit_slider";a:3:{s:5:"value";i:1;s:9:"disp_name";s:11:"Edit Slider";s:11:"description";s:54:"Enables members of this rank to edit existing sliders.";}s:13:"delete_slider";a:3:{s:5:"value";i:1;s:9:"disp_name";s:13:"Delete Slider";s:11:"description";s:64:"Enables members of this rank to delete sliders from the website.";}s:13:"rename_slider";a:3:{s:5:"value";i:1;s:9:"disp_name";s:13:"Rename Slider";s:11:"description";s:47:"Enables members of this rank to rename sliders.";}}s:5:"Forms";a:3:{s:8:"add_form";a:3:{s:5:"value";i:1;s:9:"disp_name";s:9:"Add Forms";s:11:"description";s:42:"Enables members of this rank to add forms.";}s:9:"edit_form";a:3:{s:5:"value";i:1;s:9:"disp_name";s:10:"Edit Forms";s:11:"description";s:52:"Enables members of this rank to edit existing forms.";}s:11:"delete_form";a:3:{s:5:"value";i:1;s:9:"disp_name";s:12:"Delete Forms";s:11:"description";s:45:"Enables members of this rank to delete forms.";}}s:9:"Calendars";a:3:{s:19:"add_delete_calendar";a:3:{s:5:"value";i:1;s:9:"disp_name";s:22:"Add & Delete Calendars";s:11:"description";s:57:"Enables members of this rank to add and delete calendars.";}s:9:"add_event";a:3:{s:5:"value";i:1;s:9:"disp_name";s:10:"Add Events";s:11:"description";s:52:"Enables members of this rank to add calendar events.";}s:12:"delete_event";a:3:{s:5:"value";i:1;s:9:"disp_name";s:13:"Delete Events";s:11:"description";s:55:"Enables members of this rank to delete calendar events.";}}s:7:"Website";a:8:{s:13:"cpanel_access";a:3:{s:5:"value";i:1;s:9:"disp_name";s:13:"CPanel Access";s:11:"description";s:56:"Enables members of this rank to access the admin CPanel.";}s:18:"unpublished_access";a:3:{s:5:"value";i:1;s:9:"disp_name";s:18:"Unpublished Access";s:11:"description";s:68:"Enables members of this rank to access the website when Unpublished.";}s:18:"edit_site_settings";a:3:{s:5:"value";i:1;s:9:"disp_name";s:24:"Edit Website Information";s:11:"description";s:61:"Enables members of this rank to edit the website information.";}s:16:"edit_site_colors";a:3:{s:5:"value";i:1;s:9:"disp_name";s:19:"Edit Website Colors";s:11:"description";s:64:"Enables members of this rank to modify the website theme colors.";}s:18:"edit_user_settings";a:3:{s:5:"value";i:1;s:9:"disp_name";s:18:"Edit User Settings";s:11:"description";s:60:"Enables members of this rank to edit sitewide user settings.";}s:21:"upload_favicon_banner";a:3:{s:5:"value";i:1;s:9:"disp_name";s:25:"Upload Favicon and Banner";s:11:"description";s:75:"Enables members of this rank to upload a favicon and banner to the website.";}s:11:"edit_socnet";a:3:{s:5:"value";i:1;s:9:"disp_name";s:20:"Edit Social Networks";s:11:"description";s:85:"Enables members of this rank to edit the social networks the website is connected to.";}s:21:"edit_google_analytics";a:3:{s:5:"value";i:1;s:9:"disp_name";s:21:"Edit Google Analytics";s:11:"description";s:70:"Enables members of this rank to edit the Google Analytics information.";}}}', '#A60000', 0, 0, 1);
@@ -242,7 +242,7 @@ CREATE TABLE IF NOT EXISTS `site_gallery_items` (
   `date_added` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7830 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `site_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -320,7 +320,7 @@ CREATE TABLE IF NOT EXISTS `slider_images` (
   `new_tab` tinyint(1) NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=46 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 INSERT INTO `slider_images` (`id`, `img_name`, `slider_id`, `order`, `caption`, `url`, `new_tab`, `published`) VALUES
 (35, 'JA60ecM.jpg', 4, 1, 'Futurama', 'http://www.google.com', 1, 1),
@@ -337,7 +337,7 @@ CREATE TABLE IF NOT EXISTS `slider_names` (
   `date_edited` datetime NOT NULL,
   `editor` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -350,7 +350,7 @@ CREATE TABLE IF NOT EXISTS `staff` (
   `role` varchar(128) NOT NULL,
   `bio` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `style_colors` (
   `cid` int(11) NOT NULL AUTO_INCREMENT,
@@ -398,7 +398,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `forum_signature` text NOT NULL,
   `subscriptions` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=95 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 INSERT INTO `users` (`id`, `username`, `hashed_pass`, `email`, `created`, `deletable`, `rank`, `created_via`, `last_logged_in`, `data_public_not_visible`, `old_pass`, `activation_code`, `activation_code_date`, `activated_email`, `approved_admin`, `banned`, `chng_pass_authcode`, `chng_pass_authcode_date`, `forum_post_count`, `forum_signature`, `subscriptions`) VALUES
 (1, 'Admin', '$2y$10$oKu3lJl7uzWdB8U/pRnAPOjiP7nlQM8mBEktzibAncXocuTU.0dUi', 'secondgendesign@gmail.com', '2014-05-13 17:06:01', 0, 1, 'Admin', '2017-06-09 19:18:37', 'a:10:{i:0;s:5:"email";i:1;s:14:"last_logged_in";i:2;s:1:"1";i:3;s:1:"4";i:4;s:1:"5";i:5;s:1:"6";i:6;s:1:"7";i:7;s:1:"8";i:8;s:1:"9";i:9;s:2:"10";}', 0, '', '0000-00-00 00:00:00', 1, 1, 0, '', '0000-00-00 00:00:00', 17, '', 'a:3:{s:4:"blog";a:0:{}s:5:"forum";a:0:{}s:6:"thread";a:0:{}}');
