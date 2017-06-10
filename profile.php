@@ -69,6 +69,12 @@ if($found_user == 1){
 	$query="SELECT * FROM `ranks` WHERE `id` = {$user['rank']}";
 	$rank_data_result=mysqli_query( $connection, $query);
 	$rank_data=mysqli_fetch_array($rank_data_result);
+
+	//Check if user assets folder exists if not create one
+	if(!file_exists(USER_DIR."user-assets/".$user['id'])){
+		mkdir(USER_DIR."user-assets/".$user['id']);
+		mkdir(USER_DIR."user-assets/".$user['id']."/profile");
+	}
 ?>
 <?php
 $pgsettings = array(

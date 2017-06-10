@@ -36,6 +36,9 @@ input[type=text], input[type=url], input[type=tel], input[type=number], input[ty
 input[type="checkbox"]:not(:checked), [type="checkbox"]:checked{
 	visibility: initial;
 }
+select{
+	height: auto;
+}
 .btn-floating{
 	z-index: 0;
 }

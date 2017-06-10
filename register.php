@@ -86,7 +86,7 @@ if (isset($_POST['submit'])){
 		$query="SELECT `id`, `username`, `email` FROM `users`
 				WHERE `username`='{$user}' OR `email`='{$email}'";
 		$result=mysqli_query($connection, $query);
-		if (mysqli_num_rows($result)==1){
+		if (mysqli_num_rows($result)>=1){
 			$error="An account with this username or email already exists!";
 		}else{
 			$clearsubs = serialize(array('blog' => array(), 'forum' => array(), 'thread' => array()));
@@ -128,44 +128,64 @@ if (isset($_POST['submit'])){
 					$error = "SQL Error has occurred. Contact Administrator.";
 				}
 			}
-			echo $GLOBALS['site_info']['user_creation'];
-			if($GLOBALS['site_info']['user_creation']=='approval' && $def_result){
-				$query="UPDATE `users` SET 
-					`approved_admin` = 0
-					WHERE `id` = ".$new_user;
-				if(mysqli_query($connection, $query)){
-					array_push($success,"Administrator approval needed before login.");
-				}else{
-					$error = 'SQL error';
+
+			if(!isset($error)){
+				echo $GLOBALS['site_info']['user_creation'];
+				if($GLOBALS['site_info']['user_creation']=='approval' && $def_result){
+					$query="UPDATE `users` SET 
+						`approved_admin` = 0
+						WHERE `id` = ".$new_user;
+					if(mysqli_query($connection, $query)){
+						array_push($success,"Administrator approval needed before login.");
+					}else{
+						$error = 'SQL error';
+					}
+					
 				}
 				
-			}
-			
-			//Insert custom fields
-			if($num_cust_fields >= 1){
-				$custom_field_names = array();
-				$custom_field_post = array();
-				$query="SELECT * FROM `custom_field_users_properties`";
-				$cust_fields_result=mysqli_query( $connection, $query);
-				while ($field = mysqli_fetch_array($cust_fields_result, MYSQLI_ASSOC)) {
-					array_push($custom_field_names, '`'.$field['name'].'`');
-					array_push($custom_field_post, "'".$_POST[$field['name']]."'");
+				//Insert custom fields
+				if($num_cust_fields >= 1){
+					$custom_field_names = array();
+					$custom_field_post = array();
+					$query="SELECT * FROM `custom_field_users_properties`";
+					$cust_fields_result=mysqli_query( $connection, $query);
+					while ($field = mysqli_fetch_array($cust_fields_result, MYSQLI_ASSOC)) {
+						array_push($custom_field_names, '`'.$field['name'].'`');
+						array_push($custom_field_post, "'".$_POST[$field['name']]."'");
+					}
+					$query="INSERT INTO `users_custom_fields` (`uid`, ".implode(', ', $custom_field_names).") VALUES ({$new_user}, ".implode(', ', $custom_field_post).")";
+					$cust_result=mysqli_query($connection, $query);
+				}else{
+					//If no custom fields
+					$query="INSERT INTO `users_custom_fields` (`uid`) VALUES ({$new_user})";
+					$cust_result=mysqli_query($connection, $query);
 				}
-				$query="INSERT INTO `users_custom_fields` (`uid`, ".implode(', ', $custom_field_names).") VALUES ({$new_user}, ".implode(', ', $custom_field_post).")";
-				$cust_result=mysqli_query($connection, $query);
-			}else{
-				//If no custom fields
-				$query="INSERT INTO `users_custom_fields` (`uid`) VALUES ({$new_user})";
-				$cust_result=mysqli_query($connection, $query);
+
+				if(!$def_result || !$cust_result){
+					$error="Account was not created. ".mysqli_error($connection);
+				}
 			}
 
-			if(!$def_result || !$cust_result){
-				$error="Account was not created. ".mysqli_error($connection);
+			mkdir(USER_DIR.'user-assets/'.$new_user);
+			mkdir(USER_DIR.'user-assets/'.$new_user.'/profile');
+
+			if($site_info['user_profile_pictures'] == 1){
+				if(!empty($_FILES)){
+					$output_dir = USER_DIR.'user-assets/'.$new_user.'/profile/';
+					foreach (scandir($output_dir) as $item) {
+						if ($item == '.' || $item == '..') continue;
+						unlink($output_dir.DIRECTORY_SEPARATOR.$item);
+					}
+					$newFileName = randstring();
+					$uploadResult = upload($_FILES, $output_dir, 8388608, array('.jpeg','.jpg','.gif','.png','.JPEG','.JPG','.GIF','.PNG'), $newFileName);
+					$extension = substr($_FILES["file"]["name"], strripos($_FILES["file"]["name"], '.')); // Get extension of uploaded file for use in making thumbnail
+
+					if(strpos($uploadResult, ' successfully.')){
+						make_thumb($output_dir.$newFileName.$extension, $output_dir.$newFileName."_thumb".$extension, 100, 100, 'fixed');
+					}
+				}
 			}
 		}
-
-		mkdir(USER_DIR.'user-assets/'.$new_user);
-		mkdir(USER_DIR.'user-assets/'.$new_user.'/profile');
 
 	}else{
 		$error="Errors in the Registration form.";
@@ -180,13 +200,13 @@ $pgsettings = array(
 	"title" => "Register",
 	"pageselection" => false,
 	"nav" => true,
-	"banner" => 1,
+	"banner" => 0,
 	"use_google_analytics" => 1,
 );
 require_once("includes/begin_html.php"); ?>
 
 <h1>Register an Account</h1>
-<form method="post">
+<form method="post" enctype="multipart/form-data">
 <table border="0" cellspacing="5" cellpadding="0" style="width:auto;">
   <tr>
   	<td style="text-align:right;">Username*</td>
@@ -198,6 +218,12 @@ require_once("includes/begin_html.php"); ?>
     <td><input type="email" name="email" maxlength="50" placeholder="Email" style="width:300px;" value="<?php echo $email; ?>"/></td>
     <td><?php if(isset($err_array['email'])){echo '<span class="error-block">'.$err_array['email'].'</span>';} ?></td>
   </tr>
+  <?php if($site_info['user_profile_pictures'] == 1){?>
+  <tr>
+  	<td style="text-align:right;">Profile Picture (Max 8MB)</td>
+    <td colspan="2"><input type="file" name="file" id="file" accept="image/*" /></td>
+  </tr>
+  <?php } ?>
   <?php
   //Custom User Fields
 	$query="SELECT * FROM `custom_field_users_properties`";

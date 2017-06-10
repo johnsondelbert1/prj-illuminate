@@ -300,7 +300,10 @@ if(isset($existing_profile_pic[2])){
 						minCropBoxHeight: 100,
 						strict: false,
 					});
-	    		}
+	    		},
+	    		complete: function () {
+		   	 		cropper.cropper('destroy');
+				}
 	    	});
 	    });
 	<?php } ?>
@@ -318,8 +321,21 @@ if(isset($existing_profile_pic[2])){
 					minCropBoxHeight: 100,
 					strict: false,
 				});
-    		}
+    		},
+    		complete: function () {
+	   	 		cropper.cropper('destroy');
+			}
 		});
+
+		$("#button-rotate-clockwise").on("click", function(){
+			cropper.cropper('rotate', 90);
+			cropper.cropper('zoomTo', 1);
+		});
+
+		$("#button-rotate-counterclockwise").on("click", function(){
+			cropper.cropper('rotate', -90);
+			cropper.cropper('zoomTo', 1);
+   	 	});
 
 		//AJAX for updating thumbnail
 		$("#update-button-image").on("click", function(){
@@ -331,6 +347,7 @@ if(isset($existing_profile_pic[2])){
 		        off_y: cropData['y'],
 		        width: cropData['width'],
 		        height: cropData['height'],
+		        rotation: cropData['rotate'],
 		    },
 		    function(data, status){
 		        if(status == 'success'){
@@ -551,6 +568,8 @@ if(isset($existing_profile_pic[2])){
 		<div style="width: 100%; max-height: 500px;">
 			<img id="profilethumb" width="400" style="max-width:100%;" src="<?php echo USER_DIR_URL.'user-assets/'.$_SESSION['user_id'].'/profile/'.$profile_pic; ?>" />
 		</div>
+		<div id="button-rotate-counterclockwise" class="waves-effect waves-blue btn blue tooltipped" style="margin:10px;" data-position="bottom" data-delay="50" data-tooltip="Rotate Counterclockwise"><i class="material-icons">rotate_left</i></div>
+		<div id="button-rotate-clockwise" class="waves-effect waves-blue btn blue tooltipped" style="margin:10px;" data-position="bottom" data-delay="50" data-tooltip="Rotate Clockwise"><i class="material-icons">rotate_right</i></div>
 	</div>
 	<div class="modal-footer">
 		<div class="row right">

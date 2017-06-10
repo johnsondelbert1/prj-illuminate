@@ -77,10 +77,22 @@ $(document).on("scroll", function() {
                 var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
             }
 
+            $('.datepicker').pickadate({
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 15, // Creates a dropdown of 15 years to control year
+                //reassigns the picker to the body so it isn't restrained to within the modal
+                onStart: () => {
+                  $('.picker').appendTo('body');
+                }
+            });
+
             autosize(document.querySelectorAll('textarea'));
 
             // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
             $('.modal-trigger').leanModal();
+
+            //Apply materialize to all dropdowns except for class materialize-ignore
+            $('select').not('.materialize-ignore').material_select();
 
             $('.tooltipped').tooltip({delay: 50});
 
@@ -113,11 +125,6 @@ $(document).on("scroll", function() {
                     }
                 });
             });
-            //Masonry
-/*            $('.masonry').masonry({
-                rowHeight: 150,
-                itemSelector: ".masonry_item"
-            });*/
         });
 
         //Calendar Operation JS
@@ -144,9 +151,9 @@ $(document).on("scroll", function() {
             });
         }
         //For Add Event
-        function addEvent(calID,date){
-            $('#modalAddEvent-'+calID+' .cal-event-date').val(date);
-            $('#modalAddEvent-'+calID+' .cal-eventDateView').html(date);
+        function addEvent(calID){
+            //$('#modalAddEvent-'+calID+' .cal-event-date').val(date);
+            //$('#modalAddEvent-'+calID+' .cal-eventDateView').html(date);
             $("#modalAddEvent-"+calID).openModal();
         }
         $(document).ready(function(){
@@ -214,11 +221,12 @@ $(document).on("scroll", function() {
                 },
                 function(msg ,status){
                     if(status == 'success'){
-                        if(msg == 'ok'){
-                            var dateSplit = date.split("-");
+                        if(msg.includes('returndate')){
+                            var dateSplit = msg.split("-");
 
                             //reset form
                             $('#modalAddEvent-'+calID+' .cal-event-title').val('');
+                            $('#modalAddEvent-'+calID+' .cal-event-date').val('');
                             $('#modalAddEvent-'+calID+' .cal-event-location').val('');
                             $('#modalAddEvent-'+calID+' .cal-event-timeStart').val($('#modalAddEvent-'+calID+' .cal-event-timeStart option:first').val());
                             $('#modalAddEvent-'+calID+' .cal-event-timeEnd').val($('#modalAddEvent-'+calID+' .cal-event-timeEnd option:first').val());
@@ -227,10 +235,10 @@ $(document).on("scroll", function() {
                             getCalendar('calendar_div_'+calID,calID,dateSplit[0],dateSplit[1]);
                             Materialize.toast('Event "'+title+'" Created Successfully.', 8000, 'green');
                         }else{
-                            Materialize.toast('Some problem occurred, please try again. '+msg, 8000, 'red');
+                            Materialize.toast('A problem occurred. '+msg, 8000, 'red');
                         }
                     }else{
-                        Materialize.toast('Some problem occurred, please try again. '+msg, 8000, 'red');
+                        Materialize.toast('A problem occurred. '+msg, 8000, 'red');
                     }
                 });
             });

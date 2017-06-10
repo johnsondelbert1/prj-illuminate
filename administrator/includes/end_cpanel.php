@@ -38,7 +38,18 @@
                     itemSelector: ".masonry_card"
                 });
 
-				$('select').material_select();
+                $('.datepicker').pickadate({
+                    selectMonths: true, // Creates a dropdown to control month
+                    selectYears: 15, // Creates a dropdown of 15 years to control year
+                    //reassigns the picker to the body so it isn't restrained to within the modal
+                    onStart: () => {
+                      $('.picker').appendTo('body');
+                    }
+                });
+
+                //Apply materialize to all dropdowns except for class materialize-ignore
+				$('select').not('.materialize-ignore').material_select();
+
                 $('.tooltipped').tooltip({delay: 50});
 
                 //Materialize Tabs

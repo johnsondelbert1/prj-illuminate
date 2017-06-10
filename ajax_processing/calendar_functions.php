@@ -47,11 +47,16 @@ function getCalendar($calID, $year = '',$month = '',$refresh = false){
 		?>
 			<div class="calendar_section">
 				<h2><?php echo $calendarData['name']; ?></h2>
-				<h2>
+				<h2 style="position: relative;">
 		        	<a href="javascript:void(0);" onclick="getCalendar('calendar_div_<?php echo $calID; ?>','<?php echo $calID; ?>','<?php echo date("Y",strtotime($date.' - 1 Month')); ?>','<?php echo date("m",strtotime($date.' - 1 Month')); ?>');">&lt;&lt;</a>
-		            <select name="month_dropdown" id="cal-month-<?php echo $calID; ?>" style="display: initial; width: auto;" class="month_dropdown dropdown"><?php echo getAllMonths($dateMonth); ?></select>
-					<select name="year_dropdown" id="cal-year-<?php echo $calID; ?>" style="display: initial; width: auto;" class="year_dropdown dropdown"><?php echo getYearList($dateYear); ?></select>
+		            <select name="month_dropdown" id="cal-month-<?php echo $calID; ?>" style="display: initial; width: auto;" class="month_dropdown dropdown materialize-ignore"><?php echo getAllMonths($dateMonth); ?></select>
+					<select name="year_dropdown" id="cal-year-<?php echo $calID; ?>" style="display: initial; width: auto;" class="year_dropdown dropdown materialize-ignore"><?php echo getYearList($dateYear); ?></select>
 		            <a href="javascript:void(0);" onclick="getCalendar('calendar_div_<?php echo $calID; ?>','<?php echo $calID; ?>','<?php echo date("Y",strtotime($date.' + 1 Month')); ?>','<?php echo date("m",strtotime($date.' + 1 Month')); ?>');">&gt;&gt;</a>
+					<?php
+					if(check_permission('Calendars','add_event')){
+					?>
+		            <a class="btn-floating btn-large waves-effect waves-light green" style="right: 5px; top: -20px; position: absolute;" onclick="addEvent(<?php echo $calID; ?>);"><i class="material-icons">add</i></a>
+		        	<?php } ?>
 		        </h2>
 				<div class="calendar_section_top">
 					<ul>
@@ -105,7 +110,7 @@ function getCalendar($calID, $year = '',$month = '',$refresh = false){
 								echo '</div>';
 								if(check_permission('Calendars','add_event')){
 									//For Add Event
-									echo '<div class="cal-edit-btn" onclick="addEvent('.$calID.',\''.$currentDate.'\');"><i class="material-icons" style="height:30px;width:30px;font-size:30px;">playlist_add</i></div>';
+									//echo '<div class="cal-edit-btn" onclick="addEvent('.$calID.',\''.$currentDate.'\');"><i class="material-icons" style="height:30px;width:30px;font-size:30px;">playlist_add</i></div>';
 									//echo '<a href="javascript:;" onclick="addEvent('.$calID.',\''.$currentDate.'\');">+</a>';
 								}
 								echo '</li>';
@@ -136,22 +141,23 @@ function getCalendar($calID, $year = '',$month = '',$refresh = false){
 			<?php if(check_permission('Calendars','add_event')){ ?>
 			<div id="modalAddEvent-<?php echo $calID; ?>" class="modal">
 				<div class="modal-content" style="text-align:center;">
-					<h2>Adding event on <span class="cal-eventDateView"></span></h2>
-					<p><b>Event Title: </b><input type="text" class="cal-event-title" value=""/></p>
-					<p><b>Event Location: </b><input type="text" class="cal-event-location" value=""/></p>
+					<h2>Adding event on calendar <?php echo $calendarData["name"]; ?></h2>
+					<p><strong>Event Title: </strong><input type="text" class="cal-event-title" value=""/></p>
+					<p><strong>Date: </strong><input type="date" class="cal-event-date datepicker"></p>
+					<p><strong>Event Location: </strong><input type="text" class="cal-event-location" value=""/></p>
 					<p>Event Time:
-						<select class="cal-event-timeStart" style="display: initial; width: auto;"><option value="allDay">All Day</option><option value="12:00AM">12:00AM</option><option value="12:15AM">12:15AM</option><option value="12:30AM">12:30AM</option><option value="12:45AM">12:45AM</option><option value="1:00AM">1:00AM</option><option value="1:15AM">1:15AM</option><option value="1:30AM">1:30AM</option><option value="1:45AM">1:45AM</option><option value="2:00AM">2:00AM</option><option value="2:15AM">2:15AM</option><option value="2:30AM">2:30AM</option><option value="2:45AM">2:45AM</option><option value="3:00AM">3:00AM</option><option value="3:15AM">3:15AM</option><option value="3:30AM">3:30AM</option><option value="3:45AM">3:45AM</option><option value="4:00AM">4:00AM</option><option value="4:15AM">4:15AM</option><option value="4:30AM">4:30AM</option><option value="4:45AM">4:45AM</option><option value="5:00AM">5:00AM</option><option value="5:15AM">5:15AM</option><option value="5:30AM">5:30AM</option><option value="5:45AM">5:45AM</option><option value="6:00AM">6:00AM</option><option value="6:15AM">6:15AM</option><option value="6:30AM">6:30AM</option><option value="6:45AM">6:45AM</option><option value="7:00AM">7:00AM</option><option value="7:15AM">7:15AM</option><option value="7:30AM">7:30AM</option><option value="7:45AM">7:45AM</option><option value="8:00AM">8:00AM</option><option value="8:15AM">8:15AM</option><option value="8:30AM">8:30AM</option><option value="8:45AM">8:45AM</option><option value="9:00AM">9:00AM</option><option value="9:15AM">9:15AM</option><option value="9:30AM">9:30AM</option><option value="9:45AM">9:45AM</option><option value="10:00AM">10:00AM</option><option value="10:15AM">10:15AM</option><option value="10:30AM">10:30AM</option><option value="10:45AM">10:45AM</option><option value="11:00AM">11:00AM</option><option value="11:15AM">11:15AM</option><option value="11:30AM">11:30AM</option><option value="11:45AM">11:45AM</option><option value="12:00PM">12:00PM</option><option value="12:15PM">12:15PM</option><option value="12:30PM">12:30PM</option><option value="12:45PM">12:45PM</option><option value="1:00PM">1:00PM</option><option value="1:15PM">1:15PM</option><option value="1:30PM">1:30PM</option><option value="1:45PM">1:45PM</option><option value="2:00PM">2:00PM</option><option value="2:15PM">2:15PM</option><option value="2:30PM">2:30PM</option><option value="2:45PM">2:45PM</option><option value="3:00PM">3:00PM</option><option value="3:15PM">3:15PM</option><option value="3:30PM">3:30PM</option><option value="3:45PM">3:45PM</option><option value="4:00PM">4:00PM</option><option value="4:15PM">4:15PM</option><option value="4:30PM">4:30PM</option><option value="4:45PM">4:45PM</option><option value="5:00PM">5:00PM</option><option value="5:15PM">5:15PM</option><option value="5:30PM">5:30PM</option><option value="5:45PM">5:45PM</option><option value="6:00PM">6:00PM</option><option value="6:15PM">6:15PM</option><option value="6:30PM">6:30PM</option><option value="6:45PM">6:45PM</option><option value="7:00PM">7:00PM</option><option value="7:15PM">7:15PM</option><option value="7:30PM">7:30PM</option><option value="7:45PM">7:45PM</option><option value="8:00PM">8:00PM</option><option value="8:15PM">8:15PM</option><option value="8:30PM">8:30PM</option><option value="8:45PM">8:45PM</option><option value="9:00PM">9:00PM</option><option value="9:15PM">9:15PM</option><option value="9:30PM">9:30PM</option><option value="9:45PM">9:45PM</option><option value="10:00PM">10:00PM</option><option value="10:15PM">10:15PM</option><option value="10:30PM">10:30PM</option><option value="10:45PM">10:45PM</option><option value="11:00PM">11:00PM</option><option value="11:15PM">11:15PM</option><option value="11:30PM">11:30PM</option><option value="11:45PM">11:45PM</option></select>
+						<select class="cal-event-timeStart materialize-ignore" style="display: initial; width: auto;"><option value="allDay">All Day</option><option value="12:00AM">12:00AM</option><option value="12:15AM">12:15AM</option><option value="12:30AM">12:30AM</option><option value="12:45AM">12:45AM</option><option value="1:00AM">1:00AM</option><option value="1:15AM">1:15AM</option><option value="1:30AM">1:30AM</option><option value="1:45AM">1:45AM</option><option value="2:00AM">2:00AM</option><option value="2:15AM">2:15AM</option><option value="2:30AM">2:30AM</option><option value="2:45AM">2:45AM</option><option value="3:00AM">3:00AM</option><option value="3:15AM">3:15AM</option><option value="3:30AM">3:30AM</option><option value="3:45AM">3:45AM</option><option value="4:00AM">4:00AM</option><option value="4:15AM">4:15AM</option><option value="4:30AM">4:30AM</option><option value="4:45AM">4:45AM</option><option value="5:00AM">5:00AM</option><option value="5:15AM">5:15AM</option><option value="5:30AM">5:30AM</option><option value="5:45AM">5:45AM</option><option value="6:00AM">6:00AM</option><option value="6:15AM">6:15AM</option><option value="6:30AM">6:30AM</option><option value="6:45AM">6:45AM</option><option value="7:00AM">7:00AM</option><option value="7:15AM">7:15AM</option><option value="7:30AM">7:30AM</option><option value="7:45AM">7:45AM</option><option value="8:00AM">8:00AM</option><option value="8:15AM">8:15AM</option><option value="8:30AM">8:30AM</option><option value="8:45AM">8:45AM</option><option value="9:00AM">9:00AM</option><option value="9:15AM">9:15AM</option><option value="9:30AM">9:30AM</option><option value="9:45AM">9:45AM</option><option value="10:00AM">10:00AM</option><option value="10:15AM">10:15AM</option><option value="10:30AM">10:30AM</option><option value="10:45AM">10:45AM</option><option value="11:00AM">11:00AM</option><option value="11:15AM">11:15AM</option><option value="11:30AM">11:30AM</option><option value="11:45AM">11:45AM</option><option value="12:00PM">12:00PM</option><option value="12:15PM">12:15PM</option><option value="12:30PM">12:30PM</option><option value="12:45PM">12:45PM</option><option value="1:00PM">1:00PM</option><option value="1:15PM">1:15PM</option><option value="1:30PM">1:30PM</option><option value="1:45PM">1:45PM</option><option value="2:00PM">2:00PM</option><option value="2:15PM">2:15PM</option><option value="2:30PM">2:30PM</option><option value="2:45PM">2:45PM</option><option value="3:00PM">3:00PM</option><option value="3:15PM">3:15PM</option><option value="3:30PM">3:30PM</option><option value="3:45PM">3:45PM</option><option value="4:00PM">4:00PM</option><option value="4:15PM">4:15PM</option><option value="4:30PM">4:30PM</option><option value="4:45PM">4:45PM</option><option value="5:00PM">5:00PM</option><option value="5:15PM">5:15PM</option><option value="5:30PM">5:30PM</option><option value="5:45PM">5:45PM</option><option value="6:00PM">6:00PM</option><option value="6:15PM">6:15PM</option><option value="6:30PM">6:30PM</option><option value="6:45PM">6:45PM</option><option value="7:00PM">7:00PM</option><option value="7:15PM">7:15PM</option><option value="7:30PM">7:30PM</option><option value="7:45PM">7:45PM</option><option value="8:00PM">8:00PM</option><option value="8:15PM">8:15PM</option><option value="8:30PM">8:30PM</option><option value="8:45PM">8:45PM</option><option value="9:00PM">9:00PM</option><option value="9:15PM">9:15PM</option><option value="9:30PM">9:30PM</option><option value="9:45PM">9:45PM</option><option value="10:00PM">10:00PM</option><option value="10:15PM">10:15PM</option><option value="10:30PM">10:30PM</option><option value="10:45PM">10:45PM</option><option value="11:00PM">11:00PM</option><option value="11:15PM">11:15PM</option><option value="11:30PM">11:30PM</option><option value="11:45PM">11:45PM</option></select>
 						to
-						<select class="cal-event-timeEnd" style="display: initial; width: auto;"><option value="">Select End Time</option><option value="12:00AM">12:00AM</option><option value="12:15AM">12:15AM</option><option value="12:30AM">12:30AM</option><option value="12:45AM">12:45AM</option><option value="1:00AM">1:00AM</option><option value="1:15AM">1:15AM</option><option value="1:30AM">1:30AM</option><option value="1:45AM">1:45AM</option><option value="2:00AM">2:00AM</option><option value="2:15AM">2:15AM</option><option value="2:30AM">2:30AM</option><option value="2:45AM">2:45AM</option><option value="3:00AM">3:00AM</option><option value="3:15AM">3:15AM</option><option value="3:30AM">3:30AM</option><option value="3:45AM">3:45AM</option><option value="4:00AM">4:00AM</option><option value="4:15AM">4:15AM</option><option value="4:30AM">4:30AM</option><option value="4:45AM">4:45AM</option><option value="5:00AM">5:00AM</option><option value="5:15AM">5:15AM</option><option value="5:30AM">5:30AM</option><option value="5:45AM">5:45AM</option><option value="6:00AM">6:00AM</option><option value="6:15AM">6:15AM</option><option value="6:30AM">6:30AM</option><option value="6:45AM">6:45AM</option><option value="7:00AM">7:00AM</option><option value="7:15AM">7:15AM</option><option value="7:30AM">7:30AM</option><option value="7:45AM">7:45AM</option><option value="8:00AM">8:00AM</option><option value="8:15AM">8:15AM</option><option value="8:30AM">8:30AM</option><option value="8:45AM">8:45AM</option><option value="9:00AM">9:00AM</option><option value="9:15AM">9:15AM</option><option value="9:30AM">9:30AM</option><option value="9:45AM">9:45AM</option><option value="10:00AM">10:00AM</option><option value="10:15AM">10:15AM</option><option value="10:30AM">10:30AM</option><option value="10:45AM">10:45AM</option><option value="11:00AM">11:00AM</option><option value="11:15AM">11:15AM</option><option value="11:30AM">11:30AM</option><option value="11:45AM">11:45AM</option><option value="12:00PM">12:00PM</option><option value="12:15PM">12:15PM</option><option value="12:30PM">12:30PM</option><option value="12:45PM">12:45PM</option><option value="1:00PM">1:00PM</option><option value="1:15PM">1:15PM</option><option value="1:30PM">1:30PM</option><option value="1:45PM">1:45PM</option><option value="2:00PM">2:00PM</option><option value="2:15PM">2:15PM</option><option value="2:30PM">2:30PM</option><option value="2:45PM">2:45PM</option><option value="3:00PM">3:00PM</option><option value="3:15PM">3:15PM</option><option value="3:30PM">3:30PM</option><option value="3:45PM">3:45PM</option><option value="4:00PM">4:00PM</option><option value="4:15PM">4:15PM</option><option value="4:30PM">4:30PM</option><option value="4:45PM">4:45PM</option><option value="5:00PM">5:00PM</option><option value="5:15PM">5:15PM</option><option value="5:30PM">5:30PM</option><option value="5:45PM">5:45PM</option><option value="6:00PM">6:00PM</option><option value="6:15PM">6:15PM</option><option value="6:30PM">6:30PM</option><option value="6:45PM">6:45PM</option><option value="7:00PM">7:00PM</option><option value="7:15PM">7:15PM</option><option value="7:30PM">7:30PM</option><option value="7:45PM">7:45PM</option><option value="8:00PM">8:00PM</option><option value="8:15PM">8:15PM</option><option value="8:30PM">8:30PM</option><option value="8:45PM">8:45PM</option><option value="9:00PM">9:00PM</option><option value="9:15PM">9:15PM</option><option value="9:30PM">9:30PM</option><option value="9:45PM">9:45PM</option><option value="10:00PM">10:00PM</option><option value="10:15PM">10:15PM</option><option value="10:30PM">10:30PM</option><option value="10:45PM">10:45PM</option><option value="11:00PM">11:00PM</option><option value="11:15PM">11:15PM</option><option value="11:30PM">11:30PM</option><option value="11:45PM">11:45PM</option></select>
+						<select class="cal-event-timeEnd materialize-ignore" style="display: initial; width: auto;"><option value="">Select End Time</option><option value="12:00AM">12:00AM</option><option value="12:15AM">12:15AM</option><option value="12:30AM">12:30AM</option><option value="12:45AM">12:45AM</option><option value="1:00AM">1:00AM</option><option value="1:15AM">1:15AM</option><option value="1:30AM">1:30AM</option><option value="1:45AM">1:45AM</option><option value="2:00AM">2:00AM</option><option value="2:15AM">2:15AM</option><option value="2:30AM">2:30AM</option><option value="2:45AM">2:45AM</option><option value="3:00AM">3:00AM</option><option value="3:15AM">3:15AM</option><option value="3:30AM">3:30AM</option><option value="3:45AM">3:45AM</option><option value="4:00AM">4:00AM</option><option value="4:15AM">4:15AM</option><option value="4:30AM">4:30AM</option><option value="4:45AM">4:45AM</option><option value="5:00AM">5:00AM</option><option value="5:15AM">5:15AM</option><option value="5:30AM">5:30AM</option><option value="5:45AM">5:45AM</option><option value="6:00AM">6:00AM</option><option value="6:15AM">6:15AM</option><option value="6:30AM">6:30AM</option><option value="6:45AM">6:45AM</option><option value="7:00AM">7:00AM</option><option value="7:15AM">7:15AM</option><option value="7:30AM">7:30AM</option><option value="7:45AM">7:45AM</option><option value="8:00AM">8:00AM</option><option value="8:15AM">8:15AM</option><option value="8:30AM">8:30AM</option><option value="8:45AM">8:45AM</option><option value="9:00AM">9:00AM</option><option value="9:15AM">9:15AM</option><option value="9:30AM">9:30AM</option><option value="9:45AM">9:45AM</option><option value="10:00AM">10:00AM</option><option value="10:15AM">10:15AM</option><option value="10:30AM">10:30AM</option><option value="10:45AM">10:45AM</option><option value="11:00AM">11:00AM</option><option value="11:15AM">11:15AM</option><option value="11:30AM">11:30AM</option><option value="11:45AM">11:45AM</option><option value="12:00PM">12:00PM</option><option value="12:15PM">12:15PM</option><option value="12:30PM">12:30PM</option><option value="12:45PM">12:45PM</option><option value="1:00PM">1:00PM</option><option value="1:15PM">1:15PM</option><option value="1:30PM">1:30PM</option><option value="1:45PM">1:45PM</option><option value="2:00PM">2:00PM</option><option value="2:15PM">2:15PM</option><option value="2:30PM">2:30PM</option><option value="2:45PM">2:45PM</option><option value="3:00PM">3:00PM</option><option value="3:15PM">3:15PM</option><option value="3:30PM">3:30PM</option><option value="3:45PM">3:45PM</option><option value="4:00PM">4:00PM</option><option value="4:15PM">4:15PM</option><option value="4:30PM">4:30PM</option><option value="4:45PM">4:45PM</option><option value="5:00PM">5:00PM</option><option value="5:15PM">5:15PM</option><option value="5:30PM">5:30PM</option><option value="5:45PM">5:45PM</option><option value="6:00PM">6:00PM</option><option value="6:15PM">6:15PM</option><option value="6:30PM">6:30PM</option><option value="6:45PM">6:45PM</option><option value="7:00PM">7:00PM</option><option value="7:15PM">7:15PM</option><option value="7:30PM">7:30PM</option><option value="7:45PM">7:45PM</option><option value="8:00PM">8:00PM</option><option value="8:15PM">8:15PM</option><option value="8:30PM">8:30PM</option><option value="8:45PM">8:45PM</option><option value="9:00PM">9:00PM</option><option value="9:15PM">9:15PM</option><option value="9:30PM">9:30PM</option><option value="9:45PM">9:45PM</option><option value="10:00PM">10:00PM</option><option value="10:15PM">10:15PM</option><option value="10:30PM">10:30PM</option><option value="10:45PM">10:45PM</option><option value="11:00PM">11:00PM</option><option value="11:15PM">11:15PM</option><option value="11:30PM">11:30PM</option><option value="11:45PM">11:45PM</option></select>
 					</p>
 					<p>Recurrence:
-						<select class="cal-event-recurrence" style="display: initial; width: auto;">
+						<select class="cal-event-recurrence materialize-ignore" style="display: initial; width: auto;">
 							<option value="none">Once</option>
 							<option value="weekly">Weekly</option>
 							<option value="monthly">Monthly</option>
 						</select>
 					</p>
-					<input type="hidden" class="cal-event-date" value=""/>
+					<!--<input type="hidden" class="cal-event-date" value=""/>-->
 					<div class="event_list"></div>
 				</div>
 				<div class="modal-footer">
@@ -208,7 +214,7 @@ function getEvents($calID, $date){
 	$eventArr = array();
 	
 	//Get events based on the current date
-	$query = "SELECT * FROM `calendar_events` WHERE `date` = '{$date}' AND `recurrence` = 'none' AND `status` = 1 AND `calendar_id` = ".$calID;
+	$query = "SELECT * FROM `calendar_events` WHERE `date` = '{$date}' AND `recurrence` = 'none' AND `status` = 1 AND `calendar_id` = {$calID} ORDER BY STR_TO_DATE(time_start, '%l:%i %p')";
 	$result = mysqli_query($connection, $query);
 	if(mysqli_num_rows($result)>0){
 		while($event = mysqli_fetch_array($result)){
@@ -217,7 +223,7 @@ function getEvents($calID, $date){
 	}
 
 	//Get recurring events that apply to current date
-	$query = "SELECT * FROM `calendar_events` WHERE `recurrence` <> 'none' AND (`recurrence_data` = '{$dayOfWeek}' OR `recurrence_data` = '{$dayOfMonth}') AND `status` = 1 AND `calendar_id` = ".$calID;
+	$query = "SELECT * FROM `calendar_events` WHERE `recurrence` <> 'none' AND (`recurrence_data` = '{$dayOfWeek}' OR `recurrence_data` = '{$dayOfMonth}') AND `status` = 1 AND `calendar_id` = {$calID} ORDER BY STR_TO_DATE(time_start, '%l:%i %p')";
 	$result = mysqli_query($connection, $query);
 	if(mysqli_num_rows($result)>0){
 		while($event = mysqli_fetch_array($result)){
@@ -239,7 +245,7 @@ function displayEvents($calendar_id, $date = ''){
 	//Get all events for the current date
 	$eventArr = getEvents($calendar_id, $date);
 	if(count($eventArr) > 0){
-		$eventListHTML = '<h2>Events on '.date("l, d M Y",strtotime($date)).'</h2>';
+		$eventListHTML = '<h2>Events on '.date("l, F j Y",strtotime($date)).'</h2>';
 		$eventListHTML .= '<ul>';
 		foreach($eventArr as $row){
 			if($row['time_start'] == 'allDay'){
@@ -257,7 +263,7 @@ function displayEvents($calendar_id, $date = ''){
         }
 		$eventListHTML .= '</ul>';
 	}else{
-		$eventListHTML = '<h2>No events on '.date("l, d M Y",strtotime($date)).'</h2>';
+		$eventListHTML = '<h2>No events on '.date("l, F j Y",strtotime($date)).'</h2>';
 	}
 	echo $eventListHTML;
 }
@@ -291,19 +297,28 @@ function addEvent($calendar_id, $date, $title, $location, $startTime, $endTime, 
 	}
 
 	$currentDate = date("Y-m-d H:i:s");
-	//Insert the event data into database
-	$insert = mysqli_query($connection, "INSERT INTO `calendar_events` (`calendar_id`, `title`, `date`, `created`, `modified`,`time_start`,`time_end`,`location`,`recurrence`,`recurrence_data`) VALUES ({$calendar_id},'{$title}','{$date}','{$currentDate}','{$currentDate}','{$startTime}','{$endTime}','{$location}','{$recurrence}','{$recurrenceData}')");
-	if($insert){
-		echo 'ok';
+
+	//try to parse date
+	$date = strtotime($date);
+
+	if($date != false){
+		$formattedDate = date('Y-m-d', $date);
+		//Insert the event data into database
+		$insert = mysqli_query($connection, "INSERT INTO `calendar_events` (`calendar_id`, `title`, `date`, `created`, `modified`,`time_start`,`time_end`,`location`,`recurrence`,`recurrence_data`) VALUES ({$calendar_id},'{$title}','{$formattedDate}','{$currentDate}','{$currentDate}','{$startTime}','{$endTime}','{$location}','{$recurrence}','{$recurrenceData}')");
+		if($insert){
+			echo $formattedDate.'-returndate';
+		}else{
+			echo 'Error inserting into database.';
+		}
 	}else{
-		echo 'err';
+		echo 'Date parse error.';
 	}
 }
 function deleteEvent($event_id){
 	global $connection;
 	$calendar_id = '';
 	$event_date = '';
-	if(check_permission('Calendars','add_event')){
+	if(check_permission('Calendars','delete_event')){
 		$result = mysqli_query($connection, "SELECT `calendar_id`, `date` FROM `calendar_events` WHERE `id` = ".$event_id);
 		if($result->num_rows > 0){
 			while($row = $result->fetch_assoc()){ 
@@ -312,7 +327,7 @@ function deleteEvent($event_id){
 			}
 			$result = mysqli_query($connection, "DELETE FROM `calendar_events` WHERE `id` = ".$event_id);
 			confirm_query($result);
-			getEvents($calendar_id,$event_date);
+			echo displayEvents($calendar_id,$event_date);
 		}
 	}
 }
