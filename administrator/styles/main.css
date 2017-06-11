@@ -19,6 +19,15 @@ and (min-width : 1024px) {
 	    visibility: visible;
 	    -webkit-transition: all 0.3s ease-in-out;
 	}
+	.calendar_section .calendar_section{ width:530px;}
+	.calendar_section .calendar_section_top ul li{ width:74px;}
+	.calendar_section .calendar_section_bot ul li{ width:74px;}
+	.calendar_section .calendar_section_bot{ width:525px;}
+	.calendar_section .calendar_section_bot ul li{ height:50px;}
+	.date_cell:hover div.cal-edit-btn{
+			visibility: visible !important;
+			right:0 !important;
+	}
 }
 
 /* Smartphones (portrait and landscape) ----------- */
@@ -38,6 +47,15 @@ and (max-device-width : 1023px) {
 	    width:40%;
 	    visibility: visible;
 	    -webkit-transition: all 0.3s ease-in-out;
+	}
+	.calendar_section .calendar_section{ width:219px;}
+	.calendar_section .calendar_section_top ul li{ width:30px; font-size:11px;}
+	.calendar_section .calendar_section_bot ul li{ width:30px;}
+	.calendar_section .calendar_section_bot{ width:217px;}
+	.calendar_section .calendar_section_bot ul li{ height:50px;}
+	li.date_cell div.cal-edit-btn{
+		visibility: visible;
+		right:0;
 	}
 }
 
@@ -1030,4 +1048,112 @@ span.galleryImage input[type=checkbox] {
     left: 5%;
     opacity: 0;
     -webkit-transition: all 0.3s ease-in-out;
+}
+/*Calendar*/
+.none{ display:none;}
+.dropdown{color: #000000 ;font-size:17px;}
+.calendar_section{ width:700px; margin:30px auto 0;}
+.calendar_section h2{ background-color:#efefef; color:#444444; font-size:17px; text-align:center; line-height:40px; margin: 0;}
+.calendar_section h2 a{ color:#F58220; float:none;}
+.calendar_section .calendar_section_top{ width:100%; float:left; margin-top:20px;}
+.calendar_section .calendar_section_top ul{padding:0; list-style-type:none;}
+.calendar_section .calendar_section_top ul li{ float:left; display:block; width:99px; border-right:1px solid #fff;  text-align:center; font-size:14px; min-height:0; background-color:#fff; box-shadow:none; margin:0; padding:0;}
+.calendar_section .calendar_section_bot{ width:100%; margin-top:20px; float:left; border-left:1px solid #ccc; border-bottom:1px solid #ccc;}
+.calendar_section .calendar_section_bot ul{ margin:0; padding:0; list-style-type:none;}
+.calendar_section .calendar_section_bot ul li{ float:left; width:99px; height:80px; text-align:center; border-top:1px solid #ccc; border-right:1px solid #ccc; min-height:0; background:#FFF; box-shadow:none; margin:0; padding:0; line-height: 20px;}
+.calendar_section .calendar_section_bot ul li span.day-number{ margin-top:3px; float:left; margin-left:7px; text-align:center; font-weight: bold;}
+.calendar_section .calendar_section_bot ul li p.cell-event-item{margin-left: 3px; float:left; text-align:left; text-overflow: clip; white-space: nowrap; font-size: 12px;}
+
+.grey{ background-color:#DDDDDD !important;}
+.light_sky{ background-color:#B9FFFF !important;}
+
+/*========== Hover Popup ===============*/
+.date_cell { cursor: pointer; cursor: hand; overflow: hidden;}
+.date_cell:hover { background: #DDDDDD !important; }
+
+.date-cell-viewevent{
+	width: 100%;
+	height: 100%;
+}
+.date_popup_wrap {
+	position: absolute;
+	width: 143px;
+	height: 115px;
+	z-index: 9999;
+	top: -115px;
+	left:-55px;
+	background: transparent url(../images/add-new-event.png) no-repeat top left;
+	color: #666 !important;
+}
+.events_window {
+	overflow: hidden;
+	overflow-y: auto;
+	width: 133px;
+	height: 115px;
+	margin-top: 28px;
+	margin-left: 25px;
+}
+.event_wrap {
+	margin-bottom: 10px; padding-bottom: 10px;
+	border-bottom: solid 1px #E4E4E7;
+	font-size: 12px;
+	padding: 3px;
+}
+.event_list {
+	text-align: left;
+	padding: 3px;
+}
+.event_list li{
+	list-style-type: disc;
+	border-bottom: 2px dashed #000000;
+}
+.event_list ul ul{
+	margin-left: 1em;
+}
+.event_list ul ul li{
+	list-style-type: square;
+	border-bottom: none;
+}
+.event_list h2{
+	text-align: center;
+	padding: 3px;
+}
+.cal-delete-event{
+	float:right;
+	top:0;
+	color: #039BE5;
+	cursor: pointer;
+}
+.cal-delete-event:hover{
+	text-decoration: underline;
+}
+.date_window {
+	margin-top:20px;
+	margin-bottom: 2px;
+	padding: 5px;
+	font-size: 16px;
+	margin-left:9px;
+	margin-right:14px
+}
+.popup_event {
+	margin-bottom: 2px;
+	padding: 2px;
+	font-size: 16px;
+	width:100%;
+}
+.popup_event a {color: #000000 !important;}
+.packeg_box a {color: #F58220;float: right;}
+div.cal-edit-btn{
+	height: 30px;
+	width: 30px;
+	position: absolute;
+	float: left;
+	bottom: 0;
+	right: -32px;
+	border-top-left-radius: 5px;
+	background-color: #FFFFFF;
+	color: #0091C7;
+	font-size: 20px;
+	visibility: hidden;
+	-webkit-transition: all 0.2s ease-in-out;
 }

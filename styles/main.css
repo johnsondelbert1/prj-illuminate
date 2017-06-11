@@ -659,13 +659,17 @@ img.a{
 }
 /* End Vert Nav Menu */
 
+<<<<<<< HEAD
 option{
+=======
+#content option{
+>>>>>>> tristan
 	background-color:#666666;
 	border:2px solid #222222;
 	color:#FFF;
 	padding:5px;
 	}
-select{
+#content select{
 	background-color:#666666;
 	border:2px solid #222222;
 	color:#FFF;
@@ -1364,16 +1368,16 @@ div.rank{
 }
 /*Calendar*/
 .none{ display:none;}
-.dropdown{color: #FFFFFF;font-size:17px;}
+.dropdown{color: #000000 ;font-size:17px;}
 .calendar_section{ width:700px; margin:30px auto 0;}
-.calendar_section h2{ background-color:#efefef; color:#444444; font-size:17px; text-align:center; line-height:40px;}
+.calendar_section h2{ background-color:#efefef; color:#444444; font-size:17px; text-align:center; line-height:40px; margin: 0;}
 .calendar_section h2 a{ color:#F58220; float:none;}
 .calendar_section .calendar_section_top{ width:100%; float:left; margin-top:20px;}
 .calendar_section .calendar_section_top ul{padding:0; list-style-type:none;}
 .calendar_section .calendar_section_top ul li{ float:left; display:block; width:99px; border-right:1px solid #fff;  text-align:center; font-size:14px; min-height:0; background-color:#fff; box-shadow:none; margin:0; padding:0;}
 .calendar_section .calendar_section_bot{ width:100%; margin-top:20px; float:left; border-left:1px solid #ccc; border-bottom:1px solid #ccc;}
 .calendar_section .calendar_section_bot ul{ margin:0; padding:0; list-style-type:none;}
-.calendar_section .calendar_section_bot ul li{ float:left; width:99px; height:80px; text-align:center; border-top:1px solid #ccc; border-right:1px solid #ccc; min-height:0; background:#FFF; box-shadow:none; margin:0; padding:0; position:relative;}
+.calendar_section .calendar_section_bot ul li{ float:left; width:99px; height:80px; text-align:center; border-top:1px solid #ccc; border-right:1px solid #ccc; min-height:0; background:#FFF; box-shadow:none; margin:0; padding:0; line-height: 20px;}
 .calendar_section .calendar_section_bot ul li span.day-number{ margin-top:3px; float:left; margin-left:7px; text-align:center; font-weight: bold;}
 .calendar_section .calendar_section_bot ul li p.cell-event-item{margin-left: 3px; float:left; text-align:left; text-overflow: clip; white-space: nowrap; font-size: 12px;}
 

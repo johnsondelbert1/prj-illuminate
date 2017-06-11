@@ -96,6 +96,7 @@ require_once("includes/begin_html.php");
 				
 		$dataquery=mysqli_query($connection, $query);
 		confirm_query($dataquery);
+		$custom_user_data_exists = mysqli_num_rows($dataquery);
 		$custom_user_data=mysqli_fetch_array($dataquery);
 		
 		?>
@@ -106,6 +107,7 @@ require_once("includes/begin_html.php");
 					$query="SELECT * FROM `ranks` WHERE `id` = {$user['rank']}";
 					$rank_data_result=mysqli_query( $connection, $query);
 					$rank_data=mysqli_fetch_array($rank_data_result);
+            		
             	?>
             	<ul>
                 	<li>
@@ -122,26 +124,27 @@ require_once("includes/begin_html.php");
                 		Posts: <?php echo number_format($user['forum_post_count']); ?>
                 	</li>
                 <?php
-					if($GLOBALS['site_info']['forum_post_custom_user_data']!=''){
-						$displayed_data = unserialize($GLOBALS['site_info']['forum_post_custom_user_data']);
-					}else{
-						$displayed_data = array();
-					}
-					if(!empty($displayed_data)){
-						foreach ($displayed_data as $field_id) {
-							$query="SELECT `name` 
-								FROM  `custom_field_users_properties` 
-								WHERE `id`={$field_id}";
-									
-							$fieldquery=mysqli_query($connection, $query);
-							confirm_query($fieldquery);
-							if(mysqli_num_rows($fieldquery) == 1){
-								$custom_user_field=mysqli_fetch_array($fieldquery);
-								echo '<li>'.$custom_user_field['name'].': '.$custom_user_data[$custom_user_field['name']].'</li>';
+                	if($custom_user_data_exists == 1){
+						if($GLOBALS['site_info']['forum_post_custom_user_data']!=''){
+							$displayed_data = unserialize($GLOBALS['site_info']['forum_post_custom_user_data']);
+						}else{
+							$displayed_data = array();
+						}
+						if(!empty($displayed_data)){
+							foreach ($displayed_data as $field_id) {
+								$query="SELECT `name` 
+									FROM  `custom_field_users_properties` 
+									WHERE `id`={$field_id}";
+										
+								$fieldquery=mysqli_query($connection, $query);
+								confirm_query($fieldquery);
+								if(mysqli_num_rows($fieldquery) == 1){
+									$custom_user_field=mysqli_fetch_array($fieldquery);
+									echo '<li>'.$custom_user_field['name'].': '.$custom_user_data[$custom_user_field['name']].'</li>';
+								}
 							}
 						}
-
-					}
+                	}
                 ?>
                 </ul>
           		<div style="width: 100%; text-align: right; position:absolute; bottom: 0;">

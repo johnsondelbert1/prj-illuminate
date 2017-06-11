@@ -458,7 +458,7 @@ function get_user_permission($u_id, $perm_group, $perm){
 
 function sanitizeString($str){
 	global $connection;
-	return mysqli_real_escape_string($connection, htmlspecialchars($str));
+	return mysqli_real_escape_string($connection, trim(htmlspecialchars($str)));
 }
 
 function canView($visibleArr){
@@ -499,7 +499,32 @@ function get_user($id){
 	global $connection;
 	$query="SELECT * FROM `users` WHERE `id` = {$id}";
 	$result=mysqli_query( $connection, $query);
-	return $user_info=mysqli_fetch_array($result);
+	if(mysqli_num_rows($result) == 1){
+		return $user_info=mysqli_fetch_array($result);
+	}else{
+		return array(
+			"id" => $id,
+			"username" => "[deleted]",
+			"rank" => $GLOBALS['site_info']['default_rank'],
+			"forum_post_count" => 0,
+			"forum_signature" => "",
+		);
+	}
+	
+}
+
+function get_user_profile_pic($id){
+	$profile_dir = USER_DIR."user-assets/".$id."/profile/";
+	if(file_exists($profile_dir)){
+		$profile_pic = scandir($profile_dir);
+		if(isset($profile_pic[3])){
+		    return $GLOBALS['HOST'].'/'.$profile_dir.$profile_pic[3];
+		}else{
+		    return $GLOBALS['HOST'].'/'."images/profile_default_100.png";
+		}
+	}else{
+		return $GLOBALS['HOST'].'/'."images/profile_default_100.png";
+	}
 }
 
 function get_user_profile_pic($id){
@@ -1258,7 +1283,7 @@ function nav($position, $pgselection){
 				//$buttonwidth = $buttonwidth / $numpages + 1;
 				if($position=="horiz"){
 					if($numpages!=0){
-						$buttonwidth = round(100 / $numpages, 4);
+						$buttonwidth = round(100 / $numpages -1, 4);
 					}else{
 						$buttonwidth=100;
 					}
