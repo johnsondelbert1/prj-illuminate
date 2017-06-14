@@ -34,6 +34,7 @@ if(isset($_POST['submit'])){
 			$address_country = mysqli_real_escape_string($connection, $_POST['address_country']);
 			$contact_phone = mysqli_real_escape_string($connection, $_POST['contact_phone']);
 
+			date_default_timezone_set($_POST['site-tz']);
 			$date = date("Y-m-d H:i:s", time());
 
 			$query="UPDATE `site_info` SET 
