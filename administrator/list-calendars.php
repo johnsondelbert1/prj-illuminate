@@ -214,7 +214,6 @@ if(isset($_POST['del_calendars'])){
     ?>
   </table>
 </form>
-
 <?php
 	require_once("includes/end_cpanel.php");
 ?>

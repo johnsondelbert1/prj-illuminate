@@ -527,6 +527,20 @@ function get_user_profile_pic($id){
 	}
 }
 
+function get_user_profile_pic($id){
+	$profile_dir = USER_DIR."user-assets/".$id."/profile/";
+	if(file_exists($profile_dir)){
+		$profile_pic = scandir($profile_dir);
+		if(isset($profile_pic[3])){
+		    return $GLOBALS['HOST'].'/'.$profile_dir.$profile_pic[3];
+		}else{
+		    return $GLOBALS['HOST'].'/'."images/profile_default_100.png";
+		}
+	}else{
+		return $GLOBALS['HOST'].'/'."images/profile_default_100.png";
+	}
+}
+
 function randstring($length = 16) {
     $characters = "0123456789abcdefghijklmnopqrstuvwxyz";
     $string = "";    

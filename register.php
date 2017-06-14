@@ -187,6 +187,9 @@ if (isset($_POST['submit'])){
 			}
 		}
 
+		mkdir(USER_DIR.'user-assets/'.$new_user);
+		mkdir(USER_DIR.'user-assets/'.$new_user.'/profile');
+
 	}else{
 		$error="Errors in the Registration form.";
 	}
