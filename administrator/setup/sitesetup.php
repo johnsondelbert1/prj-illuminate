@@ -21,8 +21,8 @@ try{
 }
 
 if(isset($_POST['submit'])){
-	if($_POST['site-name']!=""){
-		if(filter_var($_POST['site-email'], FILTER_VALIDATE_EMAIL)) {
+	if($_POST['site_name']!=""){
+		if(filter_var($_POST['site_email'], FILTER_VALIDATE_EMAIL)) {
 
 			$site_name = mysqli_real_escape_string($connection, $_POST['site_name']);
 			$site_email = mysqli_real_escape_string($connection, $_POST['site_email']);
@@ -34,8 +34,10 @@ if(isset($_POST['submit'])){
 			$address_country = mysqli_real_escape_string($connection, $_POST['address_country']);
 			$contact_phone = mysqli_real_escape_string($connection, $_POST['contact_phone']);
 
+			$date = date("Y-m-d H:i:s", time());
+
 			$query="UPDATE `site_info` SET 
-				`name` = '{$site_name}', `contact_email` = '{$site_email}', `address_line1` = '{$address_line1}', `address_line2` = '{$address_line2}', `address_city` = '{$address_city}', 
+				`name` = '{$site_name}', `date_run` = '{$date}', `contact_email` = '{$site_email}', `address_line1` = '{$address_line1}', `address_line2` = '{$address_line2}', `address_city` = '{$address_city}', 
 					`address_stateregion` = '{$address_stateregion}', `address_zip` = '{$address_zip}', `address_country` = '{$address_country}', `contact_phone` = '{$contact_phone}', `timezone` = '{$_POST['site-tz']}'";
 			$result=mysqli_query($connection, $query);
 			
