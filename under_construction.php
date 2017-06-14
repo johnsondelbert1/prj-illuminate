@@ -27,10 +27,10 @@ if($GLOBALS['site_info']['published']==1||check_permission("Website","unpublishe
 	<div id="content">
 		<div class="logo_box">
 		<?php
-			$logo = scandir("images/logo/");
+			$logo = scandir(USER_DIR."site-img/logo/");
 			if(isset($logo[2])){
 				$logo = $logo[2];
-				?><img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" alt="<?php echo $GLOBALS['site_info']['name']; ?> Logo" width="350" /><?php
+				?><img src="<?php echo USER_DIR_URL; ?>site-img/logo/<?php echo $logo; ?>" alt="<?php echo $GLOBALS['site_info']['name']; ?> Logo" width="350" /><?php
 			}
 		?>
 	    </div>          
