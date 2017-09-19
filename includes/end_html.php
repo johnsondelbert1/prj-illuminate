@@ -77,10 +77,22 @@ $(document).on("scroll", function() {
                 var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
             }
 
+            $('.datepicker').pickadate({
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 15, // Creates a dropdown of 15 years to control year
+                //reassigns the picker to the body so it isn't restrained to within the modal
+                onStart: () => {
+                  $('.picker').appendTo('body');
+                }
+            });
+
             autosize(document.querySelectorAll('textarea'));
 
             // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
             $('.modal-trigger').leanModal();
+
+            //Apply materialize to all dropdowns except for class materialize-ignore
+            $('select').not('.materialize-ignore').material_select();
 
             $('.tooltipped').tooltip({delay: 50});
 
@@ -113,11 +125,123 @@ $(document).on("scroll", function() {
                     }
                 });
             });
-            //Masonry
-/*            $('.masonry').masonry({
-                rowHeight: 150,
-                itemSelector: ".masonry_item"
+        });
+
+        //Calendar Operation JS
+        function getCalendar(target_div,calendar_id,year,month){
+            $.ajax({
+                type:'POST',
+                url:'<?php echo $GLOBALS['HOST'];?>/ajax_processing/calendar_functions.php',
+                data:'func=getcalendar&id='+calendar_id+'&year='+year+'&month='+month,
+                success:function(html){
+                    $('#'+target_div).html(html);
+                }
+            });
+        }
+        
+        function getEvents(calID, date){
+            $.ajax({
+                type:'POST',
+                url:'<?php echo $GLOBALS['HOST'];?>/ajax_processing/calendar_functions.php',
+                data:'func=getEvents&id='+calID+'&date='+date,
+                success:function(html){
+                    $('#modalViewEvents-'+calID+' .event_list').html(html);
+                    $("#modalViewEvents-"+calID).openModal();
+                }
+            });
+        }
+        //For Add Event
+        function addEvent(calID){
+            //$('#modalAddEvent-'+calID+' .cal-event-date').val(date);
+            //$('#modalAddEvent-'+calID+' .cal-eventDateView').html(date);
+            $("#modalAddEvent-"+calID).openModal();
+        }
+        $(document).ready(function(){
+            $(document).on('click', '.date-cell-viewevent', function(){
+                date = $(this).parent().attr('date');
+                calID = $(this).parent().attr('name');
+                getEvents(calID,date);
+            });
+            $(document).on('change', '.month_dropdown',function(){
+                calID = $(this).attr('id').split('-');
+                calID = calID[2];
+                getCalendar('calendar_div_'+calID,calID,$('#calendar_div_'+calID+' .year_dropdown').val(),$('#calendar_div_'+calID+' .month_dropdown').val());
+            });
+            $(document).on('change', '.year_dropdown',function(){
+                calID = $(this).attr('id').split('-');
+                calID = calID[2];
+                getCalendar('calendar_div_'+calID,calID,$('#calendar_div_'+calID+' .year_dropdown').val(),$('#calendar_div_'+calID+' .month_dropdown').val());
+            });
+            $(document).on('click', '.cal-delete-event',function(){
+                elementID = $(this).attr('id').split('-');
+                calID = elementID[1];
+                eventID = elementID[2];
+                $.ajax({
+                    type:'POST',
+                    url:'<?php echo $GLOBALS['HOST'];?>/ajax_processing/calendar_functions.php',
+                    data:'func=deleteEvent&id='+eventID,
+                    success:function(html){
+                        //refresh event list in modal
+                        $('#modalViewEvents-'+calID+' .event_list').html(html);
+                        //refresh calendar in background
+                        getCalendar('calendar_div_'+calID,calID,$('#calendar_div_'+calID+' .year_dropdown').val(),$('#calendar_div_'+calID+' .month_dropdown').val());
+                        Materialize.toast('Event has been deleted.', 8000, 'green');
+                    }
+                });
+            });
+/*            $('.cal-edit-btn').on('click', function(){
+                $("#modalAddEvent-"+calID).openModal();
             });*/
+            $('.date_cell').mouseleave(function(){
+                $(".date_popup_wrap").fadeOut();        
+            });
+            $(document).click(function(){
+                //$('.event_list').slideUp('slow');
+            });
+            $('.cal-addEventBtn').on('click',function(){
+                calID = $(this).attr('id').split('-');
+                calID = calID[2];
+                var date = $('#modalAddEvent-'+calID+' .cal-event-date').val();
+                var title = $('#modalAddEvent-'+calID+' .cal-event-title').val();
+                var location = $('#modalAddEvent-'+calID+' .cal-event-location').val();
+                var startTime = $('#modalAddEvent-'+calID+' .cal-event-timeStart').val();
+                var endTime = $('#modalAddEvent-'+calID+' .cal-event-timeEnd').val();
+                var recurrence = $('#modalAddEvent-'+calID+' .cal-event-recurrence').val();
+
+                $.post('<?php echo $GLOBALS['HOST'];?>/ajax_processing/calendar_functions.php',
+                {
+                    func: 'addEvent',
+                    id: calID,
+                    date: date,
+                    title: title,
+                    location: location,
+                    startTime: startTime,
+                    endTime: endTime,
+                    recurrence: recurrence
+                },
+                function(msg ,status){
+                    if(status == 'success'){
+                        if(msg.includes('returndate')){
+                            var dateSplit = msg.split("-");
+
+                            //reset form
+                            $('#modalAddEvent-'+calID+' .cal-event-title').val('');
+                            $('#modalAddEvent-'+calID+' .cal-event-date').val('');
+                            $('#modalAddEvent-'+calID+' .cal-event-location').val('');
+                            $('#modalAddEvent-'+calID+' .cal-event-timeStart').val($('#modalAddEvent-'+calID+' .cal-event-timeStart option:first').val());
+                            $('#modalAddEvent-'+calID+' .cal-event-timeEnd').val($('#modalAddEvent-'+calID+' .cal-event-timeEnd option:first').val());
+                            $('#modalAddEvent-'+calID+' .cal-event-recurrence').val($('#modalAddEvent-'+calID+' .cal-event-recurrence option:first').val());
+
+                            getCalendar('calendar_div_'+calID,calID,dateSplit[0],dateSplit[1]);
+                            Materialize.toast('Event "'+title+'" Created Successfully.', 8000, 'green');
+                        }else{
+                            Materialize.toast('A problem occurred. '+msg, 8000, 'red');
+                        }
+                    }else{
+                        Materialize.toast('A problem occurred. '+msg, 8000, 'red');
+                    }
+                });
+            });
         });
 
         //Calendar Operation JS

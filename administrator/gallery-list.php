@@ -129,7 +129,7 @@ if(isset($_POST['newgal'])){
 	require_once("includes/begin_cpanel.php");
 ?>
 <script type="text/javascript">
-   <!-- jQuery for "Select All" checkboxes -->
+   	//jQuery for "Select All" checkboxes
     $(document).ready(function() {
 		var $checkall = 'gallall';
         $('input[id="'+$checkall+'"]').change(function() {
@@ -166,7 +166,7 @@ if(isset($_POST['newgal'])){
             <?php if(check_permission("Galleries","delete_gallery")){?>
             <th style="text-align:center;">
                 <input type="checkbox" id="gallall">
-                <label for="gallall">
+                <label for="gallall"></label>
             </th>
             <?php } ?>
         </tr>
