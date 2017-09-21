@@ -1,86 +1,34 @@
 input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, input[type=url]:focus, input[type=date]:focus, input[type=tel]:focus, input[type=number]:focus, input[type=search]:focus, textarea:focus.materialize-textarea {
-	border-bottom: 1px solid #E74C3C !important; 
-	-webkit-box-shadow: 0 1px 0 0 #E74C3C !important;
-	-moz-box-shadow: 0 1px 0 0 #E74C3C !important;
-	box-shadow: 0 1px 0 0 #E74C3C !important;
+  border-bottom: 1px solid #E74C3C !important;
+  -webkit-box-shadow: 0 1px 0 0 #E74C3C !important;
+  -moz-box-shadow: 0 1px 0 0 #E74C3C !important;
+  box-shadow: 0 1px 0 0 #E74C3C !important;
 }
 .card a{
-	color: #ffab40 !important;
+  color: #ffab40 !important;
 }
 .dropdown-content li > span {
-	color: #E74C3C !important;
+  color: #E74C3C !important;
 }
 input[type="checkbox"]:not(:checked), [type="checkbox"]:checked{
-	visibility: initial;
+  visibility: initial;
 }
 .dropdown-content li > a, .dropdown-content li > span {
-	text-decoration: none;
+  text-decoration: none;
 }
 td, th {
 }
+#sidenav-overlay{position: static !important;}
 nav {
-  color: #fff;
   background-color: #e74c3c;
+  /*
+  color: #fff;
   width: 100%;
   height: 56px !important;
+  overflow: hidden;
   line-height: 56px !important;
-  overflow: hidden; 
+  */
 }
-nav .brand-logo {
-    position: absolute;
-    color: #fff;
-    display: inline-block;
-    font-size: 1.1rem;
-    padding: 0; 
-}
-  .collapsible-header i {
-    float: right !important;}
-.side-nav,.side-nav .collapsible-body{
-  background-color: #3f4649;
-}
-.side-nav a{
-  color: #fff !important;
-}
-.side-nav li:hover, .side-nav li.active{
-  background-color: #333;
-}
-.side-nav li{
-  padding: 0;
-}
-.side-nav li.active{
-  background-color: #333;
-}
-.side-nav .collapsible-header, .side-nav .collapsible-body li a{
-  margin: 0;
-}
- .side-nav span{
- 	float:right;
- }
-  .side-nav i{
- 	float:right;
- 	line-height: 64px;
- 	/*padding-right: 15px;*/
- }
-   .collapsible-header i{
- 	margin-right: 0;
- }
-    .collapsible-header i.material-icons{
-  padding-right: 0px;
- }
- .content{
-z-index: 3;
-}
-nav ul a span.badge{
-line-height: inherit;
-color:#fff;
-right:0;
-position:absolute;
-padding-right: 15px;
-}
-/*.tabs{
-background-color:#E74C3C;
-color:#fff;
-}*/
-.modal-open{
-  position: relative;
+.side-nav{
+  top: auto !important;
 }

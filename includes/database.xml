@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <database>
-  <firstrun>true</firstrun>
+  <firstrun>false</firstrun>
   <server>localhost</server>
   <username>root</username>
-  <password></password>
-  <name></name>
+  <password/>
+  <name>illuminate</name>
 </database>

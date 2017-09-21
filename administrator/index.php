@@ -20,14 +20,14 @@ $galleryresult=mysqli_query($connection, $query);
 	);
 	require_once("includes/begin_cpanel.php");
 	?>
-<h2 class="center"><a  href="../" target="_blank">Back to Website</a></h2>
+<h2 class="center"><a href="../" target="_blank">Back to Website</a></h2>
 <br />
 </div>
  <div class="row">
  <?php if(check_permission(array("Pages;add_pages","Pages;edit_pages","Pages;delete_pages"))){?>
       <div class="col s12 l4"><div class="card blue small darken-1">
             <div class="card-content white-text"><span class="card-title">Pages</span>
-              <p>Pages are the main way to add content to your website.</p>
+              <p>This allows you to create and edit webpages, view page hit statistics, and access special page contents like blogs and forums.</p>
             </div>
             <div class="card-action">
               <a href="edit_page.php?action=newpage">New</a>
@@ -47,7 +47,7 @@ $galleryresult=mysqli_query($connection, $query);
           </div></div>
           <?php } ?>
           <?php if(check_permission(array("Website;edit_site_settings","Website;upload_favicon_banner","Website;edit_google_analytics","Website;edit_socnet"))){?>
-      <div class="col s1 l4"><div class="card small red darken-1">
+      <div class="col s12 l4"><div class="card small red darken-1">
             <div class="card-content white-text">
               <span class="card-title">Settings</span>
               <p>Website Settings.</p>

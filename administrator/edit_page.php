@@ -19,38 +19,38 @@ $rows=mysqli_num_rows($result);
 if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 	if((isset($_GET['action'])&&isset($_GET['page']))||isset($_GET['action'])&&$_GET['action']=='newpage'){
 		if(isset($_POST['submit'])||isset($_POST['sandb'])||isset($_POST['sandnewp'])){
-			
+
 			$content= mysqli_real_escape_string($connection, $_POST['content']);
 			$name=mysqli_real_escape_string($connection, $_POST['name']);
-				
+
 			$query="SELECT * FROM `pages` WHERE `name`='{$name}'";
 			$result = mysqli_query( $connection, $query);
 			$samenames = mysqli_num_rows($result);
-			
+
 			$query="SELECT * FROM `pages` WHERE `id`='{$_GET['page']}'";
 			$result = mysqli_query( $connection, $query);
 			$current_page = mysqli_fetch_array($result);
-			
+
 			if($samenames==0||$current_page['name']==$_POST['name']){
 				//prep POST values
 				$id=$_GET['page'];
 				$position=$_POST['pgorder'];
-				
+
 				$issub=0;
 				if($_POST['sub']!='none'){
 					$issub=1;
 				}
 				if($issub==1){$subpg=$_POST['sub'];}else{$subpg=0;}
-				
+
 				if(isset($_POST['published'])){$published=1;}else{$published=0;}
 				if(isset($_POST['banner'])){$banner=1;}else{$banner=0;}
 				if(isset($_POST['horiz_menu'])){$horiz_menu=1;}else{$horiz_menu=0;}
 				if(isset($_POST['vert_menu'])){$vert_menu=1;}else{$vert_menu=0;}
 				if(isset($_POST['horiz_menu_visible'])){$horiz_menu_visible=1;}else{$horiz_menu_visible=0;}
 				if(isset($_POST['vert_menu_visible'])){$vert_menu_visible=1;}else{$vert_menu_visible=0;}
-				
+
 				if(isset($_POST['url'])){$url=$_POST['url'];}else{$url="";}
-				
+
 				if(isset($_POST['galleries'])&&$_POST['galleries']!=""){
 					$galleries=serialize($_POST['galleries']);
 				}else{
@@ -82,20 +82,20 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 						}else{
 							$visible=serialize(array('any'));
 						}
-						
+
 					}
 				}else{
 					$visible=serialize(array('any'));
 				}
-				
+
 				date_default_timezone_set($GLOBALS['site_info']['timezone']);
 				$date=date("Y/m/d H:i:s", time());
-				
+
 				//Check for another Blog or Forum page type
 				if($_POST['pgtype']=="Blog" || $_POST['pgtype']=="Forum"){
 					$query="SELECT * FROM `pages` WHERE `type`='{$_POST['pgtype']}'";
 					$result_pgtype = mysqli_query( $connection, $query);
-					
+
 					if(mysqli_num_rows($result_pgtype)>=1){
 						$other_page_name = "";
 						while ($pagetype = mysqli_fetch_array($result_pgtype)){
@@ -112,12 +112,12 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 						$success = "The page was successfully updated.";
 					}
 				}
-				
-				$query = "UPDATE `pages` SET `content` = '{$content}', `name`='{$name}', `position`={$position}, `published`='{$published}', 
-				`issubpage`={$issub}, `parent`={$subpg}, `galleries`='{$galleries}', `doc_folder`='{$_POST['pgdocfolder']}', `forms`='{$forms}', `calendars`='{$calendars}', `visible`='{$visible}', `type`='{$_POST['pgtype']}', `target`='{$_POST['target']}', 
-				`banner`={$banner}, `slider`={$_POST['slider']}, `url`='{$url}', `lastedited`='{$date}', `editor`={$_SESSION['user_id']}, `horiz_menu`={$horiz_menu}, `vert_menu`={$vert_menu}, 
+
+				$query = "UPDATE `pages` SET `content` = '{$content}', `name`='{$name}', `position`={$position}, `published`='{$published}',
+				`issubpage`={$issub}, `parent`={$subpg}, `galleries`='{$galleries}', `doc_folder`='{$_POST['pgdocfolder']}', `forms`='{$forms}', `calendars`='{$calendars}', `visible`='{$visible}', `type`='{$_POST['pgtype']}', `target`='{$_POST['target']}',
+				`banner`={$banner}, `slider`={$_POST['slider']}, `url`='{$url}', `lastedited`='{$date}', `editor`={$_SESSION['user_id']}, `horiz_menu`={$horiz_menu}, `vert_menu`={$vert_menu},
 				`horiz_menu_visible`={$horiz_menu_visible}, `vert_menu_visible`={$vert_menu_visible} WHERE id = {$id}";
-				
+
 				$result = mysqli_query( $connection, $query);
 				if (mysqli_affected_rows($connection) == 1) {
 					if(!isset($success)){$success = "The page was successfully updated.";}
@@ -125,7 +125,7 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 					$error = "The page could not be updated.";
 					$error .= "<br />" . mysqli_error($connection);
 				}
-				
+
 				if(isset($_POST['sandb'])){
 					redirect_to("page_list.php?success=".urlencode('Page "'.$name.'" successfully updated.'));
 				}elseif(isset($_POST['sandnewp'])){
@@ -134,32 +134,32 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 			}else{
 				$error = "There is already a page of the same name, \"".$_POST['name']."\".";
 			}
-		}elseif(isset($_POST['newpage'])||isset($_POST['newandb'])||isset($_POST['newandnewp'])){	
-			
+		}elseif(isset($_POST['newpage'])||isset($_POST['newandb'])||isset($_POST['newandnewp'])){
+
 			$content=mysqli_real_escape_string($connection, $_POST['content']);
 			$name=mysqli_real_escape_string($connection, $_POST['name']);
 			$position=$_POST['pgorder'];
-			
+
 			$query="SELECT * FROM `pages` WHERE `name`='{$name}'";
 			$result = mysqli_query( $connection, $query);
 			$samenames = mysqli_num_rows($result);
-			
-			if($samenames==0){	
+
+			if($samenames==0){
 				$issub=0;
 				if($_POST['sub']!='none'){
 					$issub=1;
 				}
 				if($issub==1){$subpg=$_POST['sub'];}else{$subpg=0;}
-				
+
 				if(isset($_POST['published'])){$published=1;}else{$published=0;}
 				if(isset($_POST['banner'])){$banner=1;}else{$banner=0;}
 				if(isset($_POST['horiz_menu'])){$horiz_menu=1;}else{$horiz_menu=0;}
 				if(isset($_POST['vert_menu'])){$vert_menu=1;}else{$vert_menu=0;}
 				if(isset($_POST['horiz_menu_visible'])){$horiz_menu_visible=1;}else{$horiz_menu_visible=0;}
 				if(isset($_POST['vert_menu_visible'])){$vert_menu_visible=1;}else{$vert_menu_visible=0;}
-				
+
 				if(isset($_POST['url'])){$url=$_POST['url'];}else{$url="";}
-				
+
 				if(isset($_POST['galleries'])&&$_POST['galleries']!=""){
 					$galleries=serialize($_POST['galleries']);
 				}else{
@@ -191,7 +191,7 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 						}else{
 							$visible=serialize(array('any'));
 						}
-						
+
 					}
 				}else{
 					$visible=serialize(array('any'));
@@ -199,11 +199,11 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 
 				date_default_timezone_set($GLOBALS['site_info']['timezone']);
 				$date=date("Y/m/d H:i:s", time());
-				
+
 				if($_POST['name']!=""){
-					$query="INSERT INTO `pages` 
-					(`name`, `content`, `position`, `issubpage`, `parent`, `published`, `galleries`, `doc_folder`, `forms`, `calendars`, `visible`, `type`, `target`, `banner`, `slider`, `url`, `created`, `creator`, `horiz_menu`, `vert_menu`, `horiz_menu_visible`, `vert_menu_visible`) 
-					VALUES 
+					$query="INSERT INTO `pages`
+					(`name`, `content`, `position`, `issubpage`, `parent`, `published`, `galleries`, `doc_folder`, `forms`, `calendars`, `visible`, `type`, `target`, `banner`, `slider`, `url`, `created`, `creator`, `horiz_menu`, `vert_menu`, `horiz_menu_visible`, `vert_menu_visible`)
+					VALUES
 					('{$name}', '{$content}', '{$position}', '{$issub}', '{$subpg}', {$published}, '{$galleries}', '{$_POST['pgdocfolder']}', '{$forms}', '{$calendars}', '{$visible}', '{$_POST['pgtype']}', '{$_POST['target']}', {$banner}, {$_POST['slider']}, '{$url}', '{$date}', {$_SESSION['user_id']}, {$horiz_menu}, {$vert_menu}, {$horiz_menu_visible}, {$vert_menu_visible})";
 					$result = mysqli_query( $connection, $query);
 					confirm_query($result);
@@ -223,7 +223,7 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 			}else{
 				$error = "There is already a page of the same name, \"".$_POST['name']."\".";
 			}
-			
+
 		}elseif(isset($_GET['action'])&&$_GET['action']=="delpage"){
 			$query="SELECT * FROM `pages` WHERE `id`={$_GET['page']}";
 			$getpagequery=mysqli_query( $connection, $query);
@@ -234,7 +234,7 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 			if($result){
 				redirect_to('page_list?success='.urlencode("Deleted page ".$page["name"]."!"));
 			}
-		}	
+		}
 	}else{
 		$query="SELECT * FROM `pages` ORDER BY `position` ASC LIMIT 1";
 		$result=mysqli_query( $connection, $query);
@@ -258,7 +258,7 @@ if(($rows)!=0||(isset($_GET['action'])&&$_GET['action']=='newpage')){
 	confirm_query($listidsquery);
 ?>
 
-<?php	
+<?php
 if(isset($_GET['page'])){
 	$query="SELECT * FROM `pages` WHERE id={$_GET['page']}";
 	$getpagequery=mysqli_query( $connection, $query);
@@ -286,7 +286,6 @@ if($_GET['action']=="edit"){
 <?php
 	$pgsettings = array(
 		"title" => $title,
-		"icon" => "icon-newspaper"
 	);
 	require_once("includes/begin_cpanel.php");
 ?>
@@ -331,19 +330,19 @@ if($_GET['action']=="edit"){
    filemanager_title:"Responsive Filemanager" ,
    external_plugins: { "filemanager" : "/filemanager/plugin.min.js"}
 	});
-	
+
 	function disable(select){
 		 var selectedOption = select.options[select.selectedIndex];
-		 
+
 		 if(selectedOption.value == "Link"){
 			 document.getElementById('url').disabled = false;
 			 document.getElementById('url').readOnly = false;
 		 }else{
-			document.getElementById('url').disabled = true; 
-			document.getElementById('url').readOnly = true; 
+			document.getElementById('url').disabled = true;
+			document.getElementById('url').readOnly = true;
 		 }
-		 
-		 
+
+
 	}
 	$(document).ready(function() {
 		//jQuery for seven sets of "Select All" checkboxes
@@ -357,7 +356,7 @@ if($_GET['action']=="edit"){
 				}
             });
         });
-		
+
 		var $formall = 'formall';
         $('input[id="'+$formall+'"]').change(function() {
 			var $all_check_status = $('input[id="'+$formall+'"]').is(':checked');
@@ -431,19 +430,6 @@ $('fixed-action-btn').on("touchstart", function (e) {
   <tr>
   <td>
 
-<div class="fixed-action-btn" style="bottom: 23px; right: 23px;">
-	<div>
-		<button class="btn-floating btn-large green" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "submit";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newpage";} ?>" type="submit" id="addNewActor"><i class="large material-icons">&#xE161</i></button>
-
-	</div>
-    <ul>
-      <li><a class="btn red"><i class="material-icons">insert_chart</i></a></li>
-      <li><a class="btn yellow darken-1"><i class="material-icons">format_quote</i></a></li>
-      <li><a class="btn green"><i class="material-icons">publish</i></a></li>
-      <li><a class="btn blue"><i class="material-icons">attach_file</i></a></li>
-    </ul>
-  </div>
-
 
   	<?php if(check_permission("Pages","add_pages")){?>
         <input class="green btn" type= "submit" name="<?php if(isset($_GET['action'])&&$_GET['action']=="edit"){echo "submit";}elseif(isset($_GET['action'])&&$_GET['action']=="newpage"){echo "newpage";} ?>" value="Save" />
@@ -498,7 +484,7 @@ $('fixed-action-btn').on("touchstart", function (e) {
                                 <input id="title" type="text" value="<?php if(isset($_GET['page'])){echo $selpage['name'];} ?>" class="validate" />
                                 <label for="title">Title</label>
                                 </div>
-                    
+
                         </td>
                         -->
                       </tr>
@@ -508,7 +494,7 @@ $('fixed-action-btn').on("touchstart", function (e) {
                             <select name="pgorder"><?php $numpages=mysqli_num_rows($listpagesquery)+1; $count=1; while($numpages>=$count){ ?><option value="<?php echo $count; ?>"<?php if(isset($_GET['page'])&&intval($selpage['position'])==$count){echo " selected=\"selected\"";} ?>><?php echo $count;?></option><?php $count++; }  ?>
                             <?php if(isset($_GET['action'])&&$_GET['action']=="newpage"){?><option value="<?php echo ($count); ?>" selected="selected"><?php echo ($count); ?></option><?php }?></select>
                         </td>
-                        
+
                         <td align="left">
                             <?php
                                 $types = array('Custom', 'Blog', 'Link', 'Staff', 'Forum');
@@ -520,7 +506,7 @@ $('fixed-action-btn').on("touchstart", function (e) {
                             foreach($types as $type){
                             ?>
                                 <option value="<?php echo $type; ?>"<?php if ((isset($selpage['type'])&&$type == $selpage['type'])||$_GET['action']=='newpage'&&$typecount==0){echo ' selected="selected"';} ?>><?php echo $type; ?></option>
-                            <?php 
+                            <?php
                             $typecount++;
                             } ?>
                             </select>
@@ -544,14 +530,9 @@ $('fixed-action-btn').on("touchstart", function (e) {
                             </select>
                         </td>
                       </tr>
-                      <!--<tr>
-                        <td align="right">Icon:</td>
-                        <td>
-                            <input type="text" name="icon" value="<?php if(isset($_GET['page'])){echo $selpage['icon'];} ?>" />
-                        </td>
-                      </tr>-->
+
                       <tr>
-                        
+
                         <td align="left">
                             <?php
                             $query="SELECT * FROM `pages` WHERE `issubpage` = 0 ORDER BY `position` ASC";
@@ -584,7 +565,7 @@ $('fixed-action-btn').on("touchstart", function (e) {
                                 <option value="" id="selranks" <?php if(isset($_GET['page'])&&$pgVisibility[0] != 'any'&&$pgVisibility[0] != 'loggedin'&&$pgVisibility[0] != 'loggedout'){echo ' selected="selected"';} ?>>Custom</option>
                             </select>
                             <div id="rankcontainer" style="background-color:#CCCCCC;<?php if(isset($_GET['page'])&&$pgVisibility[0] != 'any'&&$pgVisibility[0] != 'loggedin'&&$pgVisibility[0] != 'loggedout'){echo ' visibility:visible;';}else{echo ' visibility:hidden;';} ?>">
-                            	<?php 
+                            	<?php
 		                            $query="SELECT * FROM `ranks`";
 		                            $listrankssquery=mysqli_query( $connection, $query);
 		                            confirm_query($listrankssquery);
@@ -658,7 +639,7 @@ $('fixed-action-btn').on("touchstart", function (e) {
                                     }
                                 }
                             }
-                            
+
                             ?>
                             <li><input type="checkbox" name="galleries[]" id="<?php echo $gallery['id']; ?>" value="<?php echo $gallery['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="<?php echo $gallery['id']; ?>"><?php echo $gallery['name']; ?></label></li><?php } ?>
                     	</ul></div><br/>
@@ -681,10 +662,10 @@ $('fixed-action-btn').on("touchstart", function (e) {
                                     }
                                 }
                             }
-                            
+
                             ?>
                             <li><input type="checkbox" name="forms[]" id="form<?php echo $form['id']; ?>" value="<?php echo $form['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="form<?php echo $form['id']; ?>"><?php echo $form['name']; ?></label></li>
-                            <?php } 
+                            <?php }
                     ?></ul></div><br/>
                     	<h2 style="margin:0;">Included Calendars</h2><br>
 					<?php
@@ -705,10 +686,10 @@ $('fixed-action-btn').on("touchstart", function (e) {
                                     }
                                 }
                             }
-                            
+
                             ?>
                             <li><input type="checkbox" name="calendars[]" id="calendar<?php echo $calendar['id']; ?>" value="<?php echo $calendar['id']; ?>" <?php if($checked == true){echo "checked";} ?> /><label for="calendar<?php echo $calendar['id']; ?>"><?php echo $calendar['name']; ?></label></li>
-                            <?php } 
+                            <?php }
                     ?></ul>
                     </div>
                 </div>

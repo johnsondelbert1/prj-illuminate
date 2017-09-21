@@ -383,7 +383,7 @@ if(isset($_SESSION['user_id'])){
 function check_permission($perm_group, $perm = false){
 	global $connection;
 	global $permissions;
-	
+
 	if(logged_in()){
 		if (is_array($perm_group)&&$perm==false){
 			$return = false;
@@ -392,7 +392,7 @@ function check_permission($perm_group, $perm = false){
 				if(isset($permissions[$explode[0]][$explode[1]]['value'])&&$permissions[$explode[0]][$explode[1]]['value']==1){
 					$return=true;
 				}
-				
+
 			}
 			return $return;
 		}else{
@@ -419,7 +419,7 @@ function check_rank_permission($rank_id, $perm_group, $perm = false){
 			if(isset($permissions[$explode[0]][$explode[1]]['value'])&&$permissions[$explode[0]][$explode[1]]['value']==1){
 				$return=true;
 			}
-			
+
 		}
 		return $return;
 	}else{
@@ -510,7 +510,7 @@ function get_user($id){
 			"forum_signature" => "",
 		);
 	}
-	
+
 }
 
 function get_user_profile_pic($id){
@@ -529,7 +529,7 @@ function get_user_profile_pic($id){
 
 function randstring($length = 16) {
     $characters = "0123456789abcdefghijklmnopqrstuvwxyz";
-    $string = "";    
+    $string = "";
     for ($p = 0; $p < $length; $p++) {
         $string .= $characters[mt_rand(0, strlen($characters)-1)];
     }
@@ -543,19 +543,19 @@ function addpostcount($user_id){
 }
 function del_acc($userid){
 	global $connection;
-	
+
 	$query="SELECT * FROM `users` WHERE `id` = {$userid}";
 	$userquery=mysqli_query( $connection, $query);
 	confirm_query($userquery);
 	$user = mysqli_fetch_array($userquery);
-	
+
 	if($user['deletable']!=0){
-		$query="DELETE FROM `users` 
+		$query="DELETE FROM `users`
 				WHERE `id` =  '{$userid}'";
 		$result=mysqli_query($connection, $query);
 		confirm_query($result);
 
-		$query="DELETE FROM `users_custom_fields` 
+		$query="DELETE FROM `users_custom_fields`
 				WHERE `uid` =  '{$userid}'";
 		$result=mysqli_query($connection, $query);
 		confirm_query($result);
@@ -570,20 +570,20 @@ function del_acc($userid){
 
 function del_rank($rankid){
 	global $connection;
-	
+
 	$query="SELECT * FROM `ranks` WHERE `id` = {$rankid}";
 	$rankquery=mysqli_query( $connection, $query);
 	confirm_query($rankquery);
 	$rank= mysqli_fetch_array($rankquery);
-	
+
 	if($rank['deletable']!=0){
-		$query="DELETE FROM `ranks` 
+		$query="DELETE FROM `ranks`
 				WHERE `id` =  '{$rankid}'";
 		$result=mysqli_query($connection, $query);
 		confirm_query($result);
 		return true;
 	}else{
-		return false;	
+		return false;
 	}
 }
 
@@ -669,7 +669,7 @@ function order_doc_files($dir){
 				array_push($nonchronfiles, $file);
 			}
 		}
-		
+
 		arsort($chronfiles);
 		$chronnofiles = true;
 		$nonchronnofiles = true;
@@ -721,7 +721,7 @@ function gallery($galleryID, $gallname = "gall", $num_items = false){
         	subHtmlSelectorRelative: true,
         	thumbnail: false,
         	selector: '#gallery-<?php echo $gallname; ?> > div.masonry_item > a'
-        }); 
+        });
     });
 </script>
 <div class="masonry" id="gallery-<?php echo $gallname; ?>">
@@ -792,7 +792,7 @@ function CheckGalleryFiles($gallID, $cpanel = false){
 
 	$query="SELECT * FROM `galleries` WHERE `id` = ".$gallID;
 	$result=mysqli_query( $connection, $query);
-	
+
 	if(mysqli_num_rows($result)==1){
 		$gallery=mysqli_fetch_array($result);
 
@@ -809,13 +809,13 @@ function CheckGalleryFiles($gallID, $cpanel = false){
 
 		//Get image data in gallery dir
 		$image_files = get_files($images_dir);
-		
+
 		//Get gallery images from DB and put image data into array
 		$query="SELECT `name` FROM  `site_gallery_items` WHERE  `gallery_id` = {$gallID} AND `type` = 'image'";
 		$result=mysqli_query($connection, $query);
 		$numImages = mysqli_num_rows($result);
 		$galleryImage = array();
-		
+
 		while ($galleryImagesResult=mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 			array_push($galleryImage, $galleryImagesResult);
 		}
@@ -828,7 +828,7 @@ function CheckGalleryFiles($gallID, $cpanel = false){
 		//Add new images to DB
 		if(count($image_files)) {
 			$index = 0;
-			
+
 			foreach($image_files as $index=>$file) {
 				$index++;
 		        if(!in_array($file, $galleryImageNames)){
@@ -857,7 +857,7 @@ function upload($files, $directory ,$maxfilesize, $allowed_file_types = false, $
 	$file_basename = substr($filename, 0, strripos($filename, '.')); // get file name
 	$file_ext = substr($filename, strripos($filename, '.')); // get file extention
 	$filesize = $files["file"]["size"];
- 
+
 	if (!empty($file_basename)) {
  		// rename file
  		if($new_file_name == ""){
@@ -866,11 +866,11 @@ function upload($files, $directory ,$maxfilesize, $allowed_file_types = false, $
 			$newfilename = $new_file_name.$file_ext;
 		}
 		if (((is_array($allowed_file_types)&&in_array($file_ext,$allowed_file_types))||$allowed_file_types == false)) {
-			if ($filesize < $maxfilesize) {	
-				if (file_exists($directory . $newfilename)) {		
+			if ($filesize < $maxfilesize) {
+				if (file_exists($directory . $newfilename)) {
 					// file already exists error
-					$message = "You have already uploaded this file.</h2>";			
-				} else {		
+					$message = "You have already uploaded this file.</h2>";
+				} else {
 					if(move_uploaded_file($files["file"]["tmp_name"], $directory.$newfilename)){
 						$message = "\"".$filename."\" was uploaded successfully.";
 					}else{
@@ -887,27 +887,27 @@ function upload($files, $directory ,$maxfilesize, $allowed_file_types = false, $
 			$message = "Only these file types are allowed for upload: " . implode(', ',$allowed_file_types);
 			unlink($files["file"]["tmp_name"]);
 		}
-	} else {	
+	} else {
 		// file selection error
-		$message = "Please select a file to upload.";	
+		$message = "Please select a file to upload.";
 	}
 	return $message;
 }
 
 function multi_upload($files, $output_dir){
-	
+
 	$ret = array();
 
 	$error =$files["myfile"]["error"];
    {
-	
+
 		if(!is_array($files["myfile"]['name'])) //single file
 		{
 			$RandomNum   = time();
-			
+
 			$ImageName      = str_replace(' ','-',strtolower($files['myfile']['name']));
 			$ImageType      = $files['myfile']['type']; //"image/png", image/jpeg etc.
-		 
+
 			$ImageExt = substr($ImageName, strrpos($ImageName, '.'));
 			$ImageExt       = str_replace('.','',$ImageExt);
 			$ImageName      = preg_replace("/\.[^.\s]{3,4}$/", "", $ImageName);
@@ -915,7 +915,7 @@ function multi_upload($files, $output_dir){
 
 			move_uploaded_file($files["myfile"]["tmp_name"],$output_dir. $NewImageName);
 			 //echo "<br> Error: ".$files["myfile"]["error"];
-			 
+
 				 $ret[$fileName]= $output_dir.$NewImageName;
 		}
 		else
@@ -924,15 +924,15 @@ function multi_upload($files, $output_dir){
 			for($i=0; $i < $fileCount; $i++)
 			{
 				$RandomNum   = time();
-			
+
 				$ImageName      = str_replace(' ','-',strtolower($files['myfile']['name'][$i]));
 				$ImageType      = $files['myfile']['type'][$i]; //"image/png", image/jpeg etc.
-			 
+
 				$ImageExt = substr($ImageName, strrpos($ImageName, '.'));
 				$ImageExt       = str_replace('.','',$ImageExt);
 				$ImageName      = preg_replace("/\.[^.\s]{3,4}$/", "", $ImageName);
 				$NewImageName = $ImageName.'-'.$RandomNum.'.'.$ImageExt;
-				
+
 				$ret[$NewImageName]= $output_dir.$NewImageName;
 				move_uploaded_file($files["myfile"]["tmp_name"][$i],$output_dir.$NewImageName );
 			}
@@ -949,7 +949,7 @@ function print_multi_upload($output_dir, $maxsize, $filetypes, $cpanel = false){
 <br />
 
 <div id="container">
-    <a class="btn blue" id="pickfiles" href="javascript:;">Select files</a> 
+    <a class="btn blue" id="pickfiles" href="javascript:;">Select files</a>
     <a class="btn green" id="uploadfiles" href="javascript:;">Upload</a>
 </div>
 
@@ -968,7 +968,7 @@ var uploader = new plupload.Uploader({
 	chunk_size: '1mb',
 	flash_swf_url : '<?php if($cpanel == true){echo "../";} ?>jscripts/Moxie.swf',
 	silverlight_xap_url : '<?php if($cpanel == true){echo "../";} ?>jscripts/Moxie.xap',
-	
+
 	filters : {
 		max_file_size : '<?php echo $maxsize; ?>',
 		<?php if($filetypes!=false){?>
@@ -1022,7 +1022,7 @@ function redirect_to($location=NULL){
 function confirm_query($result){
 	global $connection;
 	if(!$result){
-		die("Query failed: ".mysqli_error($connection));	
+		die("Query failed: ".mysqli_error($connection));
 	}else{
 		return true;
 	}
@@ -1064,13 +1064,13 @@ function notify_users($subType,$subId,$poster){
 				$email_message = 'A new post has been made in the blog!<br />';
 				$email_message .= 'View the post here: <a href="'.$GLOBALS['HOST'].'/page/'.$GLOBALS['blog_page'].'">'.$GLOBALS['HOST'].'/page/'.$GLOBALS['blog_page'].'</a>';
 				break;
-			
+
 			case 'forum':
 				$subject = 'New Forum Post at '.$GLOBALS['site_info']['name'];
 				$email_message = 'A new post has been made in a forum you\'ve subscribed!<br />';
 				$email_message .= 'View the post here: <a href="'.$GLOBALS['HOST'].'/view_forum?forum='.$subId.'">'.$GLOBALS['HOST'].'/view_forum?forum='.$subId.'</a>';
 				break;
-			
+
 			case 'thread':
 				$subject = 'New Thread Post at '.$GLOBALS['site_info']['name'];
 				$email_message = 'A new post has been made in a forum thread you\'ve subscribed to!<br />';
@@ -1107,31 +1107,31 @@ function nav($position, $pgselection){
                 <a href="<?php echo $GLOBALS['site_info']['logo_url']; ?>"><img src="<?php echo USER_DIR_URL; ?>site-img/logo/<?php echo $logo; ?>" alt="<?php echo $GLOBALS['site_info']['name']; ?> Logo" width="240" /></a>
                 <?php }else{ ?>
                 <img src="<?php echo $GLOBALS['HOST']; ?>/images/logo/<?php echo $logo; ?>" width="240" />
-            <?php } 
+            <?php }
             } ?>
         </div>-->
     <?php
 		$query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 OR `vert_menu` = 1 AND `issubpage` = 0 AND `published` = 1 ORDER BY `position` ASC";
 		$result=mysqli_query( $connection, $query);
 		$numpages=mysqli_num_rows($result);
-		
+
 		if($numpages!=0){
-		
+
 			$query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 0 AND `published` = 1 ORDER BY `position` ASC";
 			$result=mysqli_query( $connection, $query);
 			$numhorizpages=mysqli_num_rows($result);
-			
+
 			if($numhorizpages!=0){
 			?>
             <ul>
 			<?php
 			while($page=mysqli_fetch_array($result)){?>
-				<li<?php if($pgselection=="true"){if(isset($_GET['page'])&&urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php 	
-					
+				<li<?php if($pgselection=="true"){if(isset($_GET['page'])&&urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php
+
 					$query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
 					$subpgresult=mysqli_query( $connection, $query);
 					confirm_query($subpgresult);
-					
+
 					if(mysqli_num_rows($subpgresult)==0){
 						nav_button($page);
 					}else{?>
@@ -1141,14 +1141,14 @@ function nav($position, $pgselection){
                                 	<?php nav_button($page); ?>
                                 	<i class="mdi-navigation-arrow-drop-down"></i>
                                 </span>
-                                
+
                                   <div class="collapsible-body">
                                     <ul>
 									<?php while($subpage=mysqli_fetch_array($subpgresult)){?>
                                         <li style="width:100%;"<?php if($pgselection=="true"){if(isset($_GET['page'])&&urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php
-                                        
+
                                         nav_button($subpage);
-                                        
+
                                         ?>
                                         </li>
                                     <?php } ?>
@@ -1164,29 +1164,29 @@ function nav($position, $pgselection){
 				</ul>
 				<hr/>
 			<?php
-			
+
 		}
 			?>
 			<?php
 			$query="SELECT * FROM `pages` WHERE `vert_menu` = 1 AND `issubpage` = 0 AND `published` = 1 ORDER BY `position` ASC";
 			$result=mysqli_query( $connection, $query);
 			$numvertpages=mysqli_num_rows($result);
-			
+
 			if($numvertpages!=0){?>
             <ul>
             <?php
 			while($page=mysqli_fetch_array($result)){
 				if($page['issubpage']==0){ $lastmainpage=$page['id'];?>
-				<li<?php if($pgselection=="true"){if(isset($_GET['page'])&&urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php 
-					
+				<li<?php if($pgselection=="true"){if(isset($_GET['page'])&&urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php
+
 					$query="SELECT * FROM `pages` WHERE `vert_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
 					$subpgresult=mysqli_query( $connection, $query);
 					confirm_query($subpgresult);
-					
+
 					if(mysqli_num_rows($subpgresult)==0){
 						nav_button($page);
 					}else{?>
-					
+
 						<ul class="collapsible collapsible-accordion">
 							<li>
 								<span class="collapsible-header" style="padding-left:0px; margin-left:0px;">
@@ -1197,9 +1197,9 @@ function nav($position, $pgselection){
                                     <ul>
 									<?php while($subpage=mysqli_fetch_array($subpgresult)){?>
                                         <li style="width:100%;"<?php if($pgselection=="true"){if(isset($_GET['page'])&&urlencode($subpage['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><?php
-                                        
+
                                         nav_button($subpage);
-                                        
+
                                         ?>
                                         </li>
                                     <?php } ?>
@@ -1213,13 +1213,13 @@ function nav($position, $pgselection){
 				<?php
 				}
 				?>
-				
+
 			<?php
 			}
 		?>
         </ul>
         <hr/>
-        <?php } 
+        <?php }
 		}
 		?>
         <div class="mobile-login">
@@ -1239,17 +1239,17 @@ function nav($position, $pgselection){
         </ul>
 
 	<?php }
-	
+
 	if($position=="horiz"||$position=="vert"){
 			if($position=="horiz"){
 				$query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 0 AND `published` = 1 ORDER BY `position` ASC";
 			}elseif($position=="vert"){
 				$query="SELECT * FROM `pages` WHERE `vert_menu` = 1 AND `issubpage` = 0 AND `published` = 1 ORDER BY `position` ASC";
 			}
-			
+
 			$result=mysqli_query( $connection, $query);
 			$numpages=mysqli_num_rows($result);
-			
+
 			if($position=="horiz"&&$numpages!=0){ ?>
 				<div class="nav large">
 				<?php if($logo!=false){ ?>
@@ -1276,7 +1276,7 @@ function nav($position, $pgselection){
 				}elseif($position=="vert"){
 					$buttonwidth = 100;
 				}
-				
+
 				$pageorder = 0;
 
 				if($numpages!=0){
@@ -1285,7 +1285,7 @@ function nav($position, $pgselection){
 						if(canView(unserialize($page['visible']))){?>
 	                        <li style="min-width:<?php echo $buttonwidth; ?>%;"<?php if($pgselection=="true"){if(isset($_GET['page'])&&urlencode($page['name'])==$_GET['page']){echo " class=\"selected\"";}} ?>><a style="min-width:<?php echo $buttonwidth; ?>%;" href="<?php
 	                        	echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($page['name']);
-	                            ?>" <?php if($page['target']!="_self"){echo "target=\"".$page['target']."\"";} ?>><?php echo $page['name'];?></a><?php 
+	                            ?>" <?php if($page['target']!="_self"){echo "target=\"".$page['target']."\"";} ?>><?php echo $page['name'];?></a><?php
 	                            if($position=="horiz"){
 	                                $query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 1 AND `published` = 1 AND `parent`={$page['id']} ORDER BY `position` ASC";
 	                            }elseif($position=="vert"){
@@ -1302,11 +1302,11 @@ function nav($position, $pgselection){
 		                                        	echo $GLOBALS['HOST'];?>/page/<?php echo urlencode($subpage['name']);?>"
 		                                            <?php if($subpage['target']!="_self"){echo "target=\"".$subpage['target']."\"";} ?>><?php echo $subpage['name'];?></a>
 		                                    </li>
-		                                <?php 
+		                                <?php
 	                                		}
 		                                } ?>
 	                                </ul>
-		                            <?php 
+		                            <?php
 		                            } ?>
 	                            </li>
 	                        <?php
@@ -1322,7 +1322,7 @@ function nav($position, $pgselection){
             	</div></div>
 			<?php } ?>
 		<?php
-		
+
     }
 	return $numpages;
 }
@@ -1354,7 +1354,7 @@ function slider($slider_id){
 		$slider=mysqli_fetch_array($result);
 	?>
                         <!-- Caption Style -->
-                        <style> 
+                        <style>
                             .captionOrange, .captionBlack
                             {
                                 font-size: 20px;
@@ -1370,7 +1370,7 @@ function slider($slider_id){
                             .captionBlack
                             {
                                 font-size:16px;
-                                
+
                             }
                             .captionBlack a{
                             	text-decoration: underline;
@@ -1400,29 +1400,29 @@ function slider($slider_id){
                         <script type="text/javascript" src="<?php echo $GLOBALS['HOST']; ?>/jssor/jssor.slider.js"></script>
                         <script>
                             jQuery(document).ready(function ($) {
-								
+
                                 //Reference http://www.jssor.com/development/slider-with-slideshow-jquery.html
                                 //Reference http://www.jssor.com/development/tool-slideshow-transition-viewer.html
-                    
+
                                 var _SlideshowTransitions = [
                                 //Fade in R
                                 {$Duration: 1200, x: -0.3, $During: { $Left: [0.3, 0.7] }, $Easing: { $Left: $JssorEasing$.$EaseInCubic, $Opacity: $JssorEasing$.$EaseLinear }, $Opacity: 2 }
                                 //Fade out L
                                 , { $Duration: 1200, x: 0.3, $SlideOut: true, $Easing: { $Left: $JssorEasing$.$EaseInCubic, $Opacity: $JssorEasing$.$EaseLinear }, $Opacity: 2 }
                                 ];
-								
+
 								var _CaptionTransitions = [
 								//CLIP|LR
 								{$Duration: 900, $Clip: 3, $Easing: $JssorEasing$.$EaseInOutCubic },
-					
+
 								];
-								
+
                                 var options = {
                                     $AutoPlay: true,                                    //[Optional] Whether to auto play, to enable slideshow, this option must be set to true, default value is false
                                     $AutoPlaySteps: 1,                                  //[Optional] Steps to go for each navigation request (this options applys only when slideshow disabled), the default value is 1
                                     $AutoPlayInterval: 4000,                            //[Optional] Interval (in milliseconds) to go for next slide since the previous stopped if the slider is auto playing, default value is 3000
                                     $PauseOnHover: 3,                               //[Optional] Whether to pause when mouse over if a slider is auto playing, 0 no pause, 1 pause for desktop, 2 pause for touch device, 3 pause for desktop and touch device, 4 freeze for desktop, 8 freeze for touch device, 12 freeze for desktop and touch device, default value is 1
-                    
+
                                     $ArrowKeyNavigation: true,   			            //[Optional] Allows keyboard (arrow key) navigation or not, default value is false
                                     $SlideDuration: 500,                                //[Optional] Specifies default duration (swipe) for slide in milliseconds, default value is 500
                                     $MinDragOffsetToSlide: 20,                          //[Optional] Minimum drag offset to trigger slide , default value is 20
@@ -1434,21 +1434,21 @@ function slider($slider_id){
                                     $UISearchMode: 1,                                   //[Optional] The way (0 parellel, 1 recursive, default value is 1) to search UI components (slides container, loading screen, navigator container, arrow navigator container, thumbnail navigator container etc).
                                     $PlayOrientation: 1,                                //[Optional] Orientation to play slide (for auto play, navigation), 1 horizental, 2 vertical, 5 horizental reverse, 6 vertical reverse, default value is 1
                                     $DragOrientation: 3,                                //[Optional] Orientation to drag slide, 0 no drag, 1 horizental, 2 vertical, 3 either, default value is 1 (Note that the $DragOrientation should be the same as $PlayOrientation when $DisplayPieces is greater than 1, or parking position is not 0)
-                    
+
                                     $SlideshowOptions: {                                //[Optional] Options to specify and enable slideshow or not
                                         $Class: $JssorSlideshowRunner$,                 //[Required] Class to create instance of slideshow
                                         $Transitions: _SlideshowTransitions,            //[Required] An array of slideshow transitions to play slideshow
                                         $TransitionsOrder: 1,                           //[Optional] The way to choose transition to play slide, 1 Sequence, 0 Random
                                         $ShowLink: true                                    //[Optional] Whether to bring slide link on top of the slider when slideshow is running, default value is false
                                     },
-									
+
 									$CaptionSliderOptions: {                            //[Optional] Options which specifies how to animate caption
 										$Class: $JssorCaptionSlider$,                   //[Required] Class to create instance to animate caption
 										$CaptionTransitions: _CaptionTransitions,       //[Required] An array of caption transitions to play caption, see caption transition section at jssor slideshow transition builder
 										$PlayInMode: 1,                                 //[Optional] 0 None (no play), 1 Chain (goes after main slide), 3 Chain Flatten (goes after main slide and flatten all caption animations), default value is 1
 										$PlayOutMode: 1,                                 //[Optional] 0 None (no play), 1 Chain (goes before main slide), 3 Chain Flatten (goes before main slide and flatten all caption animations), default value is 1
 									},
-									
+
                                     $BulletNavigatorOptions: {                                //[Optional] Options to specify and enable navigator or not
                                         $Class: $JssorBulletNavigator$,                       //[Required] Class to create navigator instance
                                         $ChanceToShow: 2,                               //[Required] 0 Never, 1 Mouse Over, 2 Always
@@ -1456,13 +1456,13 @@ function slider($slider_id){
                                         $SpacingX: 10,                                   //[Optional] Horizontal space between each item in pixel, default value is 0
                                         $SpacingY: 10                                    //[Optional] Vertical space between each item in pixel, default value is 0
                                     },
-                    
+
                                     $ArrowNavigatorOptions: {
                                         $Class: $JssorArrowNavigator$,              //[Requried] Class to create arrow navigator instance
                                         $ChanceToShow: 1,                                //[Required] 0 Never, 1 Mouse Over, 2 Always
                                         $AutoCenter: 2                                 //[Optional] Auto center navigator in parent container, 0 None, 1 Horizontal, 2 Vertical, 3 Both, default value is 0
                                     },
-                    
+
                                     $ThumbnailNavigatorOptions: {
                                         $Class: $JssorThumbnailNavigator$,              //[Required] Class to create thumbnail navigator instance
                                         $ChanceToShow: 2,                               //[Required] 0 Never, 1 Mouse Over, 2 Always
@@ -1470,7 +1470,7 @@ function slider($slider_id){
                                         $DisableDrag: true                              //[Optional] Disable drag or not, default value is false
                                     }
                                 };
-                    
+
                                 var jssor_sliderb = new $JssorSlider$("sliderb_container", options);
                                 //responsive code begin
                                 //you can remove responsive code if you don't want the slider scales while window resizes
@@ -1483,17 +1483,17 @@ function slider($slider_id){
 										window.setTimeout(ScaleSlider, 30);
 								}
                                 ScaleSlider();
-                    
+
                                 if (!navigator.userAgent.match(/(iPhone|iPod|iPad|BlackBerry|IEMobile)/)) {
                                     $(window).bind('resize', ScaleSlider);
                                 }
-                    
-                    
+
+
                                 //if (navigator.userAgent.match(/(iPhone|iPod|iPad)/)) {
                                 //    $(window).bind("orientationchange", ScaleSlider);
                                 //}
                                 //responsive code end
-								
+
                             });
                         </script>
                         <!-- Jssor Slider Begin -->
@@ -1502,7 +1502,7 @@ function slider($slider_id){
                         <div class="col l10 m12 s12 offset-l1" style="padding:0 0 !important;">
                         <div style="width:100%; margin-left:auto; margin-right:auto;">
                         <div id="sliderb_container" style="position: relative; width: 600px; height: 300px; overflow: hidden; margin-left:auto; margin-right:auto; margin-bottom:20px;">
-                    
+
                             <!-- Loading Screen -->
                             <div u="loading" style="position: absolute; top: 0px; left: 0px;">
                                 <div style="filter: alpha(opacity=70); opacity:0.7; position: absolute; display: block;
@@ -1512,15 +1512,15 @@ function slider($slider_id){
                                     top: 0px; left: 0px;width: 100%;height:100%;">
                                 </div>
                             </div>
-                    
+
                             <!-- Slides Container -->
                             <div u="slides" style="cursor: move; position: absolute; left: 0px; top: 0px; width: 600px; height: 300px;
                                 overflow: hidden;">
                                 <?php
-									
+
 									$query="SELECT * FROM `slider_images` WHERE `published` = 1 AND `slider_id` = ".$slider_id." ORDER BY `order`";
 									$result=mysqli_query( $connection, $query);
-									
+
 									if(mysqli_num_rows($result)!=0){
 										while($slide=mysqli_fetch_array($result)){?>
                                             <div>
@@ -1530,7 +1530,7 @@ function slider($slider_id){
                                                 <div u=caption t="*" class="captionBlack"  style="position:absolute; left:20px; top: 30px; width:300px; height:30px; font-weight:bold;">
 													<?php if($slide['url']!=''){?>
                                                         <a href="<?php echo $slide['url'];?>"<?php if($slide['new_tab']==1){ echo ' target="_blank"'; } ?>><?php echo $slide['caption']; ?></a>
-                                                    <?php 
+                                                    <?php
 													}else{
 														echo $slide['caption'];
 													} ?>
@@ -1542,9 +1542,9 @@ function slider($slider_id){
 									}
 								?>
                             </div>
-                            
-                    
-                            <!-- ThumbnailNavigator Skin Begin 
+
+
+                            <!-- ThumbnailNavigator Skin Begin
                             <div u="thumbnavigator" class="sliderb-T" style="position: absolute; top: 0px; left: 0px; height:45px; width:600px;">
                                 <div style="filter: alpha(opacity=40); opacity:0.4; position: absolute; display: block;
                                     background-color: #000000; top: 0px; left: 0px; width: 100%; height: 100%;">
@@ -1558,7 +1558,7 @@ function slider($slider_id){
                                 <!-- Thumbnail Item Skin End
                             </div>
                             ThumbnailNavigator Skin End -->
-                            
+
                             <!-- Bullet Navigator Skin Begin -->
                             <!-- jssor slider bullet navigator skin 01 -->
                             <style>
@@ -1571,8 +1571,8 @@ function slider($slider_id){
                                 */
                                 .jssorb01 div, .jssorb01 div:hover, .jssorb01 .av
                                 {
-                                    
-                                    
+
+
                                     overflow:hidden;
                                     cursor: pointer;
 									border-radius: 2px;
@@ -1588,7 +1588,7 @@ function slider($slider_id){
                                 <div u="prototype" style="POSITION: absolute; WIDTH: 12px; HEIGHT: 12px;"></div>
                             </div>
                             <!-- Bullet Navigator Skin End -->
-                            
+
                             <!-- Arrow Navigator Skin Begin -->
                             <style>
                                 /* jssor slider arrow navigator skin 05 css */
@@ -1607,7 +1607,7 @@ function slider($slider_id){
                                     display: block;
                                     overflow:hidden;
                                 }
-                                
+
                                 .jssora05l:hover { background-position: -130px -40px; }
                                 .jssora05r:hover { background-position: -190px -40px; }
                                 .jssora05ldn { background-position: -250px -40px; }
@@ -1619,7 +1619,7 @@ function slider($slider_id){
                             <!-- Arrow Right -->
                             <span u="arrowright" class="jssora05r" style=" top: 123px; right: 8px"><i class="small material-icons">keyboard_arrow_right</i>
                             </span>
-                           
+
                             <!-- Trigger -->
                         </div>
                         </div>
@@ -1721,7 +1721,7 @@ function getEmbedThumb($url){
 		    // regular links
 			if (preg_match('/(?<=v\=)([\w\d-_]+)/', $url, $matches)){
 				return '//img.youtube.com/vi/'.$matches[0].'/default.jpg';
-			
+
 			// ajax hash tag links
 			}elseif(preg_match('§([\d\w-_]+)$§i', $url, $matches)){
 				return '//img.youtube.com/vi/'.$matches[0].'/default.jpg';

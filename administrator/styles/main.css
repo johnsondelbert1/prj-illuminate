@@ -2,7 +2,7 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,700,300);
 
 /* Desktops and laptops ----------- */
-@media only screen 
+@media only screen
 and (min-width : 1024px) {
 	span.galleryImage:hover div.galleryEditBtn, span.galleryImage:hover div.galleryItemDrag{
 		visibility: visible;
@@ -31,7 +31,7 @@ and (min-width : 1024px) {
 }
 
 /* Smartphones (portrait and landscape) ----------- */
-@media only screen 
+@media only screen
 and (max-device-width : 1023px) {
 	span.galleryImage div.galleryEditBtn, span.galleryImage div.galleryItemDrag{
 		visibility: visible;
@@ -67,12 +67,12 @@ and (max-device-width : 1023px) {
 }
 html{
 	overflow-y: scroll;
-	
+
 }
 html, body {
 	height:100%;
-	
-	
+
+
 }
 body
 {
@@ -103,7 +103,7 @@ body
   margin-left: -25%;
 	height:200px;
 	width:50%;
-	background-color:#ececec;	
+	background-color:#ececec;
 }
 div.wrap
 {
@@ -121,8 +121,7 @@ div.wrap a
 */
 .contentwrap
 {
-
-	width:100%;
+padding-top: 158px;
 }
 
 .title
@@ -138,23 +137,13 @@ div.wrap a
 {
 	text-align:left;
 }
-
-div.content
-{
-	width:100%;
-	background-color:#ececec;
-	-webkit-border-radius:2px;
-	border-radius:2px;
-	padding:10px 10px 20px 10px;
-
-
-}
+/*
 @media only screen and (min-width: 993px) {
   #content-card {
     margin-right:90px;
   }
 }
-/*
+
 div.content a{
 	color: #404040;
 	text-decoration:none;
@@ -220,7 +209,7 @@ div.banner
 }
 
 #footer a{
-	color:#333;	
+	color:#333;
 }
 .logo{
 	height:168px;
@@ -289,7 +278,7 @@ div.nav{
 	text-align:center;
     color: #fff;
     text-decoration: none;
-	transition: all .2s ease-in-out;	
+	transition: all .2s ease-in-out;
 }
 
 #horiz-menu li:hover > a {
@@ -310,7 +299,7 @@ div.nav{
     z-index: 1;
 	background-color:inherit;
     transition: all .2s ease-in-out;
-	
+
 }
 #horiz-menu ul.active{
     opacity: 1;
@@ -322,7 +311,7 @@ div.nav{
     top: 30px;
     left: 0px;
     margin: -30px 0 0 0;
-    _margin: 0; /*IE6 only*/ 
+    _margin: 0; /*IE6 only*/
 	/*transition: all .2s ease-in-out;*/
 }
 
@@ -335,8 +324,8 @@ div.nav{
     _line-height: 0; /*IE6 only*/
 }
 
-#horiz-menu ul li:last-child {   
-    box-shadow: none;    
+#horiz-menu ul li:last-child {
+    box-shadow: none;
 }
 
 #horiz-menu ul a {
@@ -357,7 +346,7 @@ div.nav{
 }
 
 #horiz-menu ul li:first-child > a {
-    
+
 }
 
 #horiz-menu ul li:first-child > a:after {
@@ -371,8 +360,8 @@ div.nav{
     left: -6px;
     top: 50%;
     margin-top: -6px;
-    border-left: 0; 
-	margin-left:-30px; 
+    border-left: 0;
+	margin-left:-30px;
 }
 
 #horiz-menu ul li:first-child a:hover:after {
@@ -381,8 +370,8 @@ div.nav{
 }
 
 #horiz-menu ul ul li:first-child a:hover:after {
-    border-right-color: #0299d3; 
-    border-bottom-color: transparent;  
+    border-right-color: #0299d3;
+    border-bottom-color: transparent;
 }
 
 #horiz-menu ul li:last-child > a {
@@ -484,8 +473,8 @@ div.nav{
 }
 .list tr
 {
-	
-	
+
+
 }
 .list tr:hover
 {
@@ -735,7 +724,7 @@ form input[type=textarea]
 	outline:none;
 }
 textarea{
-	background-color:#E0E0E0;	
+	background-color:#E0E0E0;
 }
 option
 {
@@ -746,7 +735,7 @@ option
 	outline:none;
 }
 
-select 
+select
 {
 	height:25px;
 	padding:0 5px 5px 5px;
@@ -782,7 +771,7 @@ select
 	float:left;
 	width:200px;
 	height:auto;
-	overflow: visible;	
+	overflow: visible;
 	margin:10px;
 }
 #connected .card input[type=text], #connected .card input[type=text]{
@@ -870,7 +859,7 @@ display: block;
 		padding: 0 3px 0 3px;
 
 	}
-	
+
 	.red {background-color:#C42F27 !important;}
 	.blue {background-color:#426FC5 !important;}
 	.green {background-color:#e74c3c !important;}
@@ -916,7 +905,7 @@ display: block;
 	box-shadow:0px 2px 2px rgba(0, 0, 0, 0.3);
 	padding:2px;
 	padding-left: 240px;
-	
+
 }
 .stick #mid{
     width:90%;
@@ -988,11 +977,11 @@ div.rank-block{
 	}
 #ranks li{
 	list-style:none;
-	
+
 	}
 	#ranks table{
 	width:200px;
-	
+
 	}
 #ranks li p{
 	background-color:#f00;
@@ -1002,7 +991,7 @@ div.rank-block{
 	font-weight:700;
 	text-align:center;
 	line-height: 100px;
-	
+
 }
 span.galleryImage {
     display: inline-block;
@@ -1156,4 +1145,8 @@ div.cal-edit-btn{
 	font-size: 20px;
 	visibility: hidden;
 	-webkit-transition: all 0.2s ease-in-out;
+}
+#slide-out{
+	color: white;
+
 }

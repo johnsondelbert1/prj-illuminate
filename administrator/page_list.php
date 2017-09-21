@@ -35,11 +35,11 @@ if(isset($_POST['delpages'])){
 	$query="SELECT * FROM `pages` WHERE `horiz_menu` = 1 AND `issubpage` = 0  ORDER BY `position`, `name` ASC";
 	$listhorizpagesquery=mysqli_query( $connection, $query);
 	confirm_query($listhorizpagesquery);
-	
+
 	$query="SELECT * FROM `pages` WHERE `vert_menu` = 1 AND `issubpage` = 0  ORDER BY `position`, `name` ASC";
 	$listvertpagesquery=mysqli_query( $connection, $query);
 	confirm_query($listvertpagesquery);
-	
+
 	$query="SELECT * FROM `pages` WHERE `horiz_menu` = 0  AND `vert_menu` = 0 AND `issubpage` = 0 ORDER BY `position`, `name` ASC";
 	$listnomenupagesquery=mysqli_query( $connection, $query);
 	confirm_query($listnomenupagesquery);
@@ -58,6 +58,7 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
 	global $connection;
 	?>
     <?php if($is_subpg == false){ ?>
+
     <table style=" text-align:left;"  class="collection responsive-table" cellpadding="0" cellspacing="0" id="page" >
         <tr class="collection-item">
             <th width="25%">
@@ -122,9 +123,9 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
 				<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
 
 
-					
+
 					<a class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="
-					<?php 
+					<?php
 						if($listpage['lastedited']!="0000-00-00 00:00:00"){
 							$lasteditedtimestamp = strtotime($listpage['lastedited']);
 							echo date("n/j/Y, g:i A", $lasteditedtimestamp);
@@ -148,7 +149,7 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
 				<td class="hide-on-med-and-down <?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
 					<?php echo number_format($listpage['views']); ?>
 				</td>
-				
+
 				<!-- ID -->
 				<!--
 				<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
@@ -164,7 +165,7 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
 				<?php } ?>
 				<!-- Edited --><!--
 				<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
-					<?php 
+					<?php
 						if($listpage['lastedited']!="0000-00-00 00:00:00"){
 							$lasteditedtimestamp = strtotime($listpage['lastedited']);
 							echo date("n/j/Y, g:i A", $lasteditedtimestamp);
@@ -200,10 +201,10 @@ function list_pages($queryresult, $pagetype, $is_subpg = false){
 					</td>
 					<!-- Author -->
 					<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
-						
-						
+
+
 						<a class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="
-						<?php 
+						<?php
 							if($listpage['lastedited']!="0000-00-00 00:00:00"){
 								$lasteditedtimestamp = strtotime($listpage['lastedited']);
 								echo date("n/j/Y, g:i A", $lasteditedtimestamp);
@@ -232,7 +233,7 @@ echo "<i class='material-icons red-text'>&#xE061;</i>";
 					<td class="hide-on-med-and-down <?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
 						<?php echo $listpage['views']; ?>
 					</td>
-					
+
 					<!-- ID -->
 					<!--
 					<td class="<?php if(isset($_GET['page'])&&$_GET['page']==$listpage['id']){echo "editselected";}else{echo "editunselected";} ?>">
@@ -263,7 +264,9 @@ echo "<i class='material-icons red-text'>&#xE061;</i>";
 <?php
 	$pgsettings = array(
 		"title" => "Pages",
-		"icon" => "icon-newspaper"
+		"icon" => "icon-newspaper",
+		"btn" => "edit_page.php?action=newpage",
+		"hide" => "btn"
 	);
 	require_once("includes/begin_cpanel.php");
 ?>
@@ -281,7 +284,7 @@ echo "<i class='material-icons red-text'>&#xE061;</i>";
 				}
             });
         });
-		
+
 		var $vertall = 'vertall';
         $('input[id="'+$vertall+'"]').change(function() {
 			var $all_check_status = $('input[id="'+$vertall+'"]').is(':checked');
@@ -292,7 +295,7 @@ echo "<i class='material-icons red-text'>&#xE061;</i>";
 				}
             });
         });
-		
+
 		var $noneall = 'noneall';
         $('input[id="'+$noneall+'"]').change(function() {
 			var $all_check_status = $('input[id="'+$noneall+'"]').is(':checked');
@@ -310,7 +313,7 @@ function showMe (box) {
 
     var chboxs = document.getElementsByName("pages[]");
     var vis = "none";
-    for(var i=0;i<chboxs.length;i++) { 
+    for(var i=0;i<chboxs.length;i++) {
         if(chboxs[i].checked){
          vis = "block";
             break;
@@ -322,20 +325,12 @@ function showMe (box) {
 }
 </script>
 <form method="post" action="page_list.php">
- <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-    <a href="edit_page.php?action=newpage" class="btn-floating btn-large green">
-      <i class="large material-icons">&#xE145;</i>
-    </a>
-  </div>
-  <div class="fixed-action-btn" id="delete" style="display:none; bottom: 45px; right: 24px;">
-    <a href="#modal1" class="modal-trigger btn-floating btn-large red">
-      <i class="large material-icons">&#xE872;</i>
-    </a>
-  </div>
-<div style="margin-bottom: 20px;">
+<div >
+
     <?php if(check_permission("Pages","add_pages")){ ?>
     	<a href="edit_page.php?action=newpage" class="green btn">New</a></li>
     <?php } ?>
+
     <?php if(check_permission("Pages","delete_pages")){ ?>
     	<a class="modal-trigger red btn" href="#modal1">Delete</a>
     <?php } ?>
