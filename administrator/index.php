@@ -20,7 +20,7 @@ $galleryresult=mysqli_query($connection, $query);
 	);
 	require_once("includes/begin_cpanel.php");
 	?>
-<h2 class="center"><a href="../" target="_blank">Back to Website</a></h2>
+<h2 class="center"><a  href="../" target="_blank">Back to Website</a></h2>
 <br />
 </div>
  <div class="row">
