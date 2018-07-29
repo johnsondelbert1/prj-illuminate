@@ -133,7 +133,7 @@ if(!check_permission("Forum","add_thread")&&(isset($_GET['action'])&&$_GET['acti
 			"title" => "Error: Thread is locked and you do not have permission to edit this post!",
 			"pageselection" => "forum",
 			"nav" => true,
-			"banner" => 1,
+			"banner" => 0,
 			"use_google_analytics" => 1,
 		);
 		$error="Thread is locked and you do not have permission to edit this post!";
@@ -145,7 +145,7 @@ if($_GET['action']=="newmessage"){
 		"title" => "Creating a new post in \"".$thread['name']."\"",
 		"pageselection" => "forum",
 		"nav" => true,
-		"banner" => 1,
+		"banner" => 0,
 	);
 	require_once("includes/begin_html.php");
 	?>
@@ -155,7 +155,7 @@ if($_GET['action']=="newmessage"){
 		"title" => "Editing post in \"".$thread['name']."\"",
 		"pageselection" => "forum",
 		"nav" => true,
-		"banner" => 1,
+		"banner" => 0,
 		"use_google_analytics" => 1,
 	);
 	require_once("includes/begin_html.php");
