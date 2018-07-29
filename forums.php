@@ -56,7 +56,7 @@ $(document).ready(function () {
 <table class="forum" width="100%" cellspacing="0" cellpadding="0">
   <tr>
     <th class="forumtitle" colspan="2">Forum</th>
-    <th class="forumtitle">Last thread posted</th>
+    <th class="forumtitle">Latest post</th>
     <?php if (logged_in()){?>
     <th class="forumtitle">Subscribed</th>
     <?php } ?>
@@ -79,7 +79,7 @@ $(document).ready(function () {
 				$threadcount=mysqli_num_rows($threadquery);
 				$query="SELECT id, date FROM `forum_posts` 
 					WHERE forumid={$forum['id']}
-					ORDER BY `date` ASC";
+					ORDER BY `date` DESC";
 				$messagequery=mysqli_query($connection, $query);
 				confirm_query($messagequery);
 				$messagedate=mysqli_fetch_array($messagequery);

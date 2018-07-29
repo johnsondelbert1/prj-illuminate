@@ -69,11 +69,19 @@ require_once("includes/functions.php");
 	$num_threads = mysqli_num_rows($result);
 	
 	$num_pages = ceil($num_threads/10);
-	
-	if(isset($_GET['page'])&&$_GET['page']>=1){
-		$current_page = $_GET['page'];
+
+	//Set current page
+	if(isset($_GET['pg'])&&intval($_GET['pg'])>=1){
+		$current_page = intval($_GET['pg']);
 	}else{
 		$current_page = 1;
+	}
+
+	$pgOffset = $current_page;
+	if($current_page <= 1){
+		$pgOffset = 0;
+	}else{
+		$pgOffset = $current_page * 10 - 10;
 	}
 	
 	$query="SELECT * FROM `pages` WHERE `type` = 'Forum'";
@@ -129,8 +137,7 @@ require_once("includes/begin_html.php");
 	$query="SELECT * 
 		FROM  `forum_threads` 
 		WHERE `forumid`={$_GET['forum']} 
-		ORDER BY  `pinned` DESC,`lastpostdate` DESC LIMIT ";
-	$query.=(($current_page * 10)-10).",".($current_page * 10);
+		ORDER BY  `pinned` DESC,`lastpostdate` DESC LIMIT 10 OFFSET ".$pgOffset;
 	$threadquery=mysqli_query($connection, $query);
 	confirm_query($threadquery);
 	

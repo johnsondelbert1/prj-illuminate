@@ -38,14 +38,20 @@ require_once("includes/functions.php");
 	
 	$num_pages = ceil($num_posts/10);
 	
-	if(isset($_GET['page'])&&$_GET['page']>=1){
-		$current_page = $_GET['page'];
+	if(isset($_GET['pg'])&&intval($_GET['pg'])>=1){
+		$current_page = intval($_GET['pg']);
 	}else{
 		$current_page = 1;
 	}
+
+	$pgOffset = $current_page;
+	if($current_page <= 1){
+		$pgOffset = 0;
+	}else{
+		$pgOffset = $current_page * 10 - 10;
+	}
 	
-	$query="SELECT * FROM `forum_posts` WHERE  `threadid`={$_GET['thread']} ORDER BY `date` ASC LIMIT ";
-		$query.=(($current_page * 10)-10).",".($current_page * 10);
+	$query="SELECT * FROM `forum_posts` WHERE  `threadid`={$_GET['thread']} ORDER BY `date` ASC LIMIT 10 OFFSET ".$pgOffset;
 	$result_posts=mysqli_query($connection, $query);
 
 	$query="UPDATE `forum_threads` SET `views` = `views` + 1 WHERE `id` ={$_GET['thread']}";
@@ -68,7 +74,7 @@ $pgsettings = array(
 );
 require_once("includes/begin_html.php");
 ?>
-<h1><?php echo $thread['name']; ?></h1>
+<h1><?php echo $thread['name'];	?></h1>
 <?php if(check_permission("Forum","reply_to_thread")&&$thread['locked']==0){?>
 	<a class="btn green" href="new_topic?forum=<?php echo urlencode($forum['id'])."&&thread=".urlencode($thread['id']); ?>&amp;action=newmessage">Reply</a><br/><br/>
 <?php } ?>
