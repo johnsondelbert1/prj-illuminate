@@ -1253,11 +1253,11 @@ function nav($position, $pgselection){
 			if($position=="horiz"&&$numpages!=0){ ?>
 				<div class="nav large">
 				<?php if($logo!=false){ ?>
-            	<div style="float:left; position:absolute;" id="logo">
+            	<!--<div style="float:left; position:absolute;" id="logo">
                 	<?php if($logo!= false){?>
             		<a href="<?php echo $GLOBALS['HOST']; ?>"><img src="<?php echo USER_DIR_URL."site-img/logo/".$logo ?>" alt="<?php echo $GLOBALS['site_info']['name']; ?> Logo" /></a>
                     <?php } ?>
-                </div>
+                </div>-->
 			<?php } ?>
 					<ul id="horiz-menu">
 			<?php }elseif($position=="vert"&&$numpages!=0){ ?>

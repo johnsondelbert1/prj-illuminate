@@ -1,6 +1,6 @@
 <?php
 //Get URL pieces
-$protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://';
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
 if(in_array($_SERVER['SERVER_PORT'],array(80, 443))){
 	$serv_port = '';
 }else{

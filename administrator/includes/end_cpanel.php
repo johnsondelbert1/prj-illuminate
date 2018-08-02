@@ -4,7 +4,7 @@
         
                 <div id="footer">
                         <div style="float:right; text-align:left; margin-right:10px;">
-                            <img src="images/logo16.png" width="16" height="16"  alt=""/><a href="http://www.illuminatecms.com" target="_blank"> IlluminateCMS </a>- v<?php echo $site_version; ?><!-- by <a href="http://www.secondgenerationdesign.com" target="_blank">Second Gen Design</a>, --> Copyright © 2011-<?php echo date("Y"); ?>.
+                            <img src="images/logo16.png" width="16" height="16"  alt=""/><a href="https://www.illuminatecms.com" target="_blank"> IlluminateCMS </a>- v<?php echo $site_version; ?><!-- by <a href="http://www.secondgenerationdesign.com" target="_blank">Second Gen Design</a>, --> Copyright © 2011-<?php echo date("Y"); ?>.
                         </div>
                     </div>
             </div>
@@ -20,7 +20,7 @@
     <script src="jscripts/drop/bootstrap.min.js"></script>
     <script src="jscripts/drop/bootstrap-select.js"></script>
     <script src="jscripts/drop/application.js"></script>-->
-        <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 		<script type="text/javascript" src="../materialize/js/materialize.js"></script>
         <!-- Drag and drop touch screens -->
         <script src="jscripts/jquery.ui.touch-punch.min.js"></script>

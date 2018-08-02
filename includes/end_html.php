@@ -26,11 +26,11 @@
     </div>
     <!-- Illuminate CMS by Second Gen Design -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.1/masonry.pkgd.js"></script>
-    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <!-- Drag and drop touch screens -->
     <script src="<?php echo $GLOBALS['HOST']; ?>/jscripts/jquery.ui.touch-punch.min.js"></script>
     <!-- Website designed by Second Gen Design -->
-<script type="text/javascript">
+<!--<script type="text/javascript">
 $(document).on("scroll", function() {
 
     if($(document).scrollTop()>25) {
@@ -40,7 +40,7 @@ $(document).on("scroll", function() {
     }
     
 });
-</script>
+</script>-->
     <script type="text/javascript">
     <?php
     //Display messages

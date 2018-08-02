@@ -1,2 +1,5 @@
 *.db
-includes/database.xml
+*.sublime-project
+*.sublime-workspace
+/includes/database.xml
+user-data
