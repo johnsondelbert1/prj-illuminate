@@ -235,7 +235,7 @@ if(isset($bg[2])){
                 ?>
             </div> -->
         </div>
-    	<!-- <?php if($logo!=false||!empty($GLOBALS['enabled_soc_networks'])){ ?>
+    	<?php if($logo!=false||!empty($GLOBALS['enabled_soc_networks'])){ ?>
     	 <div class="header"><span style="font-size:47px; margin-left:15px;" class="icon icon-facebook2 headericon"></span>
         	<?php if($logo!=false){ ?>
             	<div style="float:left; position:absolute;" id="logo">
@@ -255,7 +255,7 @@ if(isset($bg[2])){
 				?>
             </div>
         </div>
-        <?php } ?> -->
+        <?php } ?>
         <?php
         if(!isset($page['horiz_menu_visible'])||$page['horiz_menu_visible'] == true){
         	$num_horiz_pages = nav("horiz", $pgsettings['pageselection']);

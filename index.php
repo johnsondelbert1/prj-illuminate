@@ -286,7 +286,7 @@ function print_page($page){
 						<tr>
 							<td>
 								<input type="hidden" name="form_id" value="<?php echo $form['id']; ?>">
-								<input type="submit" name="<?php echo $form['u_name']; ?>" value="<?php if($form['submit_value']!=""){echo $form['submit_value'];}else{echo 'Submit';} ?>" />
+								<input type="submit" name="<?php echo $form['u_name']; ?>" class="btn green" value="<?php if($form['submit_value']!=""){echo $form['submit_value'];}else{echo 'Submit';} ?>" />
 							</td>
 						</tr>
 					</table>

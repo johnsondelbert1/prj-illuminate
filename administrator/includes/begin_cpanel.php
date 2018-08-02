@@ -73,12 +73,12 @@ if($GLOBALS['site_info']['user_creation'] == 'approval'){
     <link rel="shortcut icon" href="images/logo16.png" />
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>-->
     <script type="text/javascript" src="../jscolor/jscolor.js"></script>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     
     <link href="../materialize/css/materialize.css" rel="stylesheet" type="text/css" media="screen,projection"/>
     <link href="styles/materialize-override.css" rel="stylesheet" type="text/css" media="screen,projection"/>
     <link href="styles/main.css" rel="stylesheet" type="text/css" />
-    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link href="styles/fonts.css" rel="stylesheet" type="text/css" />
     <link href="../styles/animate.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
