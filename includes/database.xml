@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <database>
-  <firstrun>false</firstrun>
-  <server>localhost:3307</server>
-  <username>root</username>
+  <firstrun>true</firstrun>
+  <server>localhost</server>
+  <username></username>
   <password/>
-  <name>illuminate_cms_trist</name>
+  <name></name>
 </database>
